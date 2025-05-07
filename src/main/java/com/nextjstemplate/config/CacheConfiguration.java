@@ -48,6 +48,17 @@ public class CacheConfiguration {
             createCache(cm, com.nextjstemplate.domain.UserTask.class.getName());
             createCache(cm, com.nextjstemplate.domain.ProcessedStripeEvent.class.getName());
             createCache(cm, com.nextjstemplate.domain.TicketTransaction.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventType.class.getName());
+            createCache(cm, com.nextjstemplate.domain.Event.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventOrganizer.class.getName());
+            createCache(cm, com.nextjstemplate.domain.Media.class.getName());
+            createCache(cm, com.nextjstemplate.domain.TicketType.class.getName());
+            createCache(cm, com.nextjstemplate.domain.Poll.class.getName());
+            createCache(cm, com.nextjstemplate.domain.PollOption.class.getName());
+            createCache(cm, com.nextjstemplate.domain.PollResponse.class.getName());
+            createCache(cm, com.nextjstemplate.domain.Admin.class.getName());
+            createCache(cm, com.nextjstemplate.domain.AdminAuditLog.class.getName());
+            createCache(cm, com.nextjstemplate.domain.CalendarEvent.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

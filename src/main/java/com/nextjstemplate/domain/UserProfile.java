@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A UserProfile.
+ * Event Management System JDL Model
  */
 @Entity
 @Table(name = "user_profile")
@@ -19,10 +19,11 @@ public class UserProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
@@ -62,13 +63,28 @@ public class UserProfile implements Serializable {
     @Column(name = "notes")
     private String notes;
 
+    @Column(name = "family_name")
+    private String familyName;
+
+    @Column(name = "city_town")
+    private String cityTown;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "educational_institution")
+    private String educationalInstitution;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private ZonedDateTime createdAt;
+    private Instant createdAt;
 
     @NotNull
     @Column(name = "updated_at", nullable = false)
-    private ZonedDateTime updatedAt;
+    private Instant updatedAt;
 
     @JsonIgnoreProperties(value = { "userProfile" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfile")
@@ -245,29 +261,94 @@ public class UserProfile implements Serializable {
         this.notes = notes;
     }
 
-    public ZonedDateTime getCreatedAt() {
+    public String getFamilyName() {
+        return this.familyName;
+    }
+
+    public UserProfile familyName(String familyName) {
+        this.setFamilyName(familyName);
+        return this;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getCityTown() {
+        return this.cityTown;
+    }
+
+    public UserProfile cityTown(String cityTown) {
+        this.setCityTown(cityTown);
+        return this;
+    }
+
+    public void setCityTown(String cityTown) {
+        this.cityTown = cityTown;
+    }
+
+    public String getDistrict() {
+        return this.district;
+    }
+
+    public UserProfile district(String district) {
+        this.setDistrict(district);
+        return this;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getEducationalInstitution() {
+        return this.educationalInstitution;
+    }
+
+    public UserProfile educationalInstitution(String educationalInstitution) {
+        this.setEducationalInstitution(educationalInstitution);
+        return this;
+    }
+
+    public void setEducationalInstitution(String educationalInstitution) {
+        this.educationalInstitution = educationalInstitution;
+    }
+
+    public String getProfileImageUrl() {
+        return this.profileImageUrl;
+    }
+
+    public UserProfile profileImageUrl(String profileImageUrl) {
+        this.setProfileImageUrl(profileImageUrl);
+        return this;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public Instant getCreatedAt() {
         return this.createdAt;
     }
 
-    public UserProfile createdAt(ZonedDateTime createdAt) {
+    public UserProfile createdAt(Instant createdAt) {
         this.setCreatedAt(createdAt);
         return this;
     }
 
-    public void setCreatedAt(ZonedDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public ZonedDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public UserProfile updatedAt(ZonedDateTime updatedAt) {
+    public UserProfile updatedAt(Instant updatedAt) {
         this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -326,6 +407,11 @@ public class UserProfile implements Serializable {
             ", zipCode='" + getZipCode() + "'" +
             ", country='" + getCountry() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", familyName='" + getFamilyName() + "'" +
+            ", cityTown='" + getCityTown() + "'" +
+            ", district='" + getDistrict() + "'" +
+            ", educationalInstitution='" + getEducationalInstitution() + "'" +
+            ", profileImageUrl='" + getProfileImageUrl() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

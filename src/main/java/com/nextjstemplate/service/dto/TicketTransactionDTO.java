@@ -3,7 +3,7 @@ package com.nextjstemplate.service.dto;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -12,13 +12,15 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class TicketTransactionDTO implements Serializable {
 
+    @NotNull
     private Long id;
 
     @NotNull
     private String email;
 
-    @NotNull
-    private String ticketType;
+    private String firstName;
+
+    private String lastName;
 
     @NotNull
     private Integer quantity;
@@ -33,12 +35,19 @@ public class TicketTransactionDTO implements Serializable {
     private String status;
 
     @NotNull
-    private ZonedDateTime purchaseDate;
+    private Instant purchaseDate;
 
     @NotNull
-    private String eventId;
+    private Instant createdAt;
 
-    private String userId;
+    @NotNull
+    private Instant updatedAt;
+
+    private EventDTO event;
+
+    private TicketTypeDTO ticketType;
+
+    private UserProfileDTO user;
 
     public Long getId() {
         return id;
@@ -56,12 +65,20 @@ public class TicketTransactionDTO implements Serializable {
         this.email = email;
     }
 
-    public String getTicketType() {
-        return ticketType;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setTicketType(String ticketType) {
-        this.ticketType = ticketType;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Integer getQuantity() {
@@ -96,28 +113,52 @@ public class TicketTransactionDTO implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getPurchaseDate() {
+    public Instant getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(ZonedDateTime purchaseDate) {
+    public void setPurchaseDate(Instant purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
-    public String getEventId() {
-        return eventId;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUserId() {
-        return userId;
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public EventDTO getEvent() {
+        return event;
+    }
+
+    public void setEvent(EventDTO event) {
+        this.event = event;
+    }
+
+    public TicketTypeDTO getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketTypeDTO ticketType) {
+        this.ticketType = ticketType;
+    }
+
+    public UserProfileDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfileDTO user) {
+        this.user = user;
     }
 
     @Override
@@ -147,14 +188,18 @@ public class TicketTransactionDTO implements Serializable {
         return "TicketTransactionDTO{" +
             "id=" + getId() +
             ", email='" + getEmail() + "'" +
-            ", ticketType='" + getTicketType() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
             ", quantity=" + getQuantity() +
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
             ", status='" + getStatus() + "'" +
             ", purchaseDate='" + getPurchaseDate() + "'" +
-            ", eventId='" + getEventId() + "'" +
-            ", userId='" + getUserId() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
+            ", event=" + getEvent() +
+            ", ticketType=" + getTicketType() +
+            ", user=" + getUser() +
             "}";
     }
 }

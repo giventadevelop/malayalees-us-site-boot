@@ -6,6 +6,7 @@ import com.nextjstemplate.repository.TicketTransactionRepository;
 import com.nextjstemplate.service.criteria.TicketTransactionCriteria;
 import com.nextjstemplate.service.dto.TicketTransactionDTO;
 import com.nextjstemplate.service.mapper.TicketTransactionMapper;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,8 +96,11 @@ public class TicketTransactionQueryService extends QueryService<TicketTransactio
             if (criteria.getEmail() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getEmail(), TicketTransaction_.email));
             }
-            if (criteria.getTicketType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTicketType(), TicketTransaction_.ticketType));
+            if (criteria.getFirstName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFirstName(), TicketTransaction_.firstName));
+            }
+            if (criteria.getLastName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastName(), TicketTransaction_.lastName));
             }
             if (criteria.getQuantity() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantity(), TicketTransaction_.quantity));
@@ -113,11 +117,35 @@ public class TicketTransactionQueryService extends QueryService<TicketTransactio
             if (criteria.getPurchaseDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPurchaseDate(), TicketTransaction_.purchaseDate));
             }
+            if (criteria.getCreatedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), TicketTransaction_.createdAt));
+            }
+            if (criteria.getUpdatedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), TicketTransaction_.updatedAt));
+            }
             if (criteria.getEventId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getEventId(), TicketTransaction_.eventId));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getEventId(), root -> root.join(TicketTransaction_.event, JoinType.LEFT).get(Event_.id))
+                    );
+            }
+            if (criteria.getTicketTypeId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTicketTypeId(),
+                            root -> root.join(TicketTransaction_.ticketType, JoinType.LEFT).get(TicketType_.id)
+                        )
+                    );
             }
             if (criteria.getUserId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getUserId(), TicketTransaction_.userId));
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getUserId(),
+                            root -> root.join(TicketTransaction_.user, JoinType.LEFT).get(UserProfile_.id)
+                        )
+                    );
             }
         }
         return specification;

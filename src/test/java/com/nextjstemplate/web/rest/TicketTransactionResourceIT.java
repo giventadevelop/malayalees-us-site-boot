@@ -1,6 +1,5 @@
 package com.nextjstemplate.web.rest;
 
-import static com.nextjstemplate.web.rest.TestUtil.sameInstant;
 import static com.nextjstemplate.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -8,16 +7,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
+import com.nextjstemplate.domain.Event;
 import com.nextjstemplate.domain.TicketTransaction;
+import com.nextjstemplate.domain.TicketType;
+import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.repository.TicketTransactionRepository;
 import com.nextjstemplate.service.dto.TicketTransactionDTO;
 import com.nextjstemplate.service.mapper.TicketTransactionMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,8 +41,11 @@ class TicketTransactionResourceIT {
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
-    private static final String DEFAULT_TICKET_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_TICKET_TYPE = "BBBBBBBBBB";
+    private static final String DEFAULT_FIRST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FIRST_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LAST_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_LAST_NAME = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_QUANTITY = 1;
     private static final Integer UPDATED_QUANTITY = 2;
@@ -59,15 +62,14 @@ class TicketTransactionResourceIT {
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_PURCHASE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_PURCHASE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_PURCHASE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final Instant DEFAULT_PURCHASE_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_PURCHASE_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_EVENT_ID = "AAAAAAAAAA";
-    private static final String UPDATED_EVENT_ID = "BBBBBBBBBB";
+    private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
-    private static final String DEFAULT_USER_ID = "AAAAAAAAAA";
-    private static final String UPDATED_USER_ID = "BBBBBBBBBB";
+    private static final Instant DEFAULT_UPDATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_UPDATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/ticket-transactions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -98,14 +100,15 @@ class TicketTransactionResourceIT {
     public static TicketTransaction createEntity(EntityManager em) {
         TicketTransaction ticketTransaction = new TicketTransaction()
             .email(DEFAULT_EMAIL)
-            .ticketType(DEFAULT_TICKET_TYPE)
+            .firstName(DEFAULT_FIRST_NAME)
+            .lastName(DEFAULT_LAST_NAME)
             .quantity(DEFAULT_QUANTITY)
             .pricePerUnit(DEFAULT_PRICE_PER_UNIT)
             .totalAmount(DEFAULT_TOTAL_AMOUNT)
             .status(DEFAULT_STATUS)
             .purchaseDate(DEFAULT_PURCHASE_DATE)
-            .eventId(DEFAULT_EVENT_ID)
-            .userId(DEFAULT_USER_ID);
+            .createdAt(DEFAULT_CREATED_AT)
+            .updatedAt(DEFAULT_UPDATED_AT);
         return ticketTransaction;
     }
 
@@ -118,14 +121,15 @@ class TicketTransactionResourceIT {
     public static TicketTransaction createUpdatedEntity(EntityManager em) {
         TicketTransaction ticketTransaction = new TicketTransaction()
             .email(UPDATED_EMAIL)
-            .ticketType(UPDATED_TICKET_TYPE)
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
             .quantity(UPDATED_QUANTITY)
             .pricePerUnit(UPDATED_PRICE_PER_UNIT)
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
-            .eventId(UPDATED_EVENT_ID)
-            .userId(UPDATED_USER_ID);
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
         return ticketTransaction;
     }
 
@@ -153,14 +157,15 @@ class TicketTransactionResourceIT {
         assertThat(ticketTransactionList).hasSize(databaseSizeBeforeCreate + 1);
         TicketTransaction testTicketTransaction = ticketTransactionList.get(ticketTransactionList.size() - 1);
         assertThat(testTicketTransaction.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testTicketTransaction.getTicketType()).isEqualTo(DEFAULT_TICKET_TYPE);
+        assertThat(testTicketTransaction.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
+        assertThat(testTicketTransaction.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testTicketTransaction.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testTicketTransaction.getPricePerUnit()).isEqualByComparingTo(DEFAULT_PRICE_PER_UNIT);
         assertThat(testTicketTransaction.getTotalAmount()).isEqualByComparingTo(DEFAULT_TOTAL_AMOUNT);
         assertThat(testTicketTransaction.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testTicketTransaction.getPurchaseDate()).isEqualTo(DEFAULT_PURCHASE_DATE);
-        assertThat(testTicketTransaction.getEventId()).isEqualTo(DEFAULT_EVENT_ID);
-        assertThat(testTicketTransaction.getUserId()).isEqualTo(DEFAULT_USER_ID);
+        assertThat(testTicketTransaction.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testTicketTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -192,28 +197,6 @@ class TicketTransactionResourceIT {
         int databaseSizeBeforeTest = ticketTransactionRepository.findAll().size();
         // set the field null
         ticketTransaction.setEmail(null);
-
-        // Create the TicketTransaction, which fails.
-        TicketTransactionDTO ticketTransactionDTO = ticketTransactionMapper.toDto(ticketTransaction);
-
-        restTicketTransactionMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(ticketTransactionDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<TicketTransaction> ticketTransactionList = ticketTransactionRepository.findAll();
-        assertThat(ticketTransactionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkTicketTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = ticketTransactionRepository.findAll().size();
-        // set the field null
-        ticketTransaction.setTicketType(null);
 
         // Create the TicketTransaction, which fails.
         TicketTransactionDTO ticketTransactionDTO = ticketTransactionMapper.toDto(ticketTransaction);
@@ -342,10 +325,32 @@ class TicketTransactionResourceIT {
 
     @Test
     @Transactional
-    void checkEventIdIsRequired() throws Exception {
+    void checkCreatedAtIsRequired() throws Exception {
         int databaseSizeBeforeTest = ticketTransactionRepository.findAll().size();
         // set the field null
-        ticketTransaction.setEventId(null);
+        ticketTransaction.setCreatedAt(null);
+
+        // Create the TicketTransaction, which fails.
+        TicketTransactionDTO ticketTransactionDTO = ticketTransactionMapper.toDto(ticketTransaction);
+
+        restTicketTransactionMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(ticketTransactionDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<TicketTransaction> ticketTransactionList = ticketTransactionRepository.findAll();
+        assertThat(ticketTransactionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkUpdatedAtIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ticketTransactionRepository.findAll().size();
+        // set the field null
+        ticketTransaction.setUpdatedAt(null);
 
         // Create the TicketTransaction, which fails.
         TicketTransactionDTO ticketTransactionDTO = ticketTransactionMapper.toDto(ticketTransaction);
@@ -375,14 +380,15 @@ class TicketTransactionResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ticketTransaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].ticketType").value(hasItem(DEFAULT_TICKET_TYPE)))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].pricePerUnit").value(hasItem(sameNumber(DEFAULT_PRICE_PER_UNIT))))
             .andExpect(jsonPath("$.[*].totalAmount").value(hasItem(sameNumber(DEFAULT_TOTAL_AMOUNT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(sameInstant(DEFAULT_PURCHASE_DATE))))
-            .andExpect(jsonPath("$.[*].eventId").value(hasItem(DEFAULT_EVENT_ID)))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)));
+            .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(DEFAULT_PURCHASE_DATE.toString())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
     }
 
     @Test
@@ -398,14 +404,15 @@ class TicketTransactionResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(ticketTransaction.getId().intValue()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.ticketType").value(DEFAULT_TICKET_TYPE))
+            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
+            .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
             .andExpect(jsonPath("$.pricePerUnit").value(sameNumber(DEFAULT_PRICE_PER_UNIT)))
             .andExpect(jsonPath("$.totalAmount").value(sameNumber(DEFAULT_TOTAL_AMOUNT)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.purchaseDate").value(sameInstant(DEFAULT_PURCHASE_DATE)))
-            .andExpect(jsonPath("$.eventId").value(DEFAULT_EVENT_ID))
-            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID));
+            .andExpect(jsonPath("$.purchaseDate").value(DEFAULT_PURCHASE_DATE.toString()))
+            .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
+            .andExpect(jsonPath("$.updatedAt").value(DEFAULT_UPDATED_AT.toString()));
     }
 
     @Test
@@ -493,67 +500,132 @@ class TicketTransactionResourceIT {
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByTicketTypeIsEqualToSomething() throws Exception {
+    void getAllTicketTransactionsByFirstNameIsEqualToSomething() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where ticketType equals to DEFAULT_TICKET_TYPE
-        defaultTicketTransactionShouldBeFound("ticketType.equals=" + DEFAULT_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName equals to DEFAULT_FIRST_NAME
+        defaultTicketTransactionShouldBeFound("firstName.equals=" + DEFAULT_FIRST_NAME);
 
-        // Get all the ticketTransactionList where ticketType equals to UPDATED_TICKET_TYPE
-        defaultTicketTransactionShouldNotBeFound("ticketType.equals=" + UPDATED_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName equals to UPDATED_FIRST_NAME
+        defaultTicketTransactionShouldNotBeFound("firstName.equals=" + UPDATED_FIRST_NAME);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByTicketTypeIsInShouldWork() throws Exception {
+    void getAllTicketTransactionsByFirstNameIsInShouldWork() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where ticketType in DEFAULT_TICKET_TYPE or UPDATED_TICKET_TYPE
-        defaultTicketTransactionShouldBeFound("ticketType.in=" + DEFAULT_TICKET_TYPE + "," + UPDATED_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName in DEFAULT_FIRST_NAME or UPDATED_FIRST_NAME
+        defaultTicketTransactionShouldBeFound("firstName.in=" + DEFAULT_FIRST_NAME + "," + UPDATED_FIRST_NAME);
 
-        // Get all the ticketTransactionList where ticketType equals to UPDATED_TICKET_TYPE
-        defaultTicketTransactionShouldNotBeFound("ticketType.in=" + UPDATED_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName equals to UPDATED_FIRST_NAME
+        defaultTicketTransactionShouldNotBeFound("firstName.in=" + UPDATED_FIRST_NAME);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByTicketTypeIsNullOrNotNull() throws Exception {
+    void getAllTicketTransactionsByFirstNameIsNullOrNotNull() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where ticketType is not null
-        defaultTicketTransactionShouldBeFound("ticketType.specified=true");
+        // Get all the ticketTransactionList where firstName is not null
+        defaultTicketTransactionShouldBeFound("firstName.specified=true");
 
-        // Get all the ticketTransactionList where ticketType is null
-        defaultTicketTransactionShouldNotBeFound("ticketType.specified=false");
+        // Get all the ticketTransactionList where firstName is null
+        defaultTicketTransactionShouldNotBeFound("firstName.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByTicketTypeContainsSomething() throws Exception {
+    void getAllTicketTransactionsByFirstNameContainsSomething() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where ticketType contains DEFAULT_TICKET_TYPE
-        defaultTicketTransactionShouldBeFound("ticketType.contains=" + DEFAULT_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName contains DEFAULT_FIRST_NAME
+        defaultTicketTransactionShouldBeFound("firstName.contains=" + DEFAULT_FIRST_NAME);
 
-        // Get all the ticketTransactionList where ticketType contains UPDATED_TICKET_TYPE
-        defaultTicketTransactionShouldNotBeFound("ticketType.contains=" + UPDATED_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName contains UPDATED_FIRST_NAME
+        defaultTicketTransactionShouldNotBeFound("firstName.contains=" + UPDATED_FIRST_NAME);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByTicketTypeNotContainsSomething() throws Exception {
+    void getAllTicketTransactionsByFirstNameNotContainsSomething() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where ticketType does not contain DEFAULT_TICKET_TYPE
-        defaultTicketTransactionShouldNotBeFound("ticketType.doesNotContain=" + DEFAULT_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName does not contain DEFAULT_FIRST_NAME
+        defaultTicketTransactionShouldNotBeFound("firstName.doesNotContain=" + DEFAULT_FIRST_NAME);
 
-        // Get all the ticketTransactionList where ticketType does not contain UPDATED_TICKET_TYPE
-        defaultTicketTransactionShouldBeFound("ticketType.doesNotContain=" + UPDATED_TICKET_TYPE);
+        // Get all the ticketTransactionList where firstName does not contain UPDATED_FIRST_NAME
+        defaultTicketTransactionShouldBeFound("firstName.doesNotContain=" + UPDATED_FIRST_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTicketTransactionsByLastNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        ticketTransactionRepository.saveAndFlush(ticketTransaction);
+
+        // Get all the ticketTransactionList where lastName equals to DEFAULT_LAST_NAME
+        defaultTicketTransactionShouldBeFound("lastName.equals=" + DEFAULT_LAST_NAME);
+
+        // Get all the ticketTransactionList where lastName equals to UPDATED_LAST_NAME
+        defaultTicketTransactionShouldNotBeFound("lastName.equals=" + UPDATED_LAST_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTicketTransactionsByLastNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        ticketTransactionRepository.saveAndFlush(ticketTransaction);
+
+        // Get all the ticketTransactionList where lastName in DEFAULT_LAST_NAME or UPDATED_LAST_NAME
+        defaultTicketTransactionShouldBeFound("lastName.in=" + DEFAULT_LAST_NAME + "," + UPDATED_LAST_NAME);
+
+        // Get all the ticketTransactionList where lastName equals to UPDATED_LAST_NAME
+        defaultTicketTransactionShouldNotBeFound("lastName.in=" + UPDATED_LAST_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTicketTransactionsByLastNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        ticketTransactionRepository.saveAndFlush(ticketTransaction);
+
+        // Get all the ticketTransactionList where lastName is not null
+        defaultTicketTransactionShouldBeFound("lastName.specified=true");
+
+        // Get all the ticketTransactionList where lastName is null
+        defaultTicketTransactionShouldNotBeFound("lastName.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTicketTransactionsByLastNameContainsSomething() throws Exception {
+        // Initialize the database
+        ticketTransactionRepository.saveAndFlush(ticketTransaction);
+
+        // Get all the ticketTransactionList where lastName contains DEFAULT_LAST_NAME
+        defaultTicketTransactionShouldBeFound("lastName.contains=" + DEFAULT_LAST_NAME);
+
+        // Get all the ticketTransactionList where lastName contains UPDATED_LAST_NAME
+        defaultTicketTransactionShouldNotBeFound("lastName.contains=" + UPDATED_LAST_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTicketTransactionsByLastNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        ticketTransactionRepository.saveAndFlush(ticketTransaction);
+
+        // Get all the ticketTransactionList where lastName does not contain DEFAULT_LAST_NAME
+        defaultTicketTransactionShouldNotBeFound("lastName.doesNotContain=" + DEFAULT_LAST_NAME);
+
+        // Get all the ticketTransactionList where lastName does not contain UPDATED_LAST_NAME
+        defaultTicketTransactionShouldBeFound("lastName.doesNotContain=" + UPDATED_LAST_NAME);
     }
 
     @Test
@@ -935,184 +1007,146 @@ class TicketTransactionResourceIT {
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByPurchaseDateIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllTicketTransactionsByCreatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where purchaseDate is greater than or equal to DEFAULT_PURCHASE_DATE
-        defaultTicketTransactionShouldBeFound("purchaseDate.greaterThanOrEqual=" + DEFAULT_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt equals to DEFAULT_CREATED_AT
+        defaultTicketTransactionShouldBeFound("createdAt.equals=" + DEFAULT_CREATED_AT);
 
-        // Get all the ticketTransactionList where purchaseDate is greater than or equal to UPDATED_PURCHASE_DATE
-        defaultTicketTransactionShouldNotBeFound("purchaseDate.greaterThanOrEqual=" + UPDATED_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt equals to UPDATED_CREATED_AT
+        defaultTicketTransactionShouldNotBeFound("createdAt.equals=" + UPDATED_CREATED_AT);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByPurchaseDateIsLessThanOrEqualToSomething() throws Exception {
+    void getAllTicketTransactionsByCreatedAtIsInShouldWork() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where purchaseDate is less than or equal to DEFAULT_PURCHASE_DATE
-        defaultTicketTransactionShouldBeFound("purchaseDate.lessThanOrEqual=" + DEFAULT_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt in DEFAULT_CREATED_AT or UPDATED_CREATED_AT
+        defaultTicketTransactionShouldBeFound("createdAt.in=" + DEFAULT_CREATED_AT + "," + UPDATED_CREATED_AT);
 
-        // Get all the ticketTransactionList where purchaseDate is less than or equal to SMALLER_PURCHASE_DATE
-        defaultTicketTransactionShouldNotBeFound("purchaseDate.lessThanOrEqual=" + SMALLER_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt equals to UPDATED_CREATED_AT
+        defaultTicketTransactionShouldNotBeFound("createdAt.in=" + UPDATED_CREATED_AT);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByPurchaseDateIsLessThanSomething() throws Exception {
+    void getAllTicketTransactionsByCreatedAtIsNullOrNotNull() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where purchaseDate is less than DEFAULT_PURCHASE_DATE
-        defaultTicketTransactionShouldNotBeFound("purchaseDate.lessThan=" + DEFAULT_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt is not null
+        defaultTicketTransactionShouldBeFound("createdAt.specified=true");
 
-        // Get all the ticketTransactionList where purchaseDate is less than UPDATED_PURCHASE_DATE
-        defaultTicketTransactionShouldBeFound("purchaseDate.lessThan=" + UPDATED_PURCHASE_DATE);
+        // Get all the ticketTransactionList where createdAt is null
+        defaultTicketTransactionShouldNotBeFound("createdAt.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByPurchaseDateIsGreaterThanSomething() throws Exception {
+    void getAllTicketTransactionsByUpdatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where purchaseDate is greater than DEFAULT_PURCHASE_DATE
-        defaultTicketTransactionShouldNotBeFound("purchaseDate.greaterThan=" + DEFAULT_PURCHASE_DATE);
+        // Get all the ticketTransactionList where updatedAt equals to DEFAULT_UPDATED_AT
+        defaultTicketTransactionShouldBeFound("updatedAt.equals=" + DEFAULT_UPDATED_AT);
 
-        // Get all the ticketTransactionList where purchaseDate is greater than SMALLER_PURCHASE_DATE
-        defaultTicketTransactionShouldBeFound("purchaseDate.greaterThan=" + SMALLER_PURCHASE_DATE);
+        // Get all the ticketTransactionList where updatedAt equals to UPDATED_UPDATED_AT
+        defaultTicketTransactionShouldNotBeFound("updatedAt.equals=" + UPDATED_UPDATED_AT);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByEventIdIsEqualToSomething() throws Exception {
+    void getAllTicketTransactionsByUpdatedAtIsInShouldWork() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where eventId equals to DEFAULT_EVENT_ID
-        defaultTicketTransactionShouldBeFound("eventId.equals=" + DEFAULT_EVENT_ID);
+        // Get all the ticketTransactionList where updatedAt in DEFAULT_UPDATED_AT or UPDATED_UPDATED_AT
+        defaultTicketTransactionShouldBeFound("updatedAt.in=" + DEFAULT_UPDATED_AT + "," + UPDATED_UPDATED_AT);
 
-        // Get all the ticketTransactionList where eventId equals to UPDATED_EVENT_ID
-        defaultTicketTransactionShouldNotBeFound("eventId.equals=" + UPDATED_EVENT_ID);
+        // Get all the ticketTransactionList where updatedAt equals to UPDATED_UPDATED_AT
+        defaultTicketTransactionShouldNotBeFound("updatedAt.in=" + UPDATED_UPDATED_AT);
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByEventIdIsInShouldWork() throws Exception {
+    void getAllTicketTransactionsByUpdatedAtIsNullOrNotNull() throws Exception {
         // Initialize the database
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
 
-        // Get all the ticketTransactionList where eventId in DEFAULT_EVENT_ID or UPDATED_EVENT_ID
-        defaultTicketTransactionShouldBeFound("eventId.in=" + DEFAULT_EVENT_ID + "," + UPDATED_EVENT_ID);
+        // Get all the ticketTransactionList where updatedAt is not null
+        defaultTicketTransactionShouldBeFound("updatedAt.specified=true");
 
-        // Get all the ticketTransactionList where eventId equals to UPDATED_EVENT_ID
-        defaultTicketTransactionShouldNotBeFound("eventId.in=" + UPDATED_EVENT_ID);
+        // Get all the ticketTransactionList where updatedAt is null
+        defaultTicketTransactionShouldNotBeFound("updatedAt.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByEventIdIsNullOrNotNull() throws Exception {
-        // Initialize the database
+    void getAllTicketTransactionsByEventIsEqualToSomething() throws Exception {
+        Event event;
+        if (TestUtil.findAll(em, Event.class).isEmpty()) {
+            ticketTransactionRepository.saveAndFlush(ticketTransaction);
+            event = EventResourceIT.createEntity(em);
+        } else {
+            event = TestUtil.findAll(em, Event.class).get(0);
+        }
+        em.persist(event);
+        em.flush();
+        ticketTransaction.setEvent(event);
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
+        Long eventId = event.getId();
+        // Get all the ticketTransactionList where event equals to eventId
+        defaultTicketTransactionShouldBeFound("eventId.equals=" + eventId);
 
-        // Get all the ticketTransactionList where eventId is not null
-        defaultTicketTransactionShouldBeFound("eventId.specified=true");
-
-        // Get all the ticketTransactionList where eventId is null
-        defaultTicketTransactionShouldNotBeFound("eventId.specified=false");
+        // Get all the ticketTransactionList where event equals to (eventId + 1)
+        defaultTicketTransactionShouldNotBeFound("eventId.equals=" + (eventId + 1));
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByEventIdContainsSomething() throws Exception {
-        // Initialize the database
+    void getAllTicketTransactionsByTicketTypeIsEqualToSomething() throws Exception {
+        TicketType ticketType;
+        if (TestUtil.findAll(em, TicketType.class).isEmpty()) {
+            ticketTransactionRepository.saveAndFlush(ticketTransaction);
+            ticketType = TicketTypeResourceIT.createEntity(em);
+        } else {
+            ticketType = TestUtil.findAll(em, TicketType.class).get(0);
+        }
+        em.persist(ticketType);
+        em.flush();
+        ticketTransaction.setTicketType(ticketType);
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
+        Long ticketTypeId = ticketType.getId();
+        // Get all the ticketTransactionList where ticketType equals to ticketTypeId
+        defaultTicketTransactionShouldBeFound("ticketTypeId.equals=" + ticketTypeId);
 
-        // Get all the ticketTransactionList where eventId contains DEFAULT_EVENT_ID
-        defaultTicketTransactionShouldBeFound("eventId.contains=" + DEFAULT_EVENT_ID);
-
-        // Get all the ticketTransactionList where eventId contains UPDATED_EVENT_ID
-        defaultTicketTransactionShouldNotBeFound("eventId.contains=" + UPDATED_EVENT_ID);
+        // Get all the ticketTransactionList where ticketType equals to (ticketTypeId + 1)
+        defaultTicketTransactionShouldNotBeFound("ticketTypeId.equals=" + (ticketTypeId + 1));
     }
 
     @Test
     @Transactional
-    void getAllTicketTransactionsByEventIdNotContainsSomething() throws Exception {
-        // Initialize the database
+    void getAllTicketTransactionsByUserIsEqualToSomething() throws Exception {
+        UserProfile user;
+        if (TestUtil.findAll(em, UserProfile.class).isEmpty()) {
+            ticketTransactionRepository.saveAndFlush(ticketTransaction);
+            user = UserProfileResourceIT.createEntity(em);
+        } else {
+            user = TestUtil.findAll(em, UserProfile.class).get(0);
+        }
+        em.persist(user);
+        em.flush();
+        ticketTransaction.setUser(user);
         ticketTransactionRepository.saveAndFlush(ticketTransaction);
+        Long userId = user.getId();
+        // Get all the ticketTransactionList where user equals to userId
+        defaultTicketTransactionShouldBeFound("userId.equals=" + userId);
 
-        // Get all the ticketTransactionList where eventId does not contain DEFAULT_EVENT_ID
-        defaultTicketTransactionShouldNotBeFound("eventId.doesNotContain=" + DEFAULT_EVENT_ID);
-
-        // Get all the ticketTransactionList where eventId does not contain UPDATED_EVENT_ID
-        defaultTicketTransactionShouldBeFound("eventId.doesNotContain=" + UPDATED_EVENT_ID);
-    }
-
-    @Test
-    @Transactional
-    void getAllTicketTransactionsByUserIdIsEqualToSomething() throws Exception {
-        // Initialize the database
-        ticketTransactionRepository.saveAndFlush(ticketTransaction);
-
-        // Get all the ticketTransactionList where userId equals to DEFAULT_USER_ID
-        defaultTicketTransactionShouldBeFound("userId.equals=" + DEFAULT_USER_ID);
-
-        // Get all the ticketTransactionList where userId equals to UPDATED_USER_ID
-        defaultTicketTransactionShouldNotBeFound("userId.equals=" + UPDATED_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    void getAllTicketTransactionsByUserIdIsInShouldWork() throws Exception {
-        // Initialize the database
-        ticketTransactionRepository.saveAndFlush(ticketTransaction);
-
-        // Get all the ticketTransactionList where userId in DEFAULT_USER_ID or UPDATED_USER_ID
-        defaultTicketTransactionShouldBeFound("userId.in=" + DEFAULT_USER_ID + "," + UPDATED_USER_ID);
-
-        // Get all the ticketTransactionList where userId equals to UPDATED_USER_ID
-        defaultTicketTransactionShouldNotBeFound("userId.in=" + UPDATED_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    void getAllTicketTransactionsByUserIdIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        ticketTransactionRepository.saveAndFlush(ticketTransaction);
-
-        // Get all the ticketTransactionList where userId is not null
-        defaultTicketTransactionShouldBeFound("userId.specified=true");
-
-        // Get all the ticketTransactionList where userId is null
-        defaultTicketTransactionShouldNotBeFound("userId.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllTicketTransactionsByUserIdContainsSomething() throws Exception {
-        // Initialize the database
-        ticketTransactionRepository.saveAndFlush(ticketTransaction);
-
-        // Get all the ticketTransactionList where userId contains DEFAULT_USER_ID
-        defaultTicketTransactionShouldBeFound("userId.contains=" + DEFAULT_USER_ID);
-
-        // Get all the ticketTransactionList where userId contains UPDATED_USER_ID
-        defaultTicketTransactionShouldNotBeFound("userId.contains=" + UPDATED_USER_ID);
-    }
-
-    @Test
-    @Transactional
-    void getAllTicketTransactionsByUserIdNotContainsSomething() throws Exception {
-        // Initialize the database
-        ticketTransactionRepository.saveAndFlush(ticketTransaction);
-
-        // Get all the ticketTransactionList where userId does not contain DEFAULT_USER_ID
-        defaultTicketTransactionShouldNotBeFound("userId.doesNotContain=" + DEFAULT_USER_ID);
-
-        // Get all the ticketTransactionList where userId does not contain UPDATED_USER_ID
-        defaultTicketTransactionShouldBeFound("userId.doesNotContain=" + UPDATED_USER_ID);
+        // Get all the ticketTransactionList where user equals to (userId + 1)
+        defaultTicketTransactionShouldNotBeFound("userId.equals=" + (userId + 1));
     }
 
     /**
@@ -1125,14 +1159,15 @@ class TicketTransactionResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(ticketTransaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].ticketType").value(hasItem(DEFAULT_TICKET_TYPE)))
+            .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
+            .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
             .andExpect(jsonPath("$.[*].pricePerUnit").value(hasItem(sameNumber(DEFAULT_PRICE_PER_UNIT))))
             .andExpect(jsonPath("$.[*].totalAmount").value(hasItem(sameNumber(DEFAULT_TOTAL_AMOUNT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(sameInstant(DEFAULT_PURCHASE_DATE))))
-            .andExpect(jsonPath("$.[*].eventId").value(hasItem(DEFAULT_EVENT_ID)))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)));
+            .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(DEFAULT_PURCHASE_DATE.toString())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
 
         // Check, that the count call also returns 1
         restTicketTransactionMockMvc
@@ -1182,14 +1217,15 @@ class TicketTransactionResourceIT {
         em.detach(updatedTicketTransaction);
         updatedTicketTransaction
             .email(UPDATED_EMAIL)
-            .ticketType(UPDATED_TICKET_TYPE)
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
             .quantity(UPDATED_QUANTITY)
             .pricePerUnit(UPDATED_PRICE_PER_UNIT)
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
-            .eventId(UPDATED_EVENT_ID)
-            .userId(UPDATED_USER_ID);
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
         TicketTransactionDTO ticketTransactionDTO = ticketTransactionMapper.toDto(updatedTicketTransaction);
 
         restTicketTransactionMockMvc
@@ -1205,14 +1241,15 @@ class TicketTransactionResourceIT {
         assertThat(ticketTransactionList).hasSize(databaseSizeBeforeUpdate);
         TicketTransaction testTicketTransaction = ticketTransactionList.get(ticketTransactionList.size() - 1);
         assertThat(testTicketTransaction.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testTicketTransaction.getTicketType()).isEqualTo(UPDATED_TICKET_TYPE);
+        assertThat(testTicketTransaction.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testTicketTransaction.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testTicketTransaction.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testTicketTransaction.getPricePerUnit()).isEqualByComparingTo(UPDATED_PRICE_PER_UNIT);
         assertThat(testTicketTransaction.getTotalAmount()).isEqualByComparingTo(UPDATED_TOTAL_AMOUNT);
         assertThat(testTicketTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
-        assertThat(testTicketTransaction.getEventId()).isEqualTo(UPDATED_EVENT_ID);
-        assertThat(testTicketTransaction.getUserId()).isEqualTo(UPDATED_USER_ID);
+        assertThat(testTicketTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testTicketTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
 
     @Test
@@ -1296,12 +1333,10 @@ class TicketTransactionResourceIT {
 
         partialUpdatedTicketTransaction
             .email(UPDATED_EMAIL)
-            .ticketType(UPDATED_TICKET_TYPE)
-            .totalAmount(UPDATED_TOTAL_AMOUNT)
-            .status(UPDATED_STATUS)
-            .purchaseDate(UPDATED_PURCHASE_DATE)
-            .eventId(UPDATED_EVENT_ID)
-            .userId(UPDATED_USER_ID);
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
+            .quantity(UPDATED_QUANTITY)
+            .purchaseDate(UPDATED_PURCHASE_DATE);
 
         restTicketTransactionMockMvc
             .perform(
@@ -1316,14 +1351,15 @@ class TicketTransactionResourceIT {
         assertThat(ticketTransactionList).hasSize(databaseSizeBeforeUpdate);
         TicketTransaction testTicketTransaction = ticketTransactionList.get(ticketTransactionList.size() - 1);
         assertThat(testTicketTransaction.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testTicketTransaction.getTicketType()).isEqualTo(UPDATED_TICKET_TYPE);
-        assertThat(testTicketTransaction.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testTicketTransaction.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testTicketTransaction.getLastName()).isEqualTo(UPDATED_LAST_NAME);
+        assertThat(testTicketTransaction.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testTicketTransaction.getPricePerUnit()).isEqualByComparingTo(DEFAULT_PRICE_PER_UNIT);
-        assertThat(testTicketTransaction.getTotalAmount()).isEqualByComparingTo(UPDATED_TOTAL_AMOUNT);
-        assertThat(testTicketTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testTicketTransaction.getTotalAmount()).isEqualByComparingTo(DEFAULT_TOTAL_AMOUNT);
+        assertThat(testTicketTransaction.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
-        assertThat(testTicketTransaction.getEventId()).isEqualTo(UPDATED_EVENT_ID);
-        assertThat(testTicketTransaction.getUserId()).isEqualTo(UPDATED_USER_ID);
+        assertThat(testTicketTransaction.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testTicketTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -1340,14 +1376,15 @@ class TicketTransactionResourceIT {
 
         partialUpdatedTicketTransaction
             .email(UPDATED_EMAIL)
-            .ticketType(UPDATED_TICKET_TYPE)
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
             .quantity(UPDATED_QUANTITY)
             .pricePerUnit(UPDATED_PRICE_PER_UNIT)
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
-            .eventId(UPDATED_EVENT_ID)
-            .userId(UPDATED_USER_ID);
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
 
         restTicketTransactionMockMvc
             .perform(
@@ -1362,14 +1399,15 @@ class TicketTransactionResourceIT {
         assertThat(ticketTransactionList).hasSize(databaseSizeBeforeUpdate);
         TicketTransaction testTicketTransaction = ticketTransactionList.get(ticketTransactionList.size() - 1);
         assertThat(testTicketTransaction.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testTicketTransaction.getTicketType()).isEqualTo(UPDATED_TICKET_TYPE);
+        assertThat(testTicketTransaction.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testTicketTransaction.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testTicketTransaction.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testTicketTransaction.getPricePerUnit()).isEqualByComparingTo(UPDATED_PRICE_PER_UNIT);
         assertThat(testTicketTransaction.getTotalAmount()).isEqualByComparingTo(UPDATED_TOTAL_AMOUNT);
         assertThat(testTicketTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
-        assertThat(testTicketTransaction.getEventId()).isEqualTo(UPDATED_EVENT_ID);
-        assertThat(testTicketTransaction.getUserId()).isEqualTo(UPDATED_USER_ID);
+        assertThat(testTicketTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testTicketTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
 
     @Test

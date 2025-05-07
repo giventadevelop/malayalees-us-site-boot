@@ -1,10 +1,11 @@
 package com.nextjstemplate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,19 +20,22 @@ public class TicketTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotNull
-    @Column(name = "ticket_type", nullable = false)
-    private String ticketType;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @NotNull
     @Column(name = "quantity", nullable = false)
@@ -51,14 +55,27 @@ public class TicketTransaction implements Serializable {
 
     @NotNull
     @Column(name = "purchase_date", nullable = false)
-    private ZonedDateTime purchaseDate;
+    private Instant purchaseDate;
 
     @NotNull
-    @Column(name = "event_id", nullable = false)
-    private String eventId;
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
-    @Column(name = "user_id")
-    private String userId;
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    private Event event;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "event" }, allowSetters = true)
+    private TicketType ticketType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    private UserProfile user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -88,17 +105,30 @@ public class TicketTransaction implements Serializable {
         this.email = email;
     }
 
-    public String getTicketType() {
-        return this.ticketType;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public TicketTransaction ticketType(String ticketType) {
-        this.setTicketType(ticketType);
+    public TicketTransaction firstName(String firstName) {
+        this.setFirstName(firstName);
         return this;
     }
 
-    public void setTicketType(String ticketType) {
-        this.ticketType = ticketType;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public TicketTransaction lastName(String lastName) {
+        this.setLastName(lastName);
+        return this;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Integer getQuantity() {
@@ -153,43 +183,82 @@ public class TicketTransaction implements Serializable {
         this.status = status;
     }
 
-    public ZonedDateTime getPurchaseDate() {
+    public Instant getPurchaseDate() {
         return this.purchaseDate;
     }
 
-    public TicketTransaction purchaseDate(ZonedDateTime purchaseDate) {
+    public TicketTransaction purchaseDate(Instant purchaseDate) {
         this.setPurchaseDate(purchaseDate);
         return this;
     }
 
-    public void setPurchaseDate(ZonedDateTime purchaseDate) {
+    public void setPurchaseDate(Instant purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
-    public String getEventId() {
-        return this.eventId;
+    public Instant getCreatedAt() {
+        return this.createdAt;
     }
 
-    public TicketTransaction eventId(String eventId) {
-        this.setEventId(eventId);
+    public TicketTransaction createdAt(Instant createdAt) {
+        this.setCreatedAt(createdAt);
         return this;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getUserId() {
-        return this.userId;
+    public Instant getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    public TicketTransaction userId(String userId) {
-        this.setUserId(userId);
+    public TicketTransaction updatedAt(Instant updatedAt) {
+        this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Event getEvent() {
+        return this.event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public TicketTransaction event(Event event) {
+        this.setEvent(event);
+        return this;
+    }
+
+    public TicketType getTicketType() {
+        return this.ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
+    }
+
+    public TicketTransaction ticketType(TicketType ticketType) {
+        this.setTicketType(ticketType);
+        return this;
+    }
+
+    public UserProfile getUser() {
+        return this.user;
+    }
+
+    public void setUser(UserProfile userProfile) {
+        this.user = userProfile;
+    }
+
+    public TicketTransaction user(UserProfile userProfile) {
+        this.setUser(userProfile);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -217,14 +286,15 @@ public class TicketTransaction implements Serializable {
         return "TicketTransaction{" +
             "id=" + getId() +
             ", email='" + getEmail() + "'" +
-            ", ticketType='" + getTicketType() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
             ", quantity=" + getQuantity() +
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
             ", status='" + getStatus() + "'" +
             ", purchaseDate='" + getPurchaseDate() + "'" +
-            ", eventId='" + getEventId() + "'" +
-            ", userId='" + getUserId() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
             "}";
     }
 }

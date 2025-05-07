@@ -10,7 +10,7 @@
         Added the entity UserProfile.
     -->
     <changeSet id="20250422195856-1" author="jhipster">
-        <createTable tableName="user_profile">
+        <createTable tableName="user_profile" remarks="Event Management System JDL Model">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -48,6 +48,21 @@
                 <constraints nullable="true" />
             </column>
             <column name="notes" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="family_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="city_town" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="district" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="educational_institution" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="profile_image_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="created_at" type="${datetimeType}">
@@ -91,6 +106,11 @@
             <column name="zip_code" type="string"/>
             <column name="country" type="string"/>
             <column name="notes" type="string"/>
+            <column name="family_name" type="string"/>
+            <column name="city_town" type="string"/>
+            <column name="district" type="string"/>
+            <column name="educational_institution" type="string"/>
+            <column name="profile_image_url" type="string"/>
             <column name="created_at" type="date"/>
             <column name="updated_at" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

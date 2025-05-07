@@ -1,9 +1,10 @@
 package com.nextjstemplate.repository;
 
 import com.nextjstemplate.domain.UserProfile;
-import java.util.Optional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the UserProfile entity.

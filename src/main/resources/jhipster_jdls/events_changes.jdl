@@ -1,0 +1,204 @@
+/**
+ * Event Management System JDL Model
+ */
+
+// User Profile entity
+entity UserProfile {
+    id Long required,
+    userId String required unique, // This is the Clerk user ID
+    firstName String,
+    lastName String,
+    email String,
+    phone String,
+    addressLine1 String,
+    addressLine2 String,
+    city String,
+    state String,
+    zipCode String,
+    country String,
+    notes String,
+    familyName String, // Optional field
+    cityTown String,   // Optional field for Indian city/town
+    district String,   // Optional field for Indian district
+    educationalInstitution String, // Optional field for Indian educational institution
+    profileImageUrl String,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Event Type entity
+entity EventType {
+    id Long required,
+    name String required unique,
+    description String,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Event entity
+entity Event {
+    id Long required,
+    title String required,
+    caption String,
+    description String,
+    startDate LocalDate required,
+    endDate LocalDate required,
+    startTime ZonedDateTime required,
+    endTime ZonedDateTime required,
+    location String,
+    capacity Integer,
+    admissionType String required, // 'free' or 'ticketed'
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Event Organizer entity
+entity EventOrganizer {
+    id Long required,
+    title String required,
+    designation String,
+    contactEmail String,
+    contactPhone String,
+    isPrimary Boolean,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Media entity
+entity Media {
+    id Long required,
+    title String required,
+    description String,
+    mediaType String required,
+    storageType String required,
+    fileUrl String,
+    fileData Blob,
+    contentType String,
+    fileSize Integer,
+    isPublic Boolean,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Ticket Type entity
+entity TicketType {
+    id Long required,
+    name String required,
+    description String,
+    price BigDecimal required,
+    code String required,
+    availableQuantity Integer,
+    isActive Boolean,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Ticket Transaction entity
+entity TicketTransaction {
+    id Long required,
+    email String required,
+    firstName String,
+    lastName String,
+    quantity Integer required,
+    pricePerUnit BigDecimal required,
+    totalAmount BigDecimal required,
+    status String required,
+    purchaseDate Instant required,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Poll entity
+entity Poll {
+    id Long required,
+    title String required,
+    description String,
+    isActive Boolean,
+    startDate Instant required,
+    endDate Instant,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Poll Option entity
+entity PollOption {
+    id Long required,
+    optionText String required,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Poll Response entity
+entity PollResponse {
+    id Long required,
+    comment String,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Admin entity
+entity Admin {
+    id Long required,
+    role String required,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Admin Audit Log entity
+entity AdminAuditLog {
+    id Long required,
+    action String required,
+    tableName String required,
+    recordId String required,
+    changes TextBlob,
+    createdAt Instant required
+}
+
+// Calendar Event entity
+entity CalendarEvent {
+    id Long required,
+    calendarProvider String required,
+    externalEventId String,
+    calendarLink String required,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Relationships
+relationship ManyToOne {
+    Event{createdBy} to UserProfile,
+    Event{eventType} to EventType,
+    EventOrganizer{event} to Event,
+    EventOrganizer{organizer} to UserProfile,
+    Media{event} to Event,
+    Media{uploadedBy} to UserProfile,
+    TicketType{event} to Event,
+    TicketTransaction{event} to Event,
+    TicketTransaction{ticketType} to TicketType,
+    TicketTransaction{user} to UserProfile,
+    Poll{event} to Event,
+    Poll{createdBy} to UserProfile,
+    PollOption{poll} to Poll,
+    PollResponse{poll} to Poll,
+    PollResponse{pollOption} to PollOption,
+    PollResponse{user} to UserProfile,
+    Admin{user} to UserProfile,
+    Admin{createdBy} to UserProfile,
+    AdminAuditLog{admin} to UserProfile,
+    CalendarEvent{event} to Event,
+    CalendarEvent{createdBy} to UserProfile
+}
+
+// Options for entities
+service all with serviceImpl
+paginate all with pagination
+dto all with mapstruct
+
+// Microservice definition
+//microservice UserProfile, Event, EventType, EventOrganizer, Media, TicketType, TicketTransaction, Poll, PollOption, PollResponse, Admin, AdminAuditLog, CalendarEvent with eventmanagement
+
+// Search options
+//search UserProfile, Event, Media with elasticsearch
+
+// Set options
+filter all

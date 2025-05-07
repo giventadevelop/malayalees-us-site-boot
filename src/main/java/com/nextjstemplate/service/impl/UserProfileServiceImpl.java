@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing
- * {@link com.nextjstemplate.domain.UserProfile}.
+ * Service Implementation for managing {@link com.nextjstemplate.domain.UserProfile}.
  */
 @Service
 @Transactional
@@ -75,9 +74,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     /**
-     * Get all the userProfiles where UserSubscription is {@code null}.
-     *
-     * @return the list of entities.
+     *  Get all the userProfiles where UserSubscription is {@code null}.
+     *  @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<UserProfileDTO> findAllWhereUserSubscriptionIsNull() {

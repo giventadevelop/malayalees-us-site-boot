@@ -12,35 +12,20 @@ public class TicketTransactionTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static TicketTransaction getTicketTransactionSample1() {
-        return new TicketTransaction()
-            .id(1L)
-            .email("email1")
-            .ticketType("ticketType1")
-            .quantity(1)
-            .status("status1")
-            .eventId("eventId1")
-            .userId("userId1");
+        return new TicketTransaction().id(1L).email("email1").firstName("firstName1").lastName("lastName1").quantity(1).status("status1");
     }
 
     public static TicketTransaction getTicketTransactionSample2() {
-        return new TicketTransaction()
-            .id(2L)
-            .email("email2")
-            .ticketType("ticketType2")
-            .quantity(2)
-            .status("status2")
-            .eventId("eventId2")
-            .userId("userId2");
+        return new TicketTransaction().id(2L).email("email2").firstName("firstName2").lastName("lastName2").quantity(2).status("status2");
     }
 
     public static TicketTransaction getTicketTransactionRandomSampleGenerator() {
         return new TicketTransaction()
             .id(longCount.incrementAndGet())
             .email(UUID.randomUUID().toString())
-            .ticketType(UUID.randomUUID().toString())
+            .firstName(UUID.randomUUID().toString())
+            .lastName(UUID.randomUUID().toString())
             .quantity(intCount.incrementAndGet())
-            .status(UUID.randomUUID().toString())
-            .eventId(UUID.randomUUID().toString())
-            .userId(UUID.randomUUID().toString());
+            .status(UUID.randomUUID().toString());
     }
 }

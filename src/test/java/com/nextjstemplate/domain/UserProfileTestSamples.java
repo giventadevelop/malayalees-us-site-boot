@@ -23,7 +23,12 @@ public class UserProfileTestSamples {
             .state("state1")
             .zipCode("zipCode1")
             .country("country1")
-            .notes("notes1");
+            .notes("notes1")
+            .familyName("familyName1")
+            .cityTown("cityTown1")
+            .district("district1")
+            .educationalInstitution("educationalInstitution1")
+            .profileImageUrl("profileImageUrl1");
     }
 
     public static UserProfile getUserProfileSample2() {
@@ -40,7 +45,12 @@ public class UserProfileTestSamples {
             .state("state2")
             .zipCode("zipCode2")
             .country("country2")
-            .notes("notes2");
+            .notes("notes2")
+            .familyName("familyName2")
+            .cityTown("cityTown2")
+            .district("district2")
+            .educationalInstitution("educationalInstitution2")
+            .profileImageUrl("profileImageUrl2");
     }
 
     public static UserProfile getUserProfileRandomSampleGenerator() {
@@ -57,6 +67,11 @@ public class UserProfileTestSamples {
             .state(UUID.randomUUID().toString())
             .zipCode(UUID.randomUUID().toString())
             .country(UUID.randomUUID().toString())
-            .notes(UUID.randomUUID().toString());
+            .notes(UUID.randomUUID().toString())
+            .familyName(UUID.randomUUID().toString())
+            .cityTown(UUID.randomUUID().toString())
+            .district(UUID.randomUUID().toString())
+            .educationalInstitution(UUID.randomUUID().toString())
+            .profileImageUrl(UUID.randomUUID().toString());
     }
 }

@@ -126,6 +126,22 @@ public class UserProfileQueryService extends QueryService<UserProfile> {
             if (criteria.getNotes() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getNotes(), UserProfile_.notes));
             }
+            if (criteria.getFamilyName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFamilyName(), UserProfile_.familyName));
+            }
+            if (criteria.getCityTown() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getCityTown(), UserProfile_.cityTown));
+            }
+            if (criteria.getDistrict() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDistrict(), UserProfile_.district));
+            }
+            if (criteria.getEducationalInstitution() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getEducationalInstitution(), UserProfile_.educationalInstitution));
+            }
+            if (criteria.getProfileImageUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getProfileImageUrl(), UserProfile_.profileImageUrl));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), UserProfile_.createdAt));
             }

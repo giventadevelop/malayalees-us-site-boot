@@ -1,9 +1,15 @@
 {
   "applications": "*",
   "changelogDate": "20250422195856",
+  "documentation": "Event Management System JDL Model",
   "dto": "mapstruct",
   "entityTableName": "user_profile",
   "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
     {
       "fieldName": "userId",
       "fieldType": "String",
@@ -54,28 +60,40 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "familyName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "cityTown",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "district",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "educationalInstitution",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "profileImageUrl",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "createdAt",
-      "fieldType": "ZonedDateTime",
+      "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "updatedAt",
-      "fieldType": "ZonedDateTime",
+      "fieldType": "Instant",
       "fieldValidateRules": ["required"]
     }
   ],
   "jpaMetamodelFiltering": true,
   "name": "UserProfile",
   "pagination": "pagination",
-  "relationships": [
-    {
-      "otherEntityName": "userSubscription",
-      "otherEntityRelationshipName": "userProfile",
-      "relationshipName": "userSubscription",
-      "relationshipSide": "right",
-      "relationshipType": "one-to-one"
-    }
-  ],
+  "relationships": [],
   "searchEngine": "no",
   "service": "serviceImpl"
 }

@@ -47,9 +47,19 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private StringFilter notes;
 
-    private ZonedDateTimeFilter createdAt;
+    private StringFilter familyName;
 
-    private ZonedDateTimeFilter updatedAt;
+    private StringFilter cityTown;
+
+    private StringFilter district;
+
+    private StringFilter educationalInstitution;
+
+    private StringFilter profileImageUrl;
+
+    private InstantFilter createdAt;
+
+    private InstantFilter updatedAt;
 
     private LongFilter userSubscriptionId;
 
@@ -71,6 +81,11 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.zipCode = other.zipCode == null ? null : other.zipCode.copy();
         this.country = other.country == null ? null : other.country.copy();
         this.notes = other.notes == null ? null : other.notes.copy();
+        this.familyName = other.familyName == null ? null : other.familyName.copy();
+        this.cityTown = other.cityTown == null ? null : other.cityTown.copy();
+        this.district = other.district == null ? null : other.district.copy();
+        this.educationalInstitution = other.educationalInstitution == null ? null : other.educationalInstitution.copy();
+        this.profileImageUrl = other.profileImageUrl == null ? null : other.profileImageUrl.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.userSubscriptionId = other.userSubscriptionId == null ? null : other.userSubscriptionId.copy();
@@ -277,33 +292,108 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.notes = notes;
     }
 
-    public ZonedDateTimeFilter getCreatedAt() {
+    public StringFilter getFamilyName() {
+        return familyName;
+    }
+
+    public StringFilter familyName() {
+        if (familyName == null) {
+            familyName = new StringFilter();
+        }
+        return familyName;
+    }
+
+    public void setFamilyName(StringFilter familyName) {
+        this.familyName = familyName;
+    }
+
+    public StringFilter getCityTown() {
+        return cityTown;
+    }
+
+    public StringFilter cityTown() {
+        if (cityTown == null) {
+            cityTown = new StringFilter();
+        }
+        return cityTown;
+    }
+
+    public void setCityTown(StringFilter cityTown) {
+        this.cityTown = cityTown;
+    }
+
+    public StringFilter getDistrict() {
+        return district;
+    }
+
+    public StringFilter district() {
+        if (district == null) {
+            district = new StringFilter();
+        }
+        return district;
+    }
+
+    public void setDistrict(StringFilter district) {
+        this.district = district;
+    }
+
+    public StringFilter getEducationalInstitution() {
+        return educationalInstitution;
+    }
+
+    public StringFilter educationalInstitution() {
+        if (educationalInstitution == null) {
+            educationalInstitution = new StringFilter();
+        }
+        return educationalInstitution;
+    }
+
+    public void setEducationalInstitution(StringFilter educationalInstitution) {
+        this.educationalInstitution = educationalInstitution;
+    }
+
+    public StringFilter getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public StringFilter profileImageUrl() {
+        if (profileImageUrl == null) {
+            profileImageUrl = new StringFilter();
+        }
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(StringFilter profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public InstantFilter getCreatedAt() {
         return createdAt;
     }
 
-    public ZonedDateTimeFilter createdAt() {
+    public InstantFilter createdAt() {
         if (createdAt == null) {
-            createdAt = new ZonedDateTimeFilter();
+            createdAt = new InstantFilter();
         }
         return createdAt;
     }
 
-    public void setCreatedAt(ZonedDateTimeFilter createdAt) {
+    public void setCreatedAt(InstantFilter createdAt) {
         this.createdAt = createdAt;
     }
 
-    public ZonedDateTimeFilter getUpdatedAt() {
+    public InstantFilter getUpdatedAt() {
         return updatedAt;
     }
 
-    public ZonedDateTimeFilter updatedAt() {
+    public InstantFilter updatedAt() {
         if (updatedAt == null) {
-            updatedAt = new ZonedDateTimeFilter();
+            updatedAt = new InstantFilter();
         }
         return updatedAt;
     }
 
-    public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
+    public void setUpdatedAt(InstantFilter updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -353,6 +443,11 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(zipCode, that.zipCode) &&
             Objects.equals(country, that.country) &&
             Objects.equals(notes, that.notes) &&
+            Objects.equals(familyName, that.familyName) &&
+            Objects.equals(cityTown, that.cityTown) &&
+            Objects.equals(district, that.district) &&
+            Objects.equals(educationalInstitution, that.educationalInstitution) &&
+            Objects.equals(profileImageUrl, that.profileImageUrl) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(userSubscriptionId, that.userSubscriptionId) &&
@@ -376,6 +471,11 @@ public class UserProfileCriteria implements Serializable, Criteria {
             zipCode,
             country,
             notes,
+            familyName,
+            cityTown,
+            district,
+            educationalInstitution,
+            profileImageUrl,
             createdAt,
             updatedAt,
             userSubscriptionId,
@@ -400,6 +500,11 @@ public class UserProfileCriteria implements Serializable, Criteria {
             (zipCode != null ? "zipCode=" + zipCode + ", " : "") +
             (country != null ? "country=" + country + ", " : "") +
             (notes != null ? "notes=" + notes + ", " : "") +
+            (familyName != null ? "familyName=" + familyName + ", " : "") +
+            (cityTown != null ? "cityTown=" + cityTown + ", " : "") +
+            (district != null ? "district=" + district + ", " : "") +
+            (educationalInstitution != null ? "educationalInstitution=" + educationalInstitution + ", " : "") +
+            (profileImageUrl != null ? "profileImageUrl=" + profileImageUrl + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (userSubscriptionId != null ? "userSubscriptionId=" + userSubscriptionId + ", " : "") +

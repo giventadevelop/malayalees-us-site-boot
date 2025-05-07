@@ -25,7 +25,9 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
 
     private StringFilter email;
 
-    private StringFilter ticketType;
+    private StringFilter firstName;
+
+    private StringFilter lastName;
 
     private IntegerFilter quantity;
 
@@ -35,11 +37,17 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
 
     private StringFilter status;
 
-    private ZonedDateTimeFilter purchaseDate;
+    private InstantFilter purchaseDate;
 
-    private StringFilter eventId;
+    private InstantFilter createdAt;
 
-    private StringFilter userId;
+    private InstantFilter updatedAt;
+
+    private LongFilter eventId;
+
+    private LongFilter ticketTypeId;
+
+    private LongFilter userId;
 
     private Boolean distinct;
 
@@ -48,13 +56,17 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
     public TicketTransactionCriteria(TicketTransactionCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.email = other.email == null ? null : other.email.copy();
-        this.ticketType = other.ticketType == null ? null : other.ticketType.copy();
+        this.firstName = other.firstName == null ? null : other.firstName.copy();
+        this.lastName = other.lastName == null ? null : other.lastName.copy();
         this.quantity = other.quantity == null ? null : other.quantity.copy();
         this.pricePerUnit = other.pricePerUnit == null ? null : other.pricePerUnit.copy();
         this.totalAmount = other.totalAmount == null ? null : other.totalAmount.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.purchaseDate = other.purchaseDate == null ? null : other.purchaseDate.copy();
+        this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
+        this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.ticketTypeId = other.ticketTypeId == null ? null : other.ticketTypeId.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.distinct = other.distinct;
     }
@@ -94,19 +106,34 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
         this.email = email;
     }
 
-    public StringFilter getTicketType() {
-        return ticketType;
+    public StringFilter getFirstName() {
+        return firstName;
     }
 
-    public StringFilter ticketType() {
-        if (ticketType == null) {
-            ticketType = new StringFilter();
+    public StringFilter firstName() {
+        if (firstName == null) {
+            firstName = new StringFilter();
         }
-        return ticketType;
+        return firstName;
     }
 
-    public void setTicketType(StringFilter ticketType) {
-        this.ticketType = ticketType;
+    public void setFirstName(StringFilter firstName) {
+        this.firstName = firstName;
+    }
+
+    public StringFilter getLastName() {
+        return lastName;
+    }
+
+    public StringFilter lastName() {
+        if (lastName == null) {
+            lastName = new StringFilter();
+        }
+        return lastName;
+    }
+
+    public void setLastName(StringFilter lastName) {
+        this.lastName = lastName;
     }
 
     public IntegerFilter getQuantity() {
@@ -169,48 +196,93 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
         this.status = status;
     }
 
-    public ZonedDateTimeFilter getPurchaseDate() {
+    public InstantFilter getPurchaseDate() {
         return purchaseDate;
     }
 
-    public ZonedDateTimeFilter purchaseDate() {
+    public InstantFilter purchaseDate() {
         if (purchaseDate == null) {
-            purchaseDate = new ZonedDateTimeFilter();
+            purchaseDate = new InstantFilter();
         }
         return purchaseDate;
     }
 
-    public void setPurchaseDate(ZonedDateTimeFilter purchaseDate) {
+    public void setPurchaseDate(InstantFilter purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
 
-    public StringFilter getEventId() {
+    public InstantFilter getCreatedAt() {
+        return createdAt;
+    }
+
+    public InstantFilter createdAt() {
+        if (createdAt == null) {
+            createdAt = new InstantFilter();
+        }
+        return createdAt;
+    }
+
+    public void setCreatedAt(InstantFilter createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public InstantFilter getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public InstantFilter updatedAt() {
+        if (updatedAt == null) {
+            updatedAt = new InstantFilter();
+        }
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(InstantFilter updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LongFilter getEventId() {
         return eventId;
     }
 
-    public StringFilter eventId() {
+    public LongFilter eventId() {
         if (eventId == null) {
-            eventId = new StringFilter();
+            eventId = new LongFilter();
         }
         return eventId;
     }
 
-    public void setEventId(StringFilter eventId) {
+    public void setEventId(LongFilter eventId) {
         this.eventId = eventId;
     }
 
-    public StringFilter getUserId() {
+    public LongFilter getTicketTypeId() {
+        return ticketTypeId;
+    }
+
+    public LongFilter ticketTypeId() {
+        if (ticketTypeId == null) {
+            ticketTypeId = new LongFilter();
+        }
+        return ticketTypeId;
+    }
+
+    public void setTicketTypeId(LongFilter ticketTypeId) {
+        this.ticketTypeId = ticketTypeId;
+    }
+
+    public LongFilter getUserId() {
         return userId;
     }
 
-    public StringFilter userId() {
+    public LongFilter userId() {
         if (userId == null) {
-            userId = new StringFilter();
+            userId = new LongFilter();
         }
         return userId;
     }
 
-    public void setUserId(StringFilter userId) {
+    public void setUserId(LongFilter userId) {
         this.userId = userId;
     }
 
@@ -234,13 +306,17 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(email, that.email) &&
-            Objects.equals(ticketType, that.ticketType) &&
+            Objects.equals(firstName, that.firstName) &&
+            Objects.equals(lastName, that.lastName) &&
             Objects.equals(quantity, that.quantity) &&
             Objects.equals(pricePerUnit, that.pricePerUnit) &&
             Objects.equals(totalAmount, that.totalAmount) &&
             Objects.equals(status, that.status) &&
             Objects.equals(purchaseDate, that.purchaseDate) &&
+            Objects.equals(createdAt, that.createdAt) &&
+            Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
+            Objects.equals(ticketTypeId, that.ticketTypeId) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -248,7 +324,23 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, ticketType, quantity, pricePerUnit, totalAmount, status, purchaseDate, eventId, userId, distinct);
+        return Objects.hash(
+            id,
+            email,
+            firstName,
+            lastName,
+            quantity,
+            pricePerUnit,
+            totalAmount,
+            status,
+            purchaseDate,
+            createdAt,
+            updatedAt,
+            eventId,
+            ticketTypeId,
+            userId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -257,13 +349,17 @@ public class TicketTransactionCriteria implements Serializable, Criteria {
         return "TicketTransactionCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (email != null ? "email=" + email + ", " : "") +
-            (ticketType != null ? "ticketType=" + ticketType + ", " : "") +
+            (firstName != null ? "firstName=" + firstName + ", " : "") +
+            (lastName != null ? "lastName=" + lastName + ", " : "") +
             (quantity != null ? "quantity=" + quantity + ", " : "") +
             (pricePerUnit != null ? "pricePerUnit=" + pricePerUnit + ", " : "") +
             (totalAmount != null ? "totalAmount=" + totalAmount + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (purchaseDate != null ? "purchaseDate=" + purchaseDate + ", " : "") +
+            (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
+            (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (ticketTypeId != null ? "ticketTypeId=" + ticketTypeId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

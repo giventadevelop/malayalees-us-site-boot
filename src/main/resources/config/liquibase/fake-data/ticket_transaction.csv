@@ -1,11 +1,11 @@
-id;email;ticket_type;quantity;price_per_unit;total_amount;status;purchase_date;event_id;user_id
-1;Joanny0@yahoo.com;hydrogen if rethinking;23714;29272.07;19428.27;vulgarise zowie;2025-04-22T19:46:35;unwritten psst;amongst hence
-2;Megane_Greenfelder@hotmail.com;giving gadzooks;10816;4874.67;14709.96;finally humongous;2025-04-22T13:33:17;uh-huh;low upon until
-3;Tyreek.Collins43@hotmail.com;afore daffodil;19131;4579.83;8501.55;flaky knickers;2025-04-22T01:51:39;healthily worst roasted;substantial
-4;Patsy30@yahoo.com;straight cuff and;23158;9856.78;26250.29;instead;2025-04-22T18:25:45;picture without uh-huh;amortize offensively
-5;Sarina.Doyle@gmail.com;greedily out before;31467;29526.02;31687.02;gadzooks sardonic gosh;2025-04-22T06:58:52;call consonant amend;doll formalise
-6;Tremaine_Feil24@yahoo.com;amid;25588;25353.87;25239.96;finally oof wonderfully;2025-04-21T20:16:17;burdensome oh;unknown finally animate
-7;Lilyan17@hotmail.com;determination repossess via;13638;8460.79;18263.14;fairly thumb;2025-04-22T09:15:36;mmm uh-huh;tongue before meanwhile
-8;Noemi_Reilly90@yahoo.com;correlate whereas;22693;13780.35;17028.03;ah;2025-04-22T04:24:39;blah madly;generally
-9;Pearlie.Bechtelar95@gmail.com;boastfully carol;24041;8916.07;3220.44;except headache;2025-04-22T07:45:19;fugato towards;finally witch-hunt
-10;Aiyana.Klein@yahoo.com;whether duh preserves;20289;26613.31;7812.21;fob;2025-04-22T18:43:39;consequently unless prickly;mute now boo
+id;email;first_name;last_name;quantity;price_per_unit;total_amount;status;purchase_date;created_at;updated_at
+1;Joanny0@yahoo.com;Michale;Gottlieb;7480;18439.58;24427.09;suspiciously;2025-04-22T12:31:24;2025-04-22T11:15:58;2025-04-22T05:14:47
+2;Nikolas_Krajcik89@hotmail.com;Larue;Luettgen;26940;31431.9;22322.82;rag key;2025-04-22T10:06:05;2025-04-22T03:42:28;2025-04-22T07:56:57
+3;Tamara42@gmail.com;Monroe;Nienow;29734;16880.89;18763.09;hedge;2025-04-22T19:42:49;2025-04-22T07:50:11;2025-04-22T14:21:55
+4;Megane_Greenfelder@hotmail.com;Lionel;Heaney-Vandervort;24645;23052.04;31748.25;gadzooks;2025-04-22T12:07:35;2025-04-22T16:28:41;2025-04-22T09:16:28
+5;Freida_Cormier@gmail.com;Carlee;Wehner;19532;23976.64;12387.24;con rabbit when;2025-04-22T07:58:19;2025-04-22T19:53:56;2025-04-22T13:13:30
+6;Julie.Christiansen6@gmail.com;Katlyn;Welch;26927;4472.98;31955.66;vet what for;2025-04-22T04:26:53;2025-04-22T02:29:34;2025-04-22T03:16:33
+7;Salma.Spinka49@gmail.com;Corine;Stamm;16112;24831.59;22839.46;fooey;2025-04-22T09:11:30;2025-04-22T01:52:50;2025-04-21T22:18:05
+8;Nasir_Yost@yahoo.com;Lesly;Moen-Prohaska;8036;5029.69;14787.93;evenly seizure fortunately;2025-04-22T05:35:56;2025-04-22T06:34:49;2025-04-22T06:56:03
+9;Clotilde.Renner@gmail.com;Tyrique;Quigley;9857;26250.29;4063.07;as;2025-04-22T03:55:17;2025-04-22T19:07:10;2025-04-21T20:47:28
+10;Lisandro.Mante@yahoo.com;Kenyatta;Nolan;1020;32120.2;32462.79;pantsuit amortize offensively;2025-04-21T23:08:53;2025-04-22T17:41:47;2025-04-22T15:08:06

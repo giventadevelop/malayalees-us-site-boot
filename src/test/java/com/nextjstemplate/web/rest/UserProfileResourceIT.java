@@ -1,6 +1,5 @@
 package com.nextjstemplate.web.rest;
 
-import static com.nextjstemplate.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -14,9 +13,7 @@ import com.nextjstemplate.service.dto.UserProfileDTO;
 import com.nextjstemplate.service.mapper.UserProfileMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -73,13 +70,26 @@ class UserProfileResourceIT {
     private static final String DEFAULT_NOTES = "AAAAAAAAAA";
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final String DEFAULT_FAMILY_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FAMILY_NAME = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+    private static final String DEFAULT_CITY_TOWN = "AAAAAAAAAA";
+    private static final String UPDATED_CITY_TOWN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DISTRICT = "AAAAAAAAAA";
+    private static final String UPDATED_DISTRICT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EDUCATIONAL_INSTITUTION = "AAAAAAAAAA";
+    private static final String UPDATED_EDUCATIONAL_INSTITUTION = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PROFILE_IMAGE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_PROFILE_IMAGE_URL = "BBBBBBBBBB";
+
+    private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
+    private static final Instant DEFAULT_UPDATED_AT = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_UPDATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/user-profiles";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -121,6 +131,11 @@ class UserProfileResourceIT {
             .zipCode(DEFAULT_ZIP_CODE)
             .country(DEFAULT_COUNTRY)
             .notes(DEFAULT_NOTES)
+            .familyName(DEFAULT_FAMILY_NAME)
+            .cityTown(DEFAULT_CITY_TOWN)
+            .district(DEFAULT_DISTRICT)
+            .educationalInstitution(DEFAULT_EDUCATIONAL_INSTITUTION)
+            .profileImageUrl(DEFAULT_PROFILE_IMAGE_URL)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return userProfile;
@@ -146,6 +161,11 @@ class UserProfileResourceIT {
             .zipCode(UPDATED_ZIP_CODE)
             .country(UPDATED_COUNTRY)
             .notes(UPDATED_NOTES)
+            .familyName(UPDATED_FAMILY_NAME)
+            .cityTown(UPDATED_CITY_TOWN)
+            .district(UPDATED_DISTRICT)
+            .educationalInstitution(UPDATED_EDUCATIONAL_INSTITUTION)
+            .profileImageUrl(UPDATED_PROFILE_IMAGE_URL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return userProfile;
@@ -184,6 +204,11 @@ class UserProfileResourceIT {
         assertThat(testUserProfile.getZipCode()).isEqualTo(DEFAULT_ZIP_CODE);
         assertThat(testUserProfile.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testUserProfile.getNotes()).isEqualTo(DEFAULT_NOTES);
+        assertThat(testUserProfile.getFamilyName()).isEqualTo(DEFAULT_FAMILY_NAME);
+        assertThat(testUserProfile.getCityTown()).isEqualTo(DEFAULT_CITY_TOWN);
+        assertThat(testUserProfile.getDistrict()).isEqualTo(DEFAULT_DISTRICT);
+        assertThat(testUserProfile.getEducationalInstitution()).isEqualTo(DEFAULT_EDUCATIONAL_INSTITUTION);
+        assertThat(testUserProfile.getProfileImageUrl()).isEqualTo(DEFAULT_PROFILE_IMAGE_URL);
         assertThat(testUserProfile.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testUserProfile.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -293,8 +318,13 @@ class UserProfileResourceIT {
             .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+            .andExpect(jsonPath("$.[*].familyName").value(hasItem(DEFAULT_FAMILY_NAME)))
+            .andExpect(jsonPath("$.[*].cityTown").value(hasItem(DEFAULT_CITY_TOWN)))
+            .andExpect(jsonPath("$.[*].district").value(hasItem(DEFAULT_DISTRICT)))
+            .andExpect(jsonPath("$.[*].educationalInstitution").value(hasItem(DEFAULT_EDUCATIONAL_INSTITUTION)))
+            .andExpect(jsonPath("$.[*].profileImageUrl").value(hasItem(DEFAULT_PROFILE_IMAGE_URL)))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
     }
 
     @Test
@@ -321,8 +351,13 @@ class UserProfileResourceIT {
             .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY))
             .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES))
-            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
+            .andExpect(jsonPath("$.familyName").value(DEFAULT_FAMILY_NAME))
+            .andExpect(jsonPath("$.cityTown").value(DEFAULT_CITY_TOWN))
+            .andExpect(jsonPath("$.district").value(DEFAULT_DISTRICT))
+            .andExpect(jsonPath("$.educationalInstitution").value(DEFAULT_EDUCATIONAL_INSTITUTION))
+            .andExpect(jsonPath("$.profileImageUrl").value(DEFAULT_PROFILE_IMAGE_URL))
+            .andExpect(jsonPath("$.createdAt").value(DEFAULT_CREATED_AT.toString()))
+            .andExpect(jsonPath("$.updatedAt").value(DEFAULT_UPDATED_AT.toString()));
     }
 
     @Test
@@ -1125,6 +1160,333 @@ class UserProfileResourceIT {
 
     @Test
     @Transactional
+    void getAllUserProfilesByFamilyNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where familyName equals to DEFAULT_FAMILY_NAME
+        defaultUserProfileShouldBeFound("familyName.equals=" + DEFAULT_FAMILY_NAME);
+
+        // Get all the userProfileList where familyName equals to UPDATED_FAMILY_NAME
+        defaultUserProfileShouldNotBeFound("familyName.equals=" + UPDATED_FAMILY_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByFamilyNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where familyName in DEFAULT_FAMILY_NAME or UPDATED_FAMILY_NAME
+        defaultUserProfileShouldBeFound("familyName.in=" + DEFAULT_FAMILY_NAME + "," + UPDATED_FAMILY_NAME);
+
+        // Get all the userProfileList where familyName equals to UPDATED_FAMILY_NAME
+        defaultUserProfileShouldNotBeFound("familyName.in=" + UPDATED_FAMILY_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByFamilyNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where familyName is not null
+        defaultUserProfileShouldBeFound("familyName.specified=true");
+
+        // Get all the userProfileList where familyName is null
+        defaultUserProfileShouldNotBeFound("familyName.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByFamilyNameContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where familyName contains DEFAULT_FAMILY_NAME
+        defaultUserProfileShouldBeFound("familyName.contains=" + DEFAULT_FAMILY_NAME);
+
+        // Get all the userProfileList where familyName contains UPDATED_FAMILY_NAME
+        defaultUserProfileShouldNotBeFound("familyName.contains=" + UPDATED_FAMILY_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByFamilyNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where familyName does not contain DEFAULT_FAMILY_NAME
+        defaultUserProfileShouldNotBeFound("familyName.doesNotContain=" + DEFAULT_FAMILY_NAME);
+
+        // Get all the userProfileList where familyName does not contain UPDATED_FAMILY_NAME
+        defaultUserProfileShouldBeFound("familyName.doesNotContain=" + UPDATED_FAMILY_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByCityTownIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where cityTown equals to DEFAULT_CITY_TOWN
+        defaultUserProfileShouldBeFound("cityTown.equals=" + DEFAULT_CITY_TOWN);
+
+        // Get all the userProfileList where cityTown equals to UPDATED_CITY_TOWN
+        defaultUserProfileShouldNotBeFound("cityTown.equals=" + UPDATED_CITY_TOWN);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByCityTownIsInShouldWork() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where cityTown in DEFAULT_CITY_TOWN or UPDATED_CITY_TOWN
+        defaultUserProfileShouldBeFound("cityTown.in=" + DEFAULT_CITY_TOWN + "," + UPDATED_CITY_TOWN);
+
+        // Get all the userProfileList where cityTown equals to UPDATED_CITY_TOWN
+        defaultUserProfileShouldNotBeFound("cityTown.in=" + UPDATED_CITY_TOWN);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByCityTownIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where cityTown is not null
+        defaultUserProfileShouldBeFound("cityTown.specified=true");
+
+        // Get all the userProfileList where cityTown is null
+        defaultUserProfileShouldNotBeFound("cityTown.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByCityTownContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where cityTown contains DEFAULT_CITY_TOWN
+        defaultUserProfileShouldBeFound("cityTown.contains=" + DEFAULT_CITY_TOWN);
+
+        // Get all the userProfileList where cityTown contains UPDATED_CITY_TOWN
+        defaultUserProfileShouldNotBeFound("cityTown.contains=" + UPDATED_CITY_TOWN);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByCityTownNotContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where cityTown does not contain DEFAULT_CITY_TOWN
+        defaultUserProfileShouldNotBeFound("cityTown.doesNotContain=" + DEFAULT_CITY_TOWN);
+
+        // Get all the userProfileList where cityTown does not contain UPDATED_CITY_TOWN
+        defaultUserProfileShouldBeFound("cityTown.doesNotContain=" + UPDATED_CITY_TOWN);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByDistrictIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where district equals to DEFAULT_DISTRICT
+        defaultUserProfileShouldBeFound("district.equals=" + DEFAULT_DISTRICT);
+
+        // Get all the userProfileList where district equals to UPDATED_DISTRICT
+        defaultUserProfileShouldNotBeFound("district.equals=" + UPDATED_DISTRICT);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByDistrictIsInShouldWork() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where district in DEFAULT_DISTRICT or UPDATED_DISTRICT
+        defaultUserProfileShouldBeFound("district.in=" + DEFAULT_DISTRICT + "," + UPDATED_DISTRICT);
+
+        // Get all the userProfileList where district equals to UPDATED_DISTRICT
+        defaultUserProfileShouldNotBeFound("district.in=" + UPDATED_DISTRICT);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByDistrictIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where district is not null
+        defaultUserProfileShouldBeFound("district.specified=true");
+
+        // Get all the userProfileList where district is null
+        defaultUserProfileShouldNotBeFound("district.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByDistrictContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where district contains DEFAULT_DISTRICT
+        defaultUserProfileShouldBeFound("district.contains=" + DEFAULT_DISTRICT);
+
+        // Get all the userProfileList where district contains UPDATED_DISTRICT
+        defaultUserProfileShouldNotBeFound("district.contains=" + UPDATED_DISTRICT);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByDistrictNotContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where district does not contain DEFAULT_DISTRICT
+        defaultUserProfileShouldNotBeFound("district.doesNotContain=" + DEFAULT_DISTRICT);
+
+        // Get all the userProfileList where district does not contain UPDATED_DISTRICT
+        defaultUserProfileShouldBeFound("district.doesNotContain=" + UPDATED_DISTRICT);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByEducationalInstitutionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where educationalInstitution equals to DEFAULT_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldBeFound("educationalInstitution.equals=" + DEFAULT_EDUCATIONAL_INSTITUTION);
+
+        // Get all the userProfileList where educationalInstitution equals to UPDATED_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldNotBeFound("educationalInstitution.equals=" + UPDATED_EDUCATIONAL_INSTITUTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByEducationalInstitutionIsInShouldWork() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where educationalInstitution in DEFAULT_EDUCATIONAL_INSTITUTION or UPDATED_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldBeFound(
+            "educationalInstitution.in=" + DEFAULT_EDUCATIONAL_INSTITUTION + "," + UPDATED_EDUCATIONAL_INSTITUTION
+        );
+
+        // Get all the userProfileList where educationalInstitution equals to UPDATED_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldNotBeFound("educationalInstitution.in=" + UPDATED_EDUCATIONAL_INSTITUTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByEducationalInstitutionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where educationalInstitution is not null
+        defaultUserProfileShouldBeFound("educationalInstitution.specified=true");
+
+        // Get all the userProfileList where educationalInstitution is null
+        defaultUserProfileShouldNotBeFound("educationalInstitution.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByEducationalInstitutionContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where educationalInstitution contains DEFAULT_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldBeFound("educationalInstitution.contains=" + DEFAULT_EDUCATIONAL_INSTITUTION);
+
+        // Get all the userProfileList where educationalInstitution contains UPDATED_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldNotBeFound("educationalInstitution.contains=" + UPDATED_EDUCATIONAL_INSTITUTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByEducationalInstitutionNotContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where educationalInstitution does not contain DEFAULT_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldNotBeFound("educationalInstitution.doesNotContain=" + DEFAULT_EDUCATIONAL_INSTITUTION);
+
+        // Get all the userProfileList where educationalInstitution does not contain UPDATED_EDUCATIONAL_INSTITUTION
+        defaultUserProfileShouldBeFound("educationalInstitution.doesNotContain=" + UPDATED_EDUCATIONAL_INSTITUTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByProfileImageUrlIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where profileImageUrl equals to DEFAULT_PROFILE_IMAGE_URL
+        defaultUserProfileShouldBeFound("profileImageUrl.equals=" + DEFAULT_PROFILE_IMAGE_URL);
+
+        // Get all the userProfileList where profileImageUrl equals to UPDATED_PROFILE_IMAGE_URL
+        defaultUserProfileShouldNotBeFound("profileImageUrl.equals=" + UPDATED_PROFILE_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByProfileImageUrlIsInShouldWork() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where profileImageUrl in DEFAULT_PROFILE_IMAGE_URL or UPDATED_PROFILE_IMAGE_URL
+        defaultUserProfileShouldBeFound("profileImageUrl.in=" + DEFAULT_PROFILE_IMAGE_URL + "," + UPDATED_PROFILE_IMAGE_URL);
+
+        // Get all the userProfileList where profileImageUrl equals to UPDATED_PROFILE_IMAGE_URL
+        defaultUserProfileShouldNotBeFound("profileImageUrl.in=" + UPDATED_PROFILE_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByProfileImageUrlIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where profileImageUrl is not null
+        defaultUserProfileShouldBeFound("profileImageUrl.specified=true");
+
+        // Get all the userProfileList where profileImageUrl is null
+        defaultUserProfileShouldNotBeFound("profileImageUrl.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByProfileImageUrlContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where profileImageUrl contains DEFAULT_PROFILE_IMAGE_URL
+        defaultUserProfileShouldBeFound("profileImageUrl.contains=" + DEFAULT_PROFILE_IMAGE_URL);
+
+        // Get all the userProfileList where profileImageUrl contains UPDATED_PROFILE_IMAGE_URL
+        defaultUserProfileShouldNotBeFound("profileImageUrl.contains=" + UPDATED_PROFILE_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserProfilesByProfileImageUrlNotContainsSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+
+        // Get all the userProfileList where profileImageUrl does not contain DEFAULT_PROFILE_IMAGE_URL
+        defaultUserProfileShouldNotBeFound("profileImageUrl.doesNotContain=" + DEFAULT_PROFILE_IMAGE_URL);
+
+        // Get all the userProfileList where profileImageUrl does not contain UPDATED_PROFILE_IMAGE_URL
+        defaultUserProfileShouldBeFound("profileImageUrl.doesNotContain=" + UPDATED_PROFILE_IMAGE_URL);
+    }
+
+    @Test
+    @Transactional
     void getAllUserProfilesByCreatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         userProfileRepository.saveAndFlush(userProfile);
@@ -1164,58 +1526,6 @@ class UserProfileResourceIT {
 
     @Test
     @Transactional
-    void getAllUserProfilesByCreatedAtIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where createdAt is greater than or equal to DEFAULT_CREATED_AT
-        defaultUserProfileShouldBeFound("createdAt.greaterThanOrEqual=" + DEFAULT_CREATED_AT);
-
-        // Get all the userProfileList where createdAt is greater than or equal to UPDATED_CREATED_AT
-        defaultUserProfileShouldNotBeFound("createdAt.greaterThanOrEqual=" + UPDATED_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByCreatedAtIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where createdAt is less than or equal to DEFAULT_CREATED_AT
-        defaultUserProfileShouldBeFound("createdAt.lessThanOrEqual=" + DEFAULT_CREATED_AT);
-
-        // Get all the userProfileList where createdAt is less than or equal to SMALLER_CREATED_AT
-        defaultUserProfileShouldNotBeFound("createdAt.lessThanOrEqual=" + SMALLER_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByCreatedAtIsLessThanSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where createdAt is less than DEFAULT_CREATED_AT
-        defaultUserProfileShouldNotBeFound("createdAt.lessThan=" + DEFAULT_CREATED_AT);
-
-        // Get all the userProfileList where createdAt is less than UPDATED_CREATED_AT
-        defaultUserProfileShouldBeFound("createdAt.lessThan=" + UPDATED_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByCreatedAtIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where createdAt is greater than DEFAULT_CREATED_AT
-        defaultUserProfileShouldNotBeFound("createdAt.greaterThan=" + DEFAULT_CREATED_AT);
-
-        // Get all the userProfileList where createdAt is greater than SMALLER_CREATED_AT
-        defaultUserProfileShouldBeFound("createdAt.greaterThan=" + SMALLER_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
     void getAllUserProfilesByUpdatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         userProfileRepository.saveAndFlush(userProfile);
@@ -1251,58 +1561,6 @@ class UserProfileResourceIT {
 
         // Get all the userProfileList where updatedAt is null
         defaultUserProfileShouldNotBeFound("updatedAt.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByUpdatedAtIsGreaterThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where updatedAt is greater than or equal to DEFAULT_UPDATED_AT
-        defaultUserProfileShouldBeFound("updatedAt.greaterThanOrEqual=" + DEFAULT_UPDATED_AT);
-
-        // Get all the userProfileList where updatedAt is greater than or equal to UPDATED_UPDATED_AT
-        defaultUserProfileShouldNotBeFound("updatedAt.greaterThanOrEqual=" + UPDATED_UPDATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByUpdatedAtIsLessThanOrEqualToSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where updatedAt is less than or equal to DEFAULT_UPDATED_AT
-        defaultUserProfileShouldBeFound("updatedAt.lessThanOrEqual=" + DEFAULT_UPDATED_AT);
-
-        // Get all the userProfileList where updatedAt is less than or equal to SMALLER_UPDATED_AT
-        defaultUserProfileShouldNotBeFound("updatedAt.lessThanOrEqual=" + SMALLER_UPDATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByUpdatedAtIsLessThanSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where updatedAt is less than DEFAULT_UPDATED_AT
-        defaultUserProfileShouldNotBeFound("updatedAt.lessThan=" + DEFAULT_UPDATED_AT);
-
-        // Get all the userProfileList where updatedAt is less than UPDATED_UPDATED_AT
-        defaultUserProfileShouldBeFound("updatedAt.lessThan=" + UPDATED_UPDATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserProfilesByUpdatedAtIsGreaterThanSomething() throws Exception {
-        // Initialize the database
-        userProfileRepository.saveAndFlush(userProfile);
-
-        // Get all the userProfileList where updatedAt is greater than DEFAULT_UPDATED_AT
-        defaultUserProfileShouldNotBeFound("updatedAt.greaterThan=" + DEFAULT_UPDATED_AT);
-
-        // Get all the userProfileList where updatedAt is greater than SMALLER_UPDATED_AT
-        defaultUserProfileShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
     }
 
     @Test
@@ -1349,8 +1607,13 @@ class UserProfileResourceIT {
             .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
             .andExpect(jsonPath("$.[*].country").value(hasItem(DEFAULT_COUNTRY)))
             .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+            .andExpect(jsonPath("$.[*].familyName").value(hasItem(DEFAULT_FAMILY_NAME)))
+            .andExpect(jsonPath("$.[*].cityTown").value(hasItem(DEFAULT_CITY_TOWN)))
+            .andExpect(jsonPath("$.[*].district").value(hasItem(DEFAULT_DISTRICT)))
+            .andExpect(jsonPath("$.[*].educationalInstitution").value(hasItem(DEFAULT_EDUCATIONAL_INSTITUTION)))
+            .andExpect(jsonPath("$.[*].profileImageUrl").value(hasItem(DEFAULT_PROFILE_IMAGE_URL)))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
 
         // Check, that the count call also returns 1
         restUserProfileMockMvc
@@ -1411,6 +1674,11 @@ class UserProfileResourceIT {
             .zipCode(UPDATED_ZIP_CODE)
             .country(UPDATED_COUNTRY)
             .notes(UPDATED_NOTES)
+            .familyName(UPDATED_FAMILY_NAME)
+            .cityTown(UPDATED_CITY_TOWN)
+            .district(UPDATED_DISTRICT)
+            .educationalInstitution(UPDATED_EDUCATIONAL_INSTITUTION)
+            .profileImageUrl(UPDATED_PROFILE_IMAGE_URL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         UserProfileDTO userProfileDTO = userProfileMapper.toDto(updatedUserProfile);
@@ -1439,6 +1707,11 @@ class UserProfileResourceIT {
         assertThat(testUserProfile.getZipCode()).isEqualTo(UPDATED_ZIP_CODE);
         assertThat(testUserProfile.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testUserProfile.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testUserProfile.getFamilyName()).isEqualTo(UPDATED_FAMILY_NAME);
+        assertThat(testUserProfile.getCityTown()).isEqualTo(UPDATED_CITY_TOWN);
+        assertThat(testUserProfile.getDistrict()).isEqualTo(UPDATED_DISTRICT);
+        assertThat(testUserProfile.getEducationalInstitution()).isEqualTo(UPDATED_EDUCATIONAL_INSTITUTION);
+        assertThat(testUserProfile.getProfileImageUrl()).isEqualTo(UPDATED_PROFILE_IMAGE_URL);
         assertThat(testUserProfile.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testUserProfile.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -1521,13 +1794,18 @@ class UserProfileResourceIT {
         partialUpdatedUserProfile.setId(userProfile.getId());
 
         partialUpdatedUserProfile
-            .email(UPDATED_EMAIL)
-            .phone(UPDATED_PHONE)
-            .addressLine1(UPDATED_ADDRESS_LINE_1)
-            .country(UPDATED_COUNTRY)
-            .notes(UPDATED_NOTES)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .userId(UPDATED_USER_ID)
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
+            .addressLine2(UPDATED_ADDRESS_LINE_2)
+            .city(UPDATED_CITY)
+            .state(UPDATED_STATE)
+            .zipCode(UPDATED_ZIP_CODE)
+            .cityTown(UPDATED_CITY_TOWN)
+            .district(UPDATED_DISTRICT)
+            .educationalInstitution(UPDATED_EDUCATIONAL_INSTITUTION)
+            .profileImageUrl(UPDATED_PROFILE_IMAGE_URL)
+            .createdAt(UPDATED_CREATED_AT);
 
         restUserProfileMockMvc
             .perform(
@@ -1541,20 +1819,25 @@ class UserProfileResourceIT {
         List<UserProfile> userProfileList = userProfileRepository.findAll();
         assertThat(userProfileList).hasSize(databaseSizeBeforeUpdate);
         UserProfile testUserProfile = userProfileList.get(userProfileList.size() - 1);
-        assertThat(testUserProfile.getUserId()).isEqualTo(DEFAULT_USER_ID);
-        assertThat(testUserProfile.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
-        assertThat(testUserProfile.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
-        assertThat(testUserProfile.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testUserProfile.getPhone()).isEqualTo(UPDATED_PHONE);
-        assertThat(testUserProfile.getAddressLine1()).isEqualTo(UPDATED_ADDRESS_LINE_1);
-        assertThat(testUserProfile.getAddressLine2()).isEqualTo(DEFAULT_ADDRESS_LINE_2);
-        assertThat(testUserProfile.getCity()).isEqualTo(DEFAULT_CITY);
-        assertThat(testUserProfile.getState()).isEqualTo(DEFAULT_STATE);
-        assertThat(testUserProfile.getZipCode()).isEqualTo(DEFAULT_ZIP_CODE);
-        assertThat(testUserProfile.getCountry()).isEqualTo(UPDATED_COUNTRY);
-        assertThat(testUserProfile.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testUserProfile.getUserId()).isEqualTo(UPDATED_USER_ID);
+        assertThat(testUserProfile.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testUserProfile.getLastName()).isEqualTo(UPDATED_LAST_NAME);
+        assertThat(testUserProfile.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testUserProfile.getPhone()).isEqualTo(DEFAULT_PHONE);
+        assertThat(testUserProfile.getAddressLine1()).isEqualTo(DEFAULT_ADDRESS_LINE_1);
+        assertThat(testUserProfile.getAddressLine2()).isEqualTo(UPDATED_ADDRESS_LINE_2);
+        assertThat(testUserProfile.getCity()).isEqualTo(UPDATED_CITY);
+        assertThat(testUserProfile.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testUserProfile.getZipCode()).isEqualTo(UPDATED_ZIP_CODE);
+        assertThat(testUserProfile.getCountry()).isEqualTo(DEFAULT_COUNTRY);
+        assertThat(testUserProfile.getNotes()).isEqualTo(DEFAULT_NOTES);
+        assertThat(testUserProfile.getFamilyName()).isEqualTo(DEFAULT_FAMILY_NAME);
+        assertThat(testUserProfile.getCityTown()).isEqualTo(UPDATED_CITY_TOWN);
+        assertThat(testUserProfile.getDistrict()).isEqualTo(UPDATED_DISTRICT);
+        assertThat(testUserProfile.getEducationalInstitution()).isEqualTo(UPDATED_EDUCATIONAL_INSTITUTION);
+        assertThat(testUserProfile.getProfileImageUrl()).isEqualTo(UPDATED_PROFILE_IMAGE_URL);
         assertThat(testUserProfile.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testUserProfile.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testUserProfile.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -1582,6 +1865,11 @@ class UserProfileResourceIT {
             .zipCode(UPDATED_ZIP_CODE)
             .country(UPDATED_COUNTRY)
             .notes(UPDATED_NOTES)
+            .familyName(UPDATED_FAMILY_NAME)
+            .cityTown(UPDATED_CITY_TOWN)
+            .district(UPDATED_DISTRICT)
+            .educationalInstitution(UPDATED_EDUCATIONAL_INSTITUTION)
+            .profileImageUrl(UPDATED_PROFILE_IMAGE_URL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
 
@@ -1609,6 +1897,11 @@ class UserProfileResourceIT {
         assertThat(testUserProfile.getZipCode()).isEqualTo(UPDATED_ZIP_CODE);
         assertThat(testUserProfile.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testUserProfile.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testUserProfile.getFamilyName()).isEqualTo(UPDATED_FAMILY_NAME);
+        assertThat(testUserProfile.getCityTown()).isEqualTo(UPDATED_CITY_TOWN);
+        assertThat(testUserProfile.getDistrict()).isEqualTo(UPDATED_DISTRICT);
+        assertThat(testUserProfile.getEducationalInstitution()).isEqualTo(UPDATED_EDUCATIONAL_INSTITUTION);
+        assertThat(testUserProfile.getProfileImageUrl()).isEqualTo(UPDATED_PROFILE_IMAGE_URL);
         assertThat(testUserProfile.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testUserProfile.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

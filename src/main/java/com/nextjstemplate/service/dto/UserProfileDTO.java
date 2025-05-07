@@ -1,15 +1,18 @@
 package com.nextjstemplate.service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link com.nextjstemplate.domain.UserProfile} entity.
  */
+@Schema(description = "Event Management System JDL Model")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserProfileDTO implements Serializable {
+
 
     private Long id;
 
@@ -38,11 +41,21 @@ public class UserProfileDTO implements Serializable {
 
     private String notes;
 
-    @NotNull
-    private ZonedDateTime createdAt;
+    private String familyName;
+
+    private String cityTown;
+
+    private String district;
+
+    private String educationalInstitution;
+
+    private String profileImageUrl;
 
     @NotNull
-    private ZonedDateTime updatedAt;
+    private Instant createdAt;
+
+    @NotNull
+    private Instant updatedAt;
 
     public Long getId() {
         return id;
@@ -148,19 +161,59 @@ public class UserProfileDTO implements Serializable {
         this.notes = notes;
     }
 
-    public ZonedDateTime getCreatedAt() {
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public String getCityTown() {
+        return cityTown;
+    }
+
+    public void setCityTown(String cityTown) {
+        this.cityTown = cityTown;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getEducationalInstitution() {
+        return educationalInstitution;
+    }
+
+    public void setEducationalInstitution(String educationalInstitution) {
+        this.educationalInstitution = educationalInstitution;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(ZonedDateTime createdAt) {
+    public void setCreatedAt(Instant createdAt) {
         this.createdAt = createdAt;
     }
 
-    public ZonedDateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
+    public void setUpdatedAt(Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -202,6 +255,11 @@ public class UserProfileDTO implements Serializable {
             ", zipCode='" + getZipCode() + "'" +
             ", country='" + getCountry() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", familyName='" + getFamilyName() + "'" +
+            ", cityTown='" + getCityTown() + "'" +
+            ", district='" + getDistrict() + "'" +
+            ", educationalInstitution='" + getEducationalInstitution() + "'" +
+            ", profileImageUrl='" + getProfileImageUrl() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";
