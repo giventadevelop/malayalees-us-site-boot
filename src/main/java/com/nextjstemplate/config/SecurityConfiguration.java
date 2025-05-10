@@ -5,6 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import java.util.Arrays;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -13,6 +14,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 @Configuration
 public class SecurityConfiguration {
@@ -20,9 +26,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(authz -> authz.requestMatchers(mvc.pattern("/**")).permitAll());
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(mvc.pattern("/api/authenticate")).permitAll()
+                        .requestMatchers(mvc.pattern("/api/**")).authenticated()
+                        .anyRequest().permitAll())
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(withDefaults()));
         return http.build();
     }
 
@@ -32,17 +42,15 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(
-            Arrays.asList(
-                "Authorization",
-                "Content-Type",
-                "X-Requested-With",
-                "Accept",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers",
-                "X-XSRF-TOKEN"
-            )
-        );
+                Arrays.asList(
+                        "Authorization",
+                        "Content-Type",
+                        "X-Requested-With",
+                        "Accept",
+                        "Origin",
+                        "Access-Control-Request-Method",
+                        "Access-Control-Request-Headers",
+                        "X-XSRF-TOKEN"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Link", "X-Total-Count", "X-XSRF-TOKEN"));
         configuration.setAllowCredentials(false);
         configuration.setMaxAge(3600L);
@@ -55,5 +63,15 @@ public class SecurityConfiguration {
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
         return new MvcRequestMatcher.Builder(introspector);
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new InMemoryUserDetailsManager(
+                User.withUsername("admin")
+                        .password(encoder.encode("admin"))
+                        .roles("ADMIN", "USER")
+                        .build());
     }
 }
