@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long>, JpaSpecificationExecutor<Admin> {}
+public interface AdminRepository extends JpaRepository<Admin, Long> {}

@@ -41,7 +41,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "EventOrganizer",
   "pagination": "pagination",
   "relationships": [

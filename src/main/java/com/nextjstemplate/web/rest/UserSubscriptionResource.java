@@ -1,7 +1,6 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.UserSubscriptionRepository;
-import com.nextjstemplate.service.UserSubscriptionQueryService;
 import com.nextjstemplate.service.UserSubscriptionService;
 import com.nextjstemplate.service.criteria.UserSubscriptionCriteria;
 import com.nextjstemplate.service.dto.UserSubscriptionDTO;
@@ -45,16 +44,16 @@ public class UserSubscriptionResource {
 
     private final UserSubscriptionRepository userSubscriptionRepository;
 
-    private final UserSubscriptionQueryService userSubscriptionQueryService;
+
 
     public UserSubscriptionResource(
         UserSubscriptionService userSubscriptionService,
-        UserSubscriptionRepository userSubscriptionRepository,
-        UserSubscriptionQueryService userSubscriptionQueryService
+        UserSubscriptionRepository userSubscriptionRepository
+
     ) {
         this.userSubscriptionService = userSubscriptionService;
         this.userSubscriptionRepository = userSubscriptionRepository;
-        this.userSubscriptionQueryService = userSubscriptionQueryService;
+
     }
 
     /**
@@ -166,31 +165,6 @@ public class UserSubscriptionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of userSubscriptions in body.
      */
-    @GetMapping("")
-    public ResponseEntity<List<UserSubscriptionDTO>> getAllUserSubscriptions(
-        UserSubscriptionCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get UserSubscriptions by criteria: {}", criteria);
-
-        Page<UserSubscriptionDTO> page = userSubscriptionQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /user-subscriptions/count} : count all the userSubscriptions.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count
-     *         in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countUserSubscriptions(UserSubscriptionCriteria criteria) {
-        log.debug("REST request to count UserSubscriptions by criteria: {}", criteria);
-        return ResponseEntity.ok().body(userSubscriptionQueryService.countByCriteria(criteria));
-    }
-
     /**
      * {@code GET  /user-subscriptions/:id} : get the "id" userSubscription.
      *

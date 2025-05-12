@@ -47,7 +47,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "TicketType",
   "pagination": "pagination",
   "relationships": [

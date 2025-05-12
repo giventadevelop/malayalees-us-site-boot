@@ -25,7 +25,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "PollOption",
   "pagination": "pagination",
   "relationships": [

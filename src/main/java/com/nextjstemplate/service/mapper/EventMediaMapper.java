@@ -1,21 +1,21 @@
 package com.nextjstemplate.service.mapper;
 
 import com.nextjstemplate.domain.Event;
-import com.nextjstemplate.domain.Media;
+import com.nextjstemplate.domain.EventMedia;
 import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.service.dto.EventDTO;
-import com.nextjstemplate.service.dto.MediaDTO;
+import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.service.dto.UserProfileDTO;
 import org.mapstruct.*;
 
 /**
- * Mapper for the entity {@link Media} and its DTO {@link MediaDTO}.
+ * Mapper for the entity {@link EventMedia} and its DTO {@link EventMediaDTO}.
  */
 @Mapper(componentModel = "spring")
-public interface MediaMapper extends EntityMapper<MediaDTO, Media> {
+public interface EventMediaMapper extends EntityMapper<EventMediaDTO, EventMedia> {
     @Mapping(target = "event", source = "event", qualifiedByName = "eventId")
     @Mapping(target = "uploadedBy", source = "uploadedBy", qualifiedByName = "userProfileId")
-    MediaDTO toDto(Media s);
+    EventMediaDTO toDto(EventMedia s);
 
     @Named("eventId")
     @BeanMapping(ignoreByDefault = true)

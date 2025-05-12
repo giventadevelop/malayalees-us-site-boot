@@ -2,12 +2,12 @@ package com.nextjstemplate.service.mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 
-class MediaMapperTest {
+class EventMediaMapperTest {
 
-    private MediaMapper mediaMapper;
+    private EventMediaMapper eventMediaMapper;
 
     @BeforeEach
     public void setUp() {
-        mediaMapper = new MediaMapperImpl();
+        eventMediaMapper = new EventMediaMapperImpl();
     }
 }

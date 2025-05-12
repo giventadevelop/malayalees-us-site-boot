@@ -9,13 +9,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A Media.
+ * A EventMedia.
  */
 @Entity
-@Table(name = "media")
+@Table(name = "event_media")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Media implements Serializable {
+public class EventMedia implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,8 +34,8 @@ public class Media implements Serializable {
     private String description;
 
     @NotNull
-    @Column(name = "media_type", nullable = false)
-    private String mediaType;
+    @Column(name = "event_media_type", nullable = false)
+    private String eventMediaType;
 
     @NotNull
     @Column(name = "storage_type", nullable = false)
@@ -60,6 +60,12 @@ public class Media implements Serializable {
     @Column(name = "is_public")
     private Boolean isPublic;
 
+    @Column(name = "event_flyer")
+    private Boolean eventFlyer;
+
+    @Column(name = "is_event_management_official_document")
+    private Boolean isEventManagementOfficialDocument;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
@@ -82,7 +88,7 @@ public class Media implements Serializable {
         return this.id;
     }
 
-    public Media id(Long id) {
+    public EventMedia id(Long id) {
         this.setId(id);
         return this;
     }
@@ -95,7 +101,7 @@ public class Media implements Serializable {
         return this.title;
     }
 
-    public Media title(String title) {
+    public EventMedia title(String title) {
         this.setTitle(title);
         return this;
     }
@@ -108,7 +114,7 @@ public class Media implements Serializable {
         return this.description;
     }
 
-    public Media description(String description) {
+    public EventMedia description(String description) {
         this.setDescription(description);
         return this;
     }
@@ -117,24 +123,24 @@ public class Media implements Serializable {
         this.description = description;
     }
 
-    public String getMediaType() {
-        return this.mediaType;
+    public String getEventMediaType() {
+        return this.eventMediaType;
     }
 
-    public Media mediaType(String mediaType) {
-        this.setMediaType(mediaType);
+    public EventMedia eventMediaType(String eventMediaType) {
+        this.setEventMediaType(eventMediaType);
         return this;
     }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setEventMediaType(String eventMediaType) {
+        this.eventMediaType = eventMediaType;
     }
 
     public String getStorageType() {
         return this.storageType;
     }
 
-    public Media storageType(String storageType) {
+    public EventMedia storageType(String storageType) {
         this.setStorageType(storageType);
         return this;
     }
@@ -147,7 +153,7 @@ public class Media implements Serializable {
         return this.fileUrl;
     }
 
-    public Media fileUrl(String fileUrl) {
+    public EventMedia fileUrl(String fileUrl) {
         this.setFileUrl(fileUrl);
         return this;
     }
@@ -160,7 +166,7 @@ public class Media implements Serializable {
         return this.fileData;
     }
 
-    public Media fileData(byte[] fileData) {
+    public EventMedia fileData(byte[] fileData) {
         this.setFileData(fileData);
         return this;
     }
@@ -173,7 +179,7 @@ public class Media implements Serializable {
         return this.fileDataContentType;
     }
 
-    public Media fileDataContentType(String fileDataContentType) {
+    public EventMedia fileDataContentType(String fileDataContentType) {
         this.fileDataContentType = fileDataContentType;
         return this;
     }
@@ -186,7 +192,7 @@ public class Media implements Serializable {
         return this.contentType;
     }
 
-    public Media contentType(String contentType) {
+    public EventMedia contentType(String contentType) {
         this.setContentType(contentType);
         return this;
     }
@@ -199,7 +205,7 @@ public class Media implements Serializable {
         return this.fileSize;
     }
 
-    public Media fileSize(Integer fileSize) {
+    public EventMedia fileSize(Integer fileSize) {
         this.setFileSize(fileSize);
         return this;
     }
@@ -212,7 +218,7 @@ public class Media implements Serializable {
         return this.isPublic;
     }
 
-    public Media isPublic(Boolean isPublic) {
+    public EventMedia isPublic(Boolean isPublic) {
         this.setIsPublic(isPublic);
         return this;
     }
@@ -221,11 +227,37 @@ public class Media implements Serializable {
         this.isPublic = isPublic;
     }
 
+    public Boolean getEventFlyer() {
+        return this.eventFlyer;
+    }
+
+    public EventMedia eventFlyer(Boolean eventFlyer) {
+        this.setEventFlyer(eventFlyer);
+        return this;
+    }
+
+    public void setEventFlyer(Boolean eventFlyer) {
+        this.eventFlyer = eventFlyer;
+    }
+
+    public Boolean getIsEventManagementOfficialDocument() {
+        return this.isEventManagementOfficialDocument;
+    }
+
+    public EventMedia isEventManagementOfficialDocument(Boolean isEventManagementOfficialDocument) {
+        this.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
+        return this;
+    }
+
+    public void setIsEventManagementOfficialDocument(Boolean isEventManagementOfficialDocument) {
+        this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
+    }
+
     public Instant getCreatedAt() {
         return this.createdAt;
     }
 
-    public Media createdAt(Instant createdAt) {
+    public EventMedia createdAt(Instant createdAt) {
         this.setCreatedAt(createdAt);
         return this;
     }
@@ -238,7 +270,7 @@ public class Media implements Serializable {
         return this.updatedAt;
     }
 
-    public Media updatedAt(Instant updatedAt) {
+    public EventMedia updatedAt(Instant updatedAt) {
         this.setUpdatedAt(updatedAt);
         return this;
     }
@@ -255,7 +287,7 @@ public class Media implements Serializable {
         this.event = event;
     }
 
-    public Media event(Event event) {
+    public EventMedia event(Event event) {
         this.setEvent(event);
         return this;
     }
@@ -268,7 +300,7 @@ public class Media implements Serializable {
         this.uploadedBy = userProfile;
     }
 
-    public Media uploadedBy(UserProfile userProfile) {
+    public EventMedia uploadedBy(UserProfile userProfile) {
         this.setUploadedBy(userProfile);
         return this;
     }
@@ -280,10 +312,10 @@ public class Media implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Media)) {
+        if (!(o instanceof EventMedia)) {
             return false;
         }
-        return getId() != null && getId().equals(((Media) o).getId());
+        return getId() != null && getId().equals(((EventMedia) o).getId());
     }
 
     @Override
@@ -295,11 +327,11 @@ public class Media implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Media{" +
+        return "EventMedia{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", mediaType='" + getMediaType() + "'" +
+            ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
@@ -307,6 +339,8 @@ public class Media implements Serializable {
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
+            ", eventFlyer='" + getEventFlyer() + "'" +
+            ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

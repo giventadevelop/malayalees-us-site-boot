@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.PollOptionRepository;
-import com.nextjstemplate.service.PollOptionQueryService;
 import com.nextjstemplate.service.PollOptionService;
-import com.nextjstemplate.service.criteria.PollOptionCriteria;
 import com.nextjstemplate.service.dto.PollOptionDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class PollOptionResource {
 
     private final PollOptionRepository pollOptionRepository;
 
-    private final PollOptionQueryService pollOptionQueryService;
-
-    public PollOptionResource(
-        PollOptionService pollOptionService,
-        PollOptionRepository pollOptionRepository,
-        PollOptionQueryService pollOptionQueryService
-    ) {
+    public PollOptionResource(PollOptionService pollOptionService, PollOptionRepository pollOptionRepository) {
         this.pollOptionService = pollOptionService;
         this.pollOptionRepository = pollOptionRepository;
-        this.pollOptionQueryService = pollOptionQueryService;
     }
 
     /**
@@ -150,31 +141,14 @@ public class PollOptionResource {
      * {@code GET  /poll-options} : get all the pollOptions.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pollOptions in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<PollOptionDTO>> getAllPollOptions(
-        PollOptionCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get PollOptions by criteria: {}", criteria);
-
-        Page<PollOptionDTO> page = pollOptionQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<PollOptionDTO>> getAllPollOptions(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of PollOptions");
+        Page<PollOptionDTO> page = pollOptionService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /poll-options/count} : count all the pollOptions.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countPollOptions(PollOptionCriteria criteria) {
-        log.debug("REST request to count PollOptions by criteria: {}", criteria);
-        return ResponseEntity.ok().body(pollOptionQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.PollResponseRepository;
-import com.nextjstemplate.service.PollResponseQueryService;
 import com.nextjstemplate.service.PollResponseService;
-import com.nextjstemplate.service.criteria.PollResponseCriteria;
 import com.nextjstemplate.service.dto.PollResponseDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class PollResponseResource {
 
     private final PollResponseRepository pollResponseRepository;
 
-    private final PollResponseQueryService pollResponseQueryService;
-
-    public PollResponseResource(
-        PollResponseService pollResponseService,
-        PollResponseRepository pollResponseRepository,
-        PollResponseQueryService pollResponseQueryService
-    ) {
+    public PollResponseResource(PollResponseService pollResponseService, PollResponseRepository pollResponseRepository) {
         this.pollResponseService = pollResponseService;
         this.pollResponseRepository = pollResponseRepository;
-        this.pollResponseQueryService = pollResponseQueryService;
     }
 
     /**
@@ -151,31 +142,14 @@ public class PollResponseResource {
      * {@code GET  /poll-responses} : get all the pollResponses.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pollResponses in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<PollResponseDTO>> getAllPollResponses(
-        PollResponseCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get PollResponses by criteria: {}", criteria);
-
-        Page<PollResponseDTO> page = pollResponseQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<PollResponseDTO>> getAllPollResponses(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of PollResponses");
+        Page<PollResponseDTO> page = pollResponseService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /poll-responses/count} : count all the pollResponses.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countPollResponses(PollResponseCriteria criteria) {
-        log.debug("REST request to count PollResponses by criteria: {}", criteria);
-        return ResponseEntity.ok().body(pollResponseQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.TicketTransactionRepository;
-import com.nextjstemplate.service.TicketTransactionQueryService;
 import com.nextjstemplate.service.TicketTransactionService;
-import com.nextjstemplate.service.criteria.TicketTransactionCriteria;
 import com.nextjstemplate.service.dto.TicketTransactionDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,12 @@ public class TicketTransactionResource {
 
     private final TicketTransactionRepository ticketTransactionRepository;
 
-    private final TicketTransactionQueryService ticketTransactionQueryService;
-
     public TicketTransactionResource(
         TicketTransactionService ticketTransactionService,
-        TicketTransactionRepository ticketTransactionRepository,
-        TicketTransactionQueryService ticketTransactionQueryService
+        TicketTransactionRepository ticketTransactionRepository
     ) {
         this.ticketTransactionService = ticketTransactionService;
         this.ticketTransactionRepository = ticketTransactionRepository;
-        this.ticketTransactionQueryService = ticketTransactionQueryService;
     }
 
     /**
@@ -151,31 +145,16 @@ public class TicketTransactionResource {
      * {@code GET  /ticket-transactions} : get all the ticketTransactions.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ticketTransactions in body.
      */
     @GetMapping("")
     public ResponseEntity<List<TicketTransactionDTO>> getAllTicketTransactions(
-        TicketTransactionCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get TicketTransactions by criteria: {}", criteria);
-
-        Page<TicketTransactionDTO> page = ticketTransactionQueryService.findByCriteria(criteria, pageable);
+        log.debug("REST request to get a page of TicketTransactions");
+        Page<TicketTransactionDTO> page = ticketTransactionService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /ticket-transactions/count} : count all the ticketTransactions.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countTicketTransactions(TicketTransactionCriteria criteria) {
-        log.debug("REST request to count TicketTransactions by criteria: {}", criteria);
-        return ResponseEntity.ok().body(ticketTransactionQueryService.countByCriteria(criteria));
     }
 
     /**

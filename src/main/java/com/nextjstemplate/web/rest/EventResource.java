@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.EventRepository;
-import com.nextjstemplate.service.EventQueryService;
 import com.nextjstemplate.service.EventService;
-import com.nextjstemplate.service.criteria.EventCriteria;
 import com.nextjstemplate.service.dto.EventDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,12 +42,9 @@ public class EventResource {
 
     private final EventRepository eventRepository;
 
-    private final EventQueryService eventQueryService;
-
-    public EventResource(EventService eventService, EventRepository eventRepository, EventQueryService eventQueryService) {
+    public EventResource(EventService eventService, EventRepository eventRepository) {
         this.eventService = eventService;
         this.eventRepository = eventRepository;
-        this.eventQueryService = eventQueryService;
     }
 
     /**
@@ -146,31 +141,14 @@ public class EventResource {
      * {@code GET  /events} : get all the events.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<EventDTO>> getAllEvents(
-        EventCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get Events by criteria: {}", criteria);
-
-        Page<EventDTO> page = eventQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<EventDTO>> getAllEvents(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Events");
+        Page<EventDTO> page = eventService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /events/count} : count all the events.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countEvents(EventCriteria criteria) {
-        log.debug("REST request to count Events by criteria: {}", criteria);
-        return ResponseEntity.ok().body(eventQueryService.countByCriteria(criteria));
     }
 
     /**

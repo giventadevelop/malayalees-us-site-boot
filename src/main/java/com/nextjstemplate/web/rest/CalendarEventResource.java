@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.CalendarEventRepository;
-import com.nextjstemplate.service.CalendarEventQueryService;
 import com.nextjstemplate.service.CalendarEventService;
-import com.nextjstemplate.service.criteria.CalendarEventCriteria;
 import com.nextjstemplate.service.dto.CalendarEventDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class CalendarEventResource {
 
     private final CalendarEventRepository calendarEventRepository;
 
-    private final CalendarEventQueryService calendarEventQueryService;
-
-    public CalendarEventResource(
-        CalendarEventService calendarEventService,
-        CalendarEventRepository calendarEventRepository,
-        CalendarEventQueryService calendarEventQueryService
-    ) {
+    public CalendarEventResource(CalendarEventService calendarEventService, CalendarEventRepository calendarEventRepository) {
         this.calendarEventService = calendarEventService;
         this.calendarEventRepository = calendarEventRepository;
-        this.calendarEventQueryService = calendarEventQueryService;
     }
 
     /**
@@ -151,31 +142,14 @@ public class CalendarEventResource {
      * {@code GET  /calendar-events} : get all the calendarEvents.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of calendarEvents in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<CalendarEventDTO>> getAllCalendarEvents(
-        CalendarEventCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get CalendarEvents by criteria: {}", criteria);
-
-        Page<CalendarEventDTO> page = calendarEventQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<CalendarEventDTO>> getAllCalendarEvents(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of CalendarEvents");
+        Page<CalendarEventDTO> page = calendarEventService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /calendar-events/count} : count all the calendarEvents.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countCalendarEvents(CalendarEventCriteria criteria) {
-        log.debug("REST request to count CalendarEvents by criteria: {}", criteria);
-        return ResponseEntity.ok().body(calendarEventQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -37,10 +37,14 @@ public class EventDTO implements Serializable {
 
     private String location;
 
+    private String directionsToVenue;
+
     private Integer capacity;
 
     @NotNull
     private String admissionType;
+
+    private Boolean isActive;
 
     @NotNull
     private Instant createdAt;
@@ -124,6 +128,14 @@ public class EventDTO implements Serializable {
         this.location = location;
     }
 
+    public String getDirectionsToVenue() {
+        return directionsToVenue;
+    }
+
+    public void setDirectionsToVenue(String directionsToVenue) {
+        this.directionsToVenue = directionsToVenue;
+    }
+
     public Integer getCapacity() {
         return capacity;
     }
@@ -138,6 +150,14 @@ public class EventDTO implements Serializable {
 
     public void setAdmissionType(String admissionType) {
         this.admissionType = admissionType;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Instant getCreatedAt() {
@@ -206,8 +226,10 @@ public class EventDTO implements Serializable {
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
             ", location='" + getLocation() + "'" +
+            ", directionsToVenue='" + getDirectionsToVenue() + "'" +
             ", capacity=" + getCapacity() +
             ", admissionType='" + getAdmissionType() + "'" +
+            ", isActive='" + getIsActive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", createdBy=" + getCreatedBy() +

@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.EventOrganizerRepository;
-import com.nextjstemplate.service.EventOrganizerQueryService;
 import com.nextjstemplate.service.EventOrganizerService;
-import com.nextjstemplate.service.criteria.EventOrganizerCriteria;
 import com.nextjstemplate.service.dto.EventOrganizerDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class EventOrganizerResource {
 
     private final EventOrganizerRepository eventOrganizerRepository;
 
-    private final EventOrganizerQueryService eventOrganizerQueryService;
-
-    public EventOrganizerResource(
-        EventOrganizerService eventOrganizerService,
-        EventOrganizerRepository eventOrganizerRepository,
-        EventOrganizerQueryService eventOrganizerQueryService
-    ) {
+    public EventOrganizerResource(EventOrganizerService eventOrganizerService, EventOrganizerRepository eventOrganizerRepository) {
         this.eventOrganizerService = eventOrganizerService;
         this.eventOrganizerRepository = eventOrganizerRepository;
-        this.eventOrganizerQueryService = eventOrganizerQueryService;
     }
 
     /**
@@ -151,31 +142,16 @@ public class EventOrganizerResource {
      * {@code GET  /event-organizers} : get all the eventOrganizers.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventOrganizers in body.
      */
     @GetMapping("")
     public ResponseEntity<List<EventOrganizerDTO>> getAllEventOrganizers(
-        EventOrganizerCriteria criteria,
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
     ) {
-        log.debug("REST request to get EventOrganizers by criteria: {}", criteria);
-
-        Page<EventOrganizerDTO> page = eventOrganizerQueryService.findByCriteria(criteria, pageable);
+        log.debug("REST request to get a page of EventOrganizers");
+        Page<EventOrganizerDTO> page = eventOrganizerService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /event-organizers/count} : count all the eventOrganizers.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countEventOrganizers(EventOrganizerCriteria criteria) {
-        log.debug("REST request to count EventOrganizers by criteria: {}", criteria);
-        return ResponseEntity.ok().body(eventOrganizerQueryService.countByCriteria(criteria));
     }
 
     /**

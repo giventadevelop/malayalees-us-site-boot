@@ -25,7 +25,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "Admin",
   "pagination": "pagination",
   "relationships": [

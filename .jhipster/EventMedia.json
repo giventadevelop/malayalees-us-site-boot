@@ -1,8 +1,8 @@
 {
   "applications": "*",
-  "changelogDate": "20250422200256",
+  "changelogDate": "20250511022256",
   "dto": "mapstruct",
-  "entityTableName": "ticket_transaction",
+  "entityTableName": "event_media",
   "fields": [
     {
       "fieldName": "id",
@@ -10,42 +10,52 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "email",
+      "fieldName": "title",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "firstName",
+      "fieldName": "description",
       "fieldType": "String"
     },
     {
-      "fieldName": "lastName",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "quantity",
-      "fieldType": "Integer",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "pricePerUnit",
-      "fieldType": "BigDecimal",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "totalAmount",
-      "fieldType": "BigDecimal",
-      "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "status",
+      "fieldName": "eventMediaType",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "purchaseDate",
-      "fieldType": "Instant",
+      "fieldName": "storageType",
+      "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fileUrl",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fileData",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "any"
+    },
+    {
+      "fieldName": "contentType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "fileSize",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "isPublic",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "eventFlyer",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "isEventManagementOfficialDocument",
+      "fieldType": "Boolean"
     },
     {
       "fieldName": "createdAt",
@@ -58,7 +68,7 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "name": "TicketTransaction",
+  "name": "EventMedia",
   "pagination": "pagination",
   "relationships": [
     {
@@ -68,14 +78,8 @@
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityName": "ticketType",
-      "relationshipName": "ticketType",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityName": "userProfile",
-      "relationshipName": "user",
+      "relationshipName": "uploadedBy",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
     }

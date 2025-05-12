@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.nextjstemplate.IntegrationTest;
 import com.nextjstemplate.domain.Admin;
-import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.repository.AdminRepository;
 import com.nextjstemplate.service.dto.AdminDTO;
 import com.nextjstemplate.service.mapper.AdminMapper;
@@ -218,251 +217,6 @@ class AdminResourceIT {
 
     @Test
     @Transactional
-    void getAdminsByIdFiltering() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        Long id = admin.getId();
-
-        defaultAdminShouldBeFound("id.equals=" + id);
-        defaultAdminShouldNotBeFound("id.notEquals=" + id);
-
-        defaultAdminShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultAdminShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultAdminShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultAdminShouldNotBeFound("id.lessThan=" + id);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByRoleIsEqualToSomething() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where role equals to DEFAULT_ROLE
-        defaultAdminShouldBeFound("role.equals=" + DEFAULT_ROLE);
-
-        // Get all the adminList where role equals to UPDATED_ROLE
-        defaultAdminShouldNotBeFound("role.equals=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByRoleIsInShouldWork() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where role in DEFAULT_ROLE or UPDATED_ROLE
-        defaultAdminShouldBeFound("role.in=" + DEFAULT_ROLE + "," + UPDATED_ROLE);
-
-        // Get all the adminList where role equals to UPDATED_ROLE
-        defaultAdminShouldNotBeFound("role.in=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByRoleIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where role is not null
-        defaultAdminShouldBeFound("role.specified=true");
-
-        // Get all the adminList where role is null
-        defaultAdminShouldNotBeFound("role.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByRoleContainsSomething() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where role contains DEFAULT_ROLE
-        defaultAdminShouldBeFound("role.contains=" + DEFAULT_ROLE);
-
-        // Get all the adminList where role contains UPDATED_ROLE
-        defaultAdminShouldNotBeFound("role.contains=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByRoleNotContainsSomething() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where role does not contain DEFAULT_ROLE
-        defaultAdminShouldNotBeFound("role.doesNotContain=" + DEFAULT_ROLE);
-
-        // Get all the adminList where role does not contain UPDATED_ROLE
-        defaultAdminShouldBeFound("role.doesNotContain=" + UPDATED_ROLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByCreatedAtIsEqualToSomething() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where createdAt equals to DEFAULT_CREATED_AT
-        defaultAdminShouldBeFound("createdAt.equals=" + DEFAULT_CREATED_AT);
-
-        // Get all the adminList where createdAt equals to UPDATED_CREATED_AT
-        defaultAdminShouldNotBeFound("createdAt.equals=" + UPDATED_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByCreatedAtIsInShouldWork() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where createdAt in DEFAULT_CREATED_AT or UPDATED_CREATED_AT
-        defaultAdminShouldBeFound("createdAt.in=" + DEFAULT_CREATED_AT + "," + UPDATED_CREATED_AT);
-
-        // Get all the adminList where createdAt equals to UPDATED_CREATED_AT
-        defaultAdminShouldNotBeFound("createdAt.in=" + UPDATED_CREATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByCreatedAtIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where createdAt is not null
-        defaultAdminShouldBeFound("createdAt.specified=true");
-
-        // Get all the adminList where createdAt is null
-        defaultAdminShouldNotBeFound("createdAt.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByUpdatedAtIsEqualToSomething() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where updatedAt equals to DEFAULT_UPDATED_AT
-        defaultAdminShouldBeFound("updatedAt.equals=" + DEFAULT_UPDATED_AT);
-
-        // Get all the adminList where updatedAt equals to UPDATED_UPDATED_AT
-        defaultAdminShouldNotBeFound("updatedAt.equals=" + UPDATED_UPDATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByUpdatedAtIsInShouldWork() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where updatedAt in DEFAULT_UPDATED_AT or UPDATED_UPDATED_AT
-        defaultAdminShouldBeFound("updatedAt.in=" + DEFAULT_UPDATED_AT + "," + UPDATED_UPDATED_AT);
-
-        // Get all the adminList where updatedAt equals to UPDATED_UPDATED_AT
-        defaultAdminShouldNotBeFound("updatedAt.in=" + UPDATED_UPDATED_AT);
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByUpdatedAtIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        adminRepository.saveAndFlush(admin);
-
-        // Get all the adminList where updatedAt is not null
-        defaultAdminShouldBeFound("updatedAt.specified=true");
-
-        // Get all the adminList where updatedAt is null
-        defaultAdminShouldNotBeFound("updatedAt.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByUserIsEqualToSomething() throws Exception {
-        UserProfile user;
-        if (TestUtil.findAll(em, UserProfile.class).isEmpty()) {
-            adminRepository.saveAndFlush(admin);
-            user = UserProfileResourceIT.createEntity(em);
-        } else {
-            user = TestUtil.findAll(em, UserProfile.class).get(0);
-        }
-        em.persist(user);
-        em.flush();
-        admin.setUser(user);
-        adminRepository.saveAndFlush(admin);
-        Long userId = user.getId();
-        // Get all the adminList where user equals to userId
-        defaultAdminShouldBeFound("userId.equals=" + userId);
-
-        // Get all the adminList where user equals to (userId + 1)
-        defaultAdminShouldNotBeFound("userId.equals=" + (userId + 1));
-    }
-
-    @Test
-    @Transactional
-    void getAllAdminsByCreatedByIsEqualToSomething() throws Exception {
-        UserProfile createdBy;
-        if (TestUtil.findAll(em, UserProfile.class).isEmpty()) {
-            adminRepository.saveAndFlush(admin);
-            createdBy = UserProfileResourceIT.createEntity(em);
-        } else {
-            createdBy = TestUtil.findAll(em, UserProfile.class).get(0);
-        }
-        em.persist(createdBy);
-        em.flush();
-        admin.setCreatedBy(createdBy);
-        adminRepository.saveAndFlush(admin);
-        Long createdById = createdBy.getId();
-        // Get all the adminList where createdBy equals to createdById
-        defaultAdminShouldBeFound("createdById.equals=" + createdById);
-
-        // Get all the adminList where createdBy equals to (createdById + 1)
-        defaultAdminShouldNotBeFound("createdById.equals=" + (createdById + 1));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultAdminShouldBeFound(String filter) throws Exception {
-        restAdminMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(admin.getId().intValue())))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE)))
-            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
-            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
-
-        // Check, that the count call also returns 1
-        restAdminMockMvc
-            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultAdminShouldNotBeFound(String filter) throws Exception {
-        restAdminMockMvc
-            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restAdminMockMvc
-            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
-    }
-
-    @Test
-    @Transactional
     void getNonExistingAdmin() throws Exception {
         // Get the admin
         restAdminMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
@@ -577,7 +331,7 @@ class AdminResourceIT {
         Admin partialUpdatedAdmin = new Admin();
         partialUpdatedAdmin.setId(admin.getId());
 
-        partialUpdatedAdmin.role(UPDATED_ROLE).createdAt(UPDATED_CREATED_AT);
+        partialUpdatedAdmin.createdAt(UPDATED_CREATED_AT);
 
         restAdminMockMvc
             .perform(
@@ -591,7 +345,7 @@ class AdminResourceIT {
         List<Admin> adminList = adminRepository.findAll();
         assertThat(adminList).hasSize(databaseSizeBeforeUpdate);
         Admin testAdmin = adminList.get(adminList.size() - 1);
-        assertThat(testAdmin.getRole()).isEqualTo(UPDATED_ROLE);
+        assertThat(testAdmin.getRole()).isEqualTo(DEFAULT_ROLE);
         assertThat(testAdmin.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testAdmin.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }

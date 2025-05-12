@@ -7,10 +7,10 @@ import java.time.Instant;
 import java.util.Objects;
 
 /**
- * A DTO for the {@link com.nextjstemplate.domain.Media} entity.
+ * A DTO for the {@link com.nextjstemplate.domain.EventMedia} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class MediaDTO implements Serializable {
+public class EventMediaDTO implements Serializable {
 
     @NotNull
     private Long id;
@@ -21,7 +21,7 @@ public class MediaDTO implements Serializable {
     private String description;
 
     @NotNull
-    private String mediaType;
+    private String eventMediaType;
 
     @NotNull
     private String storageType;
@@ -37,6 +37,10 @@ public class MediaDTO implements Serializable {
     private Integer fileSize;
 
     private Boolean isPublic;
+
+    private Boolean eventFlyer;
+
+    private Boolean isEventManagementOfficialDocument;
 
     @NotNull
     private Instant createdAt;
@@ -72,12 +76,12 @@ public class MediaDTO implements Serializable {
         this.description = description;
     }
 
-    public String getMediaType() {
-        return mediaType;
+    public String getEventMediaType() {
+        return eventMediaType;
     }
 
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
+    public void setEventMediaType(String eventMediaType) {
+        this.eventMediaType = eventMediaType;
     }
 
     public String getStorageType() {
@@ -136,6 +140,22 @@ public class MediaDTO implements Serializable {
         this.isPublic = isPublic;
     }
 
+    public Boolean getEventFlyer() {
+        return eventFlyer;
+    }
+
+    public void setEventFlyer(Boolean eventFlyer) {
+        this.eventFlyer = eventFlyer;
+    }
+
+    public Boolean getIsEventManagementOfficialDocument() {
+        return isEventManagementOfficialDocument;
+    }
+
+    public void setIsEventManagementOfficialDocument(Boolean isEventManagementOfficialDocument) {
+        this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
+    }
+
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -173,15 +193,15 @@ public class MediaDTO implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof MediaDTO)) {
+        if (!(o instanceof EventMediaDTO)) {
             return false;
         }
 
-        MediaDTO mediaDTO = (MediaDTO) o;
+        EventMediaDTO eventMediaDTO = (EventMediaDTO) o;
         if (this.id == null) {
             return false;
         }
-        return Objects.equals(this.id, mediaDTO.id);
+        return Objects.equals(this.id, eventMediaDTO.id);
     }
 
     @Override
@@ -192,17 +212,19 @@ public class MediaDTO implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "MediaDTO{" +
+        return "EventMediaDTO{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
-            ", mediaType='" + getMediaType() + "'" +
+            ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
+            ", eventFlyer='" + getEventFlyer() + "'" +
+            ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", event=" + getEvent() +

@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.TicketTypeRepository;
-import com.nextjstemplate.service.TicketTypeQueryService;
 import com.nextjstemplate.service.TicketTypeService;
-import com.nextjstemplate.service.criteria.TicketTypeCriteria;
 import com.nextjstemplate.service.dto.TicketTypeDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class TicketTypeResource {
 
     private final TicketTypeRepository ticketTypeRepository;
 
-    private final TicketTypeQueryService ticketTypeQueryService;
-
-    public TicketTypeResource(
-        TicketTypeService ticketTypeService,
-        TicketTypeRepository ticketTypeRepository,
-        TicketTypeQueryService ticketTypeQueryService
-    ) {
+    public TicketTypeResource(TicketTypeService ticketTypeService, TicketTypeRepository ticketTypeRepository) {
         this.ticketTypeService = ticketTypeService;
         this.ticketTypeRepository = ticketTypeRepository;
-        this.ticketTypeQueryService = ticketTypeQueryService;
     }
 
     /**
@@ -150,31 +141,14 @@ public class TicketTypeResource {
      * {@code GET  /ticket-types} : get all the ticketTypes.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ticketTypes in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TicketTypeDTO>> getAllTicketTypes(
-        TicketTypeCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get TicketTypes by criteria: {}", criteria);
-
-        Page<TicketTypeDTO> page = ticketTypeQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<TicketTypeDTO>> getAllTicketTypes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of TicketTypes");
+        Page<TicketTypeDTO> page = ticketTypeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /ticket-types/count} : count all the ticketTypes.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countTicketTypes(TicketTypeCriteria criteria) {
-        log.debug("REST request to count TicketTypes by criteria: {}", criteria);
-        return ResponseEntity.ok().body(ticketTypeQueryService.countByCriteria(criteria));
     }
 
     /**

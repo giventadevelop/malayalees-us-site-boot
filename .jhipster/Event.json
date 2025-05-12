@@ -47,6 +47,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "directionsToVenue",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "capacity",
       "fieldType": "Integer"
     },
@@ -54,6 +58,10 @@
       "fieldName": "admissionType",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
     },
     {
       "fieldName": "createdAt",
@@ -66,7 +74,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "Event",
   "pagination": "pagination",
   "relationships": [

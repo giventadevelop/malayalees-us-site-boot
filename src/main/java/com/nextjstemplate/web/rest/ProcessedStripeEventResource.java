@@ -1,7 +1,6 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.ProcessedStripeEventRepository;
-import com.nextjstemplate.service.ProcessedStripeEventQueryService;
 import com.nextjstemplate.service.ProcessedStripeEventService;
 import com.nextjstemplate.service.criteria.ProcessedStripeEventCriteria;
 import com.nextjstemplate.service.dto.ProcessedStripeEventDTO;
@@ -44,16 +43,16 @@ public class ProcessedStripeEventResource {
 
     private final ProcessedStripeEventRepository processedStripeEventRepository;
 
-    private final ProcessedStripeEventQueryService processedStripeEventQueryService;
+
 
     public ProcessedStripeEventResource(
         ProcessedStripeEventService processedStripeEventService,
-        ProcessedStripeEventRepository processedStripeEventRepository,
-        ProcessedStripeEventQueryService processedStripeEventQueryService
+        ProcessedStripeEventRepository processedStripeEventRepository
+
     ) {
         this.processedStripeEventService = processedStripeEventService;
         this.processedStripeEventRepository = processedStripeEventRepository;
-        this.processedStripeEventQueryService = processedStripeEventQueryService;
+
     }
 
     /**
@@ -148,36 +147,7 @@ public class ProcessedStripeEventResource {
         );
     }
 
-    /**
-     * {@code GET  /processed-stripe-events} : get all the processedStripeEvents.
-     *
-     * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of processedStripeEvents in body.
-     */
-    @GetMapping("")
-    public ResponseEntity<List<ProcessedStripeEventDTO>> getAllProcessedStripeEvents(
-        ProcessedStripeEventCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get ProcessedStripeEvents by criteria: {}", criteria);
 
-        Page<ProcessedStripeEventDTO> page = processedStripeEventQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /processed-stripe-events/count} : count all the processedStripeEvents.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countProcessedStripeEvents(ProcessedStripeEventCriteria criteria) {
-        log.debug("REST request to count ProcessedStripeEvents by criteria: {}", criteria);
-        return ResponseEntity.ok().body(processedStripeEventQueryService.countByCriteria(criteria));
-    }
 
     /**
      * {@code GET  /processed-stripe-events/:id} : get the "id" processedStripeEvent.

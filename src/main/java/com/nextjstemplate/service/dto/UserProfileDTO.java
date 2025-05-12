@@ -9,11 +9,11 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.nextjstemplate.domain.UserProfile} entity.
  */
-@Schema(description = "Event Management System JDL Model")
+@Schema(description = "Event Management System JDL Model - Version 25")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserProfileDTO implements Serializable {
 
-
+    @NotNull
     private Long id;
 
     @NotNull

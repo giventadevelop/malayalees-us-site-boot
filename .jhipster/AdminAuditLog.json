@@ -35,7 +35,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "AdminAuditLog",
   "pagination": "pagination",
   "relationships": [

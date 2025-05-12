@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.PollRepository;
-import com.nextjstemplate.service.PollQueryService;
 import com.nextjstemplate.service.PollService;
-import com.nextjstemplate.service.criteria.PollCriteria;
 import com.nextjstemplate.service.dto.PollDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,12 +42,9 @@ public class PollResource {
 
     private final PollRepository pollRepository;
 
-    private final PollQueryService pollQueryService;
-
-    public PollResource(PollService pollService, PollRepository pollRepository, PollQueryService pollQueryService) {
+    public PollResource(PollService pollService, PollRepository pollRepository) {
         this.pollService = pollService;
         this.pollRepository = pollRepository;
-        this.pollQueryService = pollQueryService;
     }
 
     /**
@@ -146,31 +141,14 @@ public class PollResource {
      * {@code GET  /polls} : get all the polls.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of polls in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<PollDTO>> getAllPolls(
-        PollCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get Polls by criteria: {}", criteria);
-
-        Page<PollDTO> page = pollQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<PollDTO>> getAllPolls(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Polls");
+        Page<PollDTO> page = pollService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /polls/count} : count all the polls.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countPolls(PollCriteria criteria) {
-        log.debug("REST request to count Polls by criteria: {}", criteria);
-        return ResponseEntity.ok().body(pollQueryService.countByCriteria(criteria));
     }
 
     /**

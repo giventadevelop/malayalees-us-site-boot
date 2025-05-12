@@ -9,7 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Event Management System JDL Model
+ * Event Management System JDL Model - Version 25
  */
 @Entity
 @Table(name = "user_profile")

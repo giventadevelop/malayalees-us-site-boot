@@ -57,12 +57,18 @@ public class Event implements Serializable {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "directions_to_venue")
+    private String directionsToVenue;
+
     @Column(name = "capacity")
     private Integer capacity;
 
     @NotNull
     @Column(name = "admission_type", nullable = false)
     private String admissionType;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
 
     @NotNull
     @Column(name = "created_at", nullable = false)
@@ -198,6 +204,19 @@ public class Event implements Serializable {
         this.location = location;
     }
 
+    public String getDirectionsToVenue() {
+        return this.directionsToVenue;
+    }
+
+    public Event directionsToVenue(String directionsToVenue) {
+        this.setDirectionsToVenue(directionsToVenue);
+        return this;
+    }
+
+    public void setDirectionsToVenue(String directionsToVenue) {
+        this.directionsToVenue = directionsToVenue;
+    }
+
     public Integer getCapacity() {
         return this.capacity;
     }
@@ -222,6 +241,19 @@ public class Event implements Serializable {
 
     public void setAdmissionType(String admissionType) {
         this.admissionType = admissionType;
+    }
+
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public Event isActive(Boolean isActive) {
+        this.setIsActive(isActive);
+        return this;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Instant getCreatedAt() {
@@ -308,8 +340,10 @@ public class Event implements Serializable {
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
             ", location='" + getLocation() + "'" +
+            ", directionsToVenue='" + getDirectionsToVenue() + "'" +
             ", capacity=" + getCapacity() +
             ", admissionType='" + getAdmissionType() + "'" +
+            ", isActive='" + getIsActive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

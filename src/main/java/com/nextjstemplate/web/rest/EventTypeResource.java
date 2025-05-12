@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.EventTypeRepository;
-import com.nextjstemplate.service.EventTypeQueryService;
 import com.nextjstemplate.service.EventTypeService;
-import com.nextjstemplate.service.criteria.EventTypeCriteria;
 import com.nextjstemplate.service.dto.EventTypeDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class EventTypeResource {
 
     private final EventTypeRepository eventTypeRepository;
 
-    private final EventTypeQueryService eventTypeQueryService;
-
-    public EventTypeResource(
-        EventTypeService eventTypeService,
-        EventTypeRepository eventTypeRepository,
-        EventTypeQueryService eventTypeQueryService
-    ) {
+    public EventTypeResource(EventTypeService eventTypeService, EventTypeRepository eventTypeRepository) {
         this.eventTypeService = eventTypeService;
         this.eventTypeRepository = eventTypeRepository;
-        this.eventTypeQueryService = eventTypeQueryService;
     }
 
     /**
@@ -150,31 +141,14 @@ public class EventTypeResource {
      * {@code GET  /event-types} : get all the eventTypes.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventTypes in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<EventTypeDTO>> getAllEventTypes(
-        EventTypeCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get EventTypes by criteria: {}", criteria);
-
-        Page<EventTypeDTO> page = eventTypeQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<EventTypeDTO>> getAllEventTypes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of EventTypes");
+        Page<EventTypeDTO> page = eventTypeService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /event-types/count} : count all the eventTypes.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countEventTypes(EventTypeCriteria criteria) {
-        log.debug("REST request to count EventTypes by criteria: {}", criteria);
-        return ResponseEntity.ok().body(eventTypeQueryService.countByCriteria(criteria));
     }
 
     /**

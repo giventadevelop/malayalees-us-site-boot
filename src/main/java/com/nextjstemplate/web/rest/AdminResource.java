@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.AdminRepository;
-import com.nextjstemplate.service.AdminQueryService;
 import com.nextjstemplate.service.AdminService;
-import com.nextjstemplate.service.criteria.AdminCriteria;
 import com.nextjstemplate.service.dto.AdminDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,12 +42,9 @@ public class AdminResource {
 
     private final AdminRepository adminRepository;
 
-    private final AdminQueryService adminQueryService;
-
-    public AdminResource(AdminService adminService, AdminRepository adminRepository, AdminQueryService adminQueryService) {
+    public AdminResource(AdminService adminService, AdminRepository adminRepository) {
         this.adminService = adminService;
         this.adminRepository = adminRepository;
-        this.adminQueryService = adminQueryService;
     }
 
     /**
@@ -146,31 +141,14 @@ public class AdminResource {
      * {@code GET  /admins} : get all the admins.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of admins in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<AdminDTO>> getAllAdmins(
-        AdminCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get Admins by criteria: {}", criteria);
-
-        Page<AdminDTO> page = adminQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<AdminDTO>> getAllAdmins(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Admins");
+        Page<AdminDTO> page = adminService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /admins/count} : count all the admins.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countAdmins(AdminCriteria criteria) {
-        log.debug("REST request to count Admins by criteria: {}", criteria);
-        return ResponseEntity.ok().body(adminQueryService.countByCriteria(criteria));
     }
 
     /**

@@ -18,6 +18,7 @@ public class EventTestSamples {
             .caption("caption1")
             .description("description1")
             .location("location1")
+            .directionsToVenue("directionsToVenue1")
             .capacity(1)
             .admissionType("admissionType1");
     }
@@ -29,6 +30,7 @@ public class EventTestSamples {
             .caption("caption2")
             .description("description2")
             .location("location2")
+            .directionsToVenue("directionsToVenue2")
             .capacity(2)
             .admissionType("admissionType2");
     }
@@ -40,6 +42,7 @@ public class EventTestSamples {
             .caption(UUID.randomUUID().toString())
             .description(UUID.randomUUID().toString())
             .location(UUID.randomUUID().toString())
+            .directionsToVenue(UUID.randomUUID().toString())
             .capacity(intCount.incrementAndGet())
             .admissionType(UUID.randomUUID().toString());
     }

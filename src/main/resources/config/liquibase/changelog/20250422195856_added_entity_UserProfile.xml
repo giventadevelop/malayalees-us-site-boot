@@ -10,7 +10,7 @@
         Added the entity UserProfile.
     -->
     <changeSet id="20250422195856-1" author="jhipster">
-        <createTable tableName="user_profile" remarks="Event Management System JDL Model">
+        <createTable tableName="user_profile" remarks="Event Management System JDL Model - Version 25">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

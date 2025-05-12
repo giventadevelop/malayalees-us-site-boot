@@ -42,7 +42,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "Poll",
   "pagination": "pagination",
   "relationships": [

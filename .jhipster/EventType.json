@@ -29,7 +29,6 @@
       "fieldValidateRules": ["required"]
     }
   ],
-  "jpaMetamodelFiltering": true,
   "name": "EventType",
   "pagination": "pagination",
   "relationships": [],

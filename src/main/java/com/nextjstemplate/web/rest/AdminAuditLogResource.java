@@ -1,9 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.AdminAuditLogRepository;
-import com.nextjstemplate.service.AdminAuditLogQueryService;
 import com.nextjstemplate.service.AdminAuditLogService;
-import com.nextjstemplate.service.criteria.AdminAuditLogCriteria;
 import com.nextjstemplate.service.dto.AdminAuditLogDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -44,16 +42,9 @@ public class AdminAuditLogResource {
 
     private final AdminAuditLogRepository adminAuditLogRepository;
 
-    private final AdminAuditLogQueryService adminAuditLogQueryService;
-
-    public AdminAuditLogResource(
-        AdminAuditLogService adminAuditLogService,
-        AdminAuditLogRepository adminAuditLogRepository,
-        AdminAuditLogQueryService adminAuditLogQueryService
-    ) {
+    public AdminAuditLogResource(AdminAuditLogService adminAuditLogService, AdminAuditLogRepository adminAuditLogRepository) {
         this.adminAuditLogService = adminAuditLogService;
         this.adminAuditLogRepository = adminAuditLogRepository;
-        this.adminAuditLogQueryService = adminAuditLogQueryService;
     }
 
     /**
@@ -151,31 +142,14 @@ public class AdminAuditLogResource {
      * {@code GET  /admin-audit-logs} : get all the adminAuditLogs.
      *
      * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of adminAuditLogs in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<AdminAuditLogDTO>> getAllAdminAuditLogs(
-        AdminAuditLogCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
-        log.debug("REST request to get AdminAuditLogs by criteria: {}", criteria);
-
-        Page<AdminAuditLogDTO> page = adminAuditLogQueryService.findByCriteria(criteria, pageable);
+    public ResponseEntity<List<AdminAuditLogDTO>> getAllAdminAuditLogs(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of AdminAuditLogs");
+        Page<AdminAuditLogDTO> page = adminAuditLogService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /admin-audit-logs/count} : count all the adminAuditLogs.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/count")
-    public ResponseEntity<Long> countAdminAuditLogs(AdminAuditLogCriteria criteria) {
-        log.debug("REST request to count AdminAuditLogs by criteria: {}", criteria);
-        return ResponseEntity.ok().body(adminAuditLogQueryService.countByCriteria(criteria));
     }
 
     /**
