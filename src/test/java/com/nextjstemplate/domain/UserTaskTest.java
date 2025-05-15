@@ -1,5 +1,7 @@
 package com.nextjstemplate.domain;
 
+import static com.nextjstemplate.domain.EventTestSamples.*;
+import static com.nextjstemplate.domain.UserProfileTestSamples.*;
 import static com.nextjstemplate.domain.UserTaskTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,5 +22,29 @@ class UserTaskTest {
 
         userTask2 = getUserTaskSample2();
         assertThat(userTask1).isNotEqualTo(userTask2);
+    }
+
+    @Test
+    void userTest() throws Exception {
+        UserTask userTask = getUserTaskRandomSampleGenerator();
+        UserProfile userProfileBack = getUserProfileRandomSampleGenerator();
+
+        userTask.setUser(userProfileBack);
+        assertThat(userTask.getUser()).isEqualTo(userProfileBack);
+
+        userTask.user(null);
+        assertThat(userTask.getUser()).isNull();
+    }
+
+    @Test
+    void eventTest() throws Exception {
+        UserTask userTask = getUserTaskRandomSampleGenerator();
+        Event eventBack = getEventRandomSampleGenerator();
+
+        userTask.setEvent(eventBack);
+        assertThat(userTask.getEvent()).isEqualTo(eventBack);
+
+        userTask.event(null);
+        assertThat(userTask.getEvent()).isNull();
     }
 }

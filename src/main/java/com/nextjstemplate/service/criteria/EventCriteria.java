@@ -39,9 +39,13 @@ public class EventCriteria implements Serializable, Criteria {
 
     private StringFilter location;
 
+    private StringFilter directionsToVenue;
+
     private IntegerFilter capacity;
 
     private StringFilter admissionType;
+
+    private BooleanFilter isActive;
 
     private InstantFilter createdAt;
 
@@ -65,8 +69,10 @@ public class EventCriteria implements Serializable, Criteria {
         this.startTime = other.startTime == null ? null : other.startTime.copy();
         this.endTime = other.endTime == null ? null : other.endTime.copy();
         this.location = other.location == null ? null : other.location.copy();
+        this.directionsToVenue = other.directionsToVenue == null ? null : other.directionsToVenue.copy();
         this.capacity = other.capacity == null ? null : other.capacity.copy();
         this.admissionType = other.admissionType == null ? null : other.admissionType.copy();
+        this.isActive = other.isActive == null ? null : other.isActive.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.createdById = other.createdById == null ? null : other.createdById.copy();
@@ -214,6 +220,21 @@ public class EventCriteria implements Serializable, Criteria {
         this.location = location;
     }
 
+    public StringFilter getDirectionsToVenue() {
+        return directionsToVenue;
+    }
+
+    public StringFilter directionsToVenue() {
+        if (directionsToVenue == null) {
+            directionsToVenue = new StringFilter();
+        }
+        return directionsToVenue;
+    }
+
+    public void setDirectionsToVenue(StringFilter directionsToVenue) {
+        this.directionsToVenue = directionsToVenue;
+    }
+
     public IntegerFilter getCapacity() {
         return capacity;
     }
@@ -242,6 +263,21 @@ public class EventCriteria implements Serializable, Criteria {
 
     public void setAdmissionType(StringFilter admissionType) {
         this.admissionType = admissionType;
+    }
+
+    public BooleanFilter getIsActive() {
+        return isActive;
+    }
+
+    public BooleanFilter isActive() {
+        if (isActive == null) {
+            isActive = new BooleanFilter();
+        }
+        return isActive;
+    }
+
+    public void setIsActive(BooleanFilter isActive) {
+        this.isActive = isActive;
     }
 
     public InstantFilter getCreatedAt() {
@@ -331,8 +367,10 @@ public class EventCriteria implements Serializable, Criteria {
             Objects.equals(startTime, that.startTime) &&
             Objects.equals(endTime, that.endTime) &&
             Objects.equals(location, that.location) &&
+            Objects.equals(directionsToVenue, that.directionsToVenue) &&
             Objects.equals(capacity, that.capacity) &&
             Objects.equals(admissionType, that.admissionType) &&
+            Objects.equals(isActive, that.isActive) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(createdById, that.createdById) &&
@@ -353,8 +391,10 @@ public class EventCriteria implements Serializable, Criteria {
             startTime,
             endTime,
             location,
+            directionsToVenue,
             capacity,
             admissionType,
+            isActive,
             createdAt,
             updatedAt,
             createdById,
@@ -376,8 +416,10 @@ public class EventCriteria implements Serializable, Criteria {
             (startTime != null ? "startTime=" + startTime + ", " : "") +
             (endTime != null ? "endTime=" + endTime + ", " : "") +
             (location != null ? "location=" + location + ", " : "") +
+            (directionsToVenue != null ? "directionsToVenue=" + directionsToVenue + ", " : "") +
             (capacity != null ? "capacity=" + capacity + ", " : "") +
             (admissionType != null ? "admissionType=" + admissionType + ", " : "") +
+            (isActive != null ? "isActive=" + isActive + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (createdById != null ? "createdById=" + createdById + ", " : "") +

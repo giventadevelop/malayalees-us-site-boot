@@ -6,6 +6,7 @@ import com.nextjstemplate.repository.UserTaskRepository;
 import com.nextjstemplate.service.criteria.UserTaskCriteria;
 import com.nextjstemplate.service.dto.UserTaskDTO;
 import com.nextjstemplate.service.mapper.UserTaskMapper;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,9 +93,6 @@ public class UserTaskQueryService extends QueryService<UserTask> {
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), UserTask_.title));
             }
-            if (criteria.getDescription() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getDescription(), UserTask_.description));
-            }
             if (criteria.getStatus() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getStatus(), UserTask_.status));
             }
@@ -107,14 +105,35 @@ public class UserTaskQueryService extends QueryService<UserTask> {
             if (criteria.getCompleted() != null) {
                 specification = specification.and(buildSpecification(criteria.getCompleted(), UserTask_.completed));
             }
-            if (criteria.getUserId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getUserId(), UserTask_.userId));
+
+            if (criteria.getAssigneeName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getAssigneeName(), UserTask_.assigneeName));
+            }
+            if (criteria.getAssigneeContactPhone() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getAssigneeContactPhone(), UserTask_.assigneeContactPhone));
+            }
+            if (criteria.getAssigneeContactEmail() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getAssigneeContactEmail(), UserTask_.assigneeContactEmail));
             }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), UserTask_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), UserTask_.updatedAt));
+            }
+            if (criteria.getUserId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getUserId(), root -> root.join(UserTask_.user, JoinType.LEFT).get(UserProfile_.id))
+                    );
+            }
+            if (criteria.getEventId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getEventId(), root -> root.join(UserTask_.event, JoinType.LEFT).get(Event_.id))
+                    );
             }
         }
         return specification;

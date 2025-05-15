@@ -17,7 +17,7 @@
             <column name="title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="description" type="varchar(255)">
+            <column name="description" type="${clobType}">
                 <constraints nullable="true" />
             </column>
             <column name="status" type="varchar(255)">
@@ -32,14 +32,32 @@
             <column name="completed" type="boolean">
                 <constraints nullable="false" />
             </column>
-            <column name="user_id" type="varchar(255)">
+            <column name="user_id" type="bigint">
                 <constraints nullable="false" />
+            </column>
+            <column name="event_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="assignee_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="assignee_contact_phone" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="assignee_contact_email" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="created_at" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
             <column name="updated_at" type="${datetimeType}">
                 <constraints nullable="false" />
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <column name="event_id" type="bigint">
+                <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
@@ -66,12 +84,16 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="title" type="string"/>
-            <column name="description" type="string"/>
+            <column name="description" type="clob"/>
             <column name="status" type="string"/>
             <column name="priority" type="string"/>
             <column name="due_date" type="date"/>
             <column name="completed" type="boolean"/>
-            <column name="user_id" type="string"/>
+            <column name="user_id" type="numeric"/>
+            <column name="event_id" type="numeric"/>
+            <column name="assignee_name" type="string"/>
+            <column name="assignee_contact_phone" type="string"/>
+            <column name="assignee_contact_email" type="string"/>
             <column name="created_at" type="date"/>
             <column name="updated_at" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->

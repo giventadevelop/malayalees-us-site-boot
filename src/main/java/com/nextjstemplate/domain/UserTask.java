@@ -1,5 +1,6 @@
 package com.nextjstemplate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -18,25 +19,30 @@ public class UserTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @NotNull
-    @Column(name = "title", nullable = false)
+    @Size(max = 255)
+    @Column(name = "title", length = 255, nullable = false)
     private String title;
 
+    @Lob
     @Column(name = "description")
     private String description;
 
     @NotNull
-    @Column(name = "status", nullable = false)
+    @Size(max = 255)
+    @Column(name = "status", length = 255, nullable = false)
     private String status;
 
     @NotNull
-    @Column(name = "priority", nullable = false)
+    @Size(max = 255)
+    @Column(name = "priority", length = 255, nullable = false)
     private String priority;
 
     @Column(name = "due_date")
@@ -46,9 +52,18 @@ public class UserTask implements Serializable {
     @Column(name = "completed", nullable = false)
     private Boolean completed;
 
-    @NotNull
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+
+    @Size(max = 255)
+    @Column(name = "assignee_name", length = 255)
+    private String assigneeName;
+
+    @Size(max = 50)
+    @Column(name = "assignee_contact_phone", length = 50)
+    private String assigneeContactPhone;
+
+    @Size(max = 255)
+    @Column(name = "assignee_contact_email", length = 255)
+    private String assigneeContactEmail;
 
     @NotNull
     @Column(name = "created_at", nullable = false)
@@ -57,6 +72,14 @@ public class UserTask implements Serializable {
     @NotNull
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    private UserProfile user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    private Event event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -151,17 +174,45 @@ public class UserTask implements Serializable {
         this.completed = completed;
     }
 
-    public String getUserId() {
-        return this.userId;
+
+
+    public String getAssigneeName() {
+        return this.assigneeName;
     }
 
-    public UserTask userId(String userId) {
-        this.setUserId(userId);
+    public UserTask assigneeName(String assigneeName) {
+        this.setAssigneeName(assigneeName);
         return this;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
+    public String getAssigneeContactPhone() {
+        return this.assigneeContactPhone;
+    }
+
+    public UserTask assigneeContactPhone(String assigneeContactPhone) {
+        this.setAssigneeContactPhone(assigneeContactPhone);
+        return this;
+    }
+
+    public void setAssigneeContactPhone(String assigneeContactPhone) {
+        this.assigneeContactPhone = assigneeContactPhone;
+    }
+
+    public String getAssigneeContactEmail() {
+        return this.assigneeContactEmail;
+    }
+
+    public UserTask assigneeContactEmail(String assigneeContactEmail) {
+        this.setAssigneeContactEmail(assigneeContactEmail);
+        return this;
+    }
+
+    public void setAssigneeContactEmail(String assigneeContactEmail) {
+        this.assigneeContactEmail = assigneeContactEmail;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -188,6 +239,32 @@ public class UserTask implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UserProfile getUser() {
+        return this.user;
+    }
+
+    public void setUser(UserProfile userProfile) {
+        this.user = userProfile;
+    }
+
+    public UserTask user(UserProfile userProfile) {
+        this.setUser(userProfile);
+        return this;
+    }
+
+    public Event getEvent() {
+        return this.event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+    public UserTask event(Event event) {
+        this.setEvent(event);
+        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -220,7 +297,9 @@ public class UserTask implements Serializable {
             ", priority='" + getPriority() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", completed='" + getCompleted() + "'" +
-            ", userId='" + getUserId() + "'" +
+            ", assigneeName='" + getAssigneeName() + "'" +
+            ", assigneeContactPhone='" + getAssigneeContactPhone() + "'" +
+            ", assigneeContactEmail='" + getAssigneeContactEmail() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

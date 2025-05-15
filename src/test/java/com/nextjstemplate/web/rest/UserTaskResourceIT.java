@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
+import com.nextjstemplate.domain.Event;
+import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.domain.UserTask;
 import com.nextjstemplate.repository.UserTaskRepository;
 import com.nextjstemplate.service.dto.UserTaskDTO;
@@ -55,8 +57,22 @@ class UserTaskResourceIT {
     private static final Boolean DEFAULT_COMPLETED = false;
     private static final Boolean UPDATED_COMPLETED = true;
 
-    private static final String DEFAULT_USER_ID = "AAAAAAAAAA";
-    private static final String UPDATED_USER_ID = "BBBBBBBBBB";
+    private static final Long DEFAULT_USER_ID = 1L;
+    private static final Long UPDATED_USER_ID = 2L;
+    private static final Long SMALLER_USER_ID = 1L - 1L;
+
+    private static final Long DEFAULT_EVENT_ID = 1L;
+    private static final Long UPDATED_EVENT_ID = 2L;
+    private static final Long SMALLER_EVENT_ID = 1L - 1L;
+
+    private static final String DEFAULT_ASSIGNEE_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_ASSIGNEE_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ASSIGNEE_CONTACT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_ASSIGNEE_CONTACT_PHONE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ASSIGNEE_CONTACT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_ASSIGNEE_CONTACT_EMAIL = "BBBBBBBBBB";
 
     private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -100,7 +116,10 @@ class UserTaskResourceIT {
             .priority(DEFAULT_PRIORITY)
             .dueDate(DEFAULT_DUE_DATE)
             .completed(DEFAULT_COMPLETED)
-            .userId(DEFAULT_USER_ID)
+
+            .assigneeName(DEFAULT_ASSIGNEE_NAME)
+            .assigneeContactPhone(DEFAULT_ASSIGNEE_CONTACT_PHONE)
+            .assigneeContactEmail(DEFAULT_ASSIGNEE_CONTACT_EMAIL)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return userTask;
@@ -120,7 +139,10 @@ class UserTaskResourceIT {
             .priority(UPDATED_PRIORITY)
             .dueDate(UPDATED_DUE_DATE)
             .completed(UPDATED_COMPLETED)
-            .userId(UPDATED_USER_ID)
+
+            .assigneeName(UPDATED_ASSIGNEE_NAME)
+            .assigneeContactPhone(UPDATED_ASSIGNEE_CONTACT_PHONE)
+            .assigneeContactEmail(UPDATED_ASSIGNEE_CONTACT_EMAIL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return userTask;
@@ -151,7 +173,10 @@ class UserTaskResourceIT {
         assertThat(testUserTask.getPriority()).isEqualTo(DEFAULT_PRIORITY);
         assertThat(testUserTask.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
         assertThat(testUserTask.getCompleted()).isEqualTo(DEFAULT_COMPLETED);
-        assertThat(testUserTask.getUserId()).isEqualTo(DEFAULT_USER_ID);
+
+        assertThat(testUserTask.getAssigneeName()).isEqualTo(DEFAULT_ASSIGNEE_NAME);
+        assertThat(testUserTask.getAssigneeContactPhone()).isEqualTo(DEFAULT_ASSIGNEE_CONTACT_PHONE);
+        assertThat(testUserTask.getAssigneeContactEmail()).isEqualTo(DEFAULT_ASSIGNEE_CONTACT_EMAIL);
         assertThat(testUserTask.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testUserTask.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -252,7 +277,7 @@ class UserTaskResourceIT {
     void checkUserIdIsRequired() throws Exception {
         int databaseSizeBeforeTest = userTaskRepository.findAll().size();
         // set the field null
-        userTask.setUserId(null);
+
 
         // Create the UserTask, which fails.
         UserTaskDTO userTaskDTO = userTaskMapper.toDto(userTask);
@@ -314,12 +339,16 @@ class UserTaskResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userTask.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(sameInstant(DEFAULT_DUE_DATE))))
             .andExpect(jsonPath("$.[*].completed").value(hasItem(DEFAULT_COMPLETED.booleanValue())))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].eventId").value(hasItem(DEFAULT_EVENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].assigneeName").value(hasItem(DEFAULT_ASSIGNEE_NAME)))
+            .andExpect(jsonPath("$.[*].assigneeContactPhone").value(hasItem(DEFAULT_ASSIGNEE_CONTACT_PHONE)))
+            .andExpect(jsonPath("$.[*].assigneeContactEmail").value(hasItem(DEFAULT_ASSIGNEE_CONTACT_EMAIL)))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
     }
@@ -337,12 +366,16 @@ class UserTaskResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userTask.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.priority").value(DEFAULT_PRIORITY))
             .andExpect(jsonPath("$.dueDate").value(sameInstant(DEFAULT_DUE_DATE)))
             .andExpect(jsonPath("$.completed").value(DEFAULT_COMPLETED.booleanValue()))
-            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID))
+            .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
+            .andExpect(jsonPath("$.eventId").value(DEFAULT_EVENT_ID.intValue()))
+            .andExpect(jsonPath("$.assigneeName").value(DEFAULT_ASSIGNEE_NAME))
+            .andExpect(jsonPath("$.assigneeContactPhone").value(DEFAULT_ASSIGNEE_CONTACT_PHONE))
+            .andExpect(jsonPath("$.assigneeContactEmail").value(DEFAULT_ASSIGNEE_CONTACT_EMAIL))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
     }
@@ -428,71 +461,6 @@ class UserTaskResourceIT {
 
         // Get all the userTaskList where title does not contain UPDATED_TITLE
         defaultUserTaskShouldBeFound("title.doesNotContain=" + UPDATED_TITLE);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserTasksByDescriptionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        userTaskRepository.saveAndFlush(userTask);
-
-        // Get all the userTaskList where description equals to DEFAULT_DESCRIPTION
-        defaultUserTaskShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
-
-        // Get all the userTaskList where description equals to UPDATED_DESCRIPTION
-        defaultUserTaskShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserTasksByDescriptionIsInShouldWork() throws Exception {
-        // Initialize the database
-        userTaskRepository.saveAndFlush(userTask);
-
-        // Get all the userTaskList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
-        defaultUserTaskShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
-
-        // Get all the userTaskList where description equals to UPDATED_DESCRIPTION
-        defaultUserTaskShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserTasksByDescriptionIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        userTaskRepository.saveAndFlush(userTask);
-
-        // Get all the userTaskList where description is not null
-        defaultUserTaskShouldBeFound("description.specified=true");
-
-        // Get all the userTaskList where description is null
-        defaultUserTaskShouldNotBeFound("description.specified=false");
-    }
-
-    @Test
-    @Transactional
-    void getAllUserTasksByDescriptionContainsSomething() throws Exception {
-        // Initialize the database
-        userTaskRepository.saveAndFlush(userTask);
-
-        // Get all the userTaskList where description contains DEFAULT_DESCRIPTION
-        defaultUserTaskShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
-
-        // Get all the userTaskList where description contains UPDATED_DESCRIPTION
-        defaultUserTaskShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
-    }
-
-    @Test
-    @Transactional
-    void getAllUserTasksByDescriptionNotContainsSomething() throws Exception {
-        // Initialize the database
-        userTaskRepository.saveAndFlush(userTask);
-
-        // Get all the userTaskList where description does not contain DEFAULT_DESCRIPTION
-        defaultUserTaskShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
-
-        // Get all the userTaskList where description does not contain UPDATED_DESCRIPTION
-        defaultUserTaskShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
     }
 
     @Test
@@ -796,28 +764,340 @@ class UserTaskResourceIT {
 
     @Test
     @Transactional
-    void getAllUserTasksByUserIdContainsSomething() throws Exception {
+    void getAllUserTasksByUserIdIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         userTaskRepository.saveAndFlush(userTask);
 
-        // Get all the userTaskList where userId contains DEFAULT_USER_ID
-        defaultUserTaskShouldBeFound("userId.contains=" + DEFAULT_USER_ID);
+        // Get all the userTaskList where userId is greater than or equal to DEFAULT_USER_ID
+        defaultUserTaskShouldBeFound("userId.greaterThanOrEqual=" + DEFAULT_USER_ID);
 
-        // Get all the userTaskList where userId contains UPDATED_USER_ID
-        defaultUserTaskShouldNotBeFound("userId.contains=" + UPDATED_USER_ID);
+        // Get all the userTaskList where userId is greater than or equal to UPDATED_USER_ID
+        defaultUserTaskShouldNotBeFound("userId.greaterThanOrEqual=" + UPDATED_USER_ID);
     }
 
     @Test
     @Transactional
-    void getAllUserTasksByUserIdNotContainsSomething() throws Exception {
+    void getAllUserTasksByUserIdIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         userTaskRepository.saveAndFlush(userTask);
 
-        // Get all the userTaskList where userId does not contain DEFAULT_USER_ID
-        defaultUserTaskShouldNotBeFound("userId.doesNotContain=" + DEFAULT_USER_ID);
+        // Get all the userTaskList where userId is less than or equal to DEFAULT_USER_ID
+        defaultUserTaskShouldBeFound("userId.lessThanOrEqual=" + DEFAULT_USER_ID);
 
-        // Get all the userTaskList where userId does not contain UPDATED_USER_ID
-        defaultUserTaskShouldBeFound("userId.doesNotContain=" + UPDATED_USER_ID);
+        // Get all the userTaskList where userId is less than or equal to SMALLER_USER_ID
+        defaultUserTaskShouldNotBeFound("userId.lessThanOrEqual=" + SMALLER_USER_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByUserIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where userId is less than DEFAULT_USER_ID
+        defaultUserTaskShouldNotBeFound("userId.lessThan=" + DEFAULT_USER_ID);
+
+        // Get all the userTaskList where userId is less than UPDATED_USER_ID
+        defaultUserTaskShouldBeFound("userId.lessThan=" + UPDATED_USER_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByUserIdIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where userId is greater than DEFAULT_USER_ID
+        defaultUserTaskShouldNotBeFound("userId.greaterThan=" + DEFAULT_USER_ID);
+
+        // Get all the userTaskList where userId is greater than SMALLER_USER_ID
+        defaultUserTaskShouldBeFound("userId.greaterThan=" + SMALLER_USER_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId equals to DEFAULT_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.equals=" + DEFAULT_EVENT_ID);
+
+        // Get all the userTaskList where eventId equals to UPDATED_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.equals=" + UPDATED_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsInShouldWork() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId in DEFAULT_EVENT_ID or UPDATED_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.in=" + DEFAULT_EVENT_ID + "," + UPDATED_EVENT_ID);
+
+        // Get all the userTaskList where eventId equals to UPDATED_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.in=" + UPDATED_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId is not null
+        defaultUserTaskShouldBeFound("eventId.specified=true");
+
+        // Get all the userTaskList where eventId is null
+        defaultUserTaskShouldNotBeFound("eventId.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId is greater than or equal to DEFAULT_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.greaterThanOrEqual=" + DEFAULT_EVENT_ID);
+
+        // Get all the userTaskList where eventId is greater than or equal to UPDATED_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.greaterThanOrEqual=" + UPDATED_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId is less than or equal to DEFAULT_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.lessThanOrEqual=" + DEFAULT_EVENT_ID);
+
+        // Get all the userTaskList where eventId is less than or equal to SMALLER_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.lessThanOrEqual=" + SMALLER_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId is less than DEFAULT_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.lessThan=" + DEFAULT_EVENT_ID);
+
+        // Get all the userTaskList where eventId is less than UPDATED_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.lessThan=" + UPDATED_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIdIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where eventId is greater than DEFAULT_EVENT_ID
+        defaultUserTaskShouldNotBeFound("eventId.greaterThan=" + DEFAULT_EVENT_ID);
+
+        // Get all the userTaskList where eventId is greater than SMALLER_EVENT_ID
+        defaultUserTaskShouldBeFound("eventId.greaterThan=" + SMALLER_EVENT_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeName equals to DEFAULT_ASSIGNEE_NAME
+        defaultUserTaskShouldBeFound("assigneeName.equals=" + DEFAULT_ASSIGNEE_NAME);
+
+        // Get all the userTaskList where assigneeName equals to UPDATED_ASSIGNEE_NAME
+        defaultUserTaskShouldNotBeFound("assigneeName.equals=" + UPDATED_ASSIGNEE_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeName in DEFAULT_ASSIGNEE_NAME or UPDATED_ASSIGNEE_NAME
+        defaultUserTaskShouldBeFound("assigneeName.in=" + DEFAULT_ASSIGNEE_NAME + "," + UPDATED_ASSIGNEE_NAME);
+
+        // Get all the userTaskList where assigneeName equals to UPDATED_ASSIGNEE_NAME
+        defaultUserTaskShouldNotBeFound("assigneeName.in=" + UPDATED_ASSIGNEE_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeName is not null
+        defaultUserTaskShouldBeFound("assigneeName.specified=true");
+
+        // Get all the userTaskList where assigneeName is null
+        defaultUserTaskShouldNotBeFound("assigneeName.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeNameContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeName contains DEFAULT_ASSIGNEE_NAME
+        defaultUserTaskShouldBeFound("assigneeName.contains=" + DEFAULT_ASSIGNEE_NAME);
+
+        // Get all the userTaskList where assigneeName contains UPDATED_ASSIGNEE_NAME
+        defaultUserTaskShouldNotBeFound("assigneeName.contains=" + UPDATED_ASSIGNEE_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeName does not contain DEFAULT_ASSIGNEE_NAME
+        defaultUserTaskShouldNotBeFound("assigneeName.doesNotContain=" + DEFAULT_ASSIGNEE_NAME);
+
+        // Get all the userTaskList where assigneeName does not contain UPDATED_ASSIGNEE_NAME
+        defaultUserTaskShouldBeFound("assigneeName.doesNotContain=" + UPDATED_ASSIGNEE_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactPhoneIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactPhone equals to DEFAULT_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldBeFound("assigneeContactPhone.equals=" + DEFAULT_ASSIGNEE_CONTACT_PHONE);
+
+        // Get all the userTaskList where assigneeContactPhone equals to UPDATED_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldNotBeFound("assigneeContactPhone.equals=" + UPDATED_ASSIGNEE_CONTACT_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactPhoneIsInShouldWork() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactPhone in DEFAULT_ASSIGNEE_CONTACT_PHONE or UPDATED_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldBeFound("assigneeContactPhone.in=" + DEFAULT_ASSIGNEE_CONTACT_PHONE + "," + UPDATED_ASSIGNEE_CONTACT_PHONE);
+
+        // Get all the userTaskList where assigneeContactPhone equals to UPDATED_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldNotBeFound("assigneeContactPhone.in=" + UPDATED_ASSIGNEE_CONTACT_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactPhoneIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactPhone is not null
+        defaultUserTaskShouldBeFound("assigneeContactPhone.specified=true");
+
+        // Get all the userTaskList where assigneeContactPhone is null
+        defaultUserTaskShouldNotBeFound("assigneeContactPhone.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactPhoneContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactPhone contains DEFAULT_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldBeFound("assigneeContactPhone.contains=" + DEFAULT_ASSIGNEE_CONTACT_PHONE);
+
+        // Get all the userTaskList where assigneeContactPhone contains UPDATED_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldNotBeFound("assigneeContactPhone.contains=" + UPDATED_ASSIGNEE_CONTACT_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactPhoneNotContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactPhone does not contain DEFAULT_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldNotBeFound("assigneeContactPhone.doesNotContain=" + DEFAULT_ASSIGNEE_CONTACT_PHONE);
+
+        // Get all the userTaskList where assigneeContactPhone does not contain UPDATED_ASSIGNEE_CONTACT_PHONE
+        defaultUserTaskShouldBeFound("assigneeContactPhone.doesNotContain=" + UPDATED_ASSIGNEE_CONTACT_PHONE);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactEmailIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactEmail equals to DEFAULT_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldBeFound("assigneeContactEmail.equals=" + DEFAULT_ASSIGNEE_CONTACT_EMAIL);
+
+        // Get all the userTaskList where assigneeContactEmail equals to UPDATED_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldNotBeFound("assigneeContactEmail.equals=" + UPDATED_ASSIGNEE_CONTACT_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactEmailIsInShouldWork() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactEmail in DEFAULT_ASSIGNEE_CONTACT_EMAIL or UPDATED_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldBeFound("assigneeContactEmail.in=" + DEFAULT_ASSIGNEE_CONTACT_EMAIL + "," + UPDATED_ASSIGNEE_CONTACT_EMAIL);
+
+        // Get all the userTaskList where assigneeContactEmail equals to UPDATED_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldNotBeFound("assigneeContactEmail.in=" + UPDATED_ASSIGNEE_CONTACT_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactEmailIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactEmail is not null
+        defaultUserTaskShouldBeFound("assigneeContactEmail.specified=true");
+
+        // Get all the userTaskList where assigneeContactEmail is null
+        defaultUserTaskShouldNotBeFound("assigneeContactEmail.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactEmailContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactEmail contains DEFAULT_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldBeFound("assigneeContactEmail.contains=" + DEFAULT_ASSIGNEE_CONTACT_EMAIL);
+
+        // Get all the userTaskList where assigneeContactEmail contains UPDATED_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldNotBeFound("assigneeContactEmail.contains=" + UPDATED_ASSIGNEE_CONTACT_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByAssigneeContactEmailNotContainsSomething() throws Exception {
+        // Initialize the database
+        userTaskRepository.saveAndFlush(userTask);
+
+        // Get all the userTaskList where assigneeContactEmail does not contain DEFAULT_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldNotBeFound("assigneeContactEmail.doesNotContain=" + DEFAULT_ASSIGNEE_CONTACT_EMAIL);
+
+        // Get all the userTaskList where assigneeContactEmail does not contain UPDATED_ASSIGNEE_CONTACT_EMAIL
+        defaultUserTaskShouldBeFound("assigneeContactEmail.doesNotContain=" + UPDATED_ASSIGNEE_CONTACT_EMAIL);
     }
 
     @Test
@@ -1002,6 +1282,50 @@ class UserTaskResourceIT {
         defaultUserTaskShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
     }
 
+    @Test
+    @Transactional
+    void getAllUserTasksByUserIsEqualToSomething() throws Exception {
+        UserProfile user;
+        if (TestUtil.findAll(em, UserProfile.class).isEmpty()) {
+            userTaskRepository.saveAndFlush(userTask);
+            user = UserProfileResourceIT.createEntity(em);
+        } else {
+            user = TestUtil.findAll(em, UserProfile.class).get(0);
+        }
+        em.persist(user);
+        em.flush();
+        userTask.setUser(user);
+        userTaskRepository.saveAndFlush(userTask);
+        Long userId = user.getId();
+        // Get all the userTaskList where user equals to userId
+        defaultUserTaskShouldBeFound("userId.equals=" + userId);
+
+        // Get all the userTaskList where user equals to (userId + 1)
+        defaultUserTaskShouldNotBeFound("userId.equals=" + (userId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllUserTasksByEventIsEqualToSomething() throws Exception {
+        Event event;
+        if (TestUtil.findAll(em, Event.class).isEmpty()) {
+            userTaskRepository.saveAndFlush(userTask);
+            event = EventResourceIT.createEntity(em);
+        } else {
+            event = TestUtil.findAll(em, Event.class).get(0);
+        }
+        em.persist(event);
+        em.flush();
+        userTask.setEvent(event);
+        userTaskRepository.saveAndFlush(userTask);
+        Long eventId = event.getId();
+        // Get all the userTaskList where event equals to eventId
+        defaultUserTaskShouldBeFound("eventId.equals=" + eventId);
+
+        // Get all the userTaskList where event equals to (eventId + 1)
+        defaultUserTaskShouldNotBeFound("eventId.equals=" + (eventId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1012,12 +1336,16 @@ class UserTaskResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userTask.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].priority").value(hasItem(DEFAULT_PRIORITY)))
             .andExpect(jsonPath("$.[*].dueDate").value(hasItem(sameInstant(DEFAULT_DUE_DATE))))
             .andExpect(jsonPath("$.[*].completed").value(hasItem(DEFAULT_COMPLETED.booleanValue())))
-            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID)))
+            .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
+            .andExpect(jsonPath("$.[*].eventId").value(hasItem(DEFAULT_EVENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].assigneeName").value(hasItem(DEFAULT_ASSIGNEE_NAME)))
+            .andExpect(jsonPath("$.[*].assigneeContactPhone").value(hasItem(DEFAULT_ASSIGNEE_CONTACT_PHONE)))
+            .andExpect(jsonPath("$.[*].assigneeContactEmail").value(hasItem(DEFAULT_ASSIGNEE_CONTACT_EMAIL)))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
 
@@ -1074,7 +1402,10 @@ class UserTaskResourceIT {
             .priority(UPDATED_PRIORITY)
             .dueDate(UPDATED_DUE_DATE)
             .completed(UPDATED_COMPLETED)
-            .userId(UPDATED_USER_ID)
+
+            .assigneeName(UPDATED_ASSIGNEE_NAME)
+            .assigneeContactPhone(UPDATED_ASSIGNEE_CONTACT_PHONE)
+            .assigneeContactEmail(UPDATED_ASSIGNEE_CONTACT_EMAIL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         UserTaskDTO userTaskDTO = userTaskMapper.toDto(updatedUserTask);
@@ -1097,7 +1428,10 @@ class UserTaskResourceIT {
         assertThat(testUserTask.getPriority()).isEqualTo(UPDATED_PRIORITY);
         assertThat(testUserTask.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
         assertThat(testUserTask.getCompleted()).isEqualTo(UPDATED_COMPLETED);
-        assertThat(testUserTask.getUserId()).isEqualTo(UPDATED_USER_ID);
+
+        assertThat(testUserTask.getAssigneeName()).isEqualTo(UPDATED_ASSIGNEE_NAME);
+        assertThat(testUserTask.getAssigneeContactPhone()).isEqualTo(UPDATED_ASSIGNEE_CONTACT_PHONE);
+        assertThat(testUserTask.getAssigneeContactEmail()).isEqualTo(UPDATED_ASSIGNEE_CONTACT_EMAIL);
         assertThat(testUserTask.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testUserTask.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -1183,10 +1517,8 @@ class UserTaskResourceIT {
             .title(UPDATED_TITLE)
             .status(UPDATED_STATUS)
             .priority(UPDATED_PRIORITY)
-            .dueDate(UPDATED_DUE_DATE)
             .completed(UPDATED_COMPLETED)
-            .userId(UPDATED_USER_ID)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .assigneeContactEmail(UPDATED_ASSIGNEE_CONTACT_EMAIL);
 
         restUserTaskMockMvc
             .perform(
@@ -1204,11 +1536,14 @@ class UserTaskResourceIT {
         assertThat(testUserTask.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testUserTask.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testUserTask.getPriority()).isEqualTo(UPDATED_PRIORITY);
-        assertThat(testUserTask.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
+        assertThat(testUserTask.getDueDate()).isEqualTo(DEFAULT_DUE_DATE);
         assertThat(testUserTask.getCompleted()).isEqualTo(UPDATED_COMPLETED);
-        assertThat(testUserTask.getUserId()).isEqualTo(UPDATED_USER_ID);
+
+        assertThat(testUserTask.getAssigneeName()).isEqualTo(DEFAULT_ASSIGNEE_NAME);
+        assertThat(testUserTask.getAssigneeContactPhone()).isEqualTo(DEFAULT_ASSIGNEE_CONTACT_PHONE);
+        assertThat(testUserTask.getAssigneeContactEmail()).isEqualTo(UPDATED_ASSIGNEE_CONTACT_EMAIL);
         assertThat(testUserTask.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testUserTask.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testUserTask.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -1230,7 +1565,9 @@ class UserTaskResourceIT {
             .priority(UPDATED_PRIORITY)
             .dueDate(UPDATED_DUE_DATE)
             .completed(UPDATED_COMPLETED)
-            .userId(UPDATED_USER_ID)
+            .assigneeName(UPDATED_ASSIGNEE_NAME)
+            .assigneeContactPhone(UPDATED_ASSIGNEE_CONTACT_PHONE)
+            .assigneeContactEmail(UPDATED_ASSIGNEE_CONTACT_EMAIL)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
 
@@ -1252,7 +1589,10 @@ class UserTaskResourceIT {
         assertThat(testUserTask.getPriority()).isEqualTo(UPDATED_PRIORITY);
         assertThat(testUserTask.getDueDate()).isEqualTo(UPDATED_DUE_DATE);
         assertThat(testUserTask.getCompleted()).isEqualTo(UPDATED_COMPLETED);
-        assertThat(testUserTask.getUserId()).isEqualTo(UPDATED_USER_ID);
+
+        assertThat(testUserTask.getAssigneeName()).isEqualTo(UPDATED_ASSIGNEE_NAME);
+        assertThat(testUserTask.getAssigneeContactPhone()).isEqualTo(UPDATED_ASSIGNEE_CONTACT_PHONE);
+        assertThat(testUserTask.getAssigneeContactEmail()).isEqualTo(UPDATED_ASSIGNEE_CONTACT_EMAIL);
         assertThat(testUserTask.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testUserTask.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

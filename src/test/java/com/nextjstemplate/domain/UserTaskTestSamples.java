@@ -10,20 +10,36 @@ public class UserTaskTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static UserTask getUserTaskSample1() {
-        return new UserTask().id(1L).title("title1").description("description1").status("status1").priority("priority1").userId("userId1");
+        return new UserTask()
+            .id(1L)
+            .title("title1")
+            .status("status1")
+            .priority("priority1")
+            .assigneeName("assigneeName1")
+            .assigneeContactPhone("assigneeContactPhone1")
+            .assigneeContactEmail("assigneeContactEmail1");
     }
 
     public static UserTask getUserTaskSample2() {
-        return new UserTask().id(2L).title("title2").description("description2").status("status2").priority("priority2").userId("userId2");
+        return new UserTask()
+            .id(2L)
+            .title("title2")
+            .status("status2")
+            .priority("priority2")
+            .assigneeName("assigneeName2")
+            .assigneeContactPhone("assigneeContactPhone2")
+            .assigneeContactEmail("assigneeContactEmail2");
     }
 
     public static UserTask getUserTaskRandomSampleGenerator() {
         return new UserTask()
             .id(longCount.incrementAndGet())
             .title(UUID.randomUUID().toString())
-            .description(UUID.randomUUID().toString())
             .status(UUID.randomUUID().toString())
             .priority(UUID.randomUUID().toString())
-            .userId(UUID.randomUUID().toString());
+
+            .assigneeName(UUID.randomUUID().toString())
+            .assigneeContactPhone(UUID.randomUUID().toString())
+            .assigneeContactEmail(UUID.randomUUID().toString());
     }
 }

@@ -25,8 +25,6 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     private StringFilter title;
 
-    private StringFilter description;
-
     private StringFilter status;
 
     private StringFilter priority;
@@ -35,11 +33,19 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     private BooleanFilter completed;
 
-    private StringFilter userId;
+    private StringFilter assigneeName;
+
+    private StringFilter assigneeContactPhone;
+
+    private StringFilter assigneeContactEmail;
 
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
+
+    private LongFilter userId;
+
+    private LongFilter eventId;
 
     private Boolean distinct;
 
@@ -48,14 +54,17 @@ public class UserTaskCriteria implements Serializable, Criteria {
     public UserTaskCriteria(UserTaskCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.title = other.title == null ? null : other.title.copy();
-        this.description = other.description == null ? null : other.description.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.priority = other.priority == null ? null : other.priority.copy();
         this.dueDate = other.dueDate == null ? null : other.dueDate.copy();
         this.completed = other.completed == null ? null : other.completed.copy();
-        this.userId = other.userId == null ? null : other.userId.copy();
+        this.assigneeName = other.assigneeName == null ? null : other.assigneeName.copy();
+        this.assigneeContactPhone = other.assigneeContactPhone == null ? null : other.assigneeContactPhone.copy();
+        this.assigneeContactEmail = other.assigneeContactEmail == null ? null : other.assigneeContactEmail.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.userId = other.userId == null ? null : other.userId.copy();
+        this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.distinct = other.distinct;
     }
 
@@ -92,21 +101,6 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     public void setTitle(StringFilter title) {
         this.title = title;
-    }
-
-    public StringFilter getDescription() {
-        return description;
-    }
-
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
-        return description;
-    }
-
-    public void setDescription(StringFilter description) {
-        this.description = description;
     }
 
     public StringFilter getStatus() {
@@ -169,19 +163,69 @@ public class UserTaskCriteria implements Serializable, Criteria {
         this.completed = completed;
     }
 
-    public StringFilter getUserId() {
+    public LongFilter getUserId() {
         return userId;
     }
 
-    public StringFilter userId() {
+    public LongFilter userId() {
         if (userId == null) {
-            userId = new StringFilter();
+            userId = new LongFilter();
         }
         return userId;
     }
 
-    public void setUserId(StringFilter userId) {
+    public void setUserId(LongFilter userId) {
         this.userId = userId;
+    }
+
+    public LongFilter getEventId() {
+        return eventId;
+    }
+
+
+    public StringFilter getAssigneeName() {
+        return assigneeName;
+    }
+
+    public StringFilter assigneeName() {
+        if (assigneeName == null) {
+            assigneeName = new StringFilter();
+        }
+        return assigneeName;
+    }
+
+    public void setAssigneeName(StringFilter assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
+    public StringFilter getAssigneeContactPhone() {
+        return assigneeContactPhone;
+    }
+
+    public StringFilter assigneeContactPhone() {
+        if (assigneeContactPhone == null) {
+            assigneeContactPhone = new StringFilter();
+        }
+        return assigneeContactPhone;
+    }
+
+    public void setAssigneeContactPhone(StringFilter assigneeContactPhone) {
+        this.assigneeContactPhone = assigneeContactPhone;
+    }
+
+    public StringFilter getAssigneeContactEmail() {
+        return assigneeContactEmail;
+    }
+
+    public StringFilter assigneeContactEmail() {
+        if (assigneeContactEmail == null) {
+            assigneeContactEmail = new StringFilter();
+        }
+        return assigneeContactEmail;
+    }
+
+    public void setAssigneeContactEmail(StringFilter assigneeContactEmail) {
+        this.assigneeContactEmail = assigneeContactEmail;
     }
 
     public ZonedDateTimeFilter getCreatedAt() {
@@ -214,6 +258,23 @@ public class UserTaskCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
+
+
+
+
+
+
+    public LongFilter eventId() {
+        if (eventId == null) {
+            eventId = new LongFilter();
+        }
+        return eventId;
+    }
+
+    public void setEventId(LongFilter eventId) {
+        this.eventId = eventId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -234,21 +295,43 @@ public class UserTaskCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(title, that.title) &&
-            Objects.equals(description, that.description) &&
             Objects.equals(status, that.status) &&
             Objects.equals(priority, that.priority) &&
             Objects.equals(dueDate, that.dueDate) &&
             Objects.equals(completed, that.completed) &&
             Objects.equals(userId, that.userId) &&
+            Objects.equals(eventId, that.eventId) &&
+            Objects.equals(assigneeName, that.assigneeName) &&
+            Objects.equals(assigneeContactPhone, that.assigneeContactPhone) &&
+            Objects.equals(assigneeContactEmail, that.assigneeContactEmail) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(userId, that.userId) &&
+            Objects.equals(eventId, that.eventId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status, priority, dueDate, completed, userId, createdAt, updatedAt, distinct);
+        return Objects.hash(
+            id,
+            title,
+            status,
+            priority,
+            dueDate,
+            completed,
+            userId,
+            eventId,
+            assigneeName,
+            assigneeContactPhone,
+            assigneeContactEmail,
+            createdAt,
+            updatedAt,
+            userId,
+            eventId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -257,14 +340,19 @@ public class UserTaskCriteria implements Serializable, Criteria {
         return "UserTaskCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
-            (description != null ? "description=" + description + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (priority != null ? "priority=" + priority + ", " : "") +
             (dueDate != null ? "dueDate=" + dueDate + ", " : "") +
             (completed != null ? "completed=" + completed + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
+            (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (assigneeName != null ? "assigneeName=" + assigneeName + ", " : "") +
+            (assigneeContactPhone != null ? "assigneeContactPhone=" + assigneeContactPhone + ", " : "") +
+            (assigneeContactEmail != null ? "assigneeContactEmail=" + assigneeContactEmail + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (userId != null ? "userId=" + userId + ", " : "") +
+            (eventId != null ? "eventId=" + eventId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

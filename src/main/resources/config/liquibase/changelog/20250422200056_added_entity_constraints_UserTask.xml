@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity UserTask.
+    -->
+
+    <changeSet id="20250422200056-2" author="jhipster">
+        <!-- Foreign key constraint for user_id referencing user_profile.id -->
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_task"
+                                 constraintName="fk_user_task_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_profile"/>
+
+        <!-- Foreign key constraint for event_id referencing event.id -->
+        <addForeignKeyConstraint baseColumnNames="event_id"
+                                 baseTableName="user_task"
+                                 constraintName="fk_user_task_event_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event"/>
+    </changeSet>
+</databaseChangeLog>

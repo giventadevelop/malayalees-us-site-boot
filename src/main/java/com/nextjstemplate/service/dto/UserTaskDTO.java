@@ -1,5 +1,6 @@
 package com.nextjstemplate.service.dto;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -11,17 +12,22 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserTaskDTO implements Serializable {
 
+    @NotNull
     private Long id;
 
     @NotNull
+    @Size(max = 255)
     private String title;
 
+    @Lob
     private String description;
 
     @NotNull
+    @Size(max = 255)
     private String status;
 
     @NotNull
+    @Size(max = 255)
     private String priority;
 
     private ZonedDateTime dueDate;
@@ -30,13 +36,28 @@ public class UserTaskDTO implements Serializable {
     private Boolean completed;
 
     @NotNull
-    private String userId;
+    private Long userId;
+
+    private Long eventId;
+
+    @Size(max = 255)
+    private String assigneeName;
+
+    @Size(max = 50)
+    private String assigneeContactPhone;
+
+    @Size(max = 255)
+    private String assigneeContactEmail;
 
     @NotNull
     private ZonedDateTime createdAt;
 
     @NotNull
     private ZonedDateTime updatedAt;
+
+    private UserProfileDTO user;
+
+    private EventDTO event;
 
     public Long getId() {
         return id;
@@ -94,12 +115,44 @@ public class UserTaskDTO implements Serializable {
         this.completed = completed;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getAssigneeName() {
+        return assigneeName;
+    }
+
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
+    public String getAssigneeContactPhone() {
+        return assigneeContactPhone;
+    }
+
+    public void setAssigneeContactPhone(String assigneeContactPhone) {
+        this.assigneeContactPhone = assigneeContactPhone;
+    }
+
+    public String getAssigneeContactEmail() {
+        return assigneeContactEmail;
+    }
+
+    public void setAssigneeContactEmail(String assigneeContactEmail) {
+        this.assigneeContactEmail = assigneeContactEmail;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -116,6 +169,22 @@ public class UserTaskDTO implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UserProfileDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserProfileDTO user) {
+        this.user = user;
+    }
+
+    public EventDTO getEvent() {
+        return event;
+    }
+
+    public void setEvent(EventDTO event) {
+        this.event = event;
     }
 
     @Override
@@ -150,9 +219,15 @@ public class UserTaskDTO implements Serializable {
             ", priority='" + getPriority() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", completed='" + getCompleted() + "'" +
-            ", userId='" + getUserId() + "'" +
+            ", userId=" + getUserId() +
+            ", eventId=" + getEventId() +
+            ", assigneeName='" + getAssigneeName() + "'" +
+            ", assigneeContactPhone='" + getAssigneeContactPhone() + "'" +
+            ", assigneeContactEmail='" + getAssigneeContactEmail() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", user=" + getUser() +
+            ", event=" + getEvent() +
             "}";
     }
 }
