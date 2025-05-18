@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/nextjs_template_boot
-    username: nextjs_template_boot
-    password:
+    url: jdbc:postgresql://localhost:5432/giventa_event_management
+    username: giventa_event_management
+    password: giventa_event_management
     hikari:
       poolName: Hikari
       auto-commit: false

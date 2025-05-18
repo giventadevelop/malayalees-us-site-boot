@@ -79,6 +79,10 @@ spring:
   output:
     ansi:
       console-available: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 springdoc:
   api-docs:
@@ -210,3 +214,17 @@ jhipster:
 # ===================================================================
 
 # application:
+
+# ===================================================================
+# AWS S3 Configuration
+# ===================================================================
+aws:
+  s3:
+    access-key: ${AWS_ACCESS_KEY_ID}
+    secret-key: ${AWS_SECRET_ACCESS_KEY}
+    region: us-east-2
+    bucket-name: eventapp-media-bucket
+
+# ===================================================================
+# File upload configuration
+# ===================================================================

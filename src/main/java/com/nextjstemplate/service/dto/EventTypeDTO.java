@@ -11,18 +11,18 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventTypeDTO implements Serializable {
 
-    @NotNull
+//    @NotNull
     private Long id;
 
-    @NotNull
+//    @NotNull
     private String name;
 
     private String description;
 
-    @NotNull
+//   @NotNull
     private Instant createdAt;
 
-    @NotNull
+//    @NotNull
     private Instant updatedAt;
 
     public Long getId() {
