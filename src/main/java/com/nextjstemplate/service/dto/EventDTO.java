@@ -4,7 +4,6 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -13,7 +12,6 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventDTO implements Serializable {
 
-//    @NotNull
     private Long id;
 
     @NotNull
@@ -30,10 +28,10 @@ public class EventDTO implements Serializable {
     private LocalDate endDate;
 
     @NotNull
-    private ZonedDateTime startTime;
+    private String startTime;
 
     @NotNull
-    private ZonedDateTime endTime;
+    private String endTime;
 
     private String location;
 
@@ -104,19 +102,19 @@ public class EventDTO implements Serializable {
         this.endDate = endDate;
     }
 
-    public ZonedDateTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public ZonedDateTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

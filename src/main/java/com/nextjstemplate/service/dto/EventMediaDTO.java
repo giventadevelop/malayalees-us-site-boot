@@ -12,7 +12,7 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventMediaDTO implements Serializable {
 
-    @NotNull
+//    @NotNull
     private Long id;
 
     @NotNull

@@ -1,0 +1,64 @@
+// User Profile entity
+entity UserProfile {
+    id Long required,
+    userId String required unique,
+    firstName String,
+    lastName String,
+    email String,
+    phone String,
+    addressLine1 String,
+    addressLine2 String,
+    city String,
+    state String,
+    zipCode String,
+    country String,
+    notes String,
+    familyName String,
+    cityTown String,
+    district String,
+    educationalInstitution String,
+    profileImageUrl String,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Event Type entity
+entity EventType {
+    id Long required,
+    name String required unique,
+    description String,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Event entity
+entity Event {
+    id Long required,
+    title String required,
+    caption String,
+    description String,
+    startDate String required,
+    endDate String required,
+    startTime ZonedDateTime required,
+    endTime ZonedDateTime required,
+    location String,
+    directionsToVenue String,
+    capacity Integer,
+    admissionType String required,
+    isActive Boolean,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
+// Relationships
+relationship ManyToOne {
+    Event{createdBy} to UserProfile,
+    Event{eventType} to EventType
+}
+
+// Options for entities
+service all with serviceImpl
+paginate all with pagination
+dto all with mapstruct
+search * with no
+filter all

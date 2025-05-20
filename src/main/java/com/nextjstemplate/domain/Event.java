@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -21,11 +20,10 @@ public class Event implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -48,11 +46,11 @@ public class Event implements Serializable {
 
     @NotNull
     @Column(name = "start_time", nullable = false)
-    private ZonedDateTime startTime;
+    private String startTime;
 
     @NotNull
     @Column(name = "end_time", nullable = false)
-    private ZonedDateTime endTime;
+    private String endTime;
 
     @Column(name = "location")
     private String location;
@@ -165,29 +163,29 @@ public class Event implements Serializable {
         this.endDate = endDate;
     }
 
-    public ZonedDateTime getStartTime() {
+    public String getStartTime() {
         return this.startTime;
     }
 
-    public Event startTime(ZonedDateTime startTime) {
+    public Event startTime(String startTime) {
         this.setStartTime(startTime);
         return this;
     }
 
-    public void setStartTime(ZonedDateTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public ZonedDateTime getEndTime() {
+    public String getEndTime() {
         return this.endTime;
     }
 
-    public Event endTime(ZonedDateTime endTime) {
+    public Event endTime(String endTime) {
         this.setEndTime(endTime);
         return this;
     }
 
-    public void setEndTime(ZonedDateTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
