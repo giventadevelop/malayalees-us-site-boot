@@ -28,6 +28,8 @@ public class EventMediaDTO implements Serializable {
 
     private String fileUrl;
 
+    private String preSignedUrl;
+
     @Lob
     private byte[] fileData;
 
@@ -92,12 +94,21 @@ public class EventMediaDTO implements Serializable {
         this.storageType = storageType;
     }
 
+
     public String getFileUrl() {
         return fileUrl;
     }
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getPreSignedUrl() {
+        return preSignedUrl;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
     }
 
     public byte[] getFileData() {

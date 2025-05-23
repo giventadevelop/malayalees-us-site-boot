@@ -10,6 +10,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface EventMediaRepository extends JpaRepository<EventMedia, Long> {
+public interface EventMediaRepository extends JpaRepository<EventMedia, Long>, JpaSpecificationExecutor<EventMedia> {
   List<EventMedia> findByEvent_Id(Long eventId);
+
 }

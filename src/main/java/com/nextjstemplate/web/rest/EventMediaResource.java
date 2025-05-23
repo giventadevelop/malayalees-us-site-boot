@@ -1,7 +1,9 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.EventMediaRepository;
+import com.nextjstemplate.service.EventMediaQueryService;
 import com.nextjstemplate.service.EventMediaService;
+import com.nextjstemplate.service.criteria.EventMediaCriteria;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -52,9 +54,15 @@ public class EventMediaResource {
 
     private final EventMediaRepository eventMediaRepository;
 
-    public EventMediaResource(EventMediaService eventMediaService, EventMediaRepository eventMediaRepository) {
+    private final EventMediaQueryService eventMediaQueryService;
+
+    public EventMediaResource(
+            EventMediaService eventMediaService,
+            EventMediaRepository eventMediaRepository,
+            EventMediaQueryService eventMediaQueryService) {
         this.eventMediaService = eventMediaService;
         this.eventMediaRepository = eventMediaRepository;
+        this.eventMediaQueryService = eventMediaQueryService;
     }
 
     /**
@@ -162,17 +170,33 @@ public class EventMediaResource {
      * {@code GET  /event-medias} : get all the eventMedias.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of eventMedias in body.
      */
     @GetMapping("")
     public ResponseEntity<List<EventMediaDTO>> getAllEventMedias(
+            EventMediaCriteria criteria,
             @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of EventMedias");
-        Page<EventMediaDTO> page = eventMediaService.findAll(pageable);
+        log.debug("REST request to get EventMedias by criteria: {}", criteria);
+
+        Page<EventMediaDTO> page = eventMediaQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil
                 .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /event-medias/count} : count all the eventMedias.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count
+     *         in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countEventMedias(EventMediaCriteria criteria) {
+        log.debug("REST request to count EventMedias by criteria: {}", criteria);
+        return ResponseEntity.ok().body(eventMediaQueryService.countByCriteria(criteria));
     }
 
     /**
@@ -217,6 +241,8 @@ public class EventMediaResource {
             @RequestParam("title") String title,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
+            @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
+            @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
             Authentication authentication) throws URISyntaxException {
         log.debug("REST request to upload EventMedia file: {} for event: {}", file.getOriginalFilename(), eventId);
         if (file.isEmpty()) {
@@ -225,7 +251,7 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         EventMediaDTO result = eventMediaService.uploadFile(file, eventId, userProfileId, title, description,
-                isPublicValue);
+                isPublicValue, eventFlyer, isEventManagementOfficialDocument);
         return ResponseEntity
                 .created(new URI("/api/event-medias/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
@@ -243,6 +269,8 @@ public class EventMediaResource {
             @RequestParam(value = "titles", required = false) List<String> titles,
             @RequestParam(value = "descriptions", required = false) List<String> descriptions,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
+            @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
+            @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
             Authentication authentication) {
         log.debug("REST request to upload {} EventMedia files for event: {}", files.size(), eventId);
         if (files.isEmpty()) {
@@ -255,7 +283,7 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         List<EventMediaDTO> results = eventMediaService.uploadMultipleFiles(files, eventId, userProfileId, titles,
-                descriptions, isPublicValue);
+                descriptions, isPublicValue, eventFlyer, isEventManagementOfficialDocument);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert(applicationName, "eventMedia.uploaded", String.valueOf(results.size())))
                 .body(results);

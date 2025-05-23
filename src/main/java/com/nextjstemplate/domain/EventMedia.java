@@ -19,11 +19,10 @@ public class EventMedia implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -43,6 +42,9 @@ public class EventMedia implements Serializable {
 
     @Column(name = "file_url")
     private String fileUrl;
+
+    @Column(name = "pre_signed_url")
+    private String preSignedUrl;
 
     @Lob
     @Column(name = "file_data")
@@ -160,6 +162,19 @@ public class EventMedia implements Serializable {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getPreSignedUrl() {
+        return this.preSignedUrl;
+    }
+
+    public EventMedia preSignedUrl(String preSignedUrl) {
+        this.setPreSignedUrl(preSignedUrl);
+        return this;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
     }
 
     public byte[] getFileData() {
@@ -334,6 +349,7 @@ public class EventMedia implements Serializable {
             ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
+            ", preSignedUrl='" + getPreSignedUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
             ", fileDataContentType='" + getFileDataContentType() + "'" +
             ", contentType='" + getContentType() + "'" +

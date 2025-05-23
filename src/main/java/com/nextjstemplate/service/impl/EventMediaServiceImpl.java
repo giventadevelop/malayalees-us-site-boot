@@ -2,6 +2,7 @@ package com.nextjstemplate.service.impl;
 
 import com.nextjstemplate.domain.EventMedia;
 import com.nextjstemplate.repository.EventMediaRepository;
+import com.nextjstemplate.repository.EventRepository;
 import com.nextjstemplate.service.EventMediaService;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.service.mapper.EventMediaMapper;
@@ -33,16 +34,19 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     private final EventMediaRepository eventMediaRepository;
 
+    private final EventRepository eventRepository;
+
     private final EventMediaMapper eventMediaMapper;
 
     private final S3Service s3Service;
 
     @Autowired
     public EventMediaServiceImpl(EventMediaRepository eventMediaRepository, EventMediaMapper eventMediaMapper,
-            S3Service s3Service) {
+            S3Service s3Service, EventRepository eventRepository) {
         this.eventMediaRepository = eventMediaRepository;
         this.eventMediaMapper = eventMediaMapper;
         this.s3Service = s3Service;
+        this.eventRepository = eventRepository;
     }
 
     @Override
@@ -98,21 +102,26 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     @Override
     public EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title,
-            String description, boolean isPublic) {
+            String description, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument) {
         // Upload to S3
         String fileUrl = s3Service.uploadFile(file, eventId, title);
 
         EventMedia eventMedia = new EventMedia();
+        Event event = eventRepository.findById(eventId).get();
+        eventMedia.setEvent(event);
         eventMedia.setTitle(title);
         eventMedia.setDescription(description);
         eventMedia.setEventMediaType(file.getContentType() != null ? file.getContentType() : "unknown");
         eventMedia.setStorageType("S3");
         eventMedia.setFileUrl(fileUrl);
+        eventMedia.setPreSignedUrl(s3Service.generatePresignedUrl(fileUrl, 1));
         eventMedia.setContentType(file.getContentType());
         eventMedia.setFileSize((int) file.getSize());
         eventMedia.setIsPublic(isPublic);
         eventMedia.setCreatedAt(Instant.now());
         eventMedia.setUpdatedAt(Instant.now());
+        eventMedia.setEventFlyer(eventFlyer);
+        eventMedia.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
         // Optionally set event and uploadedBy if needed (requires fetching entities)
         // eventMedia.setEvent(...);
         // eventMedia.setUploadedBy(...);
@@ -123,13 +132,15 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     @Override
     public List<EventMediaDTO> uploadMultipleFiles(List<MultipartFile> files, Long eventId, Long userProfileId,
-            List<String> titles, List<String> descriptions, boolean isPublic) {
+            List<String> titles, List<String> descriptions, boolean isPublic, Boolean eventFlyer,
+            Boolean isEventManagementOfficialDocument) {
         List<EventMediaDTO> result = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
             String title = (titles != null && i < titles.size()) ? titles.get(i) : file.getOriginalFilename();
             String description = (descriptions != null && i < descriptions.size()) ? descriptions.get(i) : null;
-            result.add(uploadFile(file, eventId, userProfileId, title, description, isPublic));
+            result.add(uploadFile(file, eventId, userProfileId, title, description, isPublic, eventFlyer,
+                    isEventManagementOfficialDocument));
         }
         return result;
     }
