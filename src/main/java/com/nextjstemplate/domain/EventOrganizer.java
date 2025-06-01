@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -19,24 +19,31 @@ public class EventOrganizer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
+
     @NotNull
-    @Column(name = "title", nullable = false)
+    @Size(max = 255)
+    @Column(name = "title", length = 255, nullable = false)
     private String title;
 
-    @Column(name = "designation")
+    @Size(max = 255)
+    @Column(name = "designation", length = 255)
     private String designation;
 
-    @Column(name = "contact_email")
+    @Size(max = 255)
+    @Column(name = "contact_email", length = 255)
     private String contactEmail;
 
-    @Column(name = "contact_phone")
+    @Size(max = 255)
+    @Column(name = "contact_phone", length = 255)
     private String contactPhone;
 
     @Column(name = "is_primary")
@@ -44,15 +51,15 @@ public class EventOrganizer implements Serializable {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
     @NotNull
     @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
-    private Event event;
+    private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
@@ -71,6 +78,19 @@ public class EventOrganizer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public EventOrganizer tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -138,42 +158,42 @@ public class EventOrganizer implements Serializable {
         this.isPrimary = isPrimary;
     }
 
-    public Instant getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public EventOrganizer createdAt(Instant createdAt) {
+    public EventOrganizer createdAt(ZonedDateTime createdAt) {
         this.setCreatedAt(createdAt);
         return this;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public EventOrganizer updatedAt(Instant updatedAt) {
+    public EventOrganizer updatedAt(ZonedDateTime updatedAt) {
         this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Event getEvent() {
+    public EventDetails getEvent() {
         return this.event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvent(EventDetails eventDetails) {
+        this.event = eventDetails;
     }
 
-    public EventOrganizer event(Event event) {
-        this.setEvent(event);
+    public EventOrganizer event(EventDetails eventDetails) {
+        this.setEvent(eventDetails);
         return this;
     }
 
@@ -214,6 +234,7 @@ public class EventOrganizer implements Serializable {
     public String toString() {
         return "EventOrganizer{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", designation='" + getDesignation() + "'" +
             ", contactEmail='" + getContactEmail() + "'" +

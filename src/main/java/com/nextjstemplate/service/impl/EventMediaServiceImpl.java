@@ -1,11 +1,14 @@
 package com.nextjstemplate.service.impl;
 
+import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.EventMedia;
+import com.nextjstemplate.repository.EventDetailsRepository;
 import com.nextjstemplate.repository.EventMediaRepository;
-import com.nextjstemplate.repository.EventRepository;
 import com.nextjstemplate.service.EventMediaService;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.service.mapper.EventMediaMapper;
+
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.nextjstemplate.service.S3Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.nextjstemplate.domain.Event;
-import com.nextjstemplate.domain.UserProfile;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     private final EventMediaRepository eventMediaRepository;
 
-    private final EventRepository eventRepository;
+    private final EventDetailsRepository eventRepository;
 
     private final EventMediaMapper eventMediaMapper;
 
@@ -42,7 +44,7 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     @Autowired
     public EventMediaServiceImpl(EventMediaRepository eventMediaRepository, EventMediaMapper eventMediaMapper,
-            S3Service s3Service, EventRepository eventRepository) {
+            S3Service s3Service, EventDetailsRepository eventRepository) {
         this.eventMediaRepository = eventMediaRepository;
         this.eventMediaMapper = eventMediaMapper;
         this.s3Service = s3Service;
@@ -107,7 +109,7 @@ public class EventMediaServiceImpl implements EventMediaService {
         String fileUrl = s3Service.uploadFile(file, eventId, title);
 
         EventMedia eventMedia = new EventMedia();
-        Event event = eventRepository.findById(eventId).get();
+        EventDetails event = eventRepository.findById(eventId).get();
         eventMedia.setEvent(event);
         eventMedia.setTitle(title);
         eventMedia.setDescription(description);
@@ -118,8 +120,8 @@ public class EventMediaServiceImpl implements EventMediaService {
         eventMedia.setContentType(file.getContentType());
         eventMedia.setFileSize((int) file.getSize());
         eventMedia.setIsPublic(isPublic);
-        eventMedia.setCreatedAt(Instant.now());
-        eventMedia.setUpdatedAt(Instant.now());
+        eventMedia.setCreatedAt(ZonedDateTime.from(Instant.now()));
+        eventMedia.setUpdatedAt(ZonedDateTime.from(Instant.now()));
         eventMedia.setEventFlyer(eventFlyer);
         eventMedia.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
         // Optionally set event and uploadedBy if needed (requires fetching entities)

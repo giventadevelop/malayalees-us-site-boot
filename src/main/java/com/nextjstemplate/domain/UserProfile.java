@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * Event Management System JDL Model - Version 25
+ * A UserProfile.
  */
 @Entity
 @Table(name = "user_profile")
@@ -19,72 +20,107 @@ public class UserProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
 
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
+
     @NotNull
-    @Column(name = "user_id", nullable = false, unique = true)
+    @Size(max = 255)
+    @Column(name = "user_id", length = 255, nullable = false, unique = true)
     private String userId;
 
-    @Column(name = "first_name")
+    @Size(max = 255)
+    @Column(name = "first_name", length = 255)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Size(max = 255)
+    @Column(name = "last_name", length = 255)
     private String lastName;
 
-    @Column(name = "email")
+    @Size(max = 255)
+    @Column(name = "email", length = 255)
     private String email;
 
-    @Column(name = "phone")
+    @Size(max = 255)
+    @Column(name = "phone", length = 255)
     private String phone;
 
-    @Column(name = "address_line_1")
+    @Size(max = 255)
+    @Column(name = "address_line_1", length = 255)
     private String addressLine1;
 
-    @Column(name = "address_line_2")
+    @Size(max = 255)
+    @Column(name = "address_line_2", length = 255)
     private String addressLine2;
 
-    @Column(name = "city")
+    @Size(max = 255)
+    @Column(name = "city", length = 255)
     private String city;
 
-    @Column(name = "state")
+    @Size(max = 255)
+    @Column(name = "state", length = 255)
     private String state;
 
-    @Column(name = "zip_code")
+    @Size(max = 255)
+    @Column(name = "zip_code", length = 255)
     private String zipCode;
 
-    @Column(name = "country")
+    @Size(max = 255)
+    @Column(name = "country", length = 255)
     private String country;
 
-    @Column(name = "notes")
+    @Size(max = 255)
+    @Column(name = "notes", length = 255)
     private String notes;
 
-    @Column(name = "family_name")
+    @Size(max = 255)
+    @Column(name = "family_name", length = 255)
     private String familyName;
 
-    @Column(name = "city_town")
+    @Size(max = 255)
+    @Column(name = "city_town", length = 255)
     private String cityTown;
 
-    @Column(name = "district")
+    @Size(max = 255)
+    @Column(name = "district", length = 255)
     private String district;
 
-    @Column(name = "educational_institution")
+    @Size(max = 255)
+    @Column(name = "educational_institution", length = 255)
     private String educationalInstitution;
 
-    @Column(name = "profile_image_url")
+    @Size(max = 255)
+    @Column(name = "profile_image_url", length = 255)
     private String profileImageUrl;
+
+    @Size(max = 50)
+    @Column(name = "user_status", length = 50)
+    private String userStatus;
+
+    @Size(max = 50)
+    @Column(name = "user_role", length = 50)
+    private String userRole;
+
+    @Column(name = "reviewed_by_admin_at")
+    private LocalDate reviewedByAdminAt;
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
     @NotNull
     @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    private ZonedDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
+    private UserProfile reviewedByAdmin;
 
     @JsonIgnoreProperties(value = { "userProfile" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfile")
@@ -103,6 +139,19 @@ public class UserProfile implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public UserProfile tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getUserId() {
@@ -326,30 +375,82 @@ public class UserProfile implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public Instant getCreatedAt() {
+    public String getUserStatus() {
+        return this.userStatus;
+    }
+
+    public UserProfile userStatus(String userStatus) {
+        this.setUserStatus(userStatus);
+        return this;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getUserRole() {
+        return this.userRole;
+    }
+
+    public UserProfile userRole(String userRole) {
+        this.setUserRole(userRole);
+        return this;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public LocalDate getReviewedByAdminAt() {
+        return this.reviewedByAdminAt;
+    }
+
+    public UserProfile reviewedByAdminAt(LocalDate reviewedByAdminAt) {
+        this.setReviewedByAdminAt(reviewedByAdminAt);
+        return this;
+    }
+
+    public void setReviewedByAdminAt(LocalDate reviewedByAdminAt) {
+        this.reviewedByAdminAt = reviewedByAdminAt;
+    }
+
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public UserProfile createdAt(Instant createdAt) {
+    public UserProfile createdAt(ZonedDateTime createdAt) {
         this.setCreatedAt(createdAt);
         return this;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public UserProfile updatedAt(Instant updatedAt) {
+    public UserProfile updatedAt(ZonedDateTime updatedAt) {
         this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UserProfile getReviewedByAdmin() {
+        return this.reviewedByAdmin;
+    }
+
+    public void setReviewedByAdmin(UserProfile userProfile) {
+        this.reviewedByAdmin = userProfile;
+    }
+
+    public UserProfile reviewedByAdmin(UserProfile userProfile) {
+        this.setReviewedByAdmin(userProfile);
+        return this;
     }
 
     public UserSubscription getUserSubscription() {
@@ -395,6 +496,7 @@ public class UserProfile implements Serializable {
     public String toString() {
         return "UserProfile{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", userId='" + getUserId() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
@@ -412,6 +514,9 @@ public class UserProfile implements Serializable {
             ", district='" + getDistrict() + "'" +
             ", educationalInstitution='" + getEducationalInstitution() + "'" +
             ", profileImageUrl='" + getProfileImageUrl() + "'" +
+            ", userStatus='" + getUserStatus() + "'" +
+            ", userRole='" + getUserRole() + "'" +
+            ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

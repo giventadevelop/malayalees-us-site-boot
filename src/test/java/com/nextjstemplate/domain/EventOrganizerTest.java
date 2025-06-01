@@ -1,7 +1,7 @@
 package com.nextjstemplate.domain;
 
+import static com.nextjstemplate.domain.EventDetailsTestSamples.*;
 import static com.nextjstemplate.domain.EventOrganizerTestSamples.*;
-import static com.nextjstemplate.domain.EventTestSamples.*;
 import static com.nextjstemplate.domain.UserProfileTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,10 +27,10 @@ class EventOrganizerTest {
     @Test
     void eventTest() throws Exception {
         EventOrganizer eventOrganizer = getEventOrganizerRandomSampleGenerator();
-        Event eventBack = getEventRandomSampleGenerator();
+        EventDetails eventDetailsBack = getEventDetailsRandomSampleGenerator();
 
-        eventOrganizer.setEvent(eventBack);
-        assertThat(eventOrganizer.getEvent()).isEqualTo(eventBack);
+        eventOrganizer.setEvent(eventDetailsBack);
+        assertThat(eventOrganizer.getEvent()).isEqualTo(eventDetailsBack);
 
         eventOrganizer.event(null);
         assertThat(eventOrganizer.getEvent()).isNull();

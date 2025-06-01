@@ -1,9 +1,9 @@
 package com.nextjstemplate.service.mapper;
 
-import com.nextjstemplate.domain.Event;
+import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.domain.UserTask;
-import com.nextjstemplate.service.dto.EventDTO;
+import com.nextjstemplate.service.dto.EventDetailsDTO;
 import com.nextjstemplate.service.dto.UserProfileDTO;
 import com.nextjstemplate.service.dto.UserTaskDTO;
 import org.mapstruct.*;
@@ -14,7 +14,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface UserTaskMapper extends EntityMapper<UserTaskDTO, UserTask> {
     @Mapping(target = "user", source = "user", qualifiedByName = "userProfileId")
-    @Mapping(target = "event", source = "event", qualifiedByName = "eventId")
+    @Mapping(target = "event", source = "event", qualifiedByName = "eventDetailsId")
     UserTaskDTO toDto(UserTask s);
 
     @Named("userProfileId")
@@ -22,8 +22,8 @@ public interface UserTaskMapper extends EntityMapper<UserTaskDTO, UserTask> {
     @Mapping(target = "id", source = "id")
     UserProfileDTO toDtoUserProfileId(UserProfile userProfile);
 
-    @Named("eventId")
+    @Named("eventDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    EventDTO toDtoEventId(Event event);
+    EventDetailsDTO toDtoEventDetailsId(EventDetails eventDetails);
 }

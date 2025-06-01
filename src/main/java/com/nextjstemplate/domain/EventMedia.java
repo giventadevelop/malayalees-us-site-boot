@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,35 +25,44 @@ public class EventMedia implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
+
     @NotNull
-    @Column(name = "title", nullable = false)
+    @Size(max = 255)
+    @Column(name = "title", length = 255, nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Size(max = 255)
+    @Column(name = "description", length = 255)
     private String description;
 
     @NotNull
-    @Column(name = "event_media_type", nullable = false)
+    @Size(max = 255)
+    @Column(name = "event_media_type", length = 255, nullable = false)
     private String eventMediaType;
 
     @NotNull
-    @Column(name = "storage_type", nullable = false)
+    @Size(max = 255)
+    @Column(name = "storage_type", length = 255, nullable = false)
     private String storageType;
 
-    @Column(name = "file_url")
+    @Size(max = 255)
+    @Column(name = "file_url", length = 255)
     private String fileUrl;
-
-    @Column(name = "pre_signed_url")
-    private String preSignedUrl;
 
     @Lob
     @Column(name = "file_data")
     private byte[] fileData;
 
-    @Column(name = "file_data_content_type")
+
+    @Size(max = 255)
+    @Column(name = "file_data_content_type", length = 255)
     private String fileDataContentType;
 
-    @Column(name = "content_type")
+    @Size(max = 255)
+    @Column(name = "content_type", length = 255)
     private String contentType;
 
     @Column(name = "file_size")
@@ -70,15 +79,19 @@ public class EventMedia implements Serializable {
 
     @NotNull
     @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
     @NotNull
     @Column(name = "updated_at", nullable = false)
-    private Instant updatedAt;
+    private ZonedDateTime updatedAt;
+
+    @Size(max = 400)
+    @Column(name = "pre_signed_url", length = 400)
+    private String preSignedUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
-    private Event event;
+    private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
@@ -97,6 +110,19 @@ public class EventMedia implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public EventMedia tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -164,19 +190,6 @@ public class EventMedia implements Serializable {
         this.fileUrl = fileUrl;
     }
 
-    public String getPreSignedUrl() {
-        return this.preSignedUrl;
-    }
-
-    public EventMedia preSignedUrl(String preSignedUrl) {
-        this.setPreSignedUrl(preSignedUrl);
-        return this;
-    }
-
-    public void setPreSignedUrl(String preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
-    }
-
     public byte[] getFileData() {
         return this.fileData;
     }
@@ -190,12 +203,14 @@ public class EventMedia implements Serializable {
         this.fileData = fileData;
     }
 
+
+
     public String getFileDataContentType() {
         return this.fileDataContentType;
     }
 
     public EventMedia fileDataContentType(String fileDataContentType) {
-        this.fileDataContentType = fileDataContentType;
+        this.setFileDataContentType(fileDataContentType);
         return this;
     }
 
@@ -268,42 +283,55 @@ public class EventMedia implements Serializable {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
-    public Instant getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
 
-    public EventMedia createdAt(Instant createdAt) {
+    public EventMedia createdAt(ZonedDateTime createdAt) {
         this.setCreatedAt(createdAt);
         return this;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return this.updatedAt;
     }
 
-    public EventMedia updatedAt(Instant updatedAt) {
+    public EventMedia updatedAt(ZonedDateTime updatedAt) {
         this.setUpdatedAt(updatedAt);
         return this;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Event getEvent() {
+    public String getPreSignedUrl() {
+        return this.preSignedUrl;
+    }
+
+    public EventMedia preSignedUrl(String preSignedUrl) {
+        this.setPreSignedUrl(preSignedUrl);
+        return this;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
+    }
+
+    public EventDetails getEvent() {
         return this.event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvent(EventDetails eventDetails) {
+        this.event = eventDetails;
     }
 
-    public EventMedia event(Event event) {
-        this.setEvent(event);
+    public EventMedia event(EventDetails eventDetails) {
+        this.setEvent(eventDetails);
         return this;
     }
 
@@ -344,13 +372,14 @@ public class EventMedia implements Serializable {
     public String toString() {
         return "EventMedia{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
-            ", preSignedUrl='" + getPreSignedUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
+            ", fileDataContentType='" + getFileDataContentType() + "'" +
             ", fileDataContentType='" + getFileDataContentType() + "'" +
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
@@ -359,6 +388,7 @@ public class EventMedia implements Serializable {
             ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", preSignedUrl='" + getPreSignedUrl() + "'" +
             "}";
     }
 }

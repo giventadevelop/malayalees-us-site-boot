@@ -14,6 +14,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="tenant_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -30,6 +33,9 @@
                 <constraints nullable="true" />
             </column>
             <column name="file_data" type="${blobType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="file_data_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="file_data_content_type" type="varchar(255)">
@@ -55,6 +61,9 @@
             </column>
             <column name="updated_at" type="${datetimeType}">
                 <constraints nullable="false" />
+            </column>
+            <column name="pre_signed_url" type="varchar(400)">
+                <constraints nullable="true" />
             </column>
             <column name="event_id" type="bigint">
                 <constraints nullable="true" />
@@ -85,12 +94,14 @@
                   tableName="event_media"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="tenant_id" type="string"/>
             <column name="title" type="string"/>
             <column name="description" type="string"/>
             <column name="event_media_type" type="string"/>
             <column name="storage_type" type="string"/>
             <column name="file_url" type="string"/>
             <column name="file_data" type="blob"/>
+            <column name="file_data_content_type" type="string"/>
             <column name="file_data_content_type" type="string"/>
             <column name="content_type" type="string"/>
             <column name="file_size" type="numeric"/>
@@ -99,6 +110,7 @@
             <column name="is_event_management_official_document" type="boolean"/>
             <column name="created_at" type="date"/>
             <column name="updated_at" type="date"/>
+            <column name="pre_signed_url" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

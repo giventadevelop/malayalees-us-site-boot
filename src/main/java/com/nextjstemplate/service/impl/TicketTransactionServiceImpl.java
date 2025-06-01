@@ -1,10 +1,5 @@
 package com.nextjstemplate.service.impl;
 
-import com.nextjstemplate.domain.TicketTransaction;
-import com.nextjstemplate.repository.TicketTransactionRepository;
-import com.nextjstemplate.service.TicketTransactionService;
-import com.nextjstemplate.service.dto.TicketTransactionDTO;
-import com.nextjstemplate.service.mapper.TicketTransactionMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.nextjstemplate.domain.TicketTransaction}.
  */
 @Service
 @Transactional
-public class TicketTransactionServiceImpl implements TicketTransactionService {
+public class TicketTransactionServiceImpl /*implements TicketTransactionService*/ {/*
 
     private final Logger log = LoggerFactory.getLogger(TicketTransactionServiceImpl.class);
 
@@ -83,5 +77,5 @@ public class TicketTransactionServiceImpl implements TicketTransactionService {
     public void delete(Long id) {
         log.debug("Request to delete TicketTransaction : {}", id);
         ticketTransactionRepository.deleteById(id);
-    }
+    }*/
 }

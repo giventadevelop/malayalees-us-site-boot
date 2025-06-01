@@ -6,20 +6,20 @@
     <!--
         Added the constraints for entity UserTask.
     -->
-
     <changeSet id="20250422200056-2" author="jhipster">
-        <!-- Foreign key constraint for user_id referencing user_profile.id -->
+
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="user_task"
-                                 constraintName="fk_user_task_user_id"
+                                 constraintName="fk_user_task__user_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="user_profile"/>
+                                 referencedTableName="user_profile"
+                                 />
 
-        <!-- Foreign key constraint for event_id referencing event.id -->
         <addForeignKeyConstraint baseColumnNames="event_id"
                                  baseTableName="user_task"
-                                 constraintName="fk_user_task_event_id"
+                                 constraintName="fk_user_task__event_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event"/>
+                                 referencedTableName="event_details"
+                                 />
     </changeSet>
 </databaseChangeLog>

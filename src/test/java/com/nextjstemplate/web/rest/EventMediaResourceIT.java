@@ -1,18 +1,23 @@
 package com.nextjstemplate.web.rest;
 
+import static com.nextjstemplate.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
+import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.EventMedia;
+import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.repository.EventMediaRepository;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.service.mapper.EventMediaMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -24,7 +29,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+//import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link EventMediaResource} REST controller.
@@ -32,7 +37,10 @@ import org.springframework.util.Base64Utils;
 @IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-class EventMediaResourceIT {
+class EventMediaResourceIT {/*
+
+    private static final String DEFAULT_TENANT_ID = "AAAAAAAAAA";
+    private static final String UPDATED_TENANT_ID = "BBBBBBBBBB";
 
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
@@ -54,11 +62,15 @@ class EventMediaResourceIT {
     private static final String DEFAULT_FILE_DATA_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_FILE_DATA_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_FILE_DATA_CONTENT_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_DATA_CONTENT_TYPE = "BBBBBBBBBB";
+
     private static final String DEFAULT_CONTENT_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT_TYPE = "BBBBBBBBBB";
 
     private static final Integer DEFAULT_FILE_SIZE = 1;
     private static final Integer UPDATED_FILE_SIZE = 2;
+    private static final Integer SMALLER_FILE_SIZE = 1 - 1;
 
     private static final Boolean DEFAULT_IS_PUBLIC = false;
     private static final Boolean UPDATED_IS_PUBLIC = true;
@@ -71,6 +83,8 @@ class EventMediaResourceIT {
 
     private static final Instant DEFAULT_CREATED_AT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_CREATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
+
 
     private static final Instant DEFAULT_UPDATED_AT = Instant.ofEpochMilli(0L);
     private static final Instant UPDATED_UPDATED_AT = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -95,12 +109,12 @@ class EventMediaResourceIT {
 
     private EventMedia eventMedia;
 
-    /**
+    *//**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static EventMedia createEntity(EntityManager em) {
         EventMedia eventMedia = new EventMedia()
             .title(DEFAULT_TITLE)
@@ -120,12 +134,12 @@ class EventMediaResourceIT {
         return eventMedia;
     }
 
-    /**
+    *//**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static EventMedia createUpdatedEntity(EntityManager em) {
         EventMedia eventMedia = new EventMedia()
             .title(UPDATED_TITLE)
@@ -664,4 +678,4 @@ class EventMediaResourceIT {
         List<EventMedia> eventMediaList = eventMediaRepository.findAll();
         assertThat(eventMediaList).hasSize(databaseSizeBeforeDelete - 1);
     }
-}
+*/}

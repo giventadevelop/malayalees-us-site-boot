@@ -1,7 +1,7 @@
 package com.nextjstemplate.domain;
 
+import static com.nextjstemplate.domain.EventDetailsTestSamples.*;
 import static com.nextjstemplate.domain.EventMediaTestSamples.*;
-import static com.nextjstemplate.domain.EventTestSamples.*;
 import static com.nextjstemplate.domain.UserProfileTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,10 +27,10 @@ class EventMediaTest {
     @Test
     void eventTest() throws Exception {
         EventMedia eventMedia = getEventMediaRandomSampleGenerator();
-        Event eventBack = getEventRandomSampleGenerator();
+        EventDetails eventDetailsBack = getEventDetailsRandomSampleGenerator();
 
-        eventMedia.setEvent(eventBack);
-        assertThat(eventMedia.getEvent()).isEqualTo(eventBack);
+        eventMedia.setEvent(eventDetailsBack);
+        assertThat(eventMedia.getEvent()).isEqualTo(eventDetailsBack);
 
         eventMedia.event(null);
         assertThat(eventMedia.getEvent()).isNull();

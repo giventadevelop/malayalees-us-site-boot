@@ -1,8 +1,5 @@
 package com.nextjstemplate.web.rest;
 
-import com.nextjstemplate.repository.TicketTransactionRepository;
-import com.nextjstemplate.service.TicketTransactionService;
-import com.nextjstemplate.service.dto.TicketTransactionDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +22,10 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.nextjstemplate.domain.TicketTransaction}.
  */
 @RestController
 @RequestMapping("/api/ticket-transactions")
-public class TicketTransactionResource {
+public class TicketTransactionResource {/*
 
     private final Logger log = LoggerFactory.getLogger(TicketTransactionResource.class);
 
@@ -50,13 +46,13 @@ public class TicketTransactionResource {
         this.ticketTransactionRepository = ticketTransactionRepository;
     }
 
-    /**
+    *//**
      * {@code POST  /ticket-transactions} : Create a new ticketTransaction.
      *
      * @param ticketTransactionDTO the ticketTransactionDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ticketTransactionDTO, or with status {@code 400 (Bad Request)} if the ticketTransaction has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PostMapping("")
     public ResponseEntity<TicketTransactionDTO> createTicketTransaction(@Valid @RequestBody TicketTransactionDTO ticketTransactionDTO)
         throws URISyntaxException {
@@ -71,7 +67,7 @@ public class TicketTransactionResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PUT  /ticket-transactions/:id} : Updates an existing ticketTransaction.
      *
      * @param id the id of the ticketTransactionDTO to save.
@@ -80,7 +76,7 @@ public class TicketTransactionResource {
      * or with status {@code 400 (Bad Request)} if the ticketTransactionDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ticketTransactionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PutMapping("/{id}")
     public ResponseEntity<TicketTransactionDTO> updateTicketTransaction(
         @PathVariable(value = "id", required = false) final Long id,
@@ -105,7 +101,7 @@ public class TicketTransactionResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PATCH  /ticket-transactions/:id} : Partial updates given fields of an existing ticketTransaction, field will ignore if it is null
      *
      * @param id the id of the ticketTransactionDTO to save.
@@ -115,7 +111,7 @@ public class TicketTransactionResource {
      * or with status {@code 404 (Not Found)} if the ticketTransactionDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the ticketTransactionDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TicketTransactionDTO> partialUpdateTicketTransaction(
         @PathVariable(value = "id", required = false) final Long id,
@@ -141,12 +137,12 @@ public class TicketTransactionResource {
         );
     }
 
-    /**
+    *//**
      * {@code GET  /ticket-transactions} : get all the ticketTransactions.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ticketTransactions in body.
-     */
+     *//*
     @GetMapping("")
     public ResponseEntity<List<TicketTransactionDTO>> getAllTicketTransactions(
         @org.springdoc.core.annotations.ParameterObject Pageable pageable
@@ -157,12 +153,12 @@ public class TicketTransactionResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
+    *//**
      * {@code GET  /ticket-transactions/:id} : get the "id" ticketTransaction.
      *
      * @param id the id of the ticketTransactionDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ticketTransactionDTO, or with status {@code 404 (Not Found)}.
-     */
+     *//*
     @GetMapping("/{id}")
     public ResponseEntity<TicketTransactionDTO> getTicketTransaction(@PathVariable Long id) {
         log.debug("REST request to get TicketTransaction : {}", id);
@@ -170,12 +166,12 @@ public class TicketTransactionResource {
         return ResponseUtil.wrapOrNotFound(ticketTransactionDTO);
     }
 
-    /**
+    *//**
      * {@code DELETE  /ticket-transactions/:id} : delete the "id" ticketTransaction.
      *
      * @param id the id of the ticketTransactionDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+     *//*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicketTransaction(@PathVariable Long id) {
         log.debug("REST request to delete TicketTransaction : {}", id);
@@ -185,4 +181,4 @@ public class TicketTransactionResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-}
+*/}

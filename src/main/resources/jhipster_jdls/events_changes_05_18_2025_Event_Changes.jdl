@@ -33,14 +33,14 @@ entity EventType {
 
 // Event entity
 entity Event {
-    id Long required,
+    id Long ,
     title String required,
     caption String,
     description String,
-    startDate String required,
-    endDate String required,
-    startTime ZonedDateTime required,
-    endTime ZonedDateTime required,
+    startDate LocalDate required,
+    endDate LocalDate required,
+    startTime String required,
+    endTime String required,
     location String,
     directionsToVenue String,
     capacity Integer,
@@ -50,10 +50,31 @@ entity Event {
     updatedAt Instant required
 }
 
+// Event Media entity
+entity EventMedia {
+    id Long,
+    title String required,
+    description String,
+    eventMediaType String required,
+    storageType String required,
+    fileUrl String,
+    preSignedUrl String,
+    fileData Blob,
+    contentType String,
+    fileSize Integer,
+    isPublic Boolean,
+    eventFlyer Boolean,
+    isEventManagementOfficialDocument Boolean,
+    createdAt Instant required,
+    updatedAt Instant required
+}
+
 // Relationships
 relationship ManyToOne {
     Event{createdBy} to UserProfile,
-    Event{eventType} to EventType
+    Event{eventType} to EventType,
+    EventMedia{event} to Event,
+    EventMedia{uploadedBy} to UserProfile
 }
 
 // Options for entities

@@ -3,7 +3,7 @@ package com.nextjstemplate.service.dto;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -12,28 +12,36 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventMediaDTO implements Serializable {
 
-//    @NotNull
     private Long id;
 
+    @Size(max = 255)
+    private String tenantId;
+
     @NotNull
+    @Size(max = 255)
     private String title;
 
+    @Size(max = 255)
     private String description;
 
     @NotNull
+    @Size(max = 255)
     private String eventMediaType;
 
     @NotNull
+    @Size(max = 255)
     private String storageType;
 
+    @Size(max = 255)
     private String fileUrl;
-
-    private String preSignedUrl;
 
     @Lob
     private byte[] fileData;
 
+    @Size(max = 255)
     private String fileDataContentType;
+
+    @Size(max = 255)
     private String contentType;
 
     private Integer fileSize;
@@ -45,12 +53,15 @@ public class EventMediaDTO implements Serializable {
     private Boolean isEventManagementOfficialDocument;
 
     @NotNull
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
     @NotNull
-    private Instant updatedAt;
+    private ZonedDateTime updatedAt;
 
-    private EventDTO event;
+    @Size(max = 400)
+    private String preSignedUrl;
+
+    private EventDetailsDTO event;
 
     private UserProfileDTO uploadedBy;
 
@@ -60,6 +71,14 @@ public class EventMediaDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -94,21 +113,12 @@ public class EventMediaDTO implements Serializable {
         this.storageType = storageType;
     }
 
-
     public String getFileUrl() {
         return fileUrl;
     }
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    public String getPreSignedUrl() {
-        return preSignedUrl;
-    }
-
-    public void setPreSignedUrl(String preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
     }
 
     public byte[] getFileData() {
@@ -118,6 +128,7 @@ public class EventMediaDTO implements Serializable {
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
     }
+
 
     public String getFileDataContentType() {
         return fileDataContentType;
@@ -167,27 +178,35 @@ public class EventMediaDTO implements Serializable {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
-    public Instant getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public EventDTO getEvent() {
+    public String getPreSignedUrl() {
+        return preSignedUrl;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
+    }
+
+    public EventDetailsDTO getEvent() {
         return event;
     }
 
-    public void setEvent(EventDTO event) {
+    public void setEvent(EventDetailsDTO event) {
         this.event = event;
     }
 
@@ -225,12 +244,14 @@ public class EventMediaDTO implements Serializable {
     public String toString() {
         return "EventMediaDTO{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
+            ", fileDataContentType='" + getFileDataContentType() + "'" +
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
@@ -238,6 +259,7 @@ public class EventMediaDTO implements Serializable {
             ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", preSignedUrl='" + getPreSignedUrl() + "'" +
             ", event=" + getEvent() +
             ", uploadedBy=" + getUploadedBy() +
             "}";

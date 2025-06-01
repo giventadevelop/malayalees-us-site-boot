@@ -14,6 +14,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="tenant_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="title" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -31,10 +34,6 @@
             </column>
             <column name="completed" type="boolean">
                 <constraints nullable="false" />
-            </column>
-
-            <column name="event_id" type="bigint">
-                <constraints nullable="true" />
             </column>
             <column name="assignee_name" type="varchar(255)">
                 <constraints nullable="true" />
@@ -54,7 +53,9 @@
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-
+            <column name="event_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="user_task" columnName="due_date" columnDataType="${datetimeType}"/>
@@ -79,14 +80,13 @@
                   tableName="user_task"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="tenant_id" type="string"/>
             <column name="title" type="string"/>
             <column name="description" type="clob"/>
             <column name="status" type="string"/>
             <column name="priority" type="string"/>
             <column name="due_date" type="date"/>
             <column name="completed" type="boolean"/>
-            <column name="user_id" type="numeric"/>
-            <column name="event_id" type="numeric"/>
             <column name="assignee_name" type="string"/>
             <column name="assignee_contact_phone" type="string"/>
             <column name="assignee_contact_email" type="string"/>

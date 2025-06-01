@@ -12,8 +12,10 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserTaskDTO implements Serializable {
 
-    @NotNull
     private Long id;
+
+    @Size(max = 255)
+    private String tenantId;
 
     @NotNull
     @Size(max = 255)
@@ -35,11 +37,6 @@ public class UserTaskDTO implements Serializable {
     @NotNull
     private Boolean completed;
 
-    @NotNull
-    private Long userId;
-
-    private Long eventId;
-
     @Size(max = 255)
     private String assigneeName;
 
@@ -57,7 +54,7 @@ public class UserTaskDTO implements Serializable {
 
     private UserProfileDTO user;
 
-    private EventDTO event;
+    private EventDetailsDTO event;
 
     public Long getId() {
         return id;
@@ -65,6 +62,14 @@ public class UserTaskDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -115,22 +120,6 @@ public class UserTaskDTO implements Serializable {
         this.completed = completed;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
     public String getAssigneeName() {
         return assigneeName;
     }
@@ -179,11 +168,11 @@ public class UserTaskDTO implements Serializable {
         this.user = user;
     }
 
-    public EventDTO getEvent() {
+    public EventDetailsDTO getEvent() {
         return event;
     }
 
-    public void setEvent(EventDTO event) {
+    public void setEvent(EventDetailsDTO event) {
         this.event = event;
     }
 
@@ -213,14 +202,13 @@ public class UserTaskDTO implements Serializable {
     public String toString() {
         return "UserTaskDTO{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
             ", priority='" + getPriority() + "'" +
             ", dueDate='" + getDueDate() + "'" +
             ", completed='" + getCompleted() + "'" +
-            ", userId=" + getUserId() +
-            ", eventId=" + getEventId() +
             ", assigneeName='" + getAssigneeName() + "'" +
             ", assigneeContactPhone='" + getAssigneeContactPhone() + "'" +
             ", assigneeContactEmail='" + getAssigneeContactEmail() + "'" +

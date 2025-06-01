@@ -13,15 +13,22 @@ public class UserSubscriptionDTO implements Serializable {
 
     private Long id;
 
+    @Size(max = 255)
+    private String tenantId;
+
+    @Size(max = 255)
     private String stripeCustomerId;
 
+    @Size(max = 255)
     private String stripeSubscriptionId;
 
+    @Size(max = 255)
     private String stripePriceId;
 
     private ZonedDateTime stripeCurrentPeriodEnd;
 
     @NotNull
+    @Size(max = 255)
     private String status;
 
     private UserProfileDTO userProfile;
@@ -32,6 +39,14 @@ public class UserSubscriptionDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getStripeCustomerId() {
@@ -108,6 +123,7 @@ public class UserSubscriptionDTO implements Serializable {
     public String toString() {
         return "UserSubscriptionDTO{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", stripeCustomerId='" + getStripeCustomerId() + "'" +
             ", stripeSubscriptionId='" + getStripeSubscriptionId() + "'" +
             ", stripePriceId='" + getStripePriceId() + "'" +

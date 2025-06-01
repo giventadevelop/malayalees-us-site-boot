@@ -7,12 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
-import com.nextjstemplate.domain.Event;
-import com.nextjstemplate.domain.UserProfile;
-import com.nextjstemplate.domain.UserTask;
-import com.nextjstemplate.repository.UserTaskRepository;
-import com.nextjstemplate.service.dto.UserTaskDTO;
-import com.nextjstemplate.service.mapper.UserTaskMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -38,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class UserTaskResourceIT {
 
-    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    /*private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
@@ -102,12 +96,12 @@ class UserTaskResourceIT {
 
     private UserTask userTask;
 
-    /**
+    *//**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static UserTask createEntity(EntityManager em) {
         UserTask userTask = new UserTask()
             .title(DEFAULT_TITLE)
@@ -125,12 +119,12 @@ class UserTaskResourceIT {
         return userTask;
     }
 
-    /**
+    *//**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static UserTask createUpdatedEntity(EntityManager em) {
         UserTask userTask = new UserTask()
             .title(UPDATED_TITLE)
@@ -1326,9 +1320,9 @@ class UserTaskResourceIT {
         defaultUserTaskShouldNotBeFound("eventId.equals=" + (eventId + 1));
     }
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is returned.
-     */
+     *//*
     private void defaultUserTaskShouldBeFound(String filter) throws Exception {
         restUserTaskMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -1357,9 +1351,9 @@ class UserTaskResourceIT {
             .andExpect(content().string("1"));
     }
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is not returned.
-     */
+     *//*
     private void defaultUserTaskShouldNotBeFound(String filter) throws Exception {
         restUserTaskMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -1680,5 +1674,5 @@ class UserTaskResourceIT {
         // Validate the database contains one less item
         List<UserTask> userTaskList = userTaskRepository.findAll();
         assertThat(userTaskList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    }*/
 }

@@ -1,7 +1,8 @@
 package com.nextjstemplate.repository;
 
-import com.nextjstemplate.domain.UserSubscription;
 import java.util.List;
+
+import com.nextjstemplate.domain.UserSubscription;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

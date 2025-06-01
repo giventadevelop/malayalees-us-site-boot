@@ -19,12 +19,15 @@ public class UserTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
+
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
 
     @NotNull
     @Size(max = 255)
@@ -52,7 +55,6 @@ public class UserTask implements Serializable {
     @Column(name = "completed", nullable = false)
     private Boolean completed;
 
-
     @Size(max = 255)
     @Column(name = "assignee_name", length = 255)
     private String assigneeName;
@@ -79,7 +81,7 @@ public class UserTask implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
-    private Event event;
+    private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -94,6 +96,19 @@ public class UserTask implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public UserTask tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -174,8 +189,6 @@ public class UserTask implements Serializable {
         this.completed = completed;
     }
 
-
-
     public String getAssigneeName() {
         return this.assigneeName;
     }
@@ -254,16 +267,16 @@ public class UserTask implements Serializable {
         return this;
     }
 
-    public Event getEvent() {
+    public EventDetails getEvent() {
         return this.event;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEvent(EventDetails eventDetails) {
+        this.event = eventDetails;
     }
 
-    public UserTask event(Event event) {
-        this.setEvent(event);
+    public UserTask event(EventDetails eventDetails) {
+        this.setEvent(eventDetails);
         return this;
     }
 
@@ -291,6 +304,7 @@ public class UserTask implements Serializable {
     public String toString() {
         return "UserTask{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +

@@ -1,8 +1,6 @@
 package com.nextjstemplate.web.rest;
 
-import com.nextjstemplate.repository.EventRepository;
 import com.nextjstemplate.service.EventService;
-import com.nextjstemplate.service.dto.EventDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +23,10 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.nextjstemplate.domain.Event}.
  */
 @RestController
 @RequestMapping("/api/events")
-public class EventResource {
+public class EventResource {/*
 
     private final Logger log = LoggerFactory.getLogger(EventResource.class);
 
@@ -47,13 +44,13 @@ public class EventResource {
         this.eventRepository = eventRepository;
     }
 
-    /**
+    *//**
      * {@code POST  /events} : Create a new event.
      *
      * @param eventDTO the eventDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eventDTO, or with status {@code 400 (Bad Request)} if the event has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PostMapping("")
     public ResponseEntity<EventDTO> createEvent(@Valid @RequestBody EventDTO eventDTO) throws URISyntaxException {
         log.debug("REST request to save Event : {}", eventDTO);
@@ -67,7 +64,7 @@ public class EventResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PUT  /events/:id} : Updates an existing event.
      *
      * @param id the id of the eventDTO to save.
@@ -76,7 +73,7 @@ public class EventResource {
      * or with status {@code 400 (Bad Request)} if the eventDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the eventDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PutMapping("/{id}")
     public ResponseEntity<EventDTO> updateEvent(
         @PathVariable(value = "id", required = false) final Long id,
@@ -101,7 +98,7 @@ public class EventResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PATCH  /events/:id} : Partial updates given fields of an existing event, field will ignore if it is null
      *
      * @param id the id of the eventDTO to save.
@@ -111,7 +108,7 @@ public class EventResource {
      * or with status {@code 404 (Not Found)} if the eventDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the eventDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EventDTO> partialUpdateEvent(
         @PathVariable(value = "id", required = false) final Long id,
@@ -137,12 +134,12 @@ public class EventResource {
         );
     }
 
-    /**
+    *//**
      * {@code GET  /events} : get all the events.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of events in body.
-     */
+     *//*
     @GetMapping("")
     public ResponseEntity<List<EventDTO>> getAllEvents(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Events");
@@ -151,12 +148,12 @@ public class EventResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
+    *//**
      * {@code GET  /events/:id} : get the "id" event.
      *
      * @param id the id of the eventDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the eventDTO, or with status {@code 404 (Not Found)}.
-     */
+     *//*
     @GetMapping("/{id}")
     public ResponseEntity<EventDTO> getEvent(@PathVariable Long id) {
         log.debug("REST request to get Event : {}", id);
@@ -164,12 +161,12 @@ public class EventResource {
         return ResponseUtil.wrapOrNotFound(eventDTO);
     }
 
-    /**
+    *//**
      * {@code DELETE  /events/:id} : delete the "id" event.
      *
      * @param id the id of the eventDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+     *//*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
         log.debug("REST request to delete Event : {}", id);
@@ -178,5 +175,5 @@ public class EventResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
+    }*/
 }

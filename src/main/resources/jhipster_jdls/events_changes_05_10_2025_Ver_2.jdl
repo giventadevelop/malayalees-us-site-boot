@@ -218,7 +218,10 @@ service all with serviceImpl
 paginate all with pagination
 dto all with mapstruct
 
+// Microservice definition
+//microservice UserProfile, Event, EventType, EventOrganizer, EventMedia, TicketType, TicketTransaction, Poll, PollOption, PollResponse, Admin, AdminAuditLog, CalendarEvent, UserTask with eventmanagement
 
+// Search options
 search * with no
 
 // Set options

@@ -12,6 +12,7 @@ public class EventOrganizerTestSamples {
     public static EventOrganizer getEventOrganizerSample1() {
         return new EventOrganizer()
             .id(1L)
+            .tenantId("tenantId1")
             .title("title1")
             .designation("designation1")
             .contactEmail("contactEmail1")
@@ -21,6 +22,7 @@ public class EventOrganizerTestSamples {
     public static EventOrganizer getEventOrganizerSample2() {
         return new EventOrganizer()
             .id(2L)
+            .tenantId("tenantId2")
             .title("title2")
             .designation("designation2")
             .contactEmail("contactEmail2")
@@ -30,6 +32,7 @@ public class EventOrganizerTestSamples {
     public static EventOrganizer getEventOrganizerRandomSampleGenerator() {
         return new EventOrganizer()
             .id(longCount.incrementAndGet())
+            .tenantId(UUID.randomUUID().toString())
             .title(UUID.randomUUID().toString())
             .designation(UUID.randomUUID().toString())
             .contactEmail(UUID.randomUUID().toString())

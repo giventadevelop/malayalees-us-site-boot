@@ -1,10 +1,7 @@
 package com.nextjstemplate.service.impl;
 
-import com.nextjstemplate.domain.Event;
-import com.nextjstemplate.repository.EventRepository;
 import com.nextjstemplate.service.EventService;
-import com.nextjstemplate.service.dto.EventDTO;
-import com.nextjstemplate.service.mapper.EventMapper;
+
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class EventServiceImpl implements EventService {
+public class EventServiceImpl implements EventService {/*
 
     private final Logger log = LoggerFactory.getLogger(EventServiceImpl.class);
 
@@ -80,5 +77,5 @@ public class EventServiceImpl implements EventService {
     public void delete(Long id) {
         log.debug("Request to delete Event : {}", id);
         eventRepository.deleteById(id);
-    }
+    }*/
 }

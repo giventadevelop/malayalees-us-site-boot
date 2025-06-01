@@ -23,6 +23,8 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter tenantId;
+
     private StringFilter title;
 
     private StringFilter designation;
@@ -33,9 +35,9 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
 
     private BooleanFilter isPrimary;
 
-    private InstantFilter createdAt;
+    private ZonedDateTimeFilter createdAt;
 
-    private InstantFilter updatedAt;
+    private ZonedDateTimeFilter updatedAt;
 
     private LongFilter eventId;
 
@@ -47,6 +49,7 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
 
     public EventOrganizerCriteria(EventOrganizerCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.designation = other.designation == null ? null : other.designation.copy();
         this.contactEmail = other.contactEmail == null ? null : other.contactEmail.copy();
@@ -77,6 +80,21 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public StringFilter getTitle() {
@@ -154,33 +172,33 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
         this.isPrimary = isPrimary;
     }
 
-    public InstantFilter getCreatedAt() {
+    public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
 
-    public InstantFilter createdAt() {
+    public ZonedDateTimeFilter createdAt() {
         if (createdAt == null) {
-            createdAt = new InstantFilter();
+            createdAt = new ZonedDateTimeFilter();
         }
         return createdAt;
     }
 
-    public void setCreatedAt(InstantFilter createdAt) {
+    public void setCreatedAt(ZonedDateTimeFilter createdAt) {
         this.createdAt = createdAt;
     }
 
-    public InstantFilter getUpdatedAt() {
+    public ZonedDateTimeFilter getUpdatedAt() {
         return updatedAt;
     }
 
-    public InstantFilter updatedAt() {
+    public ZonedDateTimeFilter updatedAt() {
         if (updatedAt == null) {
-            updatedAt = new InstantFilter();
+            updatedAt = new ZonedDateTimeFilter();
         }
         return updatedAt;
     }
 
-    public void setUpdatedAt(InstantFilter updatedAt) {
+    public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -233,6 +251,7 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
         final EventOrganizerCriteria that = (EventOrganizerCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(title, that.title) &&
             Objects.equals(designation, that.designation) &&
             Objects.equals(contactEmail, that.contactEmail) &&
@@ -250,6 +269,7 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            tenantId,
             title,
             designation,
             contactEmail,
@@ -268,6 +288,7 @@ public class EventOrganizerCriteria implements Serializable, Criteria {
     public String toString() {
         return "EventOrganizerCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
             (designation != null ? "designation=" + designation + ", " : "") +
             (contactEmail != null ? "contactEmail=" + contactEmail + ", " : "") +

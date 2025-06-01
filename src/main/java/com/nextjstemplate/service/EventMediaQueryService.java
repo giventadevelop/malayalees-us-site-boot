@@ -1,14 +1,13 @@
 package com.nextjstemplate.service;
 
+import com.nextjstemplate.domain.*; // for static metamodels
 import com.nextjstemplate.domain.EventMedia;
-import com.nextjstemplate.domain.EventMedia_;
-import com.nextjstemplate.domain.Event_;
-import com.nextjstemplate.domain.UserProfile_;
 import com.nextjstemplate.repository.EventMediaRepository;
 import com.nextjstemplate.service.criteria.EventMediaCriteria;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.service.mapper.EventMediaMapper;
 import jakarta.persistence.criteria.JoinType;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,8 +16,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
-
-import java.util.List;
 
 /**
  * Service for executing complex queries for {@link EventMedia} entities in the database.
@@ -93,6 +90,9 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), EventMedia_.id));
             }
+            if (criteria.getTenantId() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventMedia_.tenantId));
+            }
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), EventMedia_.title));
             }
@@ -108,8 +108,9 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getFileUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getFileUrl(), EventMedia_.fileUrl));
             }
-            if (criteria.getPreSignedUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
+            if (criteria.getFileDataContentType() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getFileDataContentType(), EventMedia_.fileDataContentType));
             }
             if (criteria.getContentType() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getContentType(), EventMedia_.contentType));
@@ -135,10 +136,13 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventMedia_.updatedAt));
             }
+            if (criteria.getPreSignedUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
+            }
             if (criteria.getEventId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getEventId(), root -> root.join(EventMedia_.event, JoinType.LEFT).get(Event_.id))
+                        buildSpecification(criteria.getEventId(), root -> root.join(EventMedia_.event, JoinType.LEFT).get(EventDetails_.id))
                     );
             }
             if (criteria.getUploadedById() != null) {

@@ -2,7 +2,7 @@ package com.nextjstemplate.service.dto;
 
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -11,27 +11,33 @@ import java.util.Objects;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventOrganizerDTO implements Serializable {
 
-    @NotNull
     private Long id;
 
+    @Size(max = 255)
+    private String tenantId;
+
     @NotNull
+    @Size(max = 255)
     private String title;
 
+    @Size(max = 255)
     private String designation;
 
+    @Size(max = 255)
     private String contactEmail;
 
+    @Size(max = 255)
     private String contactPhone;
 
     private Boolean isPrimary;
 
     @NotNull
-    private Instant createdAt;
+    private ZonedDateTime createdAt;
 
     @NotNull
-    private Instant updatedAt;
+    private ZonedDateTime updatedAt;
 
-    private EventDTO event;
+    private EventDetailsDTO event;
 
     private UserProfileDTO organizer;
 
@@ -41,6 +47,14 @@ public class EventOrganizerDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getTitle() {
@@ -83,27 +97,27 @@ public class EventOrganizerDTO implements Serializable {
         this.isPrimary = isPrimary;
     }
 
-    public Instant getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public EventDTO getEvent() {
+    public EventDetailsDTO getEvent() {
         return event;
     }
 
-    public void setEvent(EventDTO event) {
+    public void setEvent(EventDetailsDTO event) {
         this.event = event;
     }
 
@@ -141,6 +155,7 @@ public class EventOrganizerDTO implements Serializable {
     public String toString() {
         return "EventOrganizerDTO{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", title='" + getTitle() + "'" +
             ", designation='" + getDesignation() + "'" +
             ", contactEmail='" + getContactEmail() + "'" +

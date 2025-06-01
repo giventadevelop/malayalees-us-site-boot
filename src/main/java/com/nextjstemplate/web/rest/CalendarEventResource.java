@@ -1,8 +1,6 @@
 package com.nextjstemplate.web.rest;
 
-import com.nextjstemplate.repository.CalendarEventRepository;
 import com.nextjstemplate.service.CalendarEventService;
-import com.nextjstemplate.service.dto.CalendarEventDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +23,10 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.nextjstemplate.domain.CalendarEvent}.
  */
 @RestController
 @RequestMapping("/api/calendar-events")
-public class CalendarEventResource {
+public class CalendarEventResource {/*
 
     private final Logger log = LoggerFactory.getLogger(CalendarEventResource.class);
 
@@ -47,13 +44,13 @@ public class CalendarEventResource {
         this.calendarEventRepository = calendarEventRepository;
     }
 
-    /**
+    *//**
      * {@code POST  /calendar-events} : Create a new calendarEvent.
      *
      * @param calendarEventDTO the calendarEventDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new calendarEventDTO, or with status {@code 400 (Bad Request)} if the calendarEvent has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PostMapping("")
     public ResponseEntity<CalendarEventDTO> createCalendarEvent(@Valid @RequestBody CalendarEventDTO calendarEventDTO)
         throws URISyntaxException {
@@ -68,7 +65,7 @@ public class CalendarEventResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PUT  /calendar-events/:id} : Updates an existing calendarEvent.
      *
      * @param id the id of the calendarEventDTO to save.
@@ -77,7 +74,7 @@ public class CalendarEventResource {
      * or with status {@code 400 (Bad Request)} if the calendarEventDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the calendarEventDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PutMapping("/{id}")
     public ResponseEntity<CalendarEventDTO> updateCalendarEvent(
         @PathVariable(value = "id", required = false) final Long id,
@@ -102,7 +99,7 @@ public class CalendarEventResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PATCH  /calendar-events/:id} : Partial updates given fields of an existing calendarEvent, field will ignore if it is null
      *
      * @param id the id of the calendarEventDTO to save.
@@ -112,7 +109,7 @@ public class CalendarEventResource {
      * or with status {@code 404 (Not Found)} if the calendarEventDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the calendarEventDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<CalendarEventDTO> partialUpdateCalendarEvent(
         @PathVariable(value = "id", required = false) final Long id,
@@ -138,12 +135,12 @@ public class CalendarEventResource {
         );
     }
 
-    /**
+    *//**
      * {@code GET  /calendar-events} : get all the calendarEvents.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of calendarEvents in body.
-     */
+     *//*
     @GetMapping("")
     public ResponseEntity<List<CalendarEventDTO>> getAllCalendarEvents(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of CalendarEvents");
@@ -152,12 +149,12 @@ public class CalendarEventResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
+    *//**
      * {@code GET  /calendar-events/:id} : get the "id" calendarEvent.
      *
      * @param id the id of the calendarEventDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the calendarEventDTO, or with status {@code 404 (Not Found)}.
-     */
+     *//*
     @GetMapping("/{id}")
     public ResponseEntity<CalendarEventDTO> getCalendarEvent(@PathVariable Long id) {
         log.debug("REST request to get CalendarEvent : {}", id);
@@ -165,12 +162,12 @@ public class CalendarEventResource {
         return ResponseUtil.wrapOrNotFound(calendarEventDTO);
     }
 
-    /**
+    *//**
      * {@code DELETE  /calendar-events/:id} : delete the "id" calendarEvent.
      *
      * @param id the id of the calendarEventDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+     *//*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCalendarEvent(@PathVariable Long id) {
         log.debug("REST request to delete CalendarEvent : {}", id);
@@ -179,5 +176,5 @@ public class CalendarEventResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
+    }*/
 }

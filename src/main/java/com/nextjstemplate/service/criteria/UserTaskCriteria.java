@@ -23,6 +23,8 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter tenantId;
+
     private StringFilter title;
 
     private StringFilter status;
@@ -53,6 +55,7 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     public UserTaskCriteria(UserTaskCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.priority = other.priority == null ? null : other.priority.copy();
@@ -86,6 +89,21 @@ public class UserTaskCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public StringFilter getTitle() {
@@ -163,26 +181,6 @@ public class UserTaskCriteria implements Serializable, Criteria {
         this.completed = completed;
     }
 
-    public LongFilter getUserId() {
-        return userId;
-    }
-
-    public LongFilter userId() {
-        if (userId == null) {
-            userId = new LongFilter();
-        }
-        return userId;
-    }
-
-    public void setUserId(LongFilter userId) {
-        this.userId = userId;
-    }
-
-    public LongFilter getEventId() {
-        return eventId;
-    }
-
-
     public StringFilter getAssigneeName() {
         return assigneeName;
     }
@@ -258,11 +256,24 @@ public class UserTaskCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
+    public LongFilter getUserId() {
+        return userId;
+    }
 
+    public LongFilter userId() {
+        if (userId == null) {
+            userId = new LongFilter();
+        }
+        return userId;
+    }
 
+    public void setUserId(LongFilter userId) {
+        this.userId = userId;
+    }
 
-
-
+    public LongFilter getEventId() {
+        return eventId;
+    }
 
     public LongFilter eventId() {
         if (eventId == null) {
@@ -294,13 +305,12 @@ public class UserTaskCriteria implements Serializable, Criteria {
         final UserTaskCriteria that = (UserTaskCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(title, that.title) &&
             Objects.equals(status, that.status) &&
             Objects.equals(priority, that.priority) &&
             Objects.equals(dueDate, that.dueDate) &&
             Objects.equals(completed, that.completed) &&
-            Objects.equals(userId, that.userId) &&
-            Objects.equals(eventId, that.eventId) &&
             Objects.equals(assigneeName, that.assigneeName) &&
             Objects.equals(assigneeContactPhone, that.assigneeContactPhone) &&
             Objects.equals(assigneeContactEmail, that.assigneeContactEmail) &&
@@ -316,13 +326,12 @@ public class UserTaskCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            tenantId,
             title,
             status,
             priority,
             dueDate,
             completed,
-            userId,
-            eventId,
             assigneeName,
             assigneeContactPhone,
             assigneeContactEmail,
@@ -339,13 +348,12 @@ public class UserTaskCriteria implements Serializable, Criteria {
     public String toString() {
         return "UserTaskCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (priority != null ? "priority=" + priority + ", " : "") +
             (dueDate != null ? "dueDate=" + dueDate + ", " : "") +
             (completed != null ? "completed=" + completed + ", " : "") +
-            (userId != null ? "userId=" + userId + ", " : "") +
-            (eventId != null ? "eventId=" + eventId + ", " : "") +
             (assigneeName != null ? "assigneeName=" + assigneeName + ", " : "") +
             (assigneeContactPhone != null ? "assigneeContactPhone=" + assigneeContactPhone + ", " : "") +
             (assigneeContactEmail != null ? "assigneeContactEmail=" + assigneeContactEmail + ", " : "") +

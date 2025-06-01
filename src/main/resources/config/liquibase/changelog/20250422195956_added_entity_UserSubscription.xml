@@ -14,6 +14,9 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="tenant_id" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="stripe_customer_id" type="varchar(255)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_user_subscription__stripe_customer_id" />
             </column>
@@ -54,6 +57,7 @@
                   tableName="user_subscription"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="tenant_id" type="string"/>
             <column name="stripe_customer_id" type="string"/>
             <column name="stripe_subscription_id" type="string"/>
             <column name="stripe_price_id" type="string"/>

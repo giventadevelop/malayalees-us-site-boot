@@ -23,6 +23,8 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter tenantId;
+
     private StringFilter stripeCustomerId;
 
     private StringFilter stripeSubscriptionId;
@@ -41,6 +43,7 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
 
     public UserSubscriptionCriteria(UserSubscriptionCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.stripeCustomerId = other.stripeCustomerId == null ? null : other.stripeCustomerId.copy();
         this.stripeSubscriptionId = other.stripeSubscriptionId == null ? null : other.stripeSubscriptionId.copy();
         this.stripePriceId = other.stripePriceId == null ? null : other.stripePriceId.copy();
@@ -68,6 +71,21 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public StringFilter getStripeCustomerId() {
@@ -179,6 +197,7 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
         final UserSubscriptionCriteria that = (UserSubscriptionCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(stripeCustomerId, that.stripeCustomerId) &&
             Objects.equals(stripeSubscriptionId, that.stripeSubscriptionId) &&
             Objects.equals(stripePriceId, that.stripePriceId) &&
@@ -193,6 +212,7 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            tenantId,
             stripeCustomerId,
             stripeSubscriptionId,
             stripePriceId,
@@ -208,6 +228,7 @@ public class UserSubscriptionCriteria implements Serializable, Criteria {
     public String toString() {
         return "UserSubscriptionCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (stripeCustomerId != null ? "stripeCustomerId=" + stripeCustomerId + ", " : "") +
             (stripeSubscriptionId != null ? "stripeSubscriptionId=" + stripeSubscriptionId + ", " : "") +
             (stripePriceId != null ? "stripePriceId=" + stripePriceId + ", " : "") +

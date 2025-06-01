@@ -12,7 +12,7 @@
                                  baseTableName="event_media"
                                  constraintName="fk_event_media__event_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event"
+                                 referencedTableName="event_details"
                                  />
 
         <addForeignKeyConstraint baseColumnNames="uploaded_by_id"

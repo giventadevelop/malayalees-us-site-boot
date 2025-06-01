@@ -1,0 +1,384 @@
+// ===================================================
+// MULTI-TENANT EVENT MANAGEMENT SYSTEM - JHipster JDL
+// Generated from PostgreSQL Schema
+// ===================================================
+
+// Global Options
+service all with serviceImpl
+paginate all with pagination
+dto all with mapstruct
+search * with no
+filter all
+
+// Entity Definitions
+entity TenantOrganization {
+  id Long
+  tenantId String unique required maxlength(255)
+  organizationName String required maxlength(255)
+  domain String unique maxlength(255)
+  primaryColor String maxlength(7) // Hex color
+  secondaryColor String maxlength(7)
+  logoUrl String maxlength(1024)
+  contactEmail String required maxlength(255)
+  contactPhone String maxlength(50)
+  subscriptionPlan String required maxlength(50) // FREE, BASIC, PREMIUM, ENTERPRISE
+  subscriptionStatus String required maxlength(50) // ACTIVE, SUSPENDED, CANCELLED, EXPIRED
+  subscriptionStartDate LocalDate
+  subscriptionEndDate LocalDate
+  monthlyFeeUsd BigDecimal
+  stripeCustomerId String maxlength(255)
+  isActive Boolean
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity UserProfile {
+  id Long
+  tenantId String maxlength(255)
+  userId String required unique maxlength(255)
+  firstName String maxlength(255)
+  lastName String maxlength(255)
+  email String maxlength(255)
+  phone String maxlength(255)
+  addressLine1 String maxlength(255)
+  addressLine2 String maxlength(255)
+  city String maxlength(255)
+  state String maxlength(255)
+  zipCode String maxlength(255)
+  country String maxlength(255)
+  notes String maxlength(255)
+  familyName String maxlength(255)
+  cityTown String maxlength(255)
+  district String maxlength(255)
+  educationalInstitution String maxlength(255)
+  profileImageUrl String maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity UserSubscription {
+  id Long
+  tenantId String maxlength(255)
+  stripeCustomerId String unique maxlength(255)
+  stripeSubscriptionId String unique maxlength(255)
+  stripePriceId String maxlength(255)
+  stripeCurrentPeriodEnd ZonedDateTime
+  status String required maxlength(255)
+}
+
+entity UserTask {
+  id Long
+  tenantId String maxlength(255)
+  title String required maxlength(255)
+  description TextBlob
+  status String required maxlength(255)
+  priority String required maxlength(255)
+  dueDate ZonedDateTime
+  completed Boolean required
+  assigneeName String maxlength(255)
+  assigneeContactPhone String maxlength(50)
+  assigneeContactEmail String maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventTypeDetails {
+  id Long
+  tenantId String maxlength(255)
+  name String required unique maxlength(255)
+  description String maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventDetails {
+  id Long
+  tenantId String maxlength(255)
+  title String required maxlength(255)
+  caption String maxlength(255)
+  description String maxlength(255)
+  startDate LocalDate required
+  endDate LocalDate required
+  startTime String required maxlength(100)
+  endTime String required maxlength(100)
+  location String maxlength(255)
+  directionsToVenue String maxlength(255)
+  capacity Integer
+  admissionType String required maxlength(255)
+  isActive Boolean
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventTicketTransaction {
+  id Long
+  tenantId String maxlength(255)
+  email String required maxlength(255)
+  firstName String maxlength(255)
+  lastName String maxlength(255)
+  quantity Integer required
+  pricePerUnit BigDecimal required
+  totalAmount BigDecimal required
+  status String required maxlength(255)
+  purchaseDate ZonedDateTime required
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventOrganizer {
+  id Long
+  tenantId String maxlength(255)
+  title String required maxlength(255)
+  designation String maxlength(255)
+  contactEmail String maxlength(255)
+  contactPhone String maxlength(255)
+  isPrimary Boolean
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventTicketType {
+  id Long
+  tenantId String maxlength(255)
+  name String required maxlength(255)
+  description String maxlength(255)
+  price BigDecimal required
+  code String required maxlength(255)
+  availableQuantity Integer
+  isActive Boolean
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventPoll {
+  id Long
+  tenantId String maxlength(255)
+  title String required maxlength(255)
+  description String maxlength(255)
+  isActive Boolean
+  startDate ZonedDateTime required
+  endDate ZonedDateTime
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventPollOption {
+  id Long
+  tenantId String maxlength(255)
+  optionText String required maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventPollResponse {
+  id Long
+  tenantId String maxlength(255)
+  comment String maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventAdmin {
+  id Long
+  tenantId String maxlength(255)
+  role String required maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventAdminAuditLog {
+  id Long
+  tenantId String maxlength(255)
+  action String required maxlength(255)
+  tableName String required maxlength(255)
+  recordId String required maxlength(255)
+  changes TextBlob
+  createdAt ZonedDateTime required
+}
+
+entity EventCalendarEntry {
+  id Long
+  tenantId String maxlength(255)
+  calendarProvider String required maxlength(255)
+  externalEventId String maxlength(255)
+  calendarLink String required maxlength(255)
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventMedia {
+  id Long
+  tenantId String maxlength(255)
+  title String required maxlength(255)
+  description String maxlength(255)
+  eventMediaType String required maxlength(255)
+  storageType String required maxlength(255)
+  fileUrl String maxlength(255)
+  fileData Blob
+  fileDataContentType String maxlength(255)
+  contentType String maxlength(255)
+  fileSize Integer
+  isPublic Boolean
+  eventFlyer Boolean
+  isEventManagementOfficialDocument Boolean
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+  preSignedUrl String maxlength(400)
+}
+
+entity UserPaymentTransaction {
+  id Long
+  tenantId String required maxlength(255)
+  transactionType String required maxlength(50) // SUBSCRIPTION, TICKET_SALE, COMMISSION
+  amount BigDecimal required
+  currency String required maxlength(3)
+  stripePaymentIntentId String maxlength(255)
+  stripeTransferGroup String maxlength(255)
+  platformFeeAmount BigDecimal
+  tenantAmount BigDecimal
+  status String required maxlength(50) // PENDING, COMPLETED, FAILED
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity TenantSettings {
+  id Long
+  tenantId String required unique maxlength(255)
+  allowUserRegistration Boolean
+  requireAdminApproval Boolean
+  enableWhatsappIntegration Boolean
+  enableEmailMarketing Boolean
+  whatsappApiKey String maxlength(500)
+  emailProviderConfig TextBlob // JSON configuration
+  customCss TextBlob
+  customJs TextBlob
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity EventAttendee {
+  id Long
+  tenantId String maxlength(255)
+  registrationStatus String required maxlength(50) // PENDING, CONFIRMED, CANCELLED, WAITLISTED
+  registrationDate ZonedDateTime required
+  confirmationDate ZonedDateTime
+  cancellationDate ZonedDateTime
+  cancellationReason String maxlength(500)
+  attendeeType String maxlength(50) // MEMBER, GUEST, VIP, SPEAKER
+  specialRequirements String maxlength(1000) // Dietary, accessibility, etc.
+  emergencyContactName String maxlength(255)
+  emergencyContactPhone String maxlength(50)
+  checkInStatus String maxlength(50) // NOT_CHECKED_IN, CHECKED_IN, NO_SHOW
+  checkInTime ZonedDateTime
+  notes String maxlength(1000) // Admin notes
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity UserRegistrationRequest {
+  id Long
+  tenantId String required maxlength(255)
+  requestId String required unique maxlength(255) // UUID for tracking
+  userId String required maxlength(255) // Clerk user ID from registration
+  firstName String maxlength(255)
+  lastName String maxlength(255)
+  email String required maxlength(255)
+  phone String maxlength(255)
+  addressLine1 String maxlength(255)
+  addressLine2 String maxlength(255)
+  city String maxlength(255)
+  state String maxlength(255)
+  zipCode String maxlength(255)
+  country String maxlength(255)
+  familyName String maxlength(255)
+  cityTown String maxlength(255)
+  district String maxlength(255)
+  educationalInstitution String maxlength(255)
+  profileImageUrl String maxlength(255)
+  requestReason String maxlength(1000) // Why they want to join
+  status String required maxlength(50) // PENDING, APPROVED, REJECTED
+  adminComments String maxlength(1000) // Admin decision notes
+  submittedAt ZonedDateTime required
+  reviewedAt ZonedDateTime
+  approvedAt ZonedDateTime
+  rejectedAt ZonedDateTime
+  createdAt ZonedDateTime required
+  updatedAt ZonedDateTime required
+}
+
+entity QrCodeUsage {
+  id Long
+  tenantId String maxlength(255)
+  qrCodeData String required maxlength(1000)
+  generatedAt ZonedDateTime required
+  usedAt ZonedDateTime
+  usageCount Integer
+  lastScannedBy String maxlength(255) // User who scanned
+  createdAt ZonedDateTime required
+}
+
+entity BulkOperationLog {
+  id Long
+  tenantId String maxlength(255)
+  operationType String required maxlength(50) // BULK_CONFIRM, BULK_CHECKIN, BULK_CANCEL
+  targetCount Integer required
+  successCount Integer
+  errorCount Integer
+  operationDetails TextBlob // JSON with detailed results
+  createdAt ZonedDateTime required
+}
+
+// Relationships
+relationship OneToOne {
+  UserSubscription{userProfile} to UserProfile
+  TenantSettings{tenantOrganization} to TenantOrganization{tenantSettings}
+}
+
+relationship ManyToOne {
+  UserTask{user} to UserProfile
+  UserTask{event} to EventDetails
+  
+  EventDetails{createdBy} to UserProfile
+  EventDetails{eventType} to EventTypeDetails
+  
+  EventOrganizer{event} to EventDetails
+  EventOrganizer{organizer} to UserProfile
+  
+  EventTicketType{event} to EventDetails
+  
+  EventTicketTransaction{event} to EventDetails
+  EventTicketTransaction{ticketType} to EventTicketType
+  EventTicketTransaction{user} to UserProfile
+  
+  EventPoll{event} to EventDetails
+  EventPoll{createdBy} to UserProfile
+  
+  EventPollOption{poll} to EventPoll
+  
+  EventPollResponse{poll} to EventPoll
+  EventPollResponse{pollOption} to EventPollOption
+  EventPollResponse{user} to UserProfile
+  
+  EventAdmin{user} to UserProfile
+  EventAdmin{createdBy} to UserProfile
+  
+  EventAdminAuditLog{admin} to UserProfile
+  
+  EventCalendarEntry{event} to EventDetails
+  EventCalendarEntry{createdBy} to UserProfile
+  
+  EventMedia{event} to EventDetails
+  EventMedia{uploadedBy} to UserProfile
+  
+  UserPaymentTransaction{event} to EventDetails
+  UserPaymentTransaction{ticketTransaction} to EventTicketTransaction
+  
+  EventAttendee{event} to EventDetails
+  EventAttendee{attendee} to UserProfile
+  
+  UserRegistrationRequest{reviewedBy} to UserProfile
+  
+  QrCodeUsage{attendee} to EventAttendee
+  
+  BulkOperationLog{performedBy} to UserProfile
+}

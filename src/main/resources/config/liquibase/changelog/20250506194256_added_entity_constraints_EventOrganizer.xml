@@ -12,7 +12,7 @@
                                  baseTableName="event_organizer"
                                  constraintName="fk_event_organizer__event_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="event"
+                                 referencedTableName="event_details"
                                  />
 
         <addForeignKeyConstraint baseColumnNames="organizer_id"

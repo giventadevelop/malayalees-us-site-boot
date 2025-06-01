@@ -1,9 +1,9 @@
 package com.nextjstemplate.service.mapper;
 
-import com.nextjstemplate.domain.Event;
+import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.EventOrganizer;
 import com.nextjstemplate.domain.UserProfile;
-import com.nextjstemplate.service.dto.EventDTO;
+import com.nextjstemplate.service.dto.EventDetailsDTO;
 import com.nextjstemplate.service.dto.EventOrganizerDTO;
 import com.nextjstemplate.service.dto.UserProfileDTO;
 import org.mapstruct.*;
@@ -13,14 +13,14 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface EventOrganizerMapper extends EntityMapper<EventOrganizerDTO, EventOrganizer> {
-    @Mapping(target = "event", source = "event", qualifiedByName = "eventId")
+    @Mapping(target = "event", source = "event", qualifiedByName = "eventDetailsId")
     @Mapping(target = "organizer", source = "organizer", qualifiedByName = "userProfileId")
     EventOrganizerDTO toDto(EventOrganizer s);
 
-    @Named("eventId")
+    @Named("eventDetailsId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
-    EventDTO toDtoEventId(Event event);
+    EventDetailsDTO toDtoEventDetailsId(EventDetails eventDetails);
 
     @Named("userProfileId")
     @BeanMapping(ignoreByDefault = true)

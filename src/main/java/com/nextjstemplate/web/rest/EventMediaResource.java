@@ -6,8 +6,6 @@ import com.nextjstemplate.service.EventMediaService;
 import com.nextjstemplate.service.criteria.EventMediaCriteria;
 import com.nextjstemplate.service.dto.EventMediaDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.net.URI;

@@ -1,61 +1,89 @@
 package com.nextjstemplate.service.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
  * A DTO for the {@link com.nextjstemplate.domain.UserProfile} entity.
  */
-@Schema(description = "Event Management System JDL Model - Version 25")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class UserProfileDTO implements Serializable {
 
-//    @NotNull
     private Long id;
 
+    @Size(max = 255)
+    private String tenantId;
+
     @NotNull
+    @Size(max = 255)
     private String userId;
 
+    @Size(max = 255)
     private String firstName;
 
+    @Size(max = 255)
     private String lastName;
 
+    @Size(max = 255)
     private String email;
 
+    @Size(max = 255)
     private String phone;
 
+    @Size(max = 255)
     private String addressLine1;
 
+    @Size(max = 255)
     private String addressLine2;
 
+    @Size(max = 255)
     private String city;
 
+    @Size(max = 255)
     private String state;
 
+    @Size(max = 255)
     private String zipCode;
 
+    @Size(max = 255)
     private String country;
 
+    @Size(max = 255)
     private String notes;
 
+    @Size(max = 255)
     private String familyName;
 
+    @Size(max = 255)
     private String cityTown;
 
+    @Size(max = 255)
     private String district;
 
+    @Size(max = 255)
     private String educationalInstitution;
 
+    @Size(max = 255)
     private String profileImageUrl;
 
-    @NotNull
-    private Instant createdAt;
+    @Size(max = 50)
+    private String userStatus;
+
+    @Size(max = 50)
+    private String userRole;
+
+    private LocalDate reviewedByAdminAt;
 
     @NotNull
-    private Instant updatedAt;
+    private ZonedDateTime createdAt;
+
+    @NotNull
+    private ZonedDateTime updatedAt;
+
+    private UserProfileDTO reviewedByAdmin;
 
     public Long getId() {
         return id;
@@ -63,6 +91,14 @@ public class UserProfileDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getUserId() {
@@ -201,20 +237,52 @@ public class UserProfileDTO implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public Instant getCreatedAt() {
+    public String getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(String userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public LocalDate getReviewedByAdminAt() {
+        return reviewedByAdminAt;
+    }
+
+    public void setReviewedByAdminAt(LocalDate reviewedByAdminAt) {
+        this.reviewedByAdminAt = reviewedByAdminAt;
+    }
+
+    public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
+    public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Instant getUpdatedAt() {
+    public ZonedDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public UserProfileDTO getReviewedByAdmin() {
+        return reviewedByAdmin;
+    }
+
+    public void setReviewedByAdmin(UserProfileDTO reviewedByAdmin) {
+        this.reviewedByAdmin = reviewedByAdmin;
     }
 
     @Override
@@ -243,6 +311,7 @@ public class UserProfileDTO implements Serializable {
     public String toString() {
         return "UserProfileDTO{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", userId='" + getUserId() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
@@ -260,8 +329,12 @@ public class UserProfileDTO implements Serializable {
             ", district='" + getDistrict() + "'" +
             ", educationalInstitution='" + getEducationalInstitution() + "'" +
             ", profileImageUrl='" + getProfileImageUrl() + "'" +
+            ", userStatus='" + getUserStatus() + "'" +
+            ", userRole='" + getUserRole() + "'" +
+            ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", reviewedByAdmin=" + getReviewedByAdmin() +
             "}";
     }
 }

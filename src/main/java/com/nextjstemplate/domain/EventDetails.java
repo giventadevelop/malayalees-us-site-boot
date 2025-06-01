@@ -1,0 +1,375 @@
+package com.nextjstemplate.domain;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+/**
+ * A EventDetails.
+ */
+@Entity
+@Table(name = "event_details")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class EventDetails implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
+    @Column(name = "id")
+    private Long id;
+
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "title", length = 255, nullable = false)
+    private String title;
+
+    @Size(max = 255)
+    @Column(name = "caption", length = 255)
+    private String caption;
+
+    @Size(max = 255)
+    @Column(name = "description", length = 255)
+    private String description;
+
+    @NotNull
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @NotNull
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
+
+    @NotNull
+    @Size(max = 100)
+    @Column(name = "start_time", length = 100, nullable = false)
+    private String startTime;
+
+    @NotNull
+    @Size(max = 100)
+    @Column(name = "end_time", length = 100, nullable = false)
+    private String endTime;
+
+    @Size(max = 255)
+    @Column(name = "location", length = 255)
+    private String location;
+
+    @Size(max = 255)
+    @Column(name = "directions_to_venue", length = 255)
+    private String directionsToVenue;
+
+    @Column(name = "capacity")
+    private Integer capacity;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "admission_type", length = 255, nullable = false)
+    private String admissionType;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @NotNull
+    @Column(name = "created_at", nullable = false)
+    private ZonedDateTime createdAt;
+
+    @NotNull
+    @Column(name = "updated_at", nullable = false)
+    private ZonedDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    private UserProfile createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private EventTypeDetails eventType;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public EventDetails id(Long id) {
+        this.setId(id);
+        return this;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public EventDetails tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public EventDetails title(String title) {
+        this.setTitle(title);
+        return this;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCaption() {
+        return this.caption;
+    }
+
+    public EventDetails caption(String caption) {
+        this.setCaption(caption);
+        return this;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public EventDetails description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
+
+    public EventDetails startDate(LocalDate startDate) {
+        this.setStartDate(startDate);
+        return this;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public EventDetails endDate(LocalDate endDate) {
+        this.setEndDate(endDate);
+        return this;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getStartTime() {
+        return this.startTime;
+    }
+
+    public EventDetails startTime(String startTime) {
+        this.setStartTime(startTime);
+        return this;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return this.endTime;
+    }
+
+    public EventDetails endTime(String endTime) {
+        this.setEndTime(endTime);
+        return this;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public EventDetails location(String location) {
+        this.setLocation(location);
+        return this;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDirectionsToVenue() {
+        return this.directionsToVenue;
+    }
+
+    public EventDetails directionsToVenue(String directionsToVenue) {
+        this.setDirectionsToVenue(directionsToVenue);
+        return this;
+    }
+
+    public void setDirectionsToVenue(String directionsToVenue) {
+        this.directionsToVenue = directionsToVenue;
+    }
+
+    public Integer getCapacity() {
+        return this.capacity;
+    }
+
+    public EventDetails capacity(Integer capacity) {
+        this.setCapacity(capacity);
+        return this;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getAdmissionType() {
+        return this.admissionType;
+    }
+
+    public EventDetails admissionType(String admissionType) {
+        this.setAdmissionType(admissionType);
+        return this;
+    }
+
+    public void setAdmissionType(String admissionType) {
+        this.admissionType = admissionType;
+    }
+
+    public Boolean getIsActive() {
+        return this.isActive;
+    }
+
+    public EventDetails isActive(Boolean isActive) {
+        this.setIsActive(isActive);
+        return this;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public EventDetails createdAt(ZonedDateTime createdAt) {
+        this.setCreatedAt(createdAt);
+        return this;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ZonedDateTime getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public EventDetails updatedAt(ZonedDateTime updatedAt) {
+        this.setUpdatedAt(updatedAt);
+        return this;
+    }
+
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public UserProfile getCreatedBy() {
+        return this.createdBy;
+    }
+
+    public void setCreatedBy(UserProfile userProfile) {
+        this.createdBy = userProfile;
+    }
+
+    public EventDetails createdBy(UserProfile userProfile) {
+        this.setCreatedBy(userProfile);
+        return this;
+    }
+
+    public EventTypeDetails getEventType() {
+        return this.eventType;
+    }
+
+    public void setEventType(EventTypeDetails eventTypeDetails) {
+        this.eventType = eventTypeDetails;
+    }
+
+    public EventDetails eventType(EventTypeDetails eventTypeDetails) {
+        this.setEventType(eventTypeDetails);
+        return this;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EventDetails)) {
+            return false;
+        }
+        return getId() != null && getId().equals(((EventDetails) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "EventDetails{" +
+            "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
+            ", title='" + getTitle() + "'" +
+            ", caption='" + getCaption() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", startDate='" + getStartDate() + "'" +
+            ", endDate='" + getEndDate() + "'" +
+            ", startTime='" + getStartTime() + "'" +
+            ", endTime='" + getEndTime() + "'" +
+            ", location='" + getLocation() + "'" +
+            ", directionsToVenue='" + getDirectionsToVenue() + "'" +
+            ", capacity=" + getCapacity() +
+            ", admissionType='" + getAdmissionType() + "'" +
+            ", isActive='" + getIsActive() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
+            "}";
+    }
+}

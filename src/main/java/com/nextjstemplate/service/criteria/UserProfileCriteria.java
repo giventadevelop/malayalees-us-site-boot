@@ -23,6 +23,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter tenantId;
+
     private StringFilter userId;
 
     private StringFilter firstName;
@@ -57,9 +59,17 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private StringFilter profileImageUrl;
 
-    private InstantFilter createdAt;
+    private StringFilter userStatus;
 
-    private InstantFilter updatedAt;
+    private StringFilter userRole;
+
+    private LocalDateFilter reviewedByAdminAt;
+
+    private ZonedDateTimeFilter createdAt;
+
+    private ZonedDateTimeFilter updatedAt;
+
+    private LongFilter reviewedByAdminId;
 
     private LongFilter userSubscriptionId;
 
@@ -69,6 +79,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     public UserProfileCriteria(UserProfileCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.firstName = other.firstName == null ? null : other.firstName.copy();
         this.lastName = other.lastName == null ? null : other.lastName.copy();
@@ -86,8 +97,12 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.district = other.district == null ? null : other.district.copy();
         this.educationalInstitution = other.educationalInstitution == null ? null : other.educationalInstitution.copy();
         this.profileImageUrl = other.profileImageUrl == null ? null : other.profileImageUrl.copy();
+        this.userStatus = other.userStatus == null ? null : other.userStatus.copy();
+        this.userRole = other.userRole == null ? null : other.userRole.copy();
+        this.reviewedByAdminAt = other.reviewedByAdminAt == null ? null : other.reviewedByAdminAt.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.reviewedByAdminId = other.reviewedByAdminId == null ? null : other.reviewedByAdminId.copy();
         this.userSubscriptionId = other.userSubscriptionId == null ? null : other.userSubscriptionId.copy();
         this.distinct = other.distinct;
     }
@@ -110,6 +125,21 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public StringFilter getUserId() {
@@ -367,34 +397,94 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public InstantFilter getCreatedAt() {
+    public StringFilter getUserStatus() {
+        return userStatus;
+    }
+
+    public StringFilter userStatus() {
+        if (userStatus == null) {
+            userStatus = new StringFilter();
+        }
+        return userStatus;
+    }
+
+    public void setUserStatus(StringFilter userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public StringFilter getUserRole() {
+        return userRole;
+    }
+
+    public StringFilter userRole() {
+        if (userRole == null) {
+            userRole = new StringFilter();
+        }
+        return userRole;
+    }
+
+    public void setUserRole(StringFilter userRole) {
+        this.userRole = userRole;
+    }
+
+    public LocalDateFilter getReviewedByAdminAt() {
+        return reviewedByAdminAt;
+    }
+
+    public LocalDateFilter reviewedByAdminAt() {
+        if (reviewedByAdminAt == null) {
+            reviewedByAdminAt = new LocalDateFilter();
+        }
+        return reviewedByAdminAt;
+    }
+
+    public void setReviewedByAdminAt(LocalDateFilter reviewedByAdminAt) {
+        this.reviewedByAdminAt = reviewedByAdminAt;
+    }
+
+    public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
 
-    public InstantFilter createdAt() {
+    public ZonedDateTimeFilter createdAt() {
         if (createdAt == null) {
-            createdAt = new InstantFilter();
+            createdAt = new ZonedDateTimeFilter();
         }
         return createdAt;
     }
 
-    public void setCreatedAt(InstantFilter createdAt) {
+    public void setCreatedAt(ZonedDateTimeFilter createdAt) {
         this.createdAt = createdAt;
     }
 
-    public InstantFilter getUpdatedAt() {
+    public ZonedDateTimeFilter getUpdatedAt() {
         return updatedAt;
     }
 
-    public InstantFilter updatedAt() {
+    public ZonedDateTimeFilter updatedAt() {
         if (updatedAt == null) {
-            updatedAt = new InstantFilter();
+            updatedAt = new ZonedDateTimeFilter();
         }
         return updatedAt;
     }
 
-    public void setUpdatedAt(InstantFilter updatedAt) {
+    public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public LongFilter getReviewedByAdminId() {
+        return reviewedByAdminId;
+    }
+
+    public LongFilter reviewedByAdminId() {
+        if (reviewedByAdminId == null) {
+            reviewedByAdminId = new LongFilter();
+        }
+        return reviewedByAdminId;
+    }
+
+    public void setReviewedByAdminId(LongFilter reviewedByAdminId) {
+        this.reviewedByAdminId = reviewedByAdminId;
     }
 
     public LongFilter getUserSubscriptionId() {
@@ -431,6 +521,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
         final UserProfileCriteria that = (UserProfileCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(firstName, that.firstName) &&
             Objects.equals(lastName, that.lastName) &&
@@ -448,8 +539,12 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(district, that.district) &&
             Objects.equals(educationalInstitution, that.educationalInstitution) &&
             Objects.equals(profileImageUrl, that.profileImageUrl) &&
+            Objects.equals(userStatus, that.userStatus) &&
+            Objects.equals(userRole, that.userRole) &&
+            Objects.equals(reviewedByAdminAt, that.reviewedByAdminAt) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(reviewedByAdminId, that.reviewedByAdminId) &&
             Objects.equals(userSubscriptionId, that.userSubscriptionId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -459,6 +554,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            tenantId,
             userId,
             firstName,
             lastName,
@@ -476,8 +572,12 @@ public class UserProfileCriteria implements Serializable, Criteria {
             district,
             educationalInstitution,
             profileImageUrl,
+            userStatus,
+            userRole,
+            reviewedByAdminAt,
             createdAt,
             updatedAt,
+            reviewedByAdminId,
             userSubscriptionId,
             distinct
         );
@@ -488,6 +588,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
     public String toString() {
         return "UserProfileCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (firstName != null ? "firstName=" + firstName + ", " : "") +
             (lastName != null ? "lastName=" + lastName + ", " : "") +
@@ -505,8 +606,12 @@ public class UserProfileCriteria implements Serializable, Criteria {
             (district != null ? "district=" + district + ", " : "") +
             (educationalInstitution != null ? "educationalInstitution=" + educationalInstitution + ", " : "") +
             (profileImageUrl != null ? "profileImageUrl=" + profileImageUrl + ", " : "") +
+            (userStatus != null ? "userStatus=" + userStatus + ", " : "") +
+            (userRole != null ? "userRole=" + userRole + ", " : "") +
+            (reviewedByAdminAt != null ? "reviewedByAdminAt=" + reviewedByAdminAt + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (reviewedByAdminId != null ? "reviewedByAdminId=" + reviewedByAdminId + ", " : "") +
             (userSubscriptionId != null ? "userSubscriptionId=" + userSubscriptionId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

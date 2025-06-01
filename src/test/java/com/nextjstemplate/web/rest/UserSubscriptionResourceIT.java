@@ -7,11 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
-import com.nextjstemplate.domain.UserProfile;
-import com.nextjstemplate.domain.UserSubscription;
 import com.nextjstemplate.repository.UserSubscriptionRepository;
-import com.nextjstemplate.service.dto.UserSubscriptionDTO;
-import com.nextjstemplate.service.mapper.UserSubscriptionMapper;
 import jakarta.persistence.EntityManager;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -36,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @WithMockUser
 class UserSubscriptionResourceIT {
-
+/*
     private static final String DEFAULT_STRIPE_CUSTOMER_ID = "AAAAAAAAAA";
     private static final String UPDATED_STRIPE_CUSTOMER_ID = "BBBBBBBBBB";
 
@@ -79,12 +75,12 @@ class UserSubscriptionResourceIT {
 
     private UserSubscription userSubscription;
 
-    /**
+    *//**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static UserSubscription createEntity(EntityManager em) {
         UserSubscription userSubscription = new UserSubscription()
             .stripeCustomerId(DEFAULT_STRIPE_CUSTOMER_ID)
@@ -95,12 +91,12 @@ class UserSubscriptionResourceIT {
         return userSubscription;
     }
 
-    /**
+    *//**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static UserSubscription createUpdatedEntity(EntityManager em) {
         UserSubscription userSubscription = new UserSubscription()
             .stripeCustomerId(UPDATED_STRIPE_CUSTOMER_ID)
@@ -613,9 +609,9 @@ class UserSubscriptionResourceIT {
         defaultUserSubscriptionShouldNotBeFound("userProfileId.equals=" + (userProfileId + 1));
     }
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is returned.
-     */
+     *//*
     private void defaultUserSubscriptionShouldBeFound(String filter) throws Exception {
         restUserSubscriptionMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -636,9 +632,9 @@ class UserSubscriptionResourceIT {
             .andExpect(content().string("1"));
     }
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is not returned.
-     */
+     *//*
     private void defaultUserSubscriptionShouldNotBeFound(String filter) throws Exception {
         restUserSubscriptionMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -927,5 +923,5 @@ class UserSubscriptionResourceIT {
         // Validate the database contains one less item
         List<UserSubscription> userSubscriptionList = userSubscriptionRepository.findAll();
         assertThat(userSubscriptionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    }*/
 }

@@ -25,20 +25,28 @@ public class UserSubscription implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "stripe_customer_id", unique = true)
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255)
+    private String tenantId;
+
+    @Size(max = 255)
+    @Column(name = "stripe_customer_id", length = 255, unique = true)
     private String stripeCustomerId;
 
-    @Column(name = "stripe_subscription_id", unique = true)
+    @Size(max = 255)
+    @Column(name = "stripe_subscription_id", length = 255, unique = true)
     private String stripeSubscriptionId;
 
-    @Column(name = "stripe_price_id")
+    @Size(max = 255)
+    @Column(name = "stripe_price_id", length = 255)
     private String stripePriceId;
 
     @Column(name = "stripe_current_period_end")
     private ZonedDateTime stripeCurrentPeriodEnd;
 
     @NotNull
-    @Column(name = "status", nullable = false)
+    @Size(max = 255)
+    @Column(name = "status", length = 255, nullable = false)
     private String status;
 
     @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
@@ -59,6 +67,19 @@ public class UserSubscription implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public UserSubscription tenantId(String tenantId) {
+        this.setTenantId(tenantId);
+        return this;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getStripeCustomerId() {
@@ -163,6 +184,7 @@ public class UserSubscription implements Serializable {
     public String toString() {
         return "UserSubscription{" +
             "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
             ", stripeCustomerId='" + getStripeCustomerId() + "'" +
             ", stripeSubscriptionId='" + getStripeSubscriptionId() + "'" +
             ", stripePriceId='" + getStripePriceId() + "'" +

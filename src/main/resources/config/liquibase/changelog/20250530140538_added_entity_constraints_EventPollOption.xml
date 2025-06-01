@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity EventPollOption.
+    -->
+    <changeSet id="20250530140538-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="poll_id"
+                                 baseTableName="event_poll_option"
+                                 constraintName="fk_event_poll_option__poll_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event_poll"
+                                 />
+    </changeSet>
+</databaseChangeLog>

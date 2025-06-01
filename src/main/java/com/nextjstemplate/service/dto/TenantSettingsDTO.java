@@ -1,0 +1,193 @@
+package com.nextjstemplate.service.dto;
+
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.*;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
+
+/**
+ * A DTO for the {@link com.nextjstemplate.domain.TenantSettings} entity.
+ */
+@SuppressWarnings("common-java:DuplicatedBlocks")
+public class TenantSettingsDTO implements Serializable {
+
+    private Long id;
+
+    @NotNull
+    @Size(max = 255)
+    private String tenantId;
+
+    private Boolean allowUserRegistration;
+
+    private Boolean requireAdminApproval;
+
+    private Boolean enableWhatsappIntegration;
+
+    private Boolean enableEmailMarketing;
+
+    @Size(max = 500)
+    private String whatsappApiKey;
+
+    @Lob
+    private String emailProviderConfig;
+
+    @Lob
+    private String customCss;
+
+    @Lob
+    private String customJs;
+
+    @NotNull
+    private ZonedDateTime createdAt;
+
+    @NotNull
+    private ZonedDateTime updatedAt;
+
+    private TenantOrganizationDTO tenantOrganization;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public Boolean getAllowUserRegistration() {
+        return allowUserRegistration;
+    }
+
+    public void setAllowUserRegistration(Boolean allowUserRegistration) {
+        this.allowUserRegistration = allowUserRegistration;
+    }
+
+    public Boolean getRequireAdminApproval() {
+        return requireAdminApproval;
+    }
+
+    public void setRequireAdminApproval(Boolean requireAdminApproval) {
+        this.requireAdminApproval = requireAdminApproval;
+    }
+
+    public Boolean getEnableWhatsappIntegration() {
+        return enableWhatsappIntegration;
+    }
+
+    public void setEnableWhatsappIntegration(Boolean enableWhatsappIntegration) {
+        this.enableWhatsappIntegration = enableWhatsappIntegration;
+    }
+
+    public Boolean getEnableEmailMarketing() {
+        return enableEmailMarketing;
+    }
+
+    public void setEnableEmailMarketing(Boolean enableEmailMarketing) {
+        this.enableEmailMarketing = enableEmailMarketing;
+    }
+
+    public String getWhatsappApiKey() {
+        return whatsappApiKey;
+    }
+
+    public void setWhatsappApiKey(String whatsappApiKey) {
+        this.whatsappApiKey = whatsappApiKey;
+    }
+
+    public String getEmailProviderConfig() {
+        return emailProviderConfig;
+    }
+
+    public void setEmailProviderConfig(String emailProviderConfig) {
+        this.emailProviderConfig = emailProviderConfig;
+    }
+
+    public String getCustomCss() {
+        return customCss;
+    }
+
+    public void setCustomCss(String customCss) {
+        this.customCss = customCss;
+    }
+
+    public String getCustomJs() {
+        return customJs;
+    }
+
+    public void setCustomJs(String customJs) {
+        this.customJs = customJs;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ZonedDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(ZonedDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public TenantOrganizationDTO getTenantOrganization() {
+        return tenantOrganization;
+    }
+
+    public void setTenantOrganization(TenantOrganizationDTO tenantOrganization) {
+        this.tenantOrganization = tenantOrganization;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TenantSettingsDTO)) {
+            return false;
+        }
+
+        TenantSettingsDTO tenantSettingsDTO = (TenantSettingsDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, tenantSettingsDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    // prettier-ignore
+    @Override
+    public String toString() {
+        return "TenantSettingsDTO{" +
+            "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
+            ", allowUserRegistration='" + getAllowUserRegistration() + "'" +
+            ", requireAdminApproval='" + getRequireAdminApproval() + "'" +
+            ", enableWhatsappIntegration='" + getEnableWhatsappIntegration() + "'" +
+            ", enableEmailMarketing='" + getEnableEmailMarketing() + "'" +
+            ", whatsappApiKey='" + getWhatsappApiKey() + "'" +
+            ", emailProviderConfig='" + getEmailProviderConfig() + "'" +
+            ", customCss='" + getCustomCss() + "'" +
+            ", customJs='" + getCustomJs() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
+            ", tenantOrganization=" + getTenantOrganization() +
+            "}";
+    }
+}

@@ -12,6 +12,7 @@ public class UserSubscriptionTestSamples {
     public static UserSubscription getUserSubscriptionSample1() {
         return new UserSubscription()
             .id(1L)
+            .tenantId("tenantId1")
             .stripeCustomerId("stripeCustomerId1")
             .stripeSubscriptionId("stripeSubscriptionId1")
             .stripePriceId("stripePriceId1")
@@ -21,6 +22,7 @@ public class UserSubscriptionTestSamples {
     public static UserSubscription getUserSubscriptionSample2() {
         return new UserSubscription()
             .id(2L)
+            .tenantId("tenantId2")
             .stripeCustomerId("stripeCustomerId2")
             .stripeSubscriptionId("stripeSubscriptionId2")
             .stripePriceId("stripePriceId2")
@@ -30,6 +32,7 @@ public class UserSubscriptionTestSamples {
     public static UserSubscription getUserSubscriptionRandomSampleGenerator() {
         return new UserSubscription()
             .id(longCount.incrementAndGet())
+            .tenantId(UUID.randomUUID().toString())
             .stripeCustomerId(UUID.randomUUID().toString())
             .stripeSubscriptionId(UUID.randomUUID().toString())
             .stripePriceId(UUID.randomUUID().toString())

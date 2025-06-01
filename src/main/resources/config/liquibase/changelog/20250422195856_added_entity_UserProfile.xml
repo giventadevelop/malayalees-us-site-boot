@@ -10,9 +10,12 @@
         Added the entity UserProfile.
     -->
     <changeSet id="20250422195856-1" author="jhipster">
-        <createTable tableName="user_profile" remarks="Event Management System JDL Model - Version 25">
+        <createTable tableName="user_profile">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="tenant_id" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="user_id" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="ux_user_profile__user_id" />
@@ -94,6 +97,7 @@
                   tableName="user_profile"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="tenant_id" type="string"/>
             <column name="user_id" type="string"/>
             <column name="first_name" type="string"/>
             <column name="last_name" type="string"/>

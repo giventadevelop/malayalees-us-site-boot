@@ -23,6 +23,8 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter tenantId;
+
     private StringFilter title;
 
     private StringFilter description;
@@ -33,7 +35,7 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private StringFilter fileUrl;
 
-    private StringFilter preSignedUrl;
+    private StringFilter fileDataContentType;
 
     private StringFilter contentType;
 
@@ -45,9 +47,11 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private BooleanFilter isEventManagementOfficialDocument;
 
-    private InstantFilter createdAt;
+    private ZonedDateTimeFilter createdAt;
 
-    private InstantFilter updatedAt;
+    private ZonedDateTimeFilter updatedAt;
+
+    private StringFilter preSignedUrl;
 
     private LongFilter eventId;
 
@@ -59,12 +63,13 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     public EventMediaCriteria(EventMediaCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.title = other.title == null ? null : other.title.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.eventMediaType = other.eventMediaType == null ? null : other.eventMediaType.copy();
         this.storageType = other.storageType == null ? null : other.storageType.copy();
         this.fileUrl = other.fileUrl == null ? null : other.fileUrl.copy();
-        this.preSignedUrl = other.preSignedUrl == null ? null : other.preSignedUrl.copy();
+        this.fileDataContentType = other.fileDataContentType == null ? null : other.fileDataContentType.copy();
         this.contentType = other.contentType == null ? null : other.contentType.copy();
         this.fileSize = other.fileSize == null ? null : other.fileSize.copy();
         this.isPublic = other.isPublic == null ? null : other.isPublic.copy();
@@ -73,6 +78,7 @@ public class EventMediaCriteria implements Serializable, Criteria {
             other.isEventManagementOfficialDocument == null ? null : other.isEventManagementOfficialDocument.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.preSignedUrl = other.preSignedUrl == null ? null : other.preSignedUrl.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.uploadedById = other.uploadedById == null ? null : other.uploadedById.copy();
         this.distinct = other.distinct;
@@ -96,6 +102,21 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public StringFilter getTitle() {
@@ -173,19 +194,19 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.fileUrl = fileUrl;
     }
 
-    public StringFilter getPreSignedUrl() {
-        return preSignedUrl;
+    public StringFilter getFileDataContentType() {
+        return fileDataContentType;
     }
 
-    public StringFilter preSignedUrl() {
-        if (preSignedUrl == null) {
-            preSignedUrl = new StringFilter();
+    public StringFilter fileDataContentType() {
+        if (fileDataContentType == null) {
+            fileDataContentType = new StringFilter();
         }
-        return preSignedUrl;
+        return fileDataContentType;
     }
 
-    public void setPreSignedUrl(StringFilter preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
+    public void setFileDataContentType(StringFilter fileDataContentType) {
+        this.fileDataContentType = fileDataContentType;
     }
 
     public StringFilter getContentType() {
@@ -263,34 +284,49 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
-    public InstantFilter getCreatedAt() {
+    public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
 
-    public InstantFilter createdAt() {
+    public ZonedDateTimeFilter createdAt() {
         if (createdAt == null) {
-            createdAt = new InstantFilter();
+            createdAt = new ZonedDateTimeFilter();
         }
         return createdAt;
     }
 
-    public void setCreatedAt(InstantFilter createdAt) {
+    public void setCreatedAt(ZonedDateTimeFilter createdAt) {
         this.createdAt = createdAt;
     }
 
-    public InstantFilter getUpdatedAt() {
+    public ZonedDateTimeFilter getUpdatedAt() {
         return updatedAt;
     }
 
-    public InstantFilter updatedAt() {
+    public ZonedDateTimeFilter updatedAt() {
         if (updatedAt == null) {
-            updatedAt = new InstantFilter();
+            updatedAt = new ZonedDateTimeFilter();
         }
         return updatedAt;
     }
 
-    public void setUpdatedAt(InstantFilter updatedAt) {
+    public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public StringFilter getPreSignedUrl() {
+        return preSignedUrl;
+    }
+
+    public StringFilter preSignedUrl() {
+        if (preSignedUrl == null) {
+            preSignedUrl = new StringFilter();
+        }
+        return preSignedUrl;
+    }
+
+    public void setPreSignedUrl(StringFilter preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
     }
 
     public LongFilter getEventId() {
@@ -342,12 +378,13 @@ public class EventMediaCriteria implements Serializable, Criteria {
         final EventMediaCriteria that = (EventMediaCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(title, that.title) &&
             Objects.equals(description, that.description) &&
             Objects.equals(eventMediaType, that.eventMediaType) &&
             Objects.equals(storageType, that.storageType) &&
             Objects.equals(fileUrl, that.fileUrl) &&
-            Objects.equals(preSignedUrl, that.preSignedUrl) &&
+            Objects.equals(fileDataContentType, that.fileDataContentType) &&
             Objects.equals(contentType, that.contentType) &&
             Objects.equals(fileSize, that.fileSize) &&
             Objects.equals(isPublic, that.isPublic) &&
@@ -355,6 +392,7 @@ public class EventMediaCriteria implements Serializable, Criteria {
             Objects.equals(isEventManagementOfficialDocument, that.isEventManagementOfficialDocument) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(preSignedUrl, that.preSignedUrl) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(uploadedById, that.uploadedById) &&
             Objects.equals(distinct, that.distinct)
@@ -365,12 +403,13 @@ public class EventMediaCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            tenantId,
             title,
             description,
             eventMediaType,
             storageType,
             fileUrl,
-            preSignedUrl,
+            fileDataContentType,
             contentType,
             fileSize,
             isPublic,
@@ -378,6 +417,7 @@ public class EventMediaCriteria implements Serializable, Criteria {
             isEventManagementOfficialDocument,
             createdAt,
             updatedAt,
+            preSignedUrl,
             eventId,
             uploadedById,
             distinct
@@ -389,12 +429,13 @@ public class EventMediaCriteria implements Serializable, Criteria {
     public String toString() {
         return "EventMediaCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (eventMediaType != null ? "eventMediaType=" + eventMediaType + ", " : "") +
             (storageType != null ? "storageType=" + storageType + ", " : "") +
             (fileUrl != null ? "fileUrl=" + fileUrl + ", " : "") +
-            (preSignedUrl != null ? "preSignedUrl=" + preSignedUrl + ", " : "") +
+            (fileDataContentType != null ? "fileDataContentType=" + fileDataContentType + ", " : "") +
             (contentType != null ? "contentType=" + contentType + ", " : "") +
             (fileSize != null ? "fileSize=" + fileSize + ", " : "") +
             (isPublic != null ? "isPublic=" + isPublic + ", " : "") +
@@ -402,6 +443,7 @@ public class EventMediaCriteria implements Serializable, Criteria {
             (isEventManagementOfficialDocument != null ? "isEventManagementOfficialDocument=" + isEventManagementOfficialDocument + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (preSignedUrl != null ? "preSignedUrl=" + preSignedUrl + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (uploadedById != null ? "uploadedById=" + uploadedById + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +

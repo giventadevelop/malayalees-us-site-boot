@@ -1,8 +1,5 @@
 package com.nextjstemplate.web.rest;
 
-import com.nextjstemplate.repository.EventTypeRepository;
-import com.nextjstemplate.service.EventTypeService;
-import com.nextjstemplate.service.dto.EventTypeDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -29,7 +26,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/event-types")
-public class EventTypeResource {
+public class EventTypeResource {/*
 
     private final Logger log = LoggerFactory.getLogger(EventTypeResource.class);
 
@@ -47,13 +44,13 @@ public class EventTypeResource {
         this.eventTypeRepository = eventTypeRepository;
     }
 
-    /**
+    *//**
      * {@code POST  /event-types} : Create a new eventType.
      *
      * @param eventTypeDTO the eventTypeDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eventTypeDTO, or with status {@code 400 (Bad Request)} if the eventType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PostMapping("")
     public ResponseEntity<EventTypeDTO> createEventType(@Valid @RequestBody EventTypeDTO eventTypeDTO) throws URISyntaxException {
         log.debug("REST request to save EventType : {}", eventTypeDTO);
@@ -67,7 +64,7 @@ public class EventTypeResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PUT  /event-types/:id} : Updates an existing eventType.
      *
      * @param id the id of the eventTypeDTO to save.
@@ -76,7 +73,7 @@ public class EventTypeResource {
      * or with status {@code 400 (Bad Request)} if the eventTypeDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the eventTypeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PutMapping("/{id}")
     public ResponseEntity<EventTypeDTO> updateEventType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -101,7 +98,7 @@ public class EventTypeResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PATCH  /event-types/:id} : Partial updates given fields of an existing eventType, field will ignore if it is null
      *
      * @param id the id of the eventTypeDTO to save.
@@ -111,7 +108,7 @@ public class EventTypeResource {
      * or with status {@code 404 (Not Found)} if the eventTypeDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the eventTypeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EventTypeDTO> partialUpdateEventType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -137,12 +134,12 @@ public class EventTypeResource {
         );
     }
 
-    /**
+    *//**
      * {@code GET  /event-types} : get all the eventTypes.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventTypes in body.
-     */
+     *//*
     @GetMapping("")
     public ResponseEntity<List<EventTypeDTO>> getAllEventTypes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of EventTypes");
@@ -151,12 +148,12 @@ public class EventTypeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
+    *//**
      * {@code GET  /event-types/:id} : get the "id" eventType.
      *
      * @param id the id of the eventTypeDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the eventTypeDTO, or with status {@code 404 (Not Found)}.
-     */
+     *//*
     @GetMapping("/{id}")
     public ResponseEntity<EventTypeDTO> getEventType(@PathVariable Long id) {
         log.debug("REST request to get EventType : {}", id);
@@ -164,12 +161,12 @@ public class EventTypeResource {
         return ResponseUtil.wrapOrNotFound(eventTypeDTO);
     }
 
-    /**
+    *//**
      * {@code DELETE  /event-types/:id} : delete the "id" eventType.
      *
      * @param id the id of the eventTypeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+     *//*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEventType(@PathVariable Long id) {
         log.debug("REST request to delete EventType : {}", id);
@@ -178,5 +175,5 @@ public class EventTypeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
+    }*/
 }

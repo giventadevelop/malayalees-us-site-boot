@@ -1,8 +1,5 @@
 package com.nextjstemplate.web.rest;
 
-import com.nextjstemplate.repository.TicketTypeRepository;
-import com.nextjstemplate.service.TicketTypeService;
-import com.nextjstemplate.service.dto.TicketTypeDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -25,11 +22,10 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.nextjstemplate.domain.TicketType}.
  */
 @RestController
 @RequestMapping("/api/ticket-types")
-public class TicketTypeResource {
+public class TicketTypeResource {/*
 
     private final Logger log = LoggerFactory.getLogger(TicketTypeResource.class);
 
@@ -47,13 +43,13 @@ public class TicketTypeResource {
         this.ticketTypeRepository = ticketTypeRepository;
     }
 
-    /**
+    *//**
      * {@code POST  /ticket-types} : Create a new ticketType.
      *
      * @param ticketTypeDTO the ticketTypeDTO to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ticketTypeDTO, or with status {@code 400 (Bad Request)} if the ticketType has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PostMapping("")
     public ResponseEntity<TicketTypeDTO> createTicketType(@Valid @RequestBody TicketTypeDTO ticketTypeDTO) throws URISyntaxException {
         log.debug("REST request to save TicketType : {}", ticketTypeDTO);
@@ -67,7 +63,7 @@ public class TicketTypeResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PUT  /ticket-types/:id} : Updates an existing ticketType.
      *
      * @param id the id of the ticketTypeDTO to save.
@@ -76,7 +72,7 @@ public class TicketTypeResource {
      * or with status {@code 400 (Bad Request)} if the ticketTypeDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the ticketTypeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PutMapping("/{id}")
     public ResponseEntity<TicketTypeDTO> updateTicketType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -101,7 +97,7 @@ public class TicketTypeResource {
             .body(result);
     }
 
-    /**
+    *//**
      * {@code PATCH  /ticket-types/:id} : Partial updates given fields of an existing ticketType, field will ignore if it is null
      *
      * @param id the id of the ticketTypeDTO to save.
@@ -111,7 +107,7 @@ public class TicketTypeResource {
      * or with status {@code 404 (Not Found)} if the ticketTypeDTO is not found,
      * or with status {@code 500 (Internal Server Error)} if the ticketTypeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
+     *//*
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<TicketTypeDTO> partialUpdateTicketType(
         @PathVariable(value = "id", required = false) final Long id,
@@ -137,12 +133,12 @@ public class TicketTypeResource {
         );
     }
 
-    /**
+    *//**
      * {@code GET  /ticket-types} : get all the ticketTypes.
      *
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of ticketTypes in body.
-     */
+     *//*
     @GetMapping("")
     public ResponseEntity<List<TicketTypeDTO>> getAllTicketTypes(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of TicketTypes");
@@ -151,12 +147,12 @@ public class TicketTypeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    /**
+    *//**
      * {@code GET  /ticket-types/:id} : get the "id" ticketType.
      *
      * @param id the id of the ticketTypeDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the ticketTypeDTO, or with status {@code 404 (Not Found)}.
-     */
+     *//*
     @GetMapping("/{id}")
     public ResponseEntity<TicketTypeDTO> getTicketType(@PathVariable Long id) {
         log.debug("REST request to get TicketType : {}", id);
@@ -164,12 +160,12 @@ public class TicketTypeResource {
         return ResponseUtil.wrapOrNotFound(ticketTypeDTO);
     }
 
-    /**
+    *//**
      * {@code DELETE  /ticket-types/:id} : delete the "id" ticketType.
      *
      * @param id the id of the ticketTypeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
-     */
+     *//*
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicketType(@PathVariable Long id) {
         log.debug("REST request to delete TicketType : {}", id);
@@ -178,5 +174,5 @@ public class TicketTypeResource {
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
-    }
+    }*/
 }

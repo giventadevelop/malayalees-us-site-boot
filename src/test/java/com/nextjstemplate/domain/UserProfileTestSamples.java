@@ -12,6 +12,7 @@ public class UserProfileTestSamples {
     public static UserProfile getUserProfileSample1() {
         return new UserProfile()
             .id(1L)
+            .tenantId("tenantId1")
             .userId("userId1")
             .firstName("firstName1")
             .lastName("lastName1")
@@ -34,6 +35,7 @@ public class UserProfileTestSamples {
     public static UserProfile getUserProfileSample2() {
         return new UserProfile()
             .id(2L)
+            .tenantId("tenantId2")
             .userId("userId2")
             .firstName("firstName2")
             .lastName("lastName2")
@@ -56,6 +58,7 @@ public class UserProfileTestSamples {
     public static UserProfile getUserProfileRandomSampleGenerator() {
         return new UserProfile()
             .id(longCount.incrementAndGet())
+            .tenantId(UUID.randomUUID().toString())
             .userId(UUID.randomUUID().toString())
             .firstName(UUID.randomUUID().toString())
             .lastName(UUID.randomUUID().toString())

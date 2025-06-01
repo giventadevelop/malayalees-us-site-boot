@@ -90,6 +90,9 @@ public class UserTaskQueryService extends QueryService<UserTask> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), UserTask_.id));
             }
+            if (criteria.getTenantId() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTenantId(), UserTask_.tenantId));
+            }
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), UserTask_.title));
             }
@@ -105,7 +108,6 @@ public class UserTaskQueryService extends QueryService<UserTask> {
             if (criteria.getCompleted() != null) {
                 specification = specification.and(buildSpecification(criteria.getCompleted(), UserTask_.completed));
             }
-
             if (criteria.getAssigneeName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAssigneeName(), UserTask_.assigneeName));
             }
@@ -132,7 +134,7 @@ public class UserTaskQueryService extends QueryService<UserTask> {
             if (criteria.getEventId() != null) {
                 specification =
                     specification.and(
-                        buildSpecification(criteria.getEventId(), root -> root.join(UserTask_.event, JoinType.LEFT).get(Event_.id))
+                        buildSpecification(criteria.getEventId(), root -> root.join(UserTask_.event, JoinType.LEFT).get(EventDetails_.id))
                     );
             }
         }

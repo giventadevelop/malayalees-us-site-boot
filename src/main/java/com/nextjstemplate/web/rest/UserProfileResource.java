@@ -1,6 +1,7 @@
 package com.nextjstemplate.web.rest;
 
 import com.nextjstemplate.repository.UserProfileRepository;
+import com.nextjstemplate.service.UserProfileQueryService;
 import com.nextjstemplate.service.UserProfileService;
 import com.nextjstemplate.service.criteria.UserProfileCriteria;
 import com.nextjstemplate.service.dto.UserProfileDTO;
@@ -43,16 +44,16 @@ public class UserProfileResource {
 
     private final UserProfileRepository userProfileRepository;
 
-
+    private final UserProfileQueryService userProfileQueryService;
 
     public UserProfileResource(
         UserProfileService userProfileService,
-        UserProfileRepository userProfileRepository
-
+        UserProfileRepository userProfileRepository,
+        UserProfileQueryService userProfileQueryService
     ) {
         this.userProfileService = userProfileService;
         this.userProfileRepository = userProfileRepository;
-
+        this.userProfileQueryService = userProfileQueryService;
     }
 
     /**
@@ -145,7 +146,24 @@ public class UserProfileResource {
         );
     }
 
+    /**
+     * {@code GET  /user-profiles} : get all the userProfiles.
+     *
+     * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of userProfiles in body.
+     */
+    @GetMapping("")
+    public ResponseEntity<List<UserProfileDTO>> getAllUserProfiles(
+        UserProfileCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get UserProfiles by criteria: {}", criteria);
 
+        Page<UserProfileDTO> page = userProfileQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 
     /**
      * {@code GET  /user-profiles/by-user/:userId} : get the userProfile by user ID.
@@ -190,4 +208,17 @@ public class UserProfileResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+    
+     /**
+     * {@code GET  /user-profiles/count} : count all the userProfiles.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countUserProfiles(UserProfileCriteria criteria) {
+        log.debug("REST request to count UserProfiles by criteria: {}", criteria);
+        return ResponseEntity.ok().body(userProfileQueryService.countByCriteria(criteria));
+    }
+
 }
