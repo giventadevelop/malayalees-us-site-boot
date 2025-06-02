@@ -77,6 +77,19 @@ public class UserProfileResource {
     }
 
     /**
+     * {@code POST  /user-profiles} : Create a new userProfile.
+     *
+     * @param users the userProfileDTOs to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new userProfileDTO, or with status {@code 400 (Bad Request)} if the userProfile has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/bulk")
+    public ResponseEntity<List<UserProfileDTO>> createBulk(@RequestBody List<UserProfileDTO> users) {
+        List<UserProfileDTO> created = userProfileService.saveAll(users);
+        return ResponseEntity.ok(created);
+    }
+
+    /**
      * {@code PUT  /user-profiles/:id} : Updates an existing userProfile.
      *
      * @param id the id of the userProfileDTO to save.
@@ -208,7 +221,7 @@ public class UserProfileResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-    
+
      /**
      * {@code GET  /user-profiles/count} : count all the userProfiles.
      *

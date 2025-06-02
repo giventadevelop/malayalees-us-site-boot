@@ -71,4 +71,6 @@ public interface UserProfileService {
      * @return the entity.
      */
     Optional<UserProfileDTO> findByUserId(String userId);
+
+    List<UserProfileDTO> saveAll(List<UserProfileDTO> users);
 }

@@ -106,4 +106,20 @@ public class UserProfileServiceImpl implements UserProfileService {
         log.debug("Request to get UserProfile by user ID : {}", userId);
         return userProfileRepository.findByUserId(userId).map(userProfileMapper::toDto);
     }
+
+    @Override
+    public List<UserProfileDTO> saveAll(List<UserProfileDTO> userProfileDTOs) {
+        // Map each DTO to a domain/entity object
+        List<UserProfile> domainList = userProfileDTOs.stream()
+            .map(userProfileMapper::toEntity)
+            .collect(Collectors.toList());
+
+        // Save all domain objects in the repository
+        List<UserProfile> saved = userProfileRepository.saveAll(domainList);
+
+        // Map saved entities back to DTOs
+        return saved.stream()
+            .map(userProfileMapper::toDto)
+            .collect(Collectors.toList());
+    }
 }
