@@ -10,7 +10,7 @@
         Added the entity TenantOrganization.
     -->
     <changeSet id="20250530135938-1" author="jhipster">
-        <createTable tableName="tenant_organization">
+        <createTable tableName="tenant_organization" remarks="TenantOrganization and TenantSettings JDL Entities\nGenerated from Java domain classes">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

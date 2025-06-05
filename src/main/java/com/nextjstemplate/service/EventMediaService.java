@@ -61,14 +61,14 @@ public interface EventMediaService {
         /**
          * Upload a single file and create an EventMedia entry.
          */
-        EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title, String description,
-                        boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument);
+        EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title,  String description,
+                                 String  tenantId, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument);
 
         /**
          * Upload multiple files and create EventMedia entries.
          */
         List<EventMediaDTO> uploadMultipleFiles(List<MultipartFile> files, Long eventId, Long userProfileId,
-                        List<String> titles, List<String> descriptions, boolean isPublic, Boolean eventFlyer,
+                        List<String> titles, List<String> descriptions, String  tenantId, boolean isPublic, Boolean eventFlyer,
                         Boolean isEventManagementOfficialDocument);
 
         List<EventMediaDTO> getEventMediaWithUrls(Long eventId, Long userProfileId, boolean includePrivate);

@@ -18,13 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
 
 /**
- * Service for executing complex queries for {@link TenantSettings} entities in
- * the database.
- * The main input is a {@link TenantSettingsCriteria} which gets converted to
- * {@link Specification},
+ * Service for executing complex queries for {@link TenantSettings} entities in the database.
+ * The main input is a {@link TenantSettingsCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link TenantSettingsDTO} or a {@link Page} of
- * {@link TenantSettingsDTO} which fulfills the criteria.
+ * It returns a {@link List} of {@link TenantSettingsDTO} or a {@link Page} of {@link TenantSettingsDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -36,18 +33,14 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
 
     private final TenantSettingsMapper tenantSettingsMapper;
 
-    public TenantSettingsQueryService(TenantSettingsRepository tenantSettingsRepository,
-            TenantSettingsMapper tenantSettingsMapper) {
+    public TenantSettingsQueryService(TenantSettingsRepository tenantSettingsRepository, TenantSettingsMapper tenantSettingsMapper) {
         this.tenantSettingsRepository = tenantSettingsRepository;
         this.tenantSettingsMapper = tenantSettingsMapper;
     }
 
     /**
-     * Return a {@link List} of {@link TenantSettingsDTO} which matches the criteria
-     * from the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * Return a {@link List} of {@link TenantSettingsDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -58,12 +51,9 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
     }
 
     /**
-     * Return a {@link Page} of {@link TenantSettingsDTO} which matches the criteria
-     * from the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
-     * @param page     The page, which should be returned.
+     * Return a {@link Page} of {@link TenantSettingsDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -75,9 +65,7 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
 
     /**
      * Return the number of matching entities in the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
     @Transactional(readOnly = true)
@@ -89,9 +77,7 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
 
     /**
      * Function to convert {@link TenantSettingsCriteria} to a {@link Specification}
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<TenantSettings> createSpecification(TenantSettingsCriteria criteria) {
@@ -105,37 +91,43 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), TenantSettings_.id));
             }
             if (criteria.getTenantId() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getTenantId(), TenantSettings_.tenantId));
+                specification = specification.and(buildStringSpecification(criteria.getTenantId(), TenantSettings_.tenantId));
             }
             if (criteria.getAllowUserRegistration() != null) {
-                specification = specification.and(
-                        buildSpecification(criteria.getAllowUserRegistration(), TenantSettings_.allowUserRegistration));
+                specification =
+                    specification.and(buildSpecification(criteria.getAllowUserRegistration(), TenantSettings_.allowUserRegistration));
             }
             if (criteria.getRequireAdminApproval() != null) {
-                specification = specification.and(
-                        buildSpecification(criteria.getRequireAdminApproval(), TenantSettings_.requireAdminApproval));
+                specification =
+                    specification.and(buildSpecification(criteria.getRequireAdminApproval(), TenantSettings_.requireAdminApproval));
             }
             if (criteria.getEnableWhatsappIntegration() != null) {
-                specification = specification.and(
-                        buildSpecification(criteria.getEnableWhatsappIntegration(),
-                                TenantSettings_.enableWhatsappIntegration));
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getEnableWhatsappIntegration(), TenantSettings_.enableWhatsappIntegration)
+                    );
             }
             if (criteria.getEnableEmailMarketing() != null) {
-                specification = specification.and(
-                        buildSpecification(criteria.getEnableEmailMarketing(), TenantSettings_.enableEmailMarketing));
+                specification =
+                    specification.and(buildSpecification(criteria.getEnableEmailMarketing(), TenantSettings_.enableEmailMarketing));
             }
             if (criteria.getWhatsappApiKey() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getWhatsappApiKey(), TenantSettings_.whatsappApiKey));
+                specification = specification.and(buildStringSpecification(criteria.getWhatsappApiKey(), TenantSettings_.whatsappApiKey));
             }
             if (criteria.getCreatedAt() != null) {
-                specification = specification
-                        .and(buildRangeSpecification(criteria.getCreatedAt(), TenantSettings_.createdAt));
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), TenantSettings_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
-                specification = specification
-                        .and(buildRangeSpecification(criteria.getUpdatedAt(), TenantSettings_.updatedAt));
+                specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), TenantSettings_.updatedAt));
+            }
+            if (criteria.getTenantOrganizationId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTenantOrganizationId(),
+                            root -> root.join(TenantSettings_.tenantOrganization, JoinType.LEFT).get(TenantOrganization_.id)
+                        )
+                    );
             }
         }
         return specification;

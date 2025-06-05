@@ -109,6 +109,9 @@ public class EventTicketTypeQueryService extends QueryService<EventTicketType> {
                 specification =
                     specification.and(buildRangeSpecification(criteria.getAvailableQuantity(), EventTicketType_.availableQuantity));
             }
+            if (criteria.getSoldQuantity() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getSoldQuantity(), EventTicketType_.soldQuantity));
+            }
             if (criteria.getIsActive() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsActive(), EventTicketType_.isActive));
             }

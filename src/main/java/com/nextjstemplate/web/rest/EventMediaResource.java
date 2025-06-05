@@ -238,6 +238,7 @@ public class EventMediaResource {
             @RequestParam(value = "eventId", required = false) Long eventId,
             @RequestParam("title") String title,
             @RequestParam(value = "description", required = false) String description,
+            @RequestParam("tenantId") String tenantId,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
             @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
             @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
@@ -249,7 +250,7 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         EventMediaDTO result = eventMediaService.uploadFile(file, eventId, userProfileId, title, description,
-                isPublicValue, eventFlyer, isEventManagementOfficialDocument);
+            tenantId, isPublicValue, eventFlyer, isEventManagementOfficialDocument);
         return ResponseEntity
                 .created(new URI("/api/event-medias/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
@@ -266,6 +267,7 @@ public class EventMediaResource {
             @RequestParam(value = "eventId", required = false) Long eventId,
             @RequestParam(value = "titles", required = false) List<String> titles,
             @RequestParam(value = "descriptions", required = false) List<String> descriptions,
+            @RequestParam("tenantId") String tenantId,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
             @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
             @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
@@ -281,7 +283,7 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         List<EventMediaDTO> results = eventMediaService.uploadMultipleFiles(files, eventId, userProfileId, titles,
-                descriptions, isPublicValue, eventFlyer, isEventManagementOfficialDocument);
+                descriptions, tenantId, isPublicValue, eventFlyer, isEventManagementOfficialDocument);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert(applicationName, "eventMedia.uploaded", String.valueOf(results.size())))
                 .body(results);

@@ -18,7 +18,8 @@ public class EventTicketTypeTestSamples {
             .name("name1")
             .description("description1")
             .code("code1")
-            .availableQuantity(1);
+            .availableQuantity(1)
+            .soldQuantity(1);
     }
 
     public static EventTicketType getEventTicketTypeSample2() {
@@ -28,7 +29,8 @@ public class EventTicketTypeTestSamples {
             .name("name2")
             .description("description2")
             .code("code2")
-            .availableQuantity(2);
+            .availableQuantity(2)
+            .soldQuantity(2);
     }
 
     public static EventTicketType getEventTicketTypeRandomSampleGenerator() {
@@ -38,6 +40,7 @@ public class EventTicketTypeTestSamples {
             .name(UUID.randomUUID().toString())
             .description(UUID.randomUUID().toString())
             .code(UUID.randomUUID().toString())
-            .availableQuantity(intCount.incrementAndGet());
+            .availableQuantity(intCount.incrementAndGet())
+            .soldQuantity(intCount.incrementAndGet());
     }
 }

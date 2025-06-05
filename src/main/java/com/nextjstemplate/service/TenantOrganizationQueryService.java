@@ -18,13 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
 
 /**
- * Service for executing complex queries for {@link TenantOrganization} entities
- * in the database.
- * The main input is a {@link TenantOrganizationCriteria} which gets converted
- * to {@link Specification},
+ * Service for executing complex queries for {@link TenantOrganization} entities in the database.
+ * The main input is a {@link TenantOrganizationCriteria} which gets converted to {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link TenantOrganizationDTO} or a {@link Page}
- * of {@link TenantOrganizationDTO} which fulfills the criteria.
+ * It returns a {@link List} of {@link TenantOrganizationDTO} or a {@link Page} of {@link TenantOrganizationDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -37,18 +34,16 @@ public class TenantOrganizationQueryService extends QueryService<TenantOrganizat
     private final TenantOrganizationMapper tenantOrganizationMapper;
 
     public TenantOrganizationQueryService(
-            TenantOrganizationRepository tenantOrganizationRepository,
-            TenantOrganizationMapper tenantOrganizationMapper) {
+        TenantOrganizationRepository tenantOrganizationRepository,
+        TenantOrganizationMapper tenantOrganizationMapper
+    ) {
         this.tenantOrganizationRepository = tenantOrganizationRepository;
         this.tenantOrganizationMapper = tenantOrganizationMapper;
     }
 
     /**
-     * Return a {@link List} of {@link TenantOrganizationDTO} which matches the
-     * criteria from the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * Return a {@link List} of {@link TenantOrganizationDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -59,12 +54,9 @@ public class TenantOrganizationQueryService extends QueryService<TenantOrganizat
     }
 
     /**
-     * Return a {@link Page} of {@link TenantOrganizationDTO} which matches the
-     * criteria from the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
-     * @param page     The page, which should be returned.
+     * Return a {@link Page} of {@link TenantOrganizationDTO} which matches the criteria from the database.
+     * @param criteria The object which holds all the filters, which the entities should match.
+     * @param page The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -76,9 +68,7 @@ public class TenantOrganizationQueryService extends QueryService<TenantOrganizat
 
     /**
      * Return the number of matching entities in the database.
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
     @Transactional(readOnly = true)
@@ -89,11 +79,8 @@ public class TenantOrganizationQueryService extends QueryService<TenantOrganizat
     }
 
     /**
-     * Function to convert {@link TenantOrganizationCriteria} to a
-     * {@link Specification}
-     * 
-     * @param criteria The object which holds all the filters, which the entities
-     *                 should match.
+     * Function to convert {@link TenantOrganizationCriteria} to a {@link Specification}
+     * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<TenantOrganization> createSpecification(TenantOrganizationCriteria criteria) {
@@ -107,73 +94,73 @@ public class TenantOrganizationQueryService extends QueryService<TenantOrganizat
                 specification = specification.and(buildRangeSpecification(criteria.getId(), TenantOrganization_.id));
             }
             if (criteria.getTenantId() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getTenantId(), TenantOrganization_.tenantId));
+                specification = specification.and(buildStringSpecification(criteria.getTenantId(), TenantOrganization_.tenantId));
             }
             if (criteria.getOrganizationName() != null) {
-                specification = specification.and(
-                        buildStringSpecification(criteria.getOrganizationName(), TenantOrganization_.organizationName));
+                specification =
+                    specification.and(buildStringSpecification(criteria.getOrganizationName(), TenantOrganization_.organizationName));
             }
             if (criteria.getDomain() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getDomain(), TenantOrganization_.domain));
+                specification = specification.and(buildStringSpecification(criteria.getDomain(), TenantOrganization_.domain));
             }
             if (criteria.getPrimaryColor() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getPrimaryColor(), TenantOrganization_.primaryColor));
+                specification = specification.and(buildStringSpecification(criteria.getPrimaryColor(), TenantOrganization_.primaryColor));
             }
             if (criteria.getSecondaryColor() != null) {
-                specification = specification.and(
-                        buildStringSpecification(criteria.getSecondaryColor(), TenantOrganization_.secondaryColor));
+                specification =
+                    specification.and(buildStringSpecification(criteria.getSecondaryColor(), TenantOrganization_.secondaryColor));
             }
             if (criteria.getLogoUrl() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getLogoUrl(), TenantOrganization_.logoUrl));
+                specification = specification.and(buildStringSpecification(criteria.getLogoUrl(), TenantOrganization_.logoUrl));
             }
             if (criteria.getContactEmail() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getContactEmail(), TenantOrganization_.contactEmail));
+                specification = specification.and(buildStringSpecification(criteria.getContactEmail(), TenantOrganization_.contactEmail));
             }
             if (criteria.getContactPhone() != null) {
-                specification = specification
-                        .and(buildStringSpecification(criteria.getContactPhone(), TenantOrganization_.contactPhone));
+                specification = specification.and(buildStringSpecification(criteria.getContactPhone(), TenantOrganization_.contactPhone));
             }
             if (criteria.getSubscriptionPlan() != null) {
-                specification = specification.and(
-                        buildStringSpecification(criteria.getSubscriptionPlan(), TenantOrganization_.subscriptionPlan));
+                specification =
+                    specification.and(buildStringSpecification(criteria.getSubscriptionPlan(), TenantOrganization_.subscriptionPlan));
             }
             if (criteria.getSubscriptionStatus() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSubscriptionStatus(),
-                        TenantOrganization_.subscriptionStatus));
+                specification =
+                    specification.and(buildStringSpecification(criteria.getSubscriptionStatus(), TenantOrganization_.subscriptionStatus));
             }
             if (criteria.getSubscriptionStartDate() != null) {
-                specification = specification.and(
-                        buildRangeSpecification(criteria.getSubscriptionStartDate(),
-                                TenantOrganization_.subscriptionStartDate));
+                specification =
+                    specification.and(
+                        buildRangeSpecification(criteria.getSubscriptionStartDate(), TenantOrganization_.subscriptionStartDate)
+                    );
             }
             if (criteria.getSubscriptionEndDate() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getSubscriptionEndDate(),
-                        TenantOrganization_.subscriptionEndDate));
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getSubscriptionEndDate(), TenantOrganization_.subscriptionEndDate));
             }
             if (criteria.getMonthlyFeeUsd() != null) {
-                specification = specification
-                        .and(buildRangeSpecification(criteria.getMonthlyFeeUsd(), TenantOrganization_.monthlyFeeUsd));
+                specification = specification.and(buildRangeSpecification(criteria.getMonthlyFeeUsd(), TenantOrganization_.monthlyFeeUsd));
             }
             if (criteria.getStripeCustomerId() != null) {
-                specification = specification.and(
-                        buildStringSpecification(criteria.getStripeCustomerId(), TenantOrganization_.stripeCustomerId));
+                specification =
+                    specification.and(buildStringSpecification(criteria.getStripeCustomerId(), TenantOrganization_.stripeCustomerId));
             }
             if (criteria.getIsActive() != null) {
-                specification = specification
-                        .and(buildSpecification(criteria.getIsActive(), TenantOrganization_.isActive));
+                specification = specification.and(buildSpecification(criteria.getIsActive(), TenantOrganization_.isActive));
             }
             if (criteria.getCreatedAt() != null) {
-                specification = specification
-                        .and(buildRangeSpecification(criteria.getCreatedAt(), TenantOrganization_.createdAt));
+                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), TenantOrganization_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
-                specification = specification
-                        .and(buildRangeSpecification(criteria.getUpdatedAt(), TenantOrganization_.updatedAt));
+                specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), TenantOrganization_.updatedAt));
+            }
+            if (criteria.getTenantSettingsId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTenantSettingsId(),
+                            root -> root.join(TenantOrganization_.tenantSettings, JoinType.LEFT).get(TenantSettings_.id)
+                        )
+                    );
             }
         }
         return specification;

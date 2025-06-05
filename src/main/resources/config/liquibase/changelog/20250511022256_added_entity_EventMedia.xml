@@ -29,7 +29,7 @@
             <column name="storage_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="file_url" type="varchar(255)">
+            <column name="file_url" type="varchar(1200)">
                 <constraints nullable="true" />
             </column>
             <column name="file_data" type="${blobType}">
@@ -62,7 +62,7 @@
             <column name="updated_at" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
-            <column name="pre_signed_url" type="varchar(400)">
+            <column name="pre_signed_url" type="varchar(2048)">
                 <constraints nullable="true" />
             </column>
             <column name="event_id" type="bigint">

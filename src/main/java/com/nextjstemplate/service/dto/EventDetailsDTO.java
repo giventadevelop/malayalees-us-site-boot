@@ -55,6 +55,15 @@ public class EventDetailsDTO implements Serializable {
 
     private Boolean isActive;
 
+    @Min(value = 0)
+    private Integer maxGuestsPerAttendee;
+
+    private Boolean allowGuests;
+
+    private Boolean requireGuestApproval;
+
+    private Boolean enableGuestPricing;
+
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -177,6 +186,38 @@ public class EventDetailsDTO implements Serializable {
         this.isActive = isActive;
     }
 
+    public Integer getMaxGuestsPerAttendee() {
+        return maxGuestsPerAttendee;
+    }
+
+    public void setMaxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public Boolean getAllowGuests() {
+        return allowGuests;
+    }
+
+    public void setAllowGuests(Boolean allowGuests) {
+        this.allowGuests = allowGuests;
+    }
+
+    public Boolean getRequireGuestApproval() {
+        return requireGuestApproval;
+    }
+
+    public void setRequireGuestApproval(Boolean requireGuestApproval) {
+        this.requireGuestApproval = requireGuestApproval;
+    }
+
+    public Boolean getEnableGuestPricing() {
+        return enableGuestPricing;
+    }
+
+    public void setEnableGuestPricing(Boolean enableGuestPricing) {
+        this.enableGuestPricing = enableGuestPricing;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -248,6 +289,10 @@ public class EventDetailsDTO implements Serializable {
             ", capacity=" + getCapacity() +
             ", admissionType='" + getAdmissionType() + "'" +
             ", isActive='" + getIsActive() + "'" +
+            ", maxGuestsPerAttendee=" + getMaxGuestsPerAttendee() +
+            ", allowGuests='" + getAllowGuests() + "'" +
+            ", requireGuestApproval='" + getRequireGuestApproval() + "'" +
+            ", enableGuestPricing='" + getEnableGuestPricing() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", createdBy=" + getCreatedBy() +

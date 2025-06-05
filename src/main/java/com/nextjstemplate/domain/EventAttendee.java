@@ -75,6 +75,16 @@ public class EventAttendee implements Serializable {
     @Column(name = "notes", length = 1000)
     private String notes;
 
+    @Size(max = 1000)
+    @Column(name = "qr_code_data", length = 1000)
+    private String qrCodeData;
+
+    @Column(name = "qr_code_generated")
+    private Boolean qrCodeGenerated;
+
+    @Column(name = "qr_code_generated_at")
+    private ZonedDateTime qrCodeGeneratedAt;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -83,12 +93,14 @@ public class EventAttendee implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
+    @NotNull
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile attendee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -275,6 +287,45 @@ public class EventAttendee implements Serializable {
         this.notes = notes;
     }
 
+    public String getQrCodeData() {
+        return this.qrCodeData;
+    }
+
+    public EventAttendee qrCodeData(String qrCodeData) {
+        this.setQrCodeData(qrCodeData);
+        return this;
+    }
+
+    public void setQrCodeData(String qrCodeData) {
+        this.qrCodeData = qrCodeData;
+    }
+
+    public Boolean getQrCodeGenerated() {
+        return this.qrCodeGenerated;
+    }
+
+    public EventAttendee qrCodeGenerated(Boolean qrCodeGenerated) {
+        this.setQrCodeGenerated(qrCodeGenerated);
+        return this;
+    }
+
+    public void setQrCodeGenerated(Boolean qrCodeGenerated) {
+        this.qrCodeGenerated = qrCodeGenerated;
+    }
+
+    public ZonedDateTime getQrCodeGeneratedAt() {
+        return this.qrCodeGeneratedAt;
+    }
+
+    public EventAttendee qrCodeGeneratedAt(ZonedDateTime qrCodeGeneratedAt) {
+        this.setQrCodeGeneratedAt(qrCodeGeneratedAt);
+        return this;
+    }
+
+    public void setQrCodeGeneratedAt(ZonedDateTime qrCodeGeneratedAt) {
+        this.qrCodeGeneratedAt = qrCodeGeneratedAt;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -364,6 +415,9 @@ public class EventAttendee implements Serializable {
             ", checkInStatus='" + getCheckInStatus() + "'" +
             ", checkInTime='" + getCheckInTime() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", qrCodeData='" + getQrCodeData() + "'" +
+            ", qrCodeGenerated='" + getQrCodeGenerated() + "'" +
+            ", qrCodeGeneratedAt='" + getQrCodeGeneratedAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

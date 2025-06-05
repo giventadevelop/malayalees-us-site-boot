@@ -1211,13 +1211,7 @@ class EventTicketTypeResourceIT {
         EventTicketType partialUpdatedEventTicketType = new EventTicketType();
         partialUpdatedEventTicketType.setId(eventTicketType.getId());
 
-        partialUpdatedEventTicketType
-            .tenantId(UPDATED_TENANT_ID)
-            .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION)
-            .availableQuantity(UPDATED_AVAILABLE_QUANTITY)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+        partialUpdatedEventTicketType.price(UPDATED_PRICE).code(UPDATED_CODE).isActive(UPDATED_IS_ACTIVE);
 
         restEventTicketTypeMockMvc
             .perform(
@@ -1231,15 +1225,15 @@ class EventTicketTypeResourceIT {
         List<EventTicketType> eventTicketTypeList = eventTicketTypeRepository.findAll();
         assertThat(eventTicketTypeList).hasSize(databaseSizeBeforeUpdate);
         EventTicketType testEventTicketType = eventTicketTypeList.get(eventTicketTypeList.size() - 1);
-        assertThat(testEventTicketType.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
-        assertThat(testEventTicketType.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testEventTicketType.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
-        assertThat(testEventTicketType.getCode()).isEqualTo(DEFAULT_CODE);
-        assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(UPDATED_AVAILABLE_QUANTITY);
-        assertThat(testEventTicketType.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
-        assertThat(testEventTicketType.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testEventTicketType.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
+        assertThat(testEventTicketType.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testEventTicketType.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
+        assertThat(testEventTicketType.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(DEFAULT_AVAILABLE_QUANTITY);
+        assertThat(testEventTicketType.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+        assertThat(testEventTicketType.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test

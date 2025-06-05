@@ -7,15 +7,12 @@ import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
 
 /**
- * Criteria class for the {@link com.nextjstemplate.domain.TenantOrganization}
- * entity. This class is used
- * in {@link com.nextjstemplate.web.rest.TenantOrganizationResource} to receive
- * all the possible filtering options from
+ * Criteria class for the {@link com.nextjstemplate.domain.TenantOrganization} entity. This class is used
+ * in {@link com.nextjstemplate.web.rest.TenantOrganizationResource} to receive all the possible filtering options from
  * the Http GET request parameters.
  * For example the following could be a valid request:
  * {@code /tenant-organizations?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific
- * {@link Filter} class are used, we need to use
+ * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
 @ParameterObject
@@ -60,10 +57,11 @@ public class TenantOrganizationCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter updatedAt;
 
+    private LongFilter tenantSettingsId;
+
     private Boolean distinct;
 
-    public TenantOrganizationCriteria() {
-    }
+    public TenantOrganizationCriteria() {}
 
     public TenantOrganizationCriteria(TenantOrganizationCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
@@ -84,6 +82,7 @@ public class TenantOrganizationCriteria implements Serializable, Criteria {
         this.isActive = other.isActive == null ? null : other.isActive.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.tenantSettingsId = other.tenantSettingsId == null ? null : other.tenantSettingsId.copy();
         this.distinct = other.distinct;
     }
 
@@ -362,6 +361,21 @@ public class TenantOrganizationCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
+    public LongFilter getTenantSettingsId() {
+        return tenantSettingsId;
+    }
+
+    public LongFilter tenantSettingsId() {
+        if (tenantSettingsId == null) {
+            tenantSettingsId = new LongFilter();
+        }
+        return tenantSettingsId;
+    }
+
+    public void setTenantSettingsId(LongFilter tenantSettingsId) {
+        this.tenantSettingsId = tenantSettingsId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -379,74 +393,80 @@ public class TenantOrganizationCriteria implements Serializable, Criteria {
             return false;
         }
         final TenantOrganizationCriteria that = (TenantOrganizationCriteria) o;
-        return (Objects.equals(id, that.id) &&
-                Objects.equals(tenantId, that.tenantId) &&
-                Objects.equals(organizationName, that.organizationName) &&
-                Objects.equals(domain, that.domain) &&
-                Objects.equals(primaryColor, that.primaryColor) &&
-                Objects.equals(secondaryColor, that.secondaryColor) &&
-                Objects.equals(logoUrl, that.logoUrl) &&
-                Objects.equals(contactEmail, that.contactEmail) &&
-                Objects.equals(contactPhone, that.contactPhone) &&
-                Objects.equals(subscriptionPlan, that.subscriptionPlan) &&
-                Objects.equals(subscriptionStatus, that.subscriptionStatus) &&
-                Objects.equals(subscriptionStartDate, that.subscriptionStartDate) &&
-                Objects.equals(subscriptionEndDate, that.subscriptionEndDate) &&
-                Objects.equals(monthlyFeeUsd, that.monthlyFeeUsd) &&
-                Objects.equals(stripeCustomerId, that.stripeCustomerId) &&
-                Objects.equals(isActive, that.isActive) &&
-                Objects.equals(createdAt, that.createdAt) &&
-                Objects.equals(updatedAt, that.updatedAt) &&
-                Objects.equals(distinct, that.distinct));
+        return (
+            Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
+            Objects.equals(organizationName, that.organizationName) &&
+            Objects.equals(domain, that.domain) &&
+            Objects.equals(primaryColor, that.primaryColor) &&
+            Objects.equals(secondaryColor, that.secondaryColor) &&
+            Objects.equals(logoUrl, that.logoUrl) &&
+            Objects.equals(contactEmail, that.contactEmail) &&
+            Objects.equals(contactPhone, that.contactPhone) &&
+            Objects.equals(subscriptionPlan, that.subscriptionPlan) &&
+            Objects.equals(subscriptionStatus, that.subscriptionStatus) &&
+            Objects.equals(subscriptionStartDate, that.subscriptionStartDate) &&
+            Objects.equals(subscriptionEndDate, that.subscriptionEndDate) &&
+            Objects.equals(monthlyFeeUsd, that.monthlyFeeUsd) &&
+            Objects.equals(stripeCustomerId, that.stripeCustomerId) &&
+            Objects.equals(isActive, that.isActive) &&
+            Objects.equals(createdAt, that.createdAt) &&
+            Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(tenantSettingsId, that.tenantSettingsId) &&
+            Objects.equals(distinct, that.distinct)
+        );
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                id,
-                tenantId,
-                organizationName,
-                domain,
-                primaryColor,
-                secondaryColor,
-                logoUrl,
-                contactEmail,
-                contactPhone,
-                subscriptionPlan,
-                subscriptionStatus,
-                subscriptionStartDate,
-                subscriptionEndDate,
-                monthlyFeeUsd,
-                stripeCustomerId,
-                isActive,
-                createdAt,
-                updatedAt,
-                distinct);
+            id,
+            tenantId,
+            organizationName,
+            domain,
+            primaryColor,
+            secondaryColor,
+            logoUrl,
+            contactEmail,
+            contactPhone,
+            subscriptionPlan,
+            subscriptionStatus,
+            subscriptionStartDate,
+            subscriptionEndDate,
+            monthlyFeeUsd,
+            stripeCustomerId,
+            isActive,
+            createdAt,
+            updatedAt,
+            tenantSettingsId,
+            distinct
+        );
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "TenantOrganizationCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
-                (organizationName != null ? "organizationName=" + organizationName + ", " : "") +
-                (domain != null ? "domain=" + domain + ", " : "") +
-                (primaryColor != null ? "primaryColor=" + primaryColor + ", " : "") +
-                (secondaryColor != null ? "secondaryColor=" + secondaryColor + ", " : "") +
-                (logoUrl != null ? "logoUrl=" + logoUrl + ", " : "") +
-                (contactEmail != null ? "contactEmail=" + contactEmail + ", " : "") +
-                (contactPhone != null ? "contactPhone=" + contactPhone + ", " : "") +
-                (subscriptionPlan != null ? "subscriptionPlan=" + subscriptionPlan + ", " : "") +
-                (subscriptionStatus != null ? "subscriptionStatus=" + subscriptionStatus + ", " : "") +
-                (subscriptionStartDate != null ? "subscriptionStartDate=" + subscriptionStartDate + ", " : "") +
-                (subscriptionEndDate != null ? "subscriptionEndDate=" + subscriptionEndDate + ", " : "") +
-                (monthlyFeeUsd != null ? "monthlyFeeUsd=" + monthlyFeeUsd + ", " : "") +
-                (stripeCustomerId != null ? "stripeCustomerId=" + stripeCustomerId + ", " : "") +
-                (isActive != null ? "isActive=" + isActive + ", " : "") +
-                (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
-                (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
-                (distinct != null ? "distinct=" + distinct + ", " : "") +
-                "}";
+            (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
+            (organizationName != null ? "organizationName=" + organizationName + ", " : "") +
+            (domain != null ? "domain=" + domain + ", " : "") +
+            (primaryColor != null ? "primaryColor=" + primaryColor + ", " : "") +
+            (secondaryColor != null ? "secondaryColor=" + secondaryColor + ", " : "") +
+            (logoUrl != null ? "logoUrl=" + logoUrl + ", " : "") +
+            (contactEmail != null ? "contactEmail=" + contactEmail + ", " : "") +
+            (contactPhone != null ? "contactPhone=" + contactPhone + ", " : "") +
+            (subscriptionPlan != null ? "subscriptionPlan=" + subscriptionPlan + ", " : "") +
+            (subscriptionStatus != null ? "subscriptionStatus=" + subscriptionStatus + ", " : "") +
+            (subscriptionStartDate != null ? "subscriptionStartDate=" + subscriptionStartDate + ", " : "") +
+            (subscriptionEndDate != null ? "subscriptionEndDate=" + subscriptionEndDate + ", " : "") +
+            (monthlyFeeUsd != null ? "monthlyFeeUsd=" + monthlyFeeUsd + ", " : "") +
+            (stripeCustomerId != null ? "stripeCustomerId=" + stripeCustomerId + ", " : "") +
+            (isActive != null ? "isActive=" + isActive + ", " : "") +
+            (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
+            (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (tenantSettingsId != null ? "tenantSettingsId=" + tenantSettingsId + ", " : "") +
+            (distinct != null ? "distinct=" + distinct + ", " : "") +
+            "}";
     }
 }

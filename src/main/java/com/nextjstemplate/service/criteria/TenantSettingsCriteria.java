@@ -7,15 +7,12 @@ import tech.jhipster.service.Criteria;
 import tech.jhipster.service.filter.*;
 
 /**
- * Criteria class for the {@link com.nextjstemplate.domain.TenantSettings}
- * entity. This class is used
- * in {@link com.nextjstemplate.web.rest.TenantSettingsResource} to receive all
- * the possible filtering options from
+ * Criteria class for the {@link com.nextjstemplate.domain.TenantSettings} entity. This class is used
+ * in {@link com.nextjstemplate.web.rest.TenantSettingsResource} to receive all the possible filtering options from
  * the Http GET request parameters.
  * For example the following could be a valid request:
  * {@code /tenant-settings?id.greaterThan=5&attr1.contains=something&attr2.specified=false}
- * As Spring is unable to properly convert the types, unless specific
- * {@link Filter} class are used, we need to use
+ * As Spring is unable to properly convert the types, unless specific {@link Filter} class are used, we need to use
  * fix type specific filters.
  */
 @ParameterObject
@@ -42,22 +39,23 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter updatedAt;
 
+    private LongFilter tenantOrganizationId;
+
     private Boolean distinct;
 
-    public TenantSettingsCriteria() {
-    }
+    public TenantSettingsCriteria() {}
 
     public TenantSettingsCriteria(TenantSettingsCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.allowUserRegistration = other.allowUserRegistration == null ? null : other.allowUserRegistration.copy();
         this.requireAdminApproval = other.requireAdminApproval == null ? null : other.requireAdminApproval.copy();
-        this.enableWhatsappIntegration = other.enableWhatsappIntegration == null ? null
-                : other.enableWhatsappIntegration.copy();
+        this.enableWhatsappIntegration = other.enableWhatsappIntegration == null ? null : other.enableWhatsappIntegration.copy();
         this.enableEmailMarketing = other.enableEmailMarketing == null ? null : other.enableEmailMarketing.copy();
         this.whatsappApiKey = other.whatsappApiKey == null ? null : other.whatsappApiKey.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.tenantOrganizationId = other.tenantOrganizationId == null ? null : other.tenantOrganizationId.copy();
         this.distinct = other.distinct;
     }
 
@@ -201,6 +199,21 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
+    public LongFilter getTenantOrganizationId() {
+        return tenantOrganizationId;
+    }
+
+    public LongFilter tenantOrganizationId() {
+        if (tenantOrganizationId == null) {
+            tenantOrganizationId = new LongFilter();
+        }
+        return tenantOrganizationId;
+    }
+
+    public void setTenantOrganizationId(LongFilter tenantOrganizationId) {
+        this.tenantOrganizationId = tenantOrganizationId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -218,49 +231,53 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             return false;
         }
         final TenantSettingsCriteria that = (TenantSettingsCriteria) o;
-        return (Objects.equals(id, that.id) &&
-                Objects.equals(tenantId, that.tenantId) &&
-                Objects.equals(allowUserRegistration, that.allowUserRegistration) &&
-                Objects.equals(requireAdminApproval, that.requireAdminApproval) &&
-                Objects.equals(enableWhatsappIntegration, that.enableWhatsappIntegration) &&
-                Objects.equals(enableEmailMarketing, that.enableEmailMarketing) &&
-                Objects.equals(whatsappApiKey, that.whatsappApiKey) &&
-                Objects.equals(createdAt, that.createdAt) &&
-                Objects.equals(updatedAt, that.updatedAt) &&
-                Objects.equals(distinct, that.distinct));
+        return (
+            Objects.equals(id, that.id) &&
+            Objects.equals(tenantId, that.tenantId) &&
+            Objects.equals(allowUserRegistration, that.allowUserRegistration) &&
+            Objects.equals(requireAdminApproval, that.requireAdminApproval) &&
+            Objects.equals(enableWhatsappIntegration, that.enableWhatsappIntegration) &&
+            Objects.equals(enableEmailMarketing, that.enableEmailMarketing) &&
+            Objects.equals(whatsappApiKey, that.whatsappApiKey) &&
+            Objects.equals(createdAt, that.createdAt) &&
+            Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(tenantOrganizationId, that.tenantOrganizationId) &&
+            Objects.equals(distinct, that.distinct)
+        );
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
-                id,
-                tenantId,
-                allowUserRegistration,
-                requireAdminApproval,
-                enableWhatsappIntegration,
-                enableEmailMarketing,
-                whatsappApiKey,
-                createdAt,
-                updatedAt,
-                distinct);
+            id,
+            tenantId,
+            allowUserRegistration,
+            requireAdminApproval,
+            enableWhatsappIntegration,
+            enableEmailMarketing,
+            whatsappApiKey,
+            createdAt,
+            updatedAt,
+            tenantOrganizationId,
+            distinct
+        );
     }
 
     // prettier-ignore
     @Override
     public String toString() {
         return "TenantSettingsCriteria{" +
-                (id != null ? "id=" + id + ", " : "") +
-                (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
-                (allowUserRegistration != null ? "allowUserRegistration=" + allowUserRegistration + ", " : "") +
-                (requireAdminApproval != null ? "requireAdminApproval=" + requireAdminApproval + ", " : "") +
-                (enableWhatsappIntegration != null ? "enableWhatsappIntegration=" + enableWhatsappIntegration + ", "
-                        : "")
-                +
-                (enableEmailMarketing != null ? "enableEmailMarketing=" + enableEmailMarketing + ", " : "") +
-                (whatsappApiKey != null ? "whatsappApiKey=" + whatsappApiKey + ", " : "") +
-                (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
-                (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
-                (distinct != null ? "distinct=" + distinct + ", " : "") +
-                "}";
+            (id != null ? "id=" + id + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
+            (allowUserRegistration != null ? "allowUserRegistration=" + allowUserRegistration + ", " : "") +
+            (requireAdminApproval != null ? "requireAdminApproval=" + requireAdminApproval + ", " : "") +
+            (enableWhatsappIntegration != null ? "enableWhatsappIntegration=" + enableWhatsappIntegration + ", " : "") +
+            (enableEmailMarketing != null ? "enableEmailMarketing=" + enableEmailMarketing + ", " : "") +
+            (whatsappApiKey != null ? "whatsappApiKey=" + whatsappApiKey + ", " : "") +
+            (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
+            (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (tenantOrganizationId != null ? "tenantOrganizationId=" + tenantOrganizationId + ", " : "") +
+            (distinct != null ? "distinct=" + distinct + ", " : "") +
+            "}";
     }
 }

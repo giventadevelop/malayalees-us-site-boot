@@ -1,5 +1,6 @@
 package com.nextjstemplate.service.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.nextjstemplate.domain.TenantOrganization} entity.
  */
+@Schema(description = "TenantOrganization and TenantSettings JDL Entities\nGenerated from Java domain classes")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class TenantOrganizationDTO implements Serializable {
 

@@ -81,6 +81,19 @@ class EventDetailsResourceIT {
     private static final Boolean DEFAULT_IS_ACTIVE = false;
     private static final Boolean UPDATED_IS_ACTIVE = true;
 
+    private static final Integer DEFAULT_MAX_GUESTS_PER_ATTENDEE = 0;
+    private static final Integer UPDATED_MAX_GUESTS_PER_ATTENDEE = 1;
+    private static final Integer SMALLER_MAX_GUESTS_PER_ATTENDEE = 0 - 1;
+
+    private static final Boolean DEFAULT_ALLOW_GUESTS = false;
+    private static final Boolean UPDATED_ALLOW_GUESTS = true;
+
+    private static final Boolean DEFAULT_REQUIRE_GUEST_APPROVAL = false;
+    private static final Boolean UPDATED_REQUIRE_GUEST_APPROVAL = true;
+
+    private static final Boolean DEFAULT_ENABLE_GUEST_PRICING = false;
+    private static final Boolean UPDATED_ENABLE_GUEST_PRICING = true;
+
     private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
@@ -130,6 +143,10 @@ class EventDetailsResourceIT {
             .capacity(DEFAULT_CAPACITY)
             .admissionType(DEFAULT_ADMISSION_TYPE)
             .isActive(DEFAULT_IS_ACTIVE)
+            .maxGuestsPerAttendee(DEFAULT_MAX_GUESTS_PER_ATTENDEE)
+            .allowGuests(DEFAULT_ALLOW_GUESTS)
+            .requireGuestApproval(DEFAULT_REQUIRE_GUEST_APPROVAL)
+            .enableGuestPricing(DEFAULT_ENABLE_GUEST_PRICING)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return eventDetails;
@@ -156,6 +173,10 @@ class EventDetailsResourceIT {
             .capacity(UPDATED_CAPACITY)
             .admissionType(UPDATED_ADMISSION_TYPE)
             .isActive(UPDATED_IS_ACTIVE)
+            .maxGuestsPerAttendee(UPDATED_MAX_GUESTS_PER_ATTENDEE)
+            .allowGuests(UPDATED_ALLOW_GUESTS)
+            .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
+            .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return eventDetails;
@@ -195,6 +216,10 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
         assertThat(testEventDetails.getAdmissionType()).isEqualTo(DEFAULT_ADMISSION_TYPE);
         assertThat(testEventDetails.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
+        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+        assertThat(testEventDetails.getAllowGuests()).isEqualTo(DEFAULT_ALLOW_GUESTS);
+        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(DEFAULT_REQUIRE_GUEST_APPROVAL);
+        assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(DEFAULT_ENABLE_GUEST_PRICING);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -405,6 +430,10 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
             .andExpect(jsonPath("$.[*].admissionType").value(hasItem(DEFAULT_ADMISSION_TYPE)))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].maxGuestsPerAttendee").value(hasItem(DEFAULT_MAX_GUESTS_PER_ATTENDEE)))
+            .andExpect(jsonPath("$.[*].allowGuests").value(hasItem(DEFAULT_ALLOW_GUESTS.booleanValue())))
+            .andExpect(jsonPath("$.[*].requireGuestApproval").value(hasItem(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableGuestPricing").value(hasItem(DEFAULT_ENABLE_GUEST_PRICING.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
     }
@@ -434,6 +463,10 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.capacity").value(DEFAULT_CAPACITY))
             .andExpect(jsonPath("$.admissionType").value(DEFAULT_ADMISSION_TYPE))
             .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()))
+            .andExpect(jsonPath("$.maxGuestsPerAttendee").value(DEFAULT_MAX_GUESTS_PER_ATTENDEE))
+            .andExpect(jsonPath("$.allowGuests").value(DEFAULT_ALLOW_GUESTS.booleanValue()))
+            .andExpect(jsonPath("$.requireGuestApproval").value(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue()))
+            .andExpect(jsonPath("$.enableGuestPricing").value(DEFAULT_ENABLE_GUEST_PRICING.booleanValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
     }
@@ -1355,6 +1388,218 @@ class EventDetailsResourceIT {
 
     @Test
     @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee equals to DEFAULT_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.equals=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee equals to UPDATED_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.equals=" + UPDATED_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee in DEFAULT_MAX_GUESTS_PER_ATTENDEE or UPDATED_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound(
+            "maxGuestsPerAttendee.in=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE + "," + UPDATED_MAX_GUESTS_PER_ATTENDEE
+        );
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee equals to UPDATED_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.in=" + UPDATED_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is not null
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.specified=true");
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is null
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is greater than or equal to DEFAULT_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.greaterThanOrEqual=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is greater than or equal to UPDATED_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.greaterThanOrEqual=" + UPDATED_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is less than or equal to DEFAULT_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.lessThanOrEqual=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is less than or equal to SMALLER_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.lessThanOrEqual=" + SMALLER_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is less than DEFAULT_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.lessThan=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is less than UPDATED_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.lessThan=" + UPDATED_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByMaxGuestsPerAttendeeIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is greater than DEFAULT_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldNotBeFound("maxGuestsPerAttendee.greaterThan=" + DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+
+        // Get all the eventDetailsList where maxGuestsPerAttendee is greater than SMALLER_MAX_GUESTS_PER_ATTENDEE
+        defaultEventDetailsShouldBeFound("maxGuestsPerAttendee.greaterThan=" + SMALLER_MAX_GUESTS_PER_ATTENDEE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByAllowGuestsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where allowGuests equals to DEFAULT_ALLOW_GUESTS
+        defaultEventDetailsShouldBeFound("allowGuests.equals=" + DEFAULT_ALLOW_GUESTS);
+
+        // Get all the eventDetailsList where allowGuests equals to UPDATED_ALLOW_GUESTS
+        defaultEventDetailsShouldNotBeFound("allowGuests.equals=" + UPDATED_ALLOW_GUESTS);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByAllowGuestsIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where allowGuests in DEFAULT_ALLOW_GUESTS or UPDATED_ALLOW_GUESTS
+        defaultEventDetailsShouldBeFound("allowGuests.in=" + DEFAULT_ALLOW_GUESTS + "," + UPDATED_ALLOW_GUESTS);
+
+        // Get all the eventDetailsList where allowGuests equals to UPDATED_ALLOW_GUESTS
+        defaultEventDetailsShouldNotBeFound("allowGuests.in=" + UPDATED_ALLOW_GUESTS);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByAllowGuestsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where allowGuests is not null
+        defaultEventDetailsShouldBeFound("allowGuests.specified=true");
+
+        // Get all the eventDetailsList where allowGuests is null
+        defaultEventDetailsShouldNotBeFound("allowGuests.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByRequireGuestApprovalIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where requireGuestApproval equals to DEFAULT_REQUIRE_GUEST_APPROVAL
+        defaultEventDetailsShouldBeFound("requireGuestApproval.equals=" + DEFAULT_REQUIRE_GUEST_APPROVAL);
+
+        // Get all the eventDetailsList where requireGuestApproval equals to UPDATED_REQUIRE_GUEST_APPROVAL
+        defaultEventDetailsShouldNotBeFound("requireGuestApproval.equals=" + UPDATED_REQUIRE_GUEST_APPROVAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByRequireGuestApprovalIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where requireGuestApproval in DEFAULT_REQUIRE_GUEST_APPROVAL or UPDATED_REQUIRE_GUEST_APPROVAL
+        defaultEventDetailsShouldBeFound(
+            "requireGuestApproval.in=" + DEFAULT_REQUIRE_GUEST_APPROVAL + "," + UPDATED_REQUIRE_GUEST_APPROVAL
+        );
+
+        // Get all the eventDetailsList where requireGuestApproval equals to UPDATED_REQUIRE_GUEST_APPROVAL
+        defaultEventDetailsShouldNotBeFound("requireGuestApproval.in=" + UPDATED_REQUIRE_GUEST_APPROVAL);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByRequireGuestApprovalIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where requireGuestApproval is not null
+        defaultEventDetailsShouldBeFound("requireGuestApproval.specified=true");
+
+        // Get all the eventDetailsList where requireGuestApproval is null
+        defaultEventDetailsShouldNotBeFound("requireGuestApproval.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByEnableGuestPricingIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where enableGuestPricing equals to DEFAULT_ENABLE_GUEST_PRICING
+        defaultEventDetailsShouldBeFound("enableGuestPricing.equals=" + DEFAULT_ENABLE_GUEST_PRICING);
+
+        // Get all the eventDetailsList where enableGuestPricing equals to UPDATED_ENABLE_GUEST_PRICING
+        defaultEventDetailsShouldNotBeFound("enableGuestPricing.equals=" + UPDATED_ENABLE_GUEST_PRICING);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByEnableGuestPricingIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where enableGuestPricing in DEFAULT_ENABLE_GUEST_PRICING or UPDATED_ENABLE_GUEST_PRICING
+        defaultEventDetailsShouldBeFound("enableGuestPricing.in=" + DEFAULT_ENABLE_GUEST_PRICING + "," + UPDATED_ENABLE_GUEST_PRICING);
+
+        // Get all the eventDetailsList where enableGuestPricing equals to UPDATED_ENABLE_GUEST_PRICING
+        defaultEventDetailsShouldNotBeFound("enableGuestPricing.in=" + UPDATED_ENABLE_GUEST_PRICING);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByEnableGuestPricingIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where enableGuestPricing is not null
+        defaultEventDetailsShouldBeFound("enableGuestPricing.specified=true");
+
+        // Get all the eventDetailsList where enableGuestPricing is null
+        defaultEventDetailsShouldNotBeFound("enableGuestPricing.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllEventDetailsByCreatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         eventDetailsRepository.saveAndFlush(eventDetails);
@@ -1601,6 +1846,10 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.[*].capacity").value(hasItem(DEFAULT_CAPACITY)))
             .andExpect(jsonPath("$.[*].admissionType").value(hasItem(DEFAULT_ADMISSION_TYPE)))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
+            .andExpect(jsonPath("$.[*].maxGuestsPerAttendee").value(hasItem(DEFAULT_MAX_GUESTS_PER_ATTENDEE)))
+            .andExpect(jsonPath("$.[*].allowGuests").value(hasItem(DEFAULT_ALLOW_GUESTS.booleanValue())))
+            .andExpect(jsonPath("$.[*].requireGuestApproval").value(hasItem(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableGuestPricing").value(hasItem(DEFAULT_ENABLE_GUEST_PRICING.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
 
@@ -1664,6 +1913,10 @@ class EventDetailsResourceIT {
             .capacity(UPDATED_CAPACITY)
             .admissionType(UPDATED_ADMISSION_TYPE)
             .isActive(UPDATED_IS_ACTIVE)
+            .maxGuestsPerAttendee(UPDATED_MAX_GUESTS_PER_ATTENDEE)
+            .allowGuests(UPDATED_ALLOW_GUESTS)
+            .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
+            .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         EventDetailsDTO eventDetailsDTO = eventDetailsMapper.toDto(updatedEventDetails);
@@ -1693,6 +1946,10 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getCapacity()).isEqualTo(UPDATED_CAPACITY);
         assertThat(testEventDetails.getAdmissionType()).isEqualTo(UPDATED_ADMISSION_TYPE);
         assertThat(testEventDetails.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(UPDATED_MAX_GUESTS_PER_ATTENDEE);
+        assertThat(testEventDetails.getAllowGuests()).isEqualTo(UPDATED_ALLOW_GUESTS);
+        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
+        assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(UPDATED_ENABLE_GUEST_PRICING);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -1777,13 +2034,18 @@ class EventDetailsResourceIT {
         partialUpdatedEventDetails.setId(eventDetails.getId());
 
         partialUpdatedEventDetails
-            .title(UPDATED_TITLE)
+            .tenantId(UPDATED_TENANT_ID)
+            .caption(UPDATED_CAPTION)
+            .description(UPDATED_DESCRIPTION)
             .endDate(UPDATED_END_DATE)
             .endTime(UPDATED_END_TIME)
-            .location(UPDATED_LOCATION)
+            .directionsToVenue(UPDATED_DIRECTIONS_TO_VENUE)
+            .capacity(UPDATED_CAPACITY)
             .admissionType(UPDATED_ADMISSION_TYPE)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .isActive(UPDATED_IS_ACTIVE)
+            .maxGuestsPerAttendee(UPDATED_MAX_GUESTS_PER_ATTENDEE)
+            .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
+            .createdAt(UPDATED_CREATED_AT);
 
         restEventDetailsMockMvc
             .perform(
@@ -1797,21 +2059,25 @@ class EventDetailsResourceIT {
         List<EventDetails> eventDetailsList = eventDetailsRepository.findAll();
         assertThat(eventDetailsList).hasSize(databaseSizeBeforeUpdate);
         EventDetails testEventDetails = eventDetailsList.get(eventDetailsList.size() - 1);
-        assertThat(testEventDetails.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventDetails.getTitle()).isEqualTo(UPDATED_TITLE);
-        assertThat(testEventDetails.getCaption()).isEqualTo(DEFAULT_CAPTION);
-        assertThat(testEventDetails.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testEventDetails.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testEventDetails.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testEventDetails.getCaption()).isEqualTo(UPDATED_CAPTION);
+        assertThat(testEventDetails.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testEventDetails.getStartDate()).isEqualTo(DEFAULT_START_DATE);
         assertThat(testEventDetails.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testEventDetails.getStartTime()).isEqualTo(DEFAULT_START_TIME);
         assertThat(testEventDetails.getEndTime()).isEqualTo(UPDATED_END_TIME);
-        assertThat(testEventDetails.getLocation()).isEqualTo(UPDATED_LOCATION);
-        assertThat(testEventDetails.getDirectionsToVenue()).isEqualTo(DEFAULT_DIRECTIONS_TO_VENUE);
-        assertThat(testEventDetails.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
+        assertThat(testEventDetails.getLocation()).isEqualTo(DEFAULT_LOCATION);
+        assertThat(testEventDetails.getDirectionsToVenue()).isEqualTo(UPDATED_DIRECTIONS_TO_VENUE);
+        assertThat(testEventDetails.getCapacity()).isEqualTo(UPDATED_CAPACITY);
         assertThat(testEventDetails.getAdmissionType()).isEqualTo(UPDATED_ADMISSION_TYPE);
-        assertThat(testEventDetails.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
+        assertThat(testEventDetails.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(UPDATED_MAX_GUESTS_PER_ATTENDEE);
+        assertThat(testEventDetails.getAllowGuests()).isEqualTo(DEFAULT_ALLOW_GUESTS);
+        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
+        assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(DEFAULT_ENABLE_GUEST_PRICING);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testEventDetails.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -1840,6 +2106,10 @@ class EventDetailsResourceIT {
             .capacity(UPDATED_CAPACITY)
             .admissionType(UPDATED_ADMISSION_TYPE)
             .isActive(UPDATED_IS_ACTIVE)
+            .maxGuestsPerAttendee(UPDATED_MAX_GUESTS_PER_ATTENDEE)
+            .allowGuests(UPDATED_ALLOW_GUESTS)
+            .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
+            .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
 
@@ -1868,6 +2138,10 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getCapacity()).isEqualTo(UPDATED_CAPACITY);
         assertThat(testEventDetails.getAdmissionType()).isEqualTo(UPDATED_ADMISSION_TYPE);
         assertThat(testEventDetails.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(UPDATED_MAX_GUESTS_PER_ATTENDEE);
+        assertThat(testEventDetails.getAllowGuests()).isEqualTo(UPDATED_ALLOW_GUESTS);
+        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
+        assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(UPDATED_ENABLE_GUEST_PRICING);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

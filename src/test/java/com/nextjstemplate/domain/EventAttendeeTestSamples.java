@@ -20,7 +20,8 @@ public class EventAttendeeTestSamples {
             .emergencyContactName("emergencyContactName1")
             .emergencyContactPhone("emergencyContactPhone1")
             .checkInStatus("checkInStatus1")
-            .notes("notes1");
+            .notes("notes1")
+            .qrCodeData("qrCodeData1");
     }
 
     public static EventAttendee getEventAttendeeSample2() {
@@ -34,7 +35,8 @@ public class EventAttendeeTestSamples {
             .emergencyContactName("emergencyContactName2")
             .emergencyContactPhone("emergencyContactPhone2")
             .checkInStatus("checkInStatus2")
-            .notes("notes2");
+            .notes("notes2")
+            .qrCodeData("qrCodeData2");
     }
 
     public static EventAttendee getEventAttendeeRandomSampleGenerator() {
@@ -48,6 +50,7 @@ public class EventAttendeeTestSamples {
             .emergencyContactName(UUID.randomUUID().toString())
             .emergencyContactPhone(UUID.randomUUID().toString())
             .checkInStatus(UUID.randomUUID().toString())
-            .notes(UUID.randomUUID().toString());
+            .notes(UUID.randomUUID().toString())
+            .qrCodeData(UUID.randomUUID().toString());
     }
 }

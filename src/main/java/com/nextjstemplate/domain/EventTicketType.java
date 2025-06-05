@@ -51,6 +51,9 @@ public class EventTicketType implements Serializable {
     @Column(name = "available_quantity")
     private Integer availableQuantity;
 
+    @Column(name = "sold_quantity")
+    private Integer soldQuantity;
+
     @Column(name = "is_active")
     private Boolean isActive;
 
@@ -159,6 +162,19 @@ public class EventTicketType implements Serializable {
         this.availableQuantity = availableQuantity;
     }
 
+    public Integer getSoldQuantity() {
+        return this.soldQuantity;
+    }
+
+    public EventTicketType soldQuantity(Integer soldQuantity) {
+        this.setSoldQuantity(soldQuantity);
+        return this;
+    }
+
+    public void setSoldQuantity(Integer soldQuantity) {
+        this.soldQuantity = soldQuantity;
+    }
+
     public Boolean getIsActive() {
         return this.isActive;
     }
@@ -241,6 +257,7 @@ public class EventTicketType implements Serializable {
             ", price=" + getPrice() +
             ", code='" + getCode() + "'" +
             ", availableQuantity=" + getAvailableQuantity() +
+            ", soldQuantity=" + getSoldQuantity() +
             ", isActive='" + getIsActive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +

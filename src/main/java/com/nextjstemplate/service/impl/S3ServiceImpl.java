@@ -32,10 +32,10 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public String uploadFile(MultipartFile file, Long eventId, String title) {
+    public String uploadFile(MultipartFile file, Long eventId, String title,  String tenantId) {
         try {
             String originalFilename = file.getOriginalFilename();
-            String uniqueFilename = generateUniqueFilename(eventId, originalFilename);
+            String uniqueFilename = generateUniqueFilename(tenantId, eventId, originalFilename);
 
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
@@ -117,14 +117,14 @@ public class S3ServiceImpl implements S3Service {
 
     // Private helper methods
 
-    private String generateUniqueFilename(Long eventId, String originalFilename) {
+    private String generateUniqueFilename(String tenantId, Long eventId, String originalFilename) {
         String timestamp = String.valueOf(System.currentTimeMillis());
         String uuid = UUID.randomUUID().toString().substring(0, 8);
         String extension = getFileExtension(originalFilename);
         String baseName = getBaseFileName(originalFilename);
 
         if (eventId != null) {
-            return String.format("events/event-id/%d/%s_%s_%s%s", eventId, baseName, timestamp, uuid, extension);
+            return String.format("events/tenantId/%s/event-id/%d/%s_%s_%s%s",tenantId, eventId, baseName, timestamp, uuid, extension);
         } else {
             return String.format("media/%s_%s_%s%s", baseName, timestamp, uuid, extension);
         }

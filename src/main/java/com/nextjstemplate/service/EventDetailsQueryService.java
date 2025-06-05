@@ -130,6 +130,20 @@ public class EventDetailsQueryService extends QueryService<EventDetails> {
             if (criteria.getIsActive() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsActive(), EventDetails_.isActive));
             }
+            if (criteria.getMaxGuestsPerAttendee() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getMaxGuestsPerAttendee(), EventDetails_.maxGuestsPerAttendee));
+            }
+            if (criteria.getAllowGuests() != null) {
+                specification = specification.and(buildSpecification(criteria.getAllowGuests(), EventDetails_.allowGuests));
+            }
+            if (criteria.getRequireGuestApproval() != null) {
+                specification =
+                    specification.and(buildSpecification(criteria.getRequireGuestApproval(), EventDetails_.requireGuestApproval));
+            }
+            if (criteria.getEnableGuestPricing() != null) {
+                specification = specification.and(buildSpecification(criteria.getEnableGuestPricing(), EventDetails_.enableGuestPricing));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventDetails_.createdAt));
             }

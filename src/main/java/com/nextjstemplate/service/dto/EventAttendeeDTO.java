@@ -50,6 +50,13 @@ public class EventAttendeeDTO implements Serializable {
     @Size(max = 1000)
     private String notes;
 
+    @Size(max = 1000)
+    private String qrCodeData;
+
+    private Boolean qrCodeGenerated;
+
+    private ZonedDateTime qrCodeGeneratedAt;
+
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -172,6 +179,30 @@ public class EventAttendeeDTO implements Serializable {
         this.notes = notes;
     }
 
+    public String getQrCodeData() {
+        return qrCodeData;
+    }
+
+    public void setQrCodeData(String qrCodeData) {
+        this.qrCodeData = qrCodeData;
+    }
+
+    public Boolean getQrCodeGenerated() {
+        return qrCodeGenerated;
+    }
+
+    public void setQrCodeGenerated(Boolean qrCodeGenerated) {
+        this.qrCodeGenerated = qrCodeGenerated;
+    }
+
+    public ZonedDateTime getQrCodeGeneratedAt() {
+        return qrCodeGeneratedAt;
+    }
+
+    public void setQrCodeGeneratedAt(ZonedDateTime qrCodeGeneratedAt) {
+        this.qrCodeGeneratedAt = qrCodeGeneratedAt;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -243,6 +274,9 @@ public class EventAttendeeDTO implements Serializable {
             ", checkInStatus='" + getCheckInStatus() + "'" +
             ", checkInTime='" + getCheckInTime() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", qrCodeData='" + getQrCodeData() + "'" +
+            ", qrCodeGenerated='" + getQrCodeGenerated() + "'" +
+            ", qrCodeGeneratedAt='" + getQrCodeGeneratedAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", event=" + getEvent() +

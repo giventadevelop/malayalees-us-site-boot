@@ -64,6 +64,9 @@ public class CacheConfiguration {
             createCache(cm, com.nextjstemplate.domain.UserRegistrationRequest.class.getName());
             createCache(cm, com.nextjstemplate.domain.QrCodeUsage.class.getName());
             createCache(cm, com.nextjstemplate.domain.BulkOperationLog.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventAttendeeGuest.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventGuestPricing.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventOrganizer.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

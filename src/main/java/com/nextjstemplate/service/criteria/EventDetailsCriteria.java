@@ -49,6 +49,14 @@ public class EventDetailsCriteria implements Serializable, Criteria {
 
     private BooleanFilter isActive;
 
+    private IntegerFilter maxGuestsPerAttendee;
+
+    private BooleanFilter allowGuests;
+
+    private BooleanFilter requireGuestApproval;
+
+    private BooleanFilter enableGuestPricing;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -76,6 +84,10 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.capacity = other.capacity == null ? null : other.capacity.copy();
         this.admissionType = other.admissionType == null ? null : other.admissionType.copy();
         this.isActive = other.isActive == null ? null : other.isActive.copy();
+        this.maxGuestsPerAttendee = other.maxGuestsPerAttendee == null ? null : other.maxGuestsPerAttendee.copy();
+        this.allowGuests = other.allowGuests == null ? null : other.allowGuests.copy();
+        this.requireGuestApproval = other.requireGuestApproval == null ? null : other.requireGuestApproval.copy();
+        this.enableGuestPricing = other.enableGuestPricing == null ? null : other.enableGuestPricing.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.createdById = other.createdById == null ? null : other.createdById.copy();
@@ -298,6 +310,66 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.isActive = isActive;
     }
 
+    public IntegerFilter getMaxGuestsPerAttendee() {
+        return maxGuestsPerAttendee;
+    }
+
+    public IntegerFilter maxGuestsPerAttendee() {
+        if (maxGuestsPerAttendee == null) {
+            maxGuestsPerAttendee = new IntegerFilter();
+        }
+        return maxGuestsPerAttendee;
+    }
+
+    public void setMaxGuestsPerAttendee(IntegerFilter maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public BooleanFilter getAllowGuests() {
+        return allowGuests;
+    }
+
+    public BooleanFilter allowGuests() {
+        if (allowGuests == null) {
+            allowGuests = new BooleanFilter();
+        }
+        return allowGuests;
+    }
+
+    public void setAllowGuests(BooleanFilter allowGuests) {
+        this.allowGuests = allowGuests;
+    }
+
+    public BooleanFilter getRequireGuestApproval() {
+        return requireGuestApproval;
+    }
+
+    public BooleanFilter requireGuestApproval() {
+        if (requireGuestApproval == null) {
+            requireGuestApproval = new BooleanFilter();
+        }
+        return requireGuestApproval;
+    }
+
+    public void setRequireGuestApproval(BooleanFilter requireGuestApproval) {
+        this.requireGuestApproval = requireGuestApproval;
+    }
+
+    public BooleanFilter getEnableGuestPricing() {
+        return enableGuestPricing;
+    }
+
+    public BooleanFilter enableGuestPricing() {
+        if (enableGuestPricing == null) {
+            enableGuestPricing = new BooleanFilter();
+        }
+        return enableGuestPricing;
+    }
+
+    public void setEnableGuestPricing(BooleanFilter enableGuestPricing) {
+        this.enableGuestPricing = enableGuestPricing;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -390,6 +462,10 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             Objects.equals(capacity, that.capacity) &&
             Objects.equals(admissionType, that.admissionType) &&
             Objects.equals(isActive, that.isActive) &&
+            Objects.equals(maxGuestsPerAttendee, that.maxGuestsPerAttendee) &&
+            Objects.equals(allowGuests, that.allowGuests) &&
+            Objects.equals(requireGuestApproval, that.requireGuestApproval) &&
+            Objects.equals(enableGuestPricing, that.enableGuestPricing) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(createdById, that.createdById) &&
@@ -415,6 +491,10 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             capacity,
             admissionType,
             isActive,
+            maxGuestsPerAttendee,
+            allowGuests,
+            requireGuestApproval,
+            enableGuestPricing,
             createdAt,
             updatedAt,
             createdById,
@@ -441,6 +521,10 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             (capacity != null ? "capacity=" + capacity + ", " : "") +
             (admissionType != null ? "admissionType=" + admissionType + ", " : "") +
             (isActive != null ? "isActive=" + isActive + ", " : "") +
+            (maxGuestsPerAttendee != null ? "maxGuestsPerAttendee=" + maxGuestsPerAttendee + ", " : "") +
+            (allowGuests != null ? "allowGuests=" + allowGuests + ", " : "") +
+            (requireGuestApproval != null ? "requireGuestApproval=" + requireGuestApproval + ", " : "") +
+            (enableGuestPricing != null ? "enableGuestPricing=" + enableGuestPricing + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (createdById != null ? "createdById=" + createdById + ", " : "") +

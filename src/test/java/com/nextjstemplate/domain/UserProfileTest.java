@@ -1,6 +1,7 @@
 package com.nextjstemplate.domain;
 
 import static com.nextjstemplate.domain.UserProfileTestSamples.*;
+import static com.nextjstemplate.domain.UserProfileTestSamples.*;
 import static com.nextjstemplate.domain.UserSubscriptionTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +22,18 @@ class UserProfileTest {
 
         userProfile2 = getUserProfileSample2();
         assertThat(userProfile1).isNotEqualTo(userProfile2);
+    }
+
+    @Test
+    void reviewedByAdminTest() throws Exception {
+        UserProfile userProfile = getUserProfileRandomSampleGenerator();
+        UserProfile userProfileBack = getUserProfileRandomSampleGenerator();
+
+        userProfile.setReviewedByAdmin(userProfileBack);
+        assertThat(userProfile.getReviewedByAdmin()).isEqualTo(userProfileBack);
+
+        userProfile.reviewedByAdmin(null);
+        assertThat(userProfile.getReviewedByAdmin()).isNull();
     }
 
     @Test

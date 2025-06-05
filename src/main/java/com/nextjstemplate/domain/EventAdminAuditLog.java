@@ -53,7 +53,7 @@ public class EventAdminAuditLog implements Serializable {
     private ZonedDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile admin;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

@@ -28,10 +28,10 @@ class TenantSettingsTest {
         TenantSettings tenantSettings = getTenantSettingsRandomSampleGenerator();
         TenantOrganization tenantOrganizationBack = getTenantOrganizationRandomSampleGenerator();
 
-     /*   tenantSettings.setTenantOrganization(tenantOrganizationBack);
+        tenantSettings.setTenantOrganization(tenantOrganizationBack);
         assertThat(tenantSettings.getTenantOrganization()).isEqualTo(tenantOrganizationBack);
 
         tenantSettings.tenantOrganization(null);
-        assertThat(tenantSettings.getTenantOrganization()).isNull();*/
+        assertThat(tenantSettings.getTenantOrganization()).isNull();
     }
 }

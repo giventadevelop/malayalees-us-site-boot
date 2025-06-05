@@ -32,7 +32,7 @@ public class EventMediaDTO implements Serializable {
     @Size(max = 255)
     private String storageType;
 
-    @Size(max = 255)
+    @Size(max = 1200)
     private String fileUrl;
 
     @Lob
@@ -58,7 +58,7 @@ public class EventMediaDTO implements Serializable {
     @NotNull
     private ZonedDateTime updatedAt;
 
-    @Size(max = 400)
+    @Size(max = 2048)
     private String preSignedUrl;
 
     private EventDetailsDTO event;
@@ -128,7 +128,6 @@ public class EventMediaDTO implements Serializable {
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
     }
-
 
     public String getFileDataContentType() {
         return fileDataContentType;

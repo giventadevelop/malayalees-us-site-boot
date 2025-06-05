@@ -32,6 +32,9 @@
             <column name="available_quantity" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="sold_quantity" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="is_active" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -73,6 +76,7 @@
             <column name="price" type="numeric"/>
             <column name="code" type="string"/>
             <column name="available_quantity" type="numeric"/>
+            <column name="sold_quantity" type="numeric"/>
             <column name="is_active" type="boolean"/>
             <column name="created_at" type="date"/>
             <column name="updated_at" type="date"/>

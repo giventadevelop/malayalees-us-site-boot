@@ -49,6 +49,12 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     private StringFilter notes;
 
+    private StringFilter qrCodeData;
+
+    private BooleanFilter qrCodeGenerated;
+
+    private ZonedDateTimeFilter qrCodeGeneratedAt;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -76,6 +82,9 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.checkInStatus = other.checkInStatus == null ? null : other.checkInStatus.copy();
         this.checkInTime = other.checkInTime == null ? null : other.checkInTime.copy();
         this.notes = other.notes == null ? null : other.notes.copy();
+        this.qrCodeData = other.qrCodeData == null ? null : other.qrCodeData.copy();
+        this.qrCodeGenerated = other.qrCodeGenerated == null ? null : other.qrCodeGenerated.copy();
+        this.qrCodeGeneratedAt = other.qrCodeGeneratedAt == null ? null : other.qrCodeGeneratedAt.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
@@ -298,6 +307,51 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.notes = notes;
     }
 
+    public StringFilter getQrCodeData() {
+        return qrCodeData;
+    }
+
+    public StringFilter qrCodeData() {
+        if (qrCodeData == null) {
+            qrCodeData = new StringFilter();
+        }
+        return qrCodeData;
+    }
+
+    public void setQrCodeData(StringFilter qrCodeData) {
+        this.qrCodeData = qrCodeData;
+    }
+
+    public BooleanFilter getQrCodeGenerated() {
+        return qrCodeGenerated;
+    }
+
+    public BooleanFilter qrCodeGenerated() {
+        if (qrCodeGenerated == null) {
+            qrCodeGenerated = new BooleanFilter();
+        }
+        return qrCodeGenerated;
+    }
+
+    public void setQrCodeGenerated(BooleanFilter qrCodeGenerated) {
+        this.qrCodeGenerated = qrCodeGenerated;
+    }
+
+    public ZonedDateTimeFilter getQrCodeGeneratedAt() {
+        return qrCodeGeneratedAt;
+    }
+
+    public ZonedDateTimeFilter qrCodeGeneratedAt() {
+        if (qrCodeGeneratedAt == null) {
+            qrCodeGeneratedAt = new ZonedDateTimeFilter();
+        }
+        return qrCodeGeneratedAt;
+    }
+
+    public void setQrCodeGeneratedAt(ZonedDateTimeFilter qrCodeGeneratedAt) {
+        this.qrCodeGeneratedAt = qrCodeGeneratedAt;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -390,6 +444,9 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             Objects.equals(checkInStatus, that.checkInStatus) &&
             Objects.equals(checkInTime, that.checkInTime) &&
             Objects.equals(notes, that.notes) &&
+            Objects.equals(qrCodeData, that.qrCodeData) &&
+            Objects.equals(qrCodeGenerated, that.qrCodeGenerated) &&
+            Objects.equals(qrCodeGeneratedAt, that.qrCodeGeneratedAt) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
@@ -415,6 +472,9 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             checkInStatus,
             checkInTime,
             notes,
+            qrCodeData,
+            qrCodeGenerated,
+            qrCodeGeneratedAt,
             createdAt,
             updatedAt,
             eventId,
@@ -441,6 +501,9 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             (checkInStatus != null ? "checkInStatus=" + checkInStatus + ", " : "") +
             (checkInTime != null ? "checkInTime=" + checkInTime + ", " : "") +
             (notes != null ? "notes=" + notes + ", " : "") +
+            (qrCodeData != null ? "qrCodeData=" + qrCodeData + ", " : "") +
+            (qrCodeGenerated != null ? "qrCodeGenerated=" + qrCodeGenerated + ", " : "") +
+            (qrCodeGeneratedAt != null ? "qrCodeGeneratedAt=" + qrCodeGeneratedAt + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +

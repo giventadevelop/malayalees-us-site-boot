@@ -104,24 +104,27 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     @Override
     public EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title,
-            String description, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument) {
+            String description, String  tenantId, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument) {
         // Upload to S3
-        String fileUrl = s3Service.uploadFile(file, eventId, title);
+        String fileUrl = s3Service.uploadFile(file, eventId, title, tenantId);
 
         EventMedia eventMedia = new EventMedia();
         EventDetails event = eventRepository.findById(eventId).get();
         eventMedia.setEvent(event);
         eventMedia.setTitle(title);
         eventMedia.setDescription(description);
+        eventMedia.setTenantId(tenantId);
         eventMedia.setEventMediaType(file.getContentType() != null ? file.getContentType() : "unknown");
         eventMedia.setStorageType("S3");
         eventMedia.setFileUrl(fileUrl);
+        log.info("preSignedUrl length: " + s3Service.generatePresignedUrl(fileUrl, 1).length());
+        log.info("preSignedUrl value: " + s3Service.generatePresignedUrl(fileUrl, 1));
         eventMedia.setPreSignedUrl(s3Service.generatePresignedUrl(fileUrl, 1));
         eventMedia.setContentType(file.getContentType());
         eventMedia.setFileSize((int) file.getSize());
         eventMedia.setIsPublic(isPublic);
-        eventMedia.setCreatedAt(ZonedDateTime.from(Instant.now()));
-        eventMedia.setUpdatedAt(ZonedDateTime.from(Instant.now()));
+        eventMedia.setCreatedAt(ZonedDateTime.now());
+        eventMedia.setUpdatedAt(ZonedDateTime.now());
         eventMedia.setEventFlyer(eventFlyer);
         eventMedia.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
         // Optionally set event and uploadedBy if needed (requires fetching entities)
@@ -134,14 +137,14 @@ public class EventMediaServiceImpl implements EventMediaService {
 
     @Override
     public List<EventMediaDTO> uploadMultipleFiles(List<MultipartFile> files, Long eventId, Long userProfileId,
-            List<String> titles, List<String> descriptions, boolean isPublic, Boolean eventFlyer,
+            List<String> titles, List<String> descriptions, String  tenantId, boolean isPublic, Boolean eventFlyer,
             Boolean isEventManagementOfficialDocument) {
         List<EventMediaDTO> result = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
             String title = (titles != null && i < titles.size()) ? titles.get(i) : file.getOriginalFilename();
             String description = (descriptions != null && i < descriptions.size()) ? descriptions.get(i) : null;
-            result.add(uploadFile(file, eventId, userProfileId, title, description, isPublic, eventFlyer,
+            result.add(uploadFile(file, eventId, userProfileId, title, description, tenantId, isPublic, eventFlyer,
                     isEventManagementOfficialDocument));
         }
         return result;

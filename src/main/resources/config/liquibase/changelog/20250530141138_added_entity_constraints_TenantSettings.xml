@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity TenantSettings.
+    -->
+    <changeSet id="20250530141138-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tenant_organization_id"
+                                 baseTableName="tenant_settings"
+                                 constraintName="fk_tenant_settings__tenant_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tenant_organization"
+                                 />
+    </changeSet>
+</databaseChangeLog>

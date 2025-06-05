@@ -27,13 +27,13 @@ class TenantOrganizationTest {
     void tenantSettingsTest() throws Exception {
         TenantOrganization tenantOrganization = getTenantOrganizationRandomSampleGenerator();
         TenantSettings tenantSettingsBack = getTenantSettingsRandomSampleGenerator();
-/*
+
         tenantOrganization.setTenantSettings(tenantSettingsBack);
         assertThat(tenantOrganization.getTenantSettings()).isEqualTo(tenantSettingsBack);
         assertThat(tenantSettingsBack.getTenantOrganization()).isEqualTo(tenantOrganization);
 
         tenantOrganization.tenantSettings(null);
         assertThat(tenantOrganization.getTenantSettings()).isNull();
-        assertThat(tenantSettingsBack.getTenantOrganization()).isNull();*/
+        assertThat(tenantSettingsBack.getTenantOrganization()).isNull();
     }
 }

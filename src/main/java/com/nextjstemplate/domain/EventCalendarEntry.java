@@ -56,7 +56,7 @@ public class EventCalendarEntry implements Serializable {
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile createdBy;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

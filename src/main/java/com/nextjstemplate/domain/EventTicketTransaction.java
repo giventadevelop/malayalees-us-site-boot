@@ -81,7 +81,7 @@ public class EventTicketTransaction implements Serializable {
     private EventTicketType ticketType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

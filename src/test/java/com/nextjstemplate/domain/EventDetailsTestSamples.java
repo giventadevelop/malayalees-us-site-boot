@@ -23,7 +23,8 @@ public class EventDetailsTestSamples {
             .location("location1")
             .directionsToVenue("directionsToVenue1")
             .capacity(1)
-            .admissionType("admissionType1");
+            .admissionType("admissionType1")
+            .maxGuestsPerAttendee(1);
     }
 
     public static EventDetails getEventDetailsSample2() {
@@ -38,7 +39,8 @@ public class EventDetailsTestSamples {
             .location("location2")
             .directionsToVenue("directionsToVenue2")
             .capacity(2)
-            .admissionType("admissionType2");
+            .admissionType("admissionType2")
+            .maxGuestsPerAttendee(2);
     }
 
     public static EventDetails getEventDetailsRandomSampleGenerator() {
@@ -53,6 +55,7 @@ public class EventDetailsTestSamples {
             .location(UUID.randomUUID().toString())
             .directionsToVenue(UUID.randomUUID().toString())
             .capacity(intCount.incrementAndGet())
-            .admissionType(UUID.randomUUID().toString());
+            .admissionType(UUID.randomUUID().toString())
+            .maxGuestsPerAttendee(intCount.incrementAndGet());
     }
 }

@@ -29,7 +29,9 @@ public class UserProfileTestSamples {
             .cityTown("cityTown1")
             .district("district1")
             .educationalInstitution("educationalInstitution1")
-            .profileImageUrl("profileImageUrl1");
+            .profileImageUrl("profileImageUrl1")
+            .userStatus("userStatus1")
+            .userRole("userRole1");
     }
 
     public static UserProfile getUserProfileSample2() {
@@ -52,7 +54,9 @@ public class UserProfileTestSamples {
             .cityTown("cityTown2")
             .district("district2")
             .educationalInstitution("educationalInstitution2")
-            .profileImageUrl("profileImageUrl2");
+            .profileImageUrl("profileImageUrl2")
+            .userStatus("userStatus2")
+            .userRole("userRole2");
     }
 
     public static UserProfile getUserProfileRandomSampleGenerator() {
@@ -75,6 +79,8 @@ public class UserProfileTestSamples {
             .cityTown(UUID.randomUUID().toString())
             .district(UUID.randomUUID().toString())
             .educationalInstitution(UUID.randomUUID().toString())
-            .profileImageUrl(UUID.randomUUID().toString());
+            .profileImageUrl(UUID.randomUUID().toString())
+            .userStatus(UUID.randomUUID().toString())
+            .userRole(UUID.randomUUID().toString());
     }
 }

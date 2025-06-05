@@ -35,6 +35,8 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
 
     private IntegerFilter availableQuantity;
 
+    private IntegerFilter soldQuantity;
+
     private BooleanFilter isActive;
 
     private ZonedDateTimeFilter createdAt;
@@ -55,6 +57,7 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
         this.price = other.price == null ? null : other.price.copy();
         this.code = other.code == null ? null : other.code.copy();
         this.availableQuantity = other.availableQuantity == null ? null : other.availableQuantity.copy();
+        this.soldQuantity = other.soldQuantity == null ? null : other.soldQuantity.copy();
         this.isActive = other.isActive == null ? null : other.isActive.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
@@ -172,6 +175,21 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
         this.availableQuantity = availableQuantity;
     }
 
+    public IntegerFilter getSoldQuantity() {
+        return soldQuantity;
+    }
+
+    public IntegerFilter soldQuantity() {
+        if (soldQuantity == null) {
+            soldQuantity = new IntegerFilter();
+        }
+        return soldQuantity;
+    }
+
+    public void setSoldQuantity(IntegerFilter soldQuantity) {
+        this.soldQuantity = soldQuantity;
+    }
+
     public BooleanFilter getIsActive() {
         return isActive;
     }
@@ -257,6 +275,7 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             Objects.equals(price, that.price) &&
             Objects.equals(code, that.code) &&
             Objects.equals(availableQuantity, that.availableQuantity) &&
+            Objects.equals(soldQuantity, that.soldQuantity) &&
             Objects.equals(isActive, that.isActive) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
@@ -275,6 +294,7 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             price,
             code,
             availableQuantity,
+            soldQuantity,
             isActive,
             createdAt,
             updatedAt,
@@ -294,6 +314,7 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             (price != null ? "price=" + price + ", " : "") +
             (code != null ? "code=" + code + ", " : "") +
             (availableQuantity != null ? "availableQuantity=" + availableQuantity + ", " : "") +
+            (soldQuantity != null ? "soldQuantity=" + soldQuantity + ", " : "") +
             (isActive != null ? "isActive=" + isActive + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +

@@ -18,8 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing
- * {@link com.nextjstemplate.domain.TenantOrganization}.
+ * Service Implementation for managing {@link com.nextjstemplate.domain.TenantOrganization}.
  */
 @Service
 @Transactional
@@ -32,8 +31,9 @@ public class TenantOrganizationServiceImpl implements TenantOrganizationService 
     private final TenantOrganizationMapper tenantOrganizationMapper;
 
     public TenantOrganizationServiceImpl(
-            TenantOrganizationRepository tenantOrganizationRepository,
-            TenantOrganizationMapper tenantOrganizationMapper) {
+        TenantOrganizationRepository tenantOrganizationRepository,
+        TenantOrganizationMapper tenantOrganizationMapper
+    ) {
         this.tenantOrganizationRepository = tenantOrganizationRepository;
         this.tenantOrganizationMapper = tenantOrganizationMapper;
     }
@@ -59,14 +59,14 @@ public class TenantOrganizationServiceImpl implements TenantOrganizationService 
         log.debug("Request to partially update TenantOrganization : {}", tenantOrganizationDTO);
 
         return tenantOrganizationRepository
-                .findById(tenantOrganizationDTO.getId())
-                .map(existingTenantOrganization -> {
-                    tenantOrganizationMapper.partialUpdate(existingTenantOrganization, tenantOrganizationDTO);
+            .findById(tenantOrganizationDTO.getId())
+            .map(existingTenantOrganization -> {
+                tenantOrganizationMapper.partialUpdate(existingTenantOrganization, tenantOrganizationDTO);
 
-                    return existingTenantOrganization;
-                })
-                .map(tenantOrganizationRepository::save)
-                .map(tenantOrganizationMapper::toDto);
+                return existingTenantOrganization;
+            })
+            .map(tenantOrganizationRepository::save)
+            .map(tenantOrganizationMapper::toDto);
     }
 
     @Override
@@ -77,17 +77,17 @@ public class TenantOrganizationServiceImpl implements TenantOrganizationService 
     }
 
     /**
-     * Get all the tenantOrganizations where TenantSettings is {@code null}.
-     * 
-     * @return the list of entities.
+     *  Get all the tenantOrganizations where TenantSettings is {@code null}.
+     *  @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<TenantOrganizationDTO> findAllWhereTenantSettingsIsNull() {
-        log.debug("Request to get all tenantOrganizations (no tenantSettings relationship anymore)");
-        return tenantOrganizationRepository.findAll()
-                .stream()
-                .map(tenantOrganizationMapper::toDto)
-                .collect(Collectors.toCollection(LinkedList::new));
+        log.debug("Request to get all tenantOrganizations where TenantSettings is null");
+        return StreamSupport
+            .stream(tenantOrganizationRepository.findAll().spliterator(), false)
+            .filter(tenantOrganization -> tenantOrganization.getTenantSettings() == null)
+            .map(tenantOrganizationMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

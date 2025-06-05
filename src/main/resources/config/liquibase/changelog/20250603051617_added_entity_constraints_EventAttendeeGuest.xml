@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity EventAttendeeGuest.
+    -->
+    <changeSet id="20250603051617-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="primary_attendee_id"
+                                 baseTableName="event_attendee_guest"
+                                 constraintName="fk_event_attendee_guest__primary_attendee_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event_attendee"
+                                 />
+    </changeSet>
+</databaseChangeLog>

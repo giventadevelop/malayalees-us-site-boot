@@ -1507,7 +1507,11 @@ class UserPaymentTransactionResourceIT {
         UserPaymentTransaction partialUpdatedUserPaymentTransaction = new UserPaymentTransaction();
         partialUpdatedUserPaymentTransaction.setId(userPaymentTransaction.getId());
 
-        partialUpdatedUserPaymentTransaction.amount(UPDATED_AMOUNT).currency(UPDATED_CURRENCY).updatedAt(UPDATED_UPDATED_AT);
+        partialUpdatedUserPaymentTransaction
+            .amount(UPDATED_AMOUNT)
+            .stripeTransferGroup(UPDATED_STRIPE_TRANSFER_GROUP)
+            .tenantAmount(UPDATED_TENANT_AMOUNT)
+            .status(UPDATED_STATUS);
 
         restUserPaymentTransactionMockMvc
             .perform(
@@ -1524,14 +1528,14 @@ class UserPaymentTransactionResourceIT {
         assertThat(testUserPaymentTransaction.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
         assertThat(testUserPaymentTransaction.getTransactionType()).isEqualTo(DEFAULT_TRANSACTION_TYPE);
         assertThat(testUserPaymentTransaction.getAmount()).isEqualByComparingTo(UPDATED_AMOUNT);
-        assertThat(testUserPaymentTransaction.getCurrency()).isEqualTo(UPDATED_CURRENCY);
+        assertThat(testUserPaymentTransaction.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
         assertThat(testUserPaymentTransaction.getStripePaymentIntentId()).isEqualTo(DEFAULT_STRIPE_PAYMENT_INTENT_ID);
-        assertThat(testUserPaymentTransaction.getStripeTransferGroup()).isEqualTo(DEFAULT_STRIPE_TRANSFER_GROUP);
+        assertThat(testUserPaymentTransaction.getStripeTransferGroup()).isEqualTo(UPDATED_STRIPE_TRANSFER_GROUP);
         assertThat(testUserPaymentTransaction.getPlatformFeeAmount()).isEqualByComparingTo(DEFAULT_PLATFORM_FEE_AMOUNT);
-        assertThat(testUserPaymentTransaction.getTenantAmount()).isEqualByComparingTo(DEFAULT_TENANT_AMOUNT);
-        assertThat(testUserPaymentTransaction.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testUserPaymentTransaction.getTenantAmount()).isEqualByComparingTo(UPDATED_TENANT_AMOUNT);
+        assertThat(testUserPaymentTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testUserPaymentTransaction.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testUserPaymentTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testUserPaymentTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test

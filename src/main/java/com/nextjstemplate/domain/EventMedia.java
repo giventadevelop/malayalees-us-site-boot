@@ -48,14 +48,13 @@ public class EventMedia implements Serializable {
     @Column(name = "storage_type", length = 255, nullable = false)
     private String storageType;
 
-    @Size(max = 255)
-    @Column(name = "file_url", length = 255)
+    @Size(max = 1200)
+    @Column(name = "file_url", length = 1200)
     private String fileUrl;
 
     @Lob
     @Column(name = "file_data")
     private byte[] fileData;
-
 
     @Size(max = 255)
     @Column(name = "file_data_content_type", length = 255)
@@ -85,8 +84,8 @@ public class EventMedia implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Size(max = 400)
-    @Column(name = "pre_signed_url", length = 400)
+    @Size(max = 2048)
+    @Column(name = "pre_signed_url", length = 2048)
     private String preSignedUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -94,7 +93,7 @@ public class EventMedia implements Serializable {
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile uploadedBy;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -202,8 +201,6 @@ public class EventMedia implements Serializable {
     public void setFileData(byte[] fileData) {
         this.fileData = fileData;
     }
-
-
 
     public String getFileDataContentType() {
         return this.fileDataContentType;

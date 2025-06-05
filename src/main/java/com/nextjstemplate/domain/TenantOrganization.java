@@ -11,7 +11,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A TenantOrganization.
+ * TenantOrganization and TenantSettings JDL Entities
+ * Generated from Java domain classes
  */
 @Entity
 @Table(name = "tenant_organization")
@@ -95,6 +96,10 @@ public class TenantOrganization implements Serializable {
     @NotNull
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
+
+    @JsonIgnoreProperties(value = { "tenantOrganization" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "tenantOrganization")
+    private TenantSettings tenantSettings;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -332,8 +337,26 @@ public class TenantOrganization implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
-    // setters here
+    public TenantSettings getTenantSettings() {
+        return this.tenantSettings;
+    }
+
+    public void setTenantSettings(TenantSettings tenantSettings) {
+        if (this.tenantSettings != null) {
+            this.tenantSettings.setTenantOrganization(null);
+        }
+        if (tenantSettings != null) {
+            tenantSettings.setTenantOrganization(this);
+        }
+        this.tenantSettings = tenantSettings;
+    }
+
+    public TenantOrganization tenantSettings(TenantSettings tenantSettings) {
+        this.setTenantSettings(tenantSettings);
+        return this;
+    }
+
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {
@@ -348,8 +371,7 @@ public class TenantOrganization implements Serializable {
 
     @Override
     public int hashCode() {
-        // see
-        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -357,24 +379,24 @@ public class TenantOrganization implements Serializable {
     @Override
     public String toString() {
         return "TenantOrganization{" +
-                "id=" + getId() +
-                ", tenantId='" + getTenantId() + "'" +
-                ", organizationName='" + getOrganizationName() + "'" +
-                ", domain='" + getDomain() + "'" +
-                ", primaryColor='" + getPrimaryColor() + "'" +
-                ", secondaryColor='" + getSecondaryColor() + "'" +
-                ", logoUrl='" + getLogoUrl() + "'" +
-                ", contactEmail='" + getContactEmail() + "'" +
-                ", contactPhone='" + getContactPhone() + "'" +
-                ", subscriptionPlan='" + getSubscriptionPlan() + "'" +
-                ", subscriptionStatus='" + getSubscriptionStatus() + "'" +
-                ", subscriptionStartDate='" + getSubscriptionStartDate() + "'" +
-                ", subscriptionEndDate='" + getSubscriptionEndDate() + "'" +
-                ", monthlyFeeUsd=" + getMonthlyFeeUsd() +
-                ", stripeCustomerId='" + getStripeCustomerId() + "'" +
-                ", isActive='" + getIsActive() + "'" +
-                ", createdAt='" + getCreatedAt() + "'" +
-                ", updatedAt='" + getUpdatedAt() + "'" +
-                "}";
+            "id=" + getId() +
+            ", tenantId='" + getTenantId() + "'" +
+            ", organizationName='" + getOrganizationName() + "'" +
+            ", domain='" + getDomain() + "'" +
+            ", primaryColor='" + getPrimaryColor() + "'" +
+            ", secondaryColor='" + getSecondaryColor() + "'" +
+            ", logoUrl='" + getLogoUrl() + "'" +
+            ", contactEmail='" + getContactEmail() + "'" +
+            ", contactPhone='" + getContactPhone() + "'" +
+            ", subscriptionPlan='" + getSubscriptionPlan() + "'" +
+            ", subscriptionStatus='" + getSubscriptionStatus() + "'" +
+            ", subscriptionStartDate='" + getSubscriptionStartDate() + "'" +
+            ", subscriptionEndDate='" + getSubscriptionEndDate() + "'" +
+            ", monthlyFeeUsd=" + getMonthlyFeeUsd() +
+            ", stripeCustomerId='" + getStripeCustomerId() + "'" +
+            ", isActive='" + getIsActive() + "'" +
+            ", createdAt='" + getCreatedAt() + "'" +
+            ", updatedAt='" + getUpdatedAt() + "'" +
+            "}";
     }
 }

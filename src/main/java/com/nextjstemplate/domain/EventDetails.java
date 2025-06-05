@@ -80,6 +80,19 @@ public class EventDetails implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Min(value = 0)
+    @Column(name = "max_guests_per_attendee")
+    private Integer maxGuestsPerAttendee;
+
+    @Column(name = "allow_guests")
+    private Boolean allowGuests;
+
+    @Column(name = "require_guest_approval")
+    private Boolean requireGuestApproval;
+
+    @Column(name = "enable_guest_pricing")
+    private Boolean enableGuestPricing;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -89,7 +102,7 @@ public class EventDetails implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -279,6 +292,58 @@ public class EventDetails implements Serializable {
         this.isActive = isActive;
     }
 
+    public Integer getMaxGuestsPerAttendee() {
+        return this.maxGuestsPerAttendee;
+    }
+
+    public EventDetails maxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.setMaxGuestsPerAttendee(maxGuestsPerAttendee);
+        return this;
+    }
+
+    public void setMaxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public Boolean getAllowGuests() {
+        return this.allowGuests;
+    }
+
+    public EventDetails allowGuests(Boolean allowGuests) {
+        this.setAllowGuests(allowGuests);
+        return this;
+    }
+
+    public void setAllowGuests(Boolean allowGuests) {
+        this.allowGuests = allowGuests;
+    }
+
+    public Boolean getRequireGuestApproval() {
+        return this.requireGuestApproval;
+    }
+
+    public EventDetails requireGuestApproval(Boolean requireGuestApproval) {
+        this.setRequireGuestApproval(requireGuestApproval);
+        return this;
+    }
+
+    public void setRequireGuestApproval(Boolean requireGuestApproval) {
+        this.requireGuestApproval = requireGuestApproval;
+    }
+
+    public Boolean getEnableGuestPricing() {
+        return this.enableGuestPricing;
+    }
+
+    public EventDetails enableGuestPricing(Boolean enableGuestPricing) {
+        this.setEnableGuestPricing(enableGuestPricing);
+        return this;
+    }
+
+    public void setEnableGuestPricing(Boolean enableGuestPricing) {
+        this.enableGuestPricing = enableGuestPricing;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -368,6 +433,10 @@ public class EventDetails implements Serializable {
             ", capacity=" + getCapacity() +
             ", admissionType='" + getAdmissionType() + "'" +
             ", isActive='" + getIsActive() + "'" +
+            ", maxGuestsPerAttendee=" + getMaxGuestsPerAttendee() +
+            ", allowGuests='" + getAllowGuests() + "'" +
+            ", requireGuestApproval='" + getRequireGuestApproval() + "'" +
+            ", enableGuestPricing='" + getEnableGuestPricing() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

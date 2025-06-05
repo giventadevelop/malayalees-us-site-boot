@@ -136,7 +136,7 @@ public class UserRegistrationRequest implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile reviewedBy;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

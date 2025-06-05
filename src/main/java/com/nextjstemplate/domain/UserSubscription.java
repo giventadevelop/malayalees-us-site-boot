@@ -49,7 +49,7 @@ public class UserSubscription implements Serializable {
     @Column(name = "status", length = 255, nullable = false)
     private String status;
 
-    @JsonIgnoreProperties(value = { "userSubscription" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private UserProfile userProfile;

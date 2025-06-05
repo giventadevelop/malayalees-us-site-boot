@@ -11,49 +11,59 @@ search * with no
 filter all
 
 // Entity Definitions
+/**
+ * TenantOrganization and TenantSettings JDL Entities
+ * Generated from Java domain classes
+ */
+
+// TenantOrganization entity
 entity TenantOrganization {
-  id Long
-  tenantId String unique required maxlength(255)
-  organizationName String required maxlength(255)
-  domain String unique maxlength(255)
-  primaryColor String maxlength(7) // Hex color
-  secondaryColor String maxlength(7)
-  logoUrl String maxlength(1024)
-  contactEmail String required maxlength(255)
-  contactPhone String maxlength(50)
-  subscriptionPlan String required maxlength(50) // FREE, BASIC, PREMIUM, ENTERPRISE
-  subscriptionStatus String required maxlength(50) // ACTIVE, SUSPENDED, CANCELLED, EXPIRED
-  subscriptionStartDate LocalDate
-  subscriptionEndDate LocalDate
-  monthlyFeeUsd BigDecimal
-  stripeCustomerId String maxlength(255)
-  isActive Boolean
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
+    id Long,
+    tenantId String required unique maxlength(255),
+    organizationName String required maxlength(255),
+    domain String unique maxlength(255),
+    primaryColor String maxlength(7),
+    secondaryColor String maxlength(7),
+    logoUrl String maxlength(1024),
+    contactEmail String required maxlength(255),
+    contactPhone String maxlength(50),
+    subscriptionPlan String required maxlength(50),
+    subscriptionStatus String required maxlength(50),
+    subscriptionStartDate LocalDate,
+    subscriptionEndDate LocalDate,
+    monthlyFeeUsd BigDecimal,
+    stripeCustomerId String maxlength(255),
+    isActive Boolean,
+    createdAt ZonedDateTime required,
+    updatedAt ZonedDateTime required
 }
 
 entity UserProfile {
-  id Long
-  tenantId String maxlength(255)
-  userId String required unique maxlength(255)
-  firstName String maxlength(255)
-  lastName String maxlength(255)
-  email String maxlength(255)
-  phone String maxlength(255)
-  addressLine1 String maxlength(255)
-  addressLine2 String maxlength(255)
-  city String maxlength(255)
-  state String maxlength(255)
-  zipCode String maxlength(255)
-  country String maxlength(255)
-  notes String maxlength(255)
-  familyName String maxlength(255)
-  cityTown String maxlength(255)
-  district String maxlength(255)
-  educationalInstitution String maxlength(255)
-  profileImageUrl String maxlength(255)
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
+    id Long
+    tenantId String maxlength(255)
+    userId String required unique maxlength(255)
+    firstName String maxlength(255)
+    lastName String maxlength(255)
+    email String maxlength(255)
+    phone String maxlength(255)
+    addressLine1 String maxlength(255)
+    addressLine2 String maxlength(255)
+    city String maxlength(255)
+    state String maxlength(255)
+    zipCode String maxlength(255)
+    country String maxlength(255)
+    notes String maxlength(255)
+    familyName String maxlength(255)
+    cityTown String maxlength(255)
+    district String maxlength(255)
+    educationalInstitution String maxlength(255)
+    profileImageUrl String maxlength(255)
+    userStatus String maxlength(50)
+    userRole String maxlength(50)
+    //  reviewedByAdmin Long  actually referenced at the relationship section
+    reviewedByAdminAt LocalDate
+    createdAt ZonedDateTime required
+    updatedAt ZonedDateTime required
 }
 
 entity UserSubscription {
@@ -106,6 +116,12 @@ entity EventDetails {
   capacity Integer
   admissionType String required maxlength(255)
   isActive Boolean
+  maxGuestsPerAttendee Integer min(0)
+  allowGuests Boolean,
+  requireGuestApproval Boolean
+  enableGuestPricing Boolean
+  createdById Long,
+  eventTypeId Long,
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
 }
@@ -213,7 +229,7 @@ entity EventMedia {
   description String maxlength(255)
   eventMediaType String required maxlength(255)
   storageType String required maxlength(255)
-  fileUrl String maxlength(255)
+  fileUrl String maxlength(1200)
   fileData Blob
   fileDataContentType String maxlength(255)
   contentType String maxlength(255)
@@ -223,7 +239,7 @@ entity EventMedia {
   isEventManagementOfficialDocument Boolean
   createdAt ZonedDateTime required
   updatedAt ZonedDateTime required
-  preSignedUrl String maxlength(400)
+  preSignedUrl String maxlength(2048)
 }
 
 entity UserPaymentTransaction {
@@ -241,19 +257,71 @@ entity UserPaymentTransaction {
   updatedAt ZonedDateTime required
 }
 
+// TenantSettings entity
 entity TenantSettings {
-  id Long
-  tenantId String required unique maxlength(255)
-  allowUserRegistration Boolean
-  requireAdminApproval Boolean
-  enableWhatsappIntegration Boolean
-  enableEmailMarketing Boolean
-  whatsappApiKey String maxlength(500)
-  emailProviderConfig TextBlob // JSON configuration
-  customCss TextBlob
-  customJs TextBlob
-  createdAt ZonedDateTime required
-  updatedAt ZonedDateTime required
+    id Long,
+    tenantId String required unique maxlength(255),
+    allowUserRegistration Boolean,
+    requireAdminApproval Boolean,
+    enableWhatsappIntegration Boolean,
+    enableEmailMarketing Boolean,
+    whatsappApiKey String maxlength(500),
+    emailProviderConfig TextBlob,
+    customCss TextBlob,
+    customJs TextBlob,
+    createdAt ZonedDateTime required,
+    updatedAt ZonedDateTime required
+}
+
+/**
+ * Event Guest Management JDL Model
+ * Enhanced entities for sophisticated guest management with age-based pricing
+ */
+
+// Enums for better data consistency
+enum GuestAgeGroup {
+    ADULT, TEEN, CHILD, INFANT
+}
+
+enum UserToGuestRelationship {
+    SPOUSE, CHILD, FRIEND, COLLEAGUE, PARENT, SIBLING, RELATIVE, OTHER
+}
+
+enum UserEventRegistrationStatus {
+    PENDING, CONFIRMED, CANCELLED, WAITLISTED
+}
+
+enum UserEventCheckInStatus {
+    NOT_CHECKED_IN, CHECKED_IN, NO_SHOW, LEFT_EARLY
+}
+
+// Event Attendee Guest entity for managing individual guests
+entity EventAttendeeGuest {
+    id Long,
+    tenantId String maxlength(255),
+    guestName String required maxlength(255),
+    ageGroup GuestAgeGroup required,
+    relationship UserToGuestRelationship,
+    specialRequirements String maxlength(500),
+    registrationStatus UserEventRegistrationStatus,
+    checkInStatus UserEventCheckInStatus,
+    checkInTime ZonedDateTime,
+    createdAt ZonedDateTime required,
+    updatedAt ZonedDateTime required
+}
+
+// Event Guest Pricing entity for age-based pricing models
+entity EventGuestPricing {
+    id Long,
+    tenantId String maxlength(255),
+    ageGroup GuestAgeGroup required,
+    price BigDecimal required min(0),
+    isActive Boolean,
+    validFrom LocalDate,
+    validTo LocalDate,
+    description String maxlength(255),
+    createdAt ZonedDateTime required,
+    updatedAt ZonedDateTime required
 }
 
 entity EventAttendee {
@@ -335,50 +403,60 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
+
+  UserProfile{reviewedByAdmin} to UserProfile
   UserTask{user} to UserProfile
   UserTask{event} to EventDetails
-  
+
   EventDetails{createdBy} to UserProfile
   EventDetails{eventType} to EventTypeDetails
-  
+
   EventOrganizer{event} to EventDetails
   EventOrganizer{organizer} to UserProfile
-  
+
   EventTicketType{event} to EventDetails
-  
+
   EventTicketTransaction{event} to EventDetails
   EventTicketTransaction{ticketType} to EventTicketType
   EventTicketTransaction{user} to UserProfile
-  
+
   EventPoll{event} to EventDetails
   EventPoll{createdBy} to UserProfile
-  
+
   EventPollOption{poll} to EventPoll
-  
+
   EventPollResponse{poll} to EventPoll
   EventPollResponse{pollOption} to EventPollOption
   EventPollResponse{user} to UserProfile
-  
+
   EventAdmin{user} to UserProfile
   EventAdmin{createdBy} to UserProfile
-  
+
   EventAdminAuditLog{admin} to UserProfile
-  
+
   EventCalendarEntry{event} to EventDetails
   EventCalendarEntry{createdBy} to UserProfile
-  
+
   EventMedia{event} to EventDetails
   EventMedia{uploadedBy} to UserProfile
-  
+
   UserPaymentTransaction{event} to EventDetails
   UserPaymentTransaction{ticketTransaction} to EventTicketTransaction
-  
+
   EventAttendee{event} to EventDetails
   EventAttendee{attendee} to UserProfile
-  
+
   UserRegistrationRequest{reviewedBy} to UserProfile
-  
+
   QrCodeUsage{attendee} to EventAttendee
-  
+
   BulkOperationLog{performedBy} to UserProfile
+
+    // NEW relationships for guest management
+  EventAttendeeGuest{primaryAttendee required} to EventAttendee,
+  EventGuestPricing{event required} to EventDetails,
+  EventAttendee{event required} to EventDetails,
+  EventAttendee{attendee required} to UserProfile,
+   // NEW self-reference for admin review
+  UserProfile{reviewedByAdmin} to UserProfile
 }

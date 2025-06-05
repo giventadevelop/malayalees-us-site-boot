@@ -64,17 +64,13 @@ class TenantSettingsResourceIT {
     private static final String DEFAULT_CUSTOM_JS = "AAAAAAAAAA";
     private static final String UPDATED_CUSTOM_JS = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L),
-            ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L),
-            ZoneOffset.UTC);
+    private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
-    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L),
-            ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-    private static final ZonedDateTime SMALLER_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L),
-            ZoneOffset.UTC);
+    private static final ZonedDateTime SMALLER_UPDATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
     private static final String ENTITY_API_URL = "/api/tenant-settings";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -104,17 +100,17 @@ class TenantSettingsResourceIT {
      */
     public static TenantSettings createEntity(EntityManager em) {
         TenantSettings tenantSettings = new TenantSettings()
-                .tenantId(DEFAULT_TENANT_ID)
-                .allowUserRegistration(DEFAULT_ALLOW_USER_REGISTRATION)
-                .requireAdminApproval(DEFAULT_REQUIRE_ADMIN_APPROVAL)
-                .enableWhatsappIntegration(DEFAULT_ENABLE_WHATSAPP_INTEGRATION)
-                .enableEmailMarketing(DEFAULT_ENABLE_EMAIL_MARKETING)
-                .whatsappApiKey(DEFAULT_WHATSAPP_API_KEY)
-                .emailProviderConfig(DEFAULT_EMAIL_PROVIDER_CONFIG)
-                .customCss(DEFAULT_CUSTOM_CSS)
-                .customJs(DEFAULT_CUSTOM_JS)
-                .createdAt(DEFAULT_CREATED_AT)
-                .updatedAt(DEFAULT_UPDATED_AT);
+            .tenantId(DEFAULT_TENANT_ID)
+            .allowUserRegistration(DEFAULT_ALLOW_USER_REGISTRATION)
+            .requireAdminApproval(DEFAULT_REQUIRE_ADMIN_APPROVAL)
+            .enableWhatsappIntegration(DEFAULT_ENABLE_WHATSAPP_INTEGRATION)
+            .enableEmailMarketing(DEFAULT_ENABLE_EMAIL_MARKETING)
+            .whatsappApiKey(DEFAULT_WHATSAPP_API_KEY)
+            .emailProviderConfig(DEFAULT_EMAIL_PROVIDER_CONFIG)
+            .customCss(DEFAULT_CUSTOM_CSS)
+            .customJs(DEFAULT_CUSTOM_JS)
+            .createdAt(DEFAULT_CREATED_AT)
+            .updatedAt(DEFAULT_UPDATED_AT);
         return tenantSettings;
     }
 
@@ -126,17 +122,17 @@ class TenantSettingsResourceIT {
      */
     public static TenantSettings createUpdatedEntity(EntityManager em) {
         TenantSettings tenantSettings = new TenantSettings()
-                .tenantId(UPDATED_TENANT_ID)
-                .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
-                .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
-                .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
-                .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
-                .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
-                .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
-                .customCss(UPDATED_CUSTOM_CSS)
-                .customJs(UPDATED_CUSTOM_JS)
-                .createdAt(UPDATED_CREATED_AT)
-                .updatedAt(UPDATED_UPDATED_AT);
+            .tenantId(UPDATED_TENANT_ID)
+            .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
+            .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
+            .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
+            .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
+            .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
+            .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
+            .customCss(UPDATED_CUSTOM_CSS)
+            .customJs(UPDATED_CUSTOM_JS)
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
         return tenantSettings;
     }
 
@@ -152,10 +148,10 @@ class TenantSettingsResourceIT {
         // Create the TenantSettings
         TenantSettingsDTO tenantSettingsDTO = tenantSettingsMapper.toDto(tenantSettings);
         restTenantSettingsMockMvc
-                .perform(
-                        post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isCreated());
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isCreated());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -185,10 +181,10 @@ class TenantSettingsResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restTenantSettingsMockMvc
-                .perform(
-                        post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -206,10 +202,10 @@ class TenantSettingsResourceIT {
         TenantSettingsDTO tenantSettingsDTO = tenantSettingsMapper.toDto(tenantSettings);
 
         restTenantSettingsMockMvc
-                .perform(
-                        post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
         assertThat(tenantSettingsList).hasSize(databaseSizeBeforeTest);
@@ -226,10 +222,10 @@ class TenantSettingsResourceIT {
         TenantSettingsDTO tenantSettingsDTO = tenantSettingsMapper.toDto(tenantSettings);
 
         restTenantSettingsMockMvc
-                .perform(
-                        post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
         assertThat(tenantSettingsList).hasSize(databaseSizeBeforeTest);
@@ -246,10 +242,10 @@ class TenantSettingsResourceIT {
         TenantSettingsDTO tenantSettingsDTO = tenantSettingsMapper.toDto(tenantSettings);
 
         restTenantSettingsMockMvc
-                .perform(
-                        post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
         assertThat(tenantSettingsList).hasSize(databaseSizeBeforeTest);
@@ -263,26 +259,21 @@ class TenantSettingsResourceIT {
 
         // Get all the tenantSettingsList
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL + "?sort=id,desc"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(tenantSettings.getId().intValue())))
-                .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
-                .andExpect(jsonPath("$.[*].allowUserRegistration")
-                        .value(hasItem(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue())))
-                .andExpect(jsonPath("$.[*].requireAdminApproval")
-                        .value(hasItem(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue())))
-                .andExpect(jsonPath("$.[*].enableWhatsappIntegration")
-                        .value(hasItem(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue())))
-                .andExpect(jsonPath("$.[*].enableEmailMarketing")
-                        .value(hasItem(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue())))
-                .andExpect(jsonPath("$.[*].whatsappApiKey").value(hasItem(DEFAULT_WHATSAPP_API_KEY)))
-                .andExpect(
-                        jsonPath("$.[*].emailProviderConfig").value(hasItem(DEFAULT_EMAIL_PROVIDER_CONFIG.toString())))
-                .andExpect(jsonPath("$.[*].customCss").value(hasItem(DEFAULT_CUSTOM_CSS.toString())))
-                .andExpect(jsonPath("$.[*].customJs").value(hasItem(DEFAULT_CUSTOM_JS.toString())))
-                .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-                .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tenantSettings.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
+            .andExpect(jsonPath("$.[*].allowUserRegistration").value(hasItem(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].requireAdminApproval").value(hasItem(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableWhatsappIntegration").value(hasItem(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableEmailMarketing").value(hasItem(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue())))
+            .andExpect(jsonPath("$.[*].whatsappApiKey").value(hasItem(DEFAULT_WHATSAPP_API_KEY)))
+            .andExpect(jsonPath("$.[*].emailProviderConfig").value(hasItem(DEFAULT_EMAIL_PROVIDER_CONFIG.toString())))
+            .andExpect(jsonPath("$.[*].customCss").value(hasItem(DEFAULT_CUSTOM_CSS.toString())))
+            .andExpect(jsonPath("$.[*].customJs").value(hasItem(DEFAULT_CUSTOM_JS.toString())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
     }
 
     @Test
@@ -293,22 +284,21 @@ class TenantSettingsResourceIT {
 
         // Get the tenantSettings
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL_ID, tenantSettings.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id").value(tenantSettings.getId().intValue()))
-                .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID))
-                .andExpect(jsonPath("$.allowUserRegistration").value(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue()))
-                .andExpect(jsonPath("$.requireAdminApproval").value(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue()))
-                .andExpect(jsonPath("$.enableWhatsappIntegration")
-                        .value(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue()))
-                .andExpect(jsonPath("$.enableEmailMarketing").value(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue()))
-                .andExpect(jsonPath("$.whatsappApiKey").value(DEFAULT_WHATSAPP_API_KEY))
-                .andExpect(jsonPath("$.emailProviderConfig").value(DEFAULT_EMAIL_PROVIDER_CONFIG.toString()))
-                .andExpect(jsonPath("$.customCss").value(DEFAULT_CUSTOM_CSS.toString()))
-                .andExpect(jsonPath("$.customJs").value(DEFAULT_CUSTOM_JS.toString()))
-                .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
-                .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
+            .perform(get(ENTITY_API_URL_ID, tenantSettings.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(tenantSettings.getId().intValue()))
+            .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID))
+            .andExpect(jsonPath("$.allowUserRegistration").value(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue()))
+            .andExpect(jsonPath("$.requireAdminApproval").value(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue()))
+            .andExpect(jsonPath("$.enableWhatsappIntegration").value(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue()))
+            .andExpect(jsonPath("$.enableEmailMarketing").value(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue()))
+            .andExpect(jsonPath("$.whatsappApiKey").value(DEFAULT_WHATSAPP_API_KEY))
+            .andExpect(jsonPath("$.emailProviderConfig").value(DEFAULT_EMAIL_PROVIDER_CONFIG.toString()))
+            .andExpect(jsonPath("$.customCss").value(DEFAULT_CUSTOM_CSS.toString()))
+            .andExpect(jsonPath("$.customJs").value(DEFAULT_CUSTOM_JS.toString()))
+            .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
+            .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
     }
 
     @Test
@@ -348,8 +338,7 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where tenantId in DEFAULT_TENANT_ID or
-        // UPDATED_TENANT_ID
+        // Get all the tenantSettingsList where tenantId in DEFAULT_TENANT_ID or UPDATED_TENANT_ID
         defaultTenantSettingsShouldBeFound("tenantId.in=" + DEFAULT_TENANT_ID + "," + UPDATED_TENANT_ID);
 
         // Get all the tenantSettingsList where tenantId equals to UPDATED_TENANT_ID
@@ -388,12 +377,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where tenantId does not contain
-        // DEFAULT_TENANT_ID
+        // Get all the tenantSettingsList where tenantId does not contain DEFAULT_TENANT_ID
         defaultTenantSettingsShouldNotBeFound("tenantId.doesNotContain=" + DEFAULT_TENANT_ID);
 
-        // Get all the tenantSettingsList where tenantId does not contain
-        // UPDATED_TENANT_ID
+        // Get all the tenantSettingsList where tenantId does not contain UPDATED_TENANT_ID
         defaultTenantSettingsShouldBeFound("tenantId.doesNotContain=" + UPDATED_TENANT_ID);
     }
 
@@ -403,12 +390,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where allowUserRegistration equals to
-        // DEFAULT_ALLOW_USER_REGISTRATION
+        // Get all the tenantSettingsList where allowUserRegistration equals to DEFAULT_ALLOW_USER_REGISTRATION
         defaultTenantSettingsShouldBeFound("allowUserRegistration.equals=" + DEFAULT_ALLOW_USER_REGISTRATION);
 
-        // Get all the tenantSettingsList where allowUserRegistration equals to
-        // UPDATED_ALLOW_USER_REGISTRATION
+        // Get all the tenantSettingsList where allowUserRegistration equals to UPDATED_ALLOW_USER_REGISTRATION
         defaultTenantSettingsShouldNotBeFound("allowUserRegistration.equals=" + UPDATED_ALLOW_USER_REGISTRATION);
     }
 
@@ -418,13 +403,12 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where allowUserRegistration in
-        // DEFAULT_ALLOW_USER_REGISTRATION or UPDATED_ALLOW_USER_REGISTRATION
+        // Get all the tenantSettingsList where allowUserRegistration in DEFAULT_ALLOW_USER_REGISTRATION or UPDATED_ALLOW_USER_REGISTRATION
         defaultTenantSettingsShouldBeFound(
-                "allowUserRegistration.in=" + DEFAULT_ALLOW_USER_REGISTRATION + "," + UPDATED_ALLOW_USER_REGISTRATION);
+            "allowUserRegistration.in=" + DEFAULT_ALLOW_USER_REGISTRATION + "," + UPDATED_ALLOW_USER_REGISTRATION
+        );
 
-        // Get all the tenantSettingsList where allowUserRegistration equals to
-        // UPDATED_ALLOW_USER_REGISTRATION
+        // Get all the tenantSettingsList where allowUserRegistration equals to UPDATED_ALLOW_USER_REGISTRATION
         defaultTenantSettingsShouldNotBeFound("allowUserRegistration.in=" + UPDATED_ALLOW_USER_REGISTRATION);
     }
 
@@ -447,12 +431,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where requireAdminApproval equals to
-        // DEFAULT_REQUIRE_ADMIN_APPROVAL
+        // Get all the tenantSettingsList where requireAdminApproval equals to DEFAULT_REQUIRE_ADMIN_APPROVAL
         defaultTenantSettingsShouldBeFound("requireAdminApproval.equals=" + DEFAULT_REQUIRE_ADMIN_APPROVAL);
 
-        // Get all the tenantSettingsList where requireAdminApproval equals to
-        // UPDATED_REQUIRE_ADMIN_APPROVAL
+        // Get all the tenantSettingsList where requireAdminApproval equals to UPDATED_REQUIRE_ADMIN_APPROVAL
         defaultTenantSettingsShouldNotBeFound("requireAdminApproval.equals=" + UPDATED_REQUIRE_ADMIN_APPROVAL);
     }
 
@@ -462,13 +444,12 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where requireAdminApproval in
-        // DEFAULT_REQUIRE_ADMIN_APPROVAL or UPDATED_REQUIRE_ADMIN_APPROVAL
+        // Get all the tenantSettingsList where requireAdminApproval in DEFAULT_REQUIRE_ADMIN_APPROVAL or UPDATED_REQUIRE_ADMIN_APPROVAL
         defaultTenantSettingsShouldBeFound(
-                "requireAdminApproval.in=" + DEFAULT_REQUIRE_ADMIN_APPROVAL + "," + UPDATED_REQUIRE_ADMIN_APPROVAL);
+            "requireAdminApproval.in=" + DEFAULT_REQUIRE_ADMIN_APPROVAL + "," + UPDATED_REQUIRE_ADMIN_APPROVAL
+        );
 
-        // Get all the tenantSettingsList where requireAdminApproval equals to
-        // UPDATED_REQUIRE_ADMIN_APPROVAL
+        // Get all the tenantSettingsList where requireAdminApproval equals to UPDATED_REQUIRE_ADMIN_APPROVAL
         defaultTenantSettingsShouldNotBeFound("requireAdminApproval.in=" + UPDATED_REQUIRE_ADMIN_APPROVAL);
     }
 
@@ -491,14 +472,11 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where enableWhatsappIntegration equals to
-        // DEFAULT_ENABLE_WHATSAPP_INTEGRATION
+        // Get all the tenantSettingsList where enableWhatsappIntegration equals to DEFAULT_ENABLE_WHATSAPP_INTEGRATION
         defaultTenantSettingsShouldBeFound("enableWhatsappIntegration.equals=" + DEFAULT_ENABLE_WHATSAPP_INTEGRATION);
 
-        // Get all the tenantSettingsList where enableWhatsappIntegration equals to
-        // UPDATED_ENABLE_WHATSAPP_INTEGRATION
-        defaultTenantSettingsShouldNotBeFound(
-                "enableWhatsappIntegration.equals=" + UPDATED_ENABLE_WHATSAPP_INTEGRATION);
+        // Get all the tenantSettingsList where enableWhatsappIntegration equals to UPDATED_ENABLE_WHATSAPP_INTEGRATION
+        defaultTenantSettingsShouldNotBeFound("enableWhatsappIntegration.equals=" + UPDATED_ENABLE_WHATSAPP_INTEGRATION);
     }
 
     @Test
@@ -507,14 +485,12 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where enableWhatsappIntegration in
-        // DEFAULT_ENABLE_WHATSAPP_INTEGRATION or UPDATED_ENABLE_WHATSAPP_INTEGRATION
+        // Get all the tenantSettingsList where enableWhatsappIntegration in DEFAULT_ENABLE_WHATSAPP_INTEGRATION or UPDATED_ENABLE_WHATSAPP_INTEGRATION
         defaultTenantSettingsShouldBeFound(
-                "enableWhatsappIntegration.in=" + DEFAULT_ENABLE_WHATSAPP_INTEGRATION + ","
-                        + UPDATED_ENABLE_WHATSAPP_INTEGRATION);
+            "enableWhatsappIntegration.in=" + DEFAULT_ENABLE_WHATSAPP_INTEGRATION + "," + UPDATED_ENABLE_WHATSAPP_INTEGRATION
+        );
 
-        // Get all the tenantSettingsList where enableWhatsappIntegration equals to
-        // UPDATED_ENABLE_WHATSAPP_INTEGRATION
+        // Get all the tenantSettingsList where enableWhatsappIntegration equals to UPDATED_ENABLE_WHATSAPP_INTEGRATION
         defaultTenantSettingsShouldNotBeFound("enableWhatsappIntegration.in=" + UPDATED_ENABLE_WHATSAPP_INTEGRATION);
     }
 
@@ -537,12 +513,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where enableEmailMarketing equals to
-        // DEFAULT_ENABLE_EMAIL_MARKETING
+        // Get all the tenantSettingsList where enableEmailMarketing equals to DEFAULT_ENABLE_EMAIL_MARKETING
         defaultTenantSettingsShouldBeFound("enableEmailMarketing.equals=" + DEFAULT_ENABLE_EMAIL_MARKETING);
 
-        // Get all the tenantSettingsList where enableEmailMarketing equals to
-        // UPDATED_ENABLE_EMAIL_MARKETING
+        // Get all the tenantSettingsList where enableEmailMarketing equals to UPDATED_ENABLE_EMAIL_MARKETING
         defaultTenantSettingsShouldNotBeFound("enableEmailMarketing.equals=" + UPDATED_ENABLE_EMAIL_MARKETING);
     }
 
@@ -552,13 +526,12 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where enableEmailMarketing in
-        // DEFAULT_ENABLE_EMAIL_MARKETING or UPDATED_ENABLE_EMAIL_MARKETING
+        // Get all the tenantSettingsList where enableEmailMarketing in DEFAULT_ENABLE_EMAIL_MARKETING or UPDATED_ENABLE_EMAIL_MARKETING
         defaultTenantSettingsShouldBeFound(
-                "enableEmailMarketing.in=" + DEFAULT_ENABLE_EMAIL_MARKETING + "," + UPDATED_ENABLE_EMAIL_MARKETING);
+            "enableEmailMarketing.in=" + DEFAULT_ENABLE_EMAIL_MARKETING + "," + UPDATED_ENABLE_EMAIL_MARKETING
+        );
 
-        // Get all the tenantSettingsList where enableEmailMarketing equals to
-        // UPDATED_ENABLE_EMAIL_MARKETING
+        // Get all the tenantSettingsList where enableEmailMarketing equals to UPDATED_ENABLE_EMAIL_MARKETING
         defaultTenantSettingsShouldNotBeFound("enableEmailMarketing.in=" + UPDATED_ENABLE_EMAIL_MARKETING);
     }
 
@@ -581,12 +554,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where whatsappApiKey equals to
-        // DEFAULT_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey equals to DEFAULT_WHATSAPP_API_KEY
         defaultTenantSettingsShouldBeFound("whatsappApiKey.equals=" + DEFAULT_WHATSAPP_API_KEY);
 
-        // Get all the tenantSettingsList where whatsappApiKey equals to
-        // UPDATED_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey equals to UPDATED_WHATSAPP_API_KEY
         defaultTenantSettingsShouldNotBeFound("whatsappApiKey.equals=" + UPDATED_WHATSAPP_API_KEY);
     }
 
@@ -596,13 +567,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where whatsappApiKey in
-        // DEFAULT_WHATSAPP_API_KEY or UPDATED_WHATSAPP_API_KEY
-        defaultTenantSettingsShouldBeFound(
-                "whatsappApiKey.in=" + DEFAULT_WHATSAPP_API_KEY + "," + UPDATED_WHATSAPP_API_KEY);
+        // Get all the tenantSettingsList where whatsappApiKey in DEFAULT_WHATSAPP_API_KEY or UPDATED_WHATSAPP_API_KEY
+        defaultTenantSettingsShouldBeFound("whatsappApiKey.in=" + DEFAULT_WHATSAPP_API_KEY + "," + UPDATED_WHATSAPP_API_KEY);
 
-        // Get all the tenantSettingsList where whatsappApiKey equals to
-        // UPDATED_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey equals to UPDATED_WHATSAPP_API_KEY
         defaultTenantSettingsShouldNotBeFound("whatsappApiKey.in=" + UPDATED_WHATSAPP_API_KEY);
     }
 
@@ -625,12 +593,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where whatsappApiKey contains
-        // DEFAULT_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey contains DEFAULT_WHATSAPP_API_KEY
         defaultTenantSettingsShouldBeFound("whatsappApiKey.contains=" + DEFAULT_WHATSAPP_API_KEY);
 
-        // Get all the tenantSettingsList where whatsappApiKey contains
-        // UPDATED_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey contains UPDATED_WHATSAPP_API_KEY
         defaultTenantSettingsShouldNotBeFound("whatsappApiKey.contains=" + UPDATED_WHATSAPP_API_KEY);
     }
 
@@ -640,12 +606,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where whatsappApiKey does not contain
-        // DEFAULT_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey does not contain DEFAULT_WHATSAPP_API_KEY
         defaultTenantSettingsShouldNotBeFound("whatsappApiKey.doesNotContain=" + DEFAULT_WHATSAPP_API_KEY);
 
-        // Get all the tenantSettingsList where whatsappApiKey does not contain
-        // UPDATED_WHATSAPP_API_KEY
+        // Get all the tenantSettingsList where whatsappApiKey does not contain UPDATED_WHATSAPP_API_KEY
         defaultTenantSettingsShouldBeFound("whatsappApiKey.doesNotContain=" + UPDATED_WHATSAPP_API_KEY);
     }
 
@@ -668,8 +632,7 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where createdAt in DEFAULT_CREATED_AT or
-        // UPDATED_CREATED_AT
+        // Get all the tenantSettingsList where createdAt in DEFAULT_CREATED_AT or UPDATED_CREATED_AT
         defaultTenantSettingsShouldBeFound("createdAt.in=" + DEFAULT_CREATED_AT + "," + UPDATED_CREATED_AT);
 
         // Get all the tenantSettingsList where createdAt equals to UPDATED_CREATED_AT
@@ -695,12 +658,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where createdAt is greater than or equal to
-        // DEFAULT_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is greater than or equal to DEFAULT_CREATED_AT
         defaultTenantSettingsShouldBeFound("createdAt.greaterThanOrEqual=" + DEFAULT_CREATED_AT);
 
-        // Get all the tenantSettingsList where createdAt is greater than or equal to
-        // UPDATED_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is greater than or equal to UPDATED_CREATED_AT
         defaultTenantSettingsShouldNotBeFound("createdAt.greaterThanOrEqual=" + UPDATED_CREATED_AT);
     }
 
@@ -710,12 +671,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where createdAt is less than or equal to
-        // DEFAULT_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is less than or equal to DEFAULT_CREATED_AT
         defaultTenantSettingsShouldBeFound("createdAt.lessThanOrEqual=" + DEFAULT_CREATED_AT);
 
-        // Get all the tenantSettingsList where createdAt is less than or equal to
-        // SMALLER_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is less than or equal to SMALLER_CREATED_AT
         defaultTenantSettingsShouldNotBeFound("createdAt.lessThanOrEqual=" + SMALLER_CREATED_AT);
     }
 
@@ -725,12 +684,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where createdAt is less than
-        // DEFAULT_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is less than DEFAULT_CREATED_AT
         defaultTenantSettingsShouldNotBeFound("createdAt.lessThan=" + DEFAULT_CREATED_AT);
 
-        // Get all the tenantSettingsList where createdAt is less than
-        // UPDATED_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is less than UPDATED_CREATED_AT
         defaultTenantSettingsShouldBeFound("createdAt.lessThan=" + UPDATED_CREATED_AT);
     }
 
@@ -740,12 +697,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where createdAt is greater than
-        // DEFAULT_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is greater than DEFAULT_CREATED_AT
         defaultTenantSettingsShouldNotBeFound("createdAt.greaterThan=" + DEFAULT_CREATED_AT);
 
-        // Get all the tenantSettingsList where createdAt is greater than
-        // SMALLER_CREATED_AT
+        // Get all the tenantSettingsList where createdAt is greater than SMALLER_CREATED_AT
         defaultTenantSettingsShouldBeFound("createdAt.greaterThan=" + SMALLER_CREATED_AT);
     }
 
@@ -768,8 +723,7 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where updatedAt in DEFAULT_UPDATED_AT or
-        // UPDATED_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt in DEFAULT_UPDATED_AT or UPDATED_UPDATED_AT
         defaultTenantSettingsShouldBeFound("updatedAt.in=" + DEFAULT_UPDATED_AT + "," + UPDATED_UPDATED_AT);
 
         // Get all the tenantSettingsList where updatedAt equals to UPDATED_UPDATED_AT
@@ -795,12 +749,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where updatedAt is greater than or equal to
-        // DEFAULT_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is greater than or equal to DEFAULT_UPDATED_AT
         defaultTenantSettingsShouldBeFound("updatedAt.greaterThanOrEqual=" + DEFAULT_UPDATED_AT);
 
-        // Get all the tenantSettingsList where updatedAt is greater than or equal to
-        // UPDATED_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is greater than or equal to UPDATED_UPDATED_AT
         defaultTenantSettingsShouldNotBeFound("updatedAt.greaterThanOrEqual=" + UPDATED_UPDATED_AT);
     }
 
@@ -810,12 +762,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where updatedAt is less than or equal to
-        // DEFAULT_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is less than or equal to DEFAULT_UPDATED_AT
         defaultTenantSettingsShouldBeFound("updatedAt.lessThanOrEqual=" + DEFAULT_UPDATED_AT);
 
-        // Get all the tenantSettingsList where updatedAt is less than or equal to
-        // SMALLER_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is less than or equal to SMALLER_UPDATED_AT
         defaultTenantSettingsShouldNotBeFound("updatedAt.lessThanOrEqual=" + SMALLER_UPDATED_AT);
     }
 
@@ -825,12 +775,10 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where updatedAt is less than
-        // DEFAULT_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is less than DEFAULT_UPDATED_AT
         defaultTenantSettingsShouldNotBeFound("updatedAt.lessThan=" + DEFAULT_UPDATED_AT);
 
-        // Get all the tenantSettingsList where updatedAt is less than
-        // UPDATED_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is less than UPDATED_UPDATED_AT
         defaultTenantSettingsShouldBeFound("updatedAt.lessThan=" + UPDATED_UPDATED_AT);
     }
 
@@ -840,13 +788,33 @@ class TenantSettingsResourceIT {
         // Initialize the database
         tenantSettingsRepository.saveAndFlush(tenantSettings);
 
-        // Get all the tenantSettingsList where updatedAt is greater than
-        // DEFAULT_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is greater than DEFAULT_UPDATED_AT
         defaultTenantSettingsShouldNotBeFound("updatedAt.greaterThan=" + DEFAULT_UPDATED_AT);
 
-        // Get all the tenantSettingsList where updatedAt is greater than
-        // SMALLER_UPDATED_AT
+        // Get all the tenantSettingsList where updatedAt is greater than SMALLER_UPDATED_AT
         defaultTenantSettingsShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
+    }
+
+    @Test
+    @Transactional
+    void getAllTenantSettingsByTenantOrganizationIsEqualToSomething() throws Exception {
+        TenantOrganization tenantOrganization;
+        if (TestUtil.findAll(em, TenantOrganization.class).isEmpty()) {
+            tenantSettingsRepository.saveAndFlush(tenantSettings);
+            tenantOrganization = TenantOrganizationResourceIT.createEntity(em);
+        } else {
+            tenantOrganization = TestUtil.findAll(em, TenantOrganization.class).get(0);
+        }
+        em.persist(tenantOrganization);
+        em.flush();
+        tenantSettings.setTenantOrganization(tenantOrganization);
+        tenantSettingsRepository.saveAndFlush(tenantSettings);
+        Long tenantOrganizationId = tenantOrganization.getId();
+        // Get all the tenantSettingsList where tenantOrganization equals to tenantOrganizationId
+        defaultTenantSettingsShouldBeFound("tenantOrganizationId.equals=" + tenantOrganizationId);
+
+        // Get all the tenantSettingsList where tenantOrganization equals to (tenantOrganizationId + 1)
+        defaultTenantSettingsShouldNotBeFound("tenantOrganizationId.equals=" + (tenantOrganizationId + 1));
     }
 
     /**
@@ -854,33 +822,28 @@ class TenantSettingsResourceIT {
      */
     private void defaultTenantSettingsShouldBeFound(String filter) throws Exception {
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.[*].id").value(hasItem(tenantSettings.getId().intValue())))
-                .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
-                .andExpect(jsonPath("$.[*].allowUserRegistration")
-                        .value(hasItem(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue())))
-                .andExpect(jsonPath("$.[*].requireAdminApproval")
-                        .value(hasItem(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue())))
-                .andExpect(jsonPath("$.[*].enableWhatsappIntegration")
-                        .value(hasItem(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue())))
-                .andExpect(jsonPath("$.[*].enableEmailMarketing")
-                        .value(hasItem(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue())))
-                .andExpect(jsonPath("$.[*].whatsappApiKey").value(hasItem(DEFAULT_WHATSAPP_API_KEY)))
-                .andExpect(
-                        jsonPath("$.[*].emailProviderConfig").value(hasItem(DEFAULT_EMAIL_PROVIDER_CONFIG.toString())))
-                .andExpect(jsonPath("$.[*].customCss").value(hasItem(DEFAULT_CUSTOM_CSS.toString())))
-                .andExpect(jsonPath("$.[*].customJs").value(hasItem(DEFAULT_CUSTOM_JS.toString())))
-                .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
-                .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tenantSettings.getId().intValue())))
+            .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
+            .andExpect(jsonPath("$.[*].allowUserRegistration").value(hasItem(DEFAULT_ALLOW_USER_REGISTRATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].requireAdminApproval").value(hasItem(DEFAULT_REQUIRE_ADMIN_APPROVAL.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableWhatsappIntegration").value(hasItem(DEFAULT_ENABLE_WHATSAPP_INTEGRATION.booleanValue())))
+            .andExpect(jsonPath("$.[*].enableEmailMarketing").value(hasItem(DEFAULT_ENABLE_EMAIL_MARKETING.booleanValue())))
+            .andExpect(jsonPath("$.[*].whatsappApiKey").value(hasItem(DEFAULT_WHATSAPP_API_KEY)))
+            .andExpect(jsonPath("$.[*].emailProviderConfig").value(hasItem(DEFAULT_EMAIL_PROVIDER_CONFIG.toString())))
+            .andExpect(jsonPath("$.[*].customCss").value(hasItem(DEFAULT_CUSTOM_CSS.toString())))
+            .andExpect(jsonPath("$.[*].customJs").value(hasItem(DEFAULT_CUSTOM_JS.toString())))
+            .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
+            .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
 
         // Check, that the count call also returns 1
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("1"));
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
     }
 
     /**
@@ -888,18 +851,18 @@ class TenantSettingsResourceIT {
      */
     private void defaultTenantSettingsShouldNotBeFound(String filter) throws Exception {
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$").isEmpty());
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
 
         // Check, that the count call also returns 0
         restTenantSettingsMockMvc
-                .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(content().string("0"));
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test
@@ -919,29 +882,29 @@ class TenantSettingsResourceIT {
 
         // Update the tenantSettings
         TenantSettings updatedTenantSettings = tenantSettingsRepository.findById(tenantSettings.getId()).orElseThrow();
-        // Disconnect from session so that the updates on updatedTenantSettings are not
-        // directly saved in db
+        // Disconnect from session so that the updates on updatedTenantSettings are not directly saved in db
         em.detach(updatedTenantSettings);
         updatedTenantSettings
-                .tenantId(UPDATED_TENANT_ID)
-                .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
-                .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
-                .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
-                .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
-                .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
-                .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
-                .customCss(UPDATED_CUSTOM_CSS)
-                .customJs(UPDATED_CUSTOM_JS)
-                .createdAt(UPDATED_CREATED_AT)
-                .updatedAt(UPDATED_UPDATED_AT);
+            .tenantId(UPDATED_TENANT_ID)
+            .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
+            .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
+            .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
+            .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
+            .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
+            .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
+            .customCss(UPDATED_CUSTOM_CSS)
+            .customJs(UPDATED_CUSTOM_JS)
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
         TenantSettingsDTO tenantSettingsDTO = tenantSettingsMapper.toDto(updatedTenantSettings);
 
         restTenantSettingsMockMvc
-                .perform(
-                        put(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isOk());
+            .perform(
+                put(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isOk());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -971,11 +934,12 @@ class TenantSettingsResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        put(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                put(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -993,11 +957,12 @@ class TenantSettingsResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        put(ENTITY_API_URL_ID, longCount.incrementAndGet())
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                put(ENTITY_API_URL_ID, longCount.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1015,10 +980,10 @@ class TenantSettingsResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON)
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isMethodNotAllowed());
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1038,31 +1003,34 @@ class TenantSettingsResourceIT {
         partialUpdatedTenantSettings.setId(tenantSettings.getId());
 
         partialUpdatedTenantSettings
-                .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
-                .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
-                .customCss(UPDATED_CUSTOM_CSS)
-                .updatedAt(UPDATED_UPDATED_AT);
+            .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
+            .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
+            .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
+            .customCss(UPDATED_CUSTOM_CSS)
+            .customJs(UPDATED_CUSTOM_JS)
+            .updatedAt(UPDATED_UPDATED_AT);
 
         restTenantSettingsMockMvc
-                .perform(
-                        patch(ENTITY_API_URL_ID, partialUpdatedTenantSettings.getId())
-                                .contentType("application/merge-patch+json")
-                                .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantSettings)))
-                .andExpect(status().isOk());
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTenantSettings.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantSettings))
+            )
+            .andExpect(status().isOk());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
         assertThat(tenantSettingsList).hasSize(databaseSizeBeforeUpdate);
         TenantSettings testTenantSettings = tenantSettingsList.get(tenantSettingsList.size() - 1);
         assertThat(testTenantSettings.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testTenantSettings.getAllowUserRegistration()).isEqualTo(DEFAULT_ALLOW_USER_REGISTRATION);
+        assertThat(testTenantSettings.getAllowUserRegistration()).isEqualTo(UPDATED_ALLOW_USER_REGISTRATION);
         assertThat(testTenantSettings.getRequireAdminApproval()).isEqualTo(DEFAULT_REQUIRE_ADMIN_APPROVAL);
-        assertThat(testTenantSettings.getEnableWhatsappIntegration()).isEqualTo(DEFAULT_ENABLE_WHATSAPP_INTEGRATION);
-        assertThat(testTenantSettings.getEnableEmailMarketing()).isEqualTo(UPDATED_ENABLE_EMAIL_MARKETING);
+        assertThat(testTenantSettings.getEnableWhatsappIntegration()).isEqualTo(UPDATED_ENABLE_WHATSAPP_INTEGRATION);
+        assertThat(testTenantSettings.getEnableEmailMarketing()).isEqualTo(DEFAULT_ENABLE_EMAIL_MARKETING);
         assertThat(testTenantSettings.getWhatsappApiKey()).isEqualTo(DEFAULT_WHATSAPP_API_KEY);
         assertThat(testTenantSettings.getEmailProviderConfig()).isEqualTo(UPDATED_EMAIL_PROVIDER_CONFIG);
         assertThat(testTenantSettings.getCustomCss()).isEqualTo(UPDATED_CUSTOM_CSS);
-        assertThat(testTenantSettings.getCustomJs()).isEqualTo(DEFAULT_CUSTOM_JS);
+        assertThat(testTenantSettings.getCustomJs()).isEqualTo(UPDATED_CUSTOM_JS);
         assertThat(testTenantSettings.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testTenantSettings.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -1080,24 +1048,25 @@ class TenantSettingsResourceIT {
         partialUpdatedTenantSettings.setId(tenantSettings.getId());
 
         partialUpdatedTenantSettings
-                .tenantId(UPDATED_TENANT_ID)
-                .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
-                .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
-                .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
-                .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
-                .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
-                .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
-                .customCss(UPDATED_CUSTOM_CSS)
-                .customJs(UPDATED_CUSTOM_JS)
-                .createdAt(UPDATED_CREATED_AT)
-                .updatedAt(UPDATED_UPDATED_AT);
+            .tenantId(UPDATED_TENANT_ID)
+            .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
+            .requireAdminApproval(UPDATED_REQUIRE_ADMIN_APPROVAL)
+            .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
+            .enableEmailMarketing(UPDATED_ENABLE_EMAIL_MARKETING)
+            .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
+            .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
+            .customCss(UPDATED_CUSTOM_CSS)
+            .customJs(UPDATED_CUSTOM_JS)
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
 
         restTenantSettingsMockMvc
-                .perform(
-                        patch(ENTITY_API_URL_ID, partialUpdatedTenantSettings.getId())
-                                .contentType("application/merge-patch+json")
-                                .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantSettings)))
-                .andExpect(status().isOk());
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedTenantSettings.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedTenantSettings))
+            )
+            .andExpect(status().isOk());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1127,11 +1096,12 @@ class TenantSettingsResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        patch(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
-                                .contentType("application/merge-patch+json")
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                patch(ENTITY_API_URL_ID, tenantSettingsDTO.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1149,11 +1119,12 @@ class TenantSettingsResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
-                                .contentType("application/merge-patch+json")
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isBadRequest());
+            .perform(
+                patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isBadRequest());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1171,11 +1142,12 @@ class TenantSettingsResourceIT {
 
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restTenantSettingsMockMvc
-                .perform(
-                        patch(ENTITY_API_URL)
-                                .contentType("application/merge-patch+json")
-                                .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO)))
-                .andExpect(status().isMethodNotAllowed());
+            .perform(
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(tenantSettingsDTO))
+            )
+            .andExpect(status().isMethodNotAllowed());
 
         // Validate the TenantSettings in the database
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
@@ -1192,8 +1164,8 @@ class TenantSettingsResourceIT {
 
         // Delete the tenantSettings
         restTenantSettingsMockMvc
-                .perform(delete(ENTITY_API_URL_ID, tenantSettings.getId()).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+            .perform(delete(ENTITY_API_URL_ID, tenantSettings.getId()).accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();

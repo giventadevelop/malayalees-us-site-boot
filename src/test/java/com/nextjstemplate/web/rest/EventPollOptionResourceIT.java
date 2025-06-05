@@ -761,6 +761,8 @@ class EventPollOptionResourceIT {
         EventPollOption partialUpdatedEventPollOption = new EventPollOption();
         partialUpdatedEventPollOption.setId(eventPollOption.getId());
 
+        partialUpdatedEventPollOption.createdAt(UPDATED_CREATED_AT);
+
         restEventPollOptionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedEventPollOption.getId())
@@ -775,7 +777,7 @@ class EventPollOptionResourceIT {
         EventPollOption testEventPollOption = eventPollOptionList.get(eventPollOptionList.size() - 1);
         assertThat(testEventPollOption.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
         assertThat(testEventPollOption.getOptionText()).isEqualTo(DEFAULT_OPTION_TEXT);
-        assertThat(testEventPollOption.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testEventPollOption.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventPollOption.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 

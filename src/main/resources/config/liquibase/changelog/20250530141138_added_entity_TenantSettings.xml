@@ -47,7 +47,9 @@
             <column name="updated_at" type="${datetimeType}">
                 <constraints nullable="false" />
             </column>
-
+            <column name="tenant_organization_id" type="bigint">
+                <constraints nullable="true" unique="true" uniqueConstraintName="ux_tenant_settings__tenant_organization_id" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
         <dropDefaultValue tableName="tenant_settings" columnName="created_at" columnDataType="${datetimeType}"/>
