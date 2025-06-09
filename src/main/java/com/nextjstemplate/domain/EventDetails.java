@@ -6,6 +6,8 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -72,9 +74,8 @@ public class EventDetails implements Serializable {
     @Column(name = "capacity")
     private Integer capacity;
 
-    @NotNull
-    @Size(max = 255)
-    @Column(name = "admission_type", length = 255, nullable = false)
+    @Size(max = 50)
+    @Column(name = "admission_type", length = 50)
     private String admissionType;
 
     @Column(name = "is_active")
@@ -93,6 +94,15 @@ public class EventDetails implements Serializable {
     @Column(name = "enable_guest_pricing")
     private Boolean enableGuestPricing;
 
+    @Column(name = "is_registration_required")
+    private Boolean isRegistrationRequired;
+
+    @Column(name = "is_sports_event")
+    private Boolean isSportsEvent;
+
+    @Column(name = "is_live")
+    private Boolean isLive;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -107,6 +117,16 @@ public class EventDetails implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private EventTypeDetails eventType;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "rel_event_details__discount_codes",
+        joinColumns = @JoinColumn(name = "event_details_id"),
+        inverseJoinColumns = @JoinColumn(name = "discount_codes_id")
+    )
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "events" }, allowSetters = true)
+    private Set<DiscountCode> discountCodes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -344,6 +364,45 @@ public class EventDetails implements Serializable {
         this.enableGuestPricing = enableGuestPricing;
     }
 
+    public Boolean getIsRegistrationRequired() {
+        return this.isRegistrationRequired;
+    }
+
+    public EventDetails isRegistrationRequired(Boolean isRegistrationRequired) {
+        this.setIsRegistrationRequired(isRegistrationRequired);
+        return this;
+    }
+
+    public void setIsRegistrationRequired(Boolean isRegistrationRequired) {
+        this.isRegistrationRequired = isRegistrationRequired;
+    }
+
+    public Boolean getIsSportsEvent() {
+        return this.isSportsEvent;
+    }
+
+    public EventDetails isSportsEvent(Boolean isSportsEvent) {
+        this.setIsSportsEvent(isSportsEvent);
+        return this;
+    }
+
+    public void setIsSportsEvent(Boolean isSportsEvent) {
+        this.isSportsEvent = isSportsEvent;
+    }
+
+    public Boolean getIsLive() {
+        return this.isLive;
+    }
+
+    public EventDetails isLive(Boolean isLive) {
+        this.setIsLive(isLive);
+        return this;
+    }
+
+    public void setIsLive(Boolean isLive) {
+        this.isLive = isLive;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -396,6 +455,29 @@ public class EventDetails implements Serializable {
         return this;
     }
 
+    public Set<DiscountCode> getDiscountCodes() {
+        return this.discountCodes;
+    }
+
+    public void setDiscountCodes(Set<DiscountCode> discountCodes) {
+        this.discountCodes = discountCodes;
+    }
+
+    public EventDetails discountCodes(Set<DiscountCode> discountCodes) {
+        this.setDiscountCodes(discountCodes);
+        return this;
+    }
+
+    public EventDetails addDiscountCodes(DiscountCode discountCode) {
+        this.discountCodes.add(discountCode);
+        return this;
+    }
+
+    public EventDetails removeDiscountCodes(DiscountCode discountCode) {
+        this.discountCodes.remove(discountCode);
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -437,6 +519,9 @@ public class EventDetails implements Serializable {
             ", allowGuests='" + getAllowGuests() + "'" +
             ", requireGuestApproval='" + getRequireGuestApproval() + "'" +
             ", enableGuestPricing='" + getEnableGuestPricing() + "'" +
+            ", isRegistrationRequired='" + getIsRegistrationRequired() + "'" +
+            ", isSportsEvent='" + getIsSportsEvent() + "'" +
+            ", isLive='" + getIsLive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

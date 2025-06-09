@@ -44,12 +44,10 @@ public class TenantOrganizationDTO implements Serializable {
     @Size(max = 50)
     private String contactPhone;
 
-    @NotNull
-    @Size(max = 50)
+    @Size(max = 20)
     private String subscriptionPlan;
 
-    @NotNull
-    @Size(max = 50)
+    @Size(max = 20)
     private String subscriptionStatus;
 
     private LocalDate subscriptionStartDate;

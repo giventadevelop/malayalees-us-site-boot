@@ -1,9 +1,6 @@
 package com.nextjstemplate.service.dto;
 
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
-import com.nextjstemplate.domain.enumeration.UserEventCheckInStatus;
-import com.nextjstemplate.domain.enumeration.UserEventRegistrationStatus;
-import com.nextjstemplate.domain.enumeration.UserToGuestRelationship;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -12,6 +9,7 @@ import java.util.Objects;
 /**
  * A DTO for the {@link com.nextjstemplate.domain.EventAttendeeGuest} entity.
  */
+@Schema(description = "Event Guest Management JDL Model\nEnhanced entities for sophisticated guest management with age-based pricing")
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventAttendeeGuestDTO implements Serializable {
 
@@ -24,17 +22,20 @@ public class EventAttendeeGuestDTO implements Serializable {
     @Size(max = 255)
     private String guestName;
 
-    @NotNull
-    private GuestAgeGroup ageGroup;
+    @Size(max = 20)
+    private String ageGroup;
 
-    private UserToGuestRelationship relationship;
+    @Size(max = 50)
+    private String relationship;
 
     @Size(max = 500)
     private String specialRequirements;
 
-    private UserEventRegistrationStatus registrationStatus;
+    @Size(max = 50)
+    private String registrationStatus;
 
-    private UserEventCheckInStatus checkInStatus;
+    @Size(max = 50)
+    private String checkInStatus;
 
     private ZonedDateTime checkInTime;
 
@@ -70,19 +71,19 @@ public class EventAttendeeGuestDTO implements Serializable {
         this.guestName = guestName;
     }
 
-    public GuestAgeGroup getAgeGroup() {
+    public String getAgeGroup() {
         return ageGroup;
     }
 
-    public void setAgeGroup(GuestAgeGroup ageGroup) {
+    public void setAgeGroup(String ageGroup) {
         this.ageGroup = ageGroup;
     }
 
-    public UserToGuestRelationship getRelationship() {
+    public String getRelationship() {
         return relationship;
     }
 
-    public void setRelationship(UserToGuestRelationship relationship) {
+    public void setRelationship(String relationship) {
         this.relationship = relationship;
     }
 
@@ -94,19 +95,19 @@ public class EventAttendeeGuestDTO implements Serializable {
         this.specialRequirements = specialRequirements;
     }
 
-    public UserEventRegistrationStatus getRegistrationStatus() {
+    public String getRegistrationStatus() {
         return registrationStatus;
     }
 
-    public void setRegistrationStatus(UserEventRegistrationStatus registrationStatus) {
+    public void setRegistrationStatus(String registrationStatus) {
         this.registrationStatus = registrationStatus;
     }
 
-    public UserEventCheckInStatus getCheckInStatus() {
+    public String getCheckInStatus() {
         return checkInStatus;
     }
 
-    public void setCheckInStatus(UserEventCheckInStatus checkInStatus) {
+    public void setCheckInStatus(String checkInStatus) {
         this.checkInStatus = checkInStatus;
     }
 

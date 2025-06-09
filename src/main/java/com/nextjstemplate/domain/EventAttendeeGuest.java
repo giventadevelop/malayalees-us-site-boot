@@ -1,10 +1,6 @@
 package com.nextjstemplate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
-import com.nextjstemplate.domain.enumeration.UserEventCheckInStatus;
-import com.nextjstemplate.domain.enumeration.UserEventRegistrationStatus;
-import com.nextjstemplate.domain.enumeration.UserToGuestRelationship;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -13,7 +9,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
- * A EventAttendeeGuest.
+ * Event Guest Management JDL Model
+ * Enhanced entities for sophisticated guest management with age-based pricing
  */
 @Entity
 @Table(name = "event_attendee_guest")
@@ -38,26 +35,25 @@ public class EventAttendeeGuest implements Serializable {
     @Column(name = "guest_name", length = 255, nullable = false)
     private String guestName;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "age_group", nullable = false)
-    private GuestAgeGroup ageGroup;
+    @Size(max = 20)
+    @Column(name = "age_group", length = 20)
+    private String ageGroup;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "relationship")
-    private UserToGuestRelationship relationship;
+    @Size(max = 50)
+    @Column(name = "relationship", length = 50)
+    private String relationship;
 
     @Size(max = 500)
     @Column(name = "special_requirements", length = 500)
     private String specialRequirements;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "registration_status")
-    private UserEventRegistrationStatus registrationStatus;
+    @Size(max = 50)
+    @Column(name = "registration_status", length = 50)
+    private String registrationStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "check_in_status")
-    private UserEventCheckInStatus checkInStatus;
+    @Size(max = 50)
+    @Column(name = "check_in_status", length = 50)
+    private String checkInStatus;
 
     @Column(name = "check_in_time")
     private ZonedDateTime checkInTime;
@@ -116,29 +112,29 @@ public class EventAttendeeGuest implements Serializable {
         this.guestName = guestName;
     }
 
-    public GuestAgeGroup getAgeGroup() {
+    public String getAgeGroup() {
         return this.ageGroup;
     }
 
-    public EventAttendeeGuest ageGroup(GuestAgeGroup ageGroup) {
+    public EventAttendeeGuest ageGroup(String ageGroup) {
         this.setAgeGroup(ageGroup);
         return this;
     }
 
-    public void setAgeGroup(GuestAgeGroup ageGroup) {
+    public void setAgeGroup(String ageGroup) {
         this.ageGroup = ageGroup;
     }
 
-    public UserToGuestRelationship getRelationship() {
+    public String getRelationship() {
         return this.relationship;
     }
 
-    public EventAttendeeGuest relationship(UserToGuestRelationship relationship) {
+    public EventAttendeeGuest relationship(String relationship) {
         this.setRelationship(relationship);
         return this;
     }
 
-    public void setRelationship(UserToGuestRelationship relationship) {
+    public void setRelationship(String relationship) {
         this.relationship = relationship;
     }
 
@@ -155,29 +151,29 @@ public class EventAttendeeGuest implements Serializable {
         this.specialRequirements = specialRequirements;
     }
 
-    public UserEventRegistrationStatus getRegistrationStatus() {
+    public String getRegistrationStatus() {
         return this.registrationStatus;
     }
 
-    public EventAttendeeGuest registrationStatus(UserEventRegistrationStatus registrationStatus) {
+    public EventAttendeeGuest registrationStatus(String registrationStatus) {
         this.setRegistrationStatus(registrationStatus);
         return this;
     }
 
-    public void setRegistrationStatus(UserEventRegistrationStatus registrationStatus) {
+    public void setRegistrationStatus(String registrationStatus) {
         this.registrationStatus = registrationStatus;
     }
 
-    public UserEventCheckInStatus getCheckInStatus() {
+    public String getCheckInStatus() {
         return this.checkInStatus;
     }
 
-    public EventAttendeeGuest checkInStatus(UserEventCheckInStatus checkInStatus) {
+    public EventAttendeeGuest checkInStatus(String checkInStatus) {
         this.setCheckInStatus(checkInStatus);
         return this;
     }
 
-    public void setCheckInStatus(UserEventCheckInStatus checkInStatus) {
+    public void setCheckInStatus(String checkInStatus) {
         this.checkInStatus = checkInStatus;
     }
 

@@ -95,7 +95,7 @@ public class EventAttendee implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(optional = false)

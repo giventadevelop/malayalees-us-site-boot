@@ -1,7 +1,6 @@
 package com.nextjstemplate.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -32,10 +31,9 @@ public class EventGuestPricing implements Serializable {
     @Column(name = "tenant_id", length = 255)
     private String tenantId;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "age_group", nullable = false)
-    private GuestAgeGroup ageGroup;
+    @Size(max = 20)
+    @Column(name = "age_group", length = 20)
+    private String ageGroup;
 
     @NotNull
     @DecimalMin(value = "0")
@@ -65,7 +63,7 @@ public class EventGuestPricing implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -96,16 +94,16 @@ public class EventGuestPricing implements Serializable {
         this.tenantId = tenantId;
     }
 
-    public GuestAgeGroup getAgeGroup() {
+    public String getAgeGroup() {
         return this.ageGroup;
     }
 
-    public EventGuestPricing ageGroup(GuestAgeGroup ageGroup) {
+    public EventGuestPricing ageGroup(String ageGroup) {
         this.setAgeGroup(ageGroup);
         return this;
     }
 
-    public void setAgeGroup(GuestAgeGroup ageGroup) {
+    public void setAgeGroup(String ageGroup) {
         this.ageGroup = ageGroup;
     }
 

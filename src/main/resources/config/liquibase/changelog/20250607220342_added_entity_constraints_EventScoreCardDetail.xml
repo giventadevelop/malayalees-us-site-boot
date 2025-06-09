@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity EventScoreCardDetail.
+    -->
+    <changeSet id="20250607220342-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="score_card_id"
+                                 baseTableName="event_score_card_detail"
+                                 constraintName="fk_event_score_card_detail__score_card_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="event_score_card"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,6 +1,8 @@
 package com.nextjstemplate.service.impl;
 
 import com.nextjstemplate.domain.UserProfile;
+import com.nextjstemplate.domain.enumeration.UserRoleType;
+import com.nextjstemplate.domain.enumeration.UserStatusType;
 import com.nextjstemplate.repository.UserProfileRepository;
 import com.nextjstemplate.service.UserProfileService;
 import com.nextjstemplate.service.dto.UserProfileDTO;
@@ -39,6 +41,14 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileDTO save(UserProfileDTO userProfileDTO) {
         log.debug("Request to save UserProfile : {}", userProfileDTO);
         UserProfile userProfile = userProfileMapper.toEntity(userProfileDTO);
+        if (userProfile.getUserRole() == null) {
+            userProfile.setUserRole(UserRoleType.MEMBER.name()); // Set a default role
+        }
+
+        if (userProfile.getUserStatus() == null) {
+            userProfile.setUserStatus(UserStatusType.PENDING_APPROVAL.name()); // Set a default status
+        }
+
         userProfile = userProfileRepository.save(userProfile);
         return userProfileMapper.toDto(userProfile);
     }

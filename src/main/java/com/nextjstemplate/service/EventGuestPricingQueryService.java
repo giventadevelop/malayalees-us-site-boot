@@ -97,7 +97,7 @@ public class EventGuestPricingQueryService extends QueryService<EventGuestPricin
                 specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventGuestPricing_.tenantId));
             }
             if (criteria.getAgeGroup() != null) {
-                specification = specification.and(buildSpecification(criteria.getAgeGroup(), EventGuestPricing_.ageGroup));
+                specification = specification.and(buildStringSpecification(criteria.getAgeGroup(), EventGuestPricing_.ageGroup));
             }
             if (criteria.getPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPrice(), EventGuestPricing_.price));

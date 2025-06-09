@@ -17,8 +17,8 @@
             <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="age_group" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="age_group" type="varchar(20)">
+                <constraints nullable="true" />
             </column>
             <column name="price" type="decimal(21,2)">
                 <constraints nullable="false" />

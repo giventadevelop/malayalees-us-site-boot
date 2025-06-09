@@ -38,11 +38,11 @@
             <column name="contact_phone" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="subscription_plan" type="varchar(50)">
-                <constraints nullable="false" />
+            <column name="subscription_plan" type="varchar(20)">
+                <constraints nullable="true" />
             </column>
-            <column name="subscription_status" type="varchar(50)">
-                <constraints nullable="false" />
+            <column name="subscription_status" type="varchar(20)">
+                <constraints nullable="true" />
             </column>
             <column name="subscription_start_date" type="date">
                 <constraints nullable="true" />

@@ -122,6 +122,14 @@ public class EventTicketTransactionQueryService extends QueryService<EventTicket
                 specification =
                     specification.and(buildRangeSpecification(criteria.getPurchaseDate(), EventTicketTransaction_.purchaseDate));
             }
+            if (criteria.getDiscountCodeId() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getDiscountCodeId(), EventTicketTransaction_.discountCodeId));
+            }
+            if (criteria.getDiscountAmount() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getDiscountAmount(), EventTicketTransaction_.discountAmount));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventTicketTransaction_.createdAt));
             }

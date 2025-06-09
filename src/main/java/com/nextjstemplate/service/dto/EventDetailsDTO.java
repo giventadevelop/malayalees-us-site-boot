@@ -4,7 +4,9 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.nextjstemplate.domain.EventDetails} entity.
@@ -49,8 +51,7 @@ public class EventDetailsDTO implements Serializable {
 
     private Integer capacity;
 
-    @NotNull
-    @Size(max = 255)
+    @Size(max = 50)
     private String admissionType;
 
     private Boolean isActive;
@@ -64,6 +65,12 @@ public class EventDetailsDTO implements Serializable {
 
     private Boolean enableGuestPricing;
 
+    private Boolean isRegistrationRequired;
+
+    private Boolean isSportsEvent;
+
+    private Boolean isLive;
+
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -73,6 +80,8 @@ public class EventDetailsDTO implements Serializable {
     private UserProfileDTO createdBy;
 
     private EventTypeDetailsDTO eventType;
+
+    private Set<DiscountCodeDTO> discountCodes = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -218,6 +227,30 @@ public class EventDetailsDTO implements Serializable {
         this.enableGuestPricing = enableGuestPricing;
     }
 
+    public Boolean getIsRegistrationRequired() {
+        return isRegistrationRequired;
+    }
+
+    public void setIsRegistrationRequired(Boolean isRegistrationRequired) {
+        this.isRegistrationRequired = isRegistrationRequired;
+    }
+
+    public Boolean getIsSportsEvent() {
+        return isSportsEvent;
+    }
+
+    public void setIsSportsEvent(Boolean isSportsEvent) {
+        this.isSportsEvent = isSportsEvent;
+    }
+
+    public Boolean getIsLive() {
+        return isLive;
+    }
+
+    public void setIsLive(Boolean isLive) {
+        this.isLive = isLive;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -248,6 +281,14 @@ public class EventDetailsDTO implements Serializable {
 
     public void setEventType(EventTypeDetailsDTO eventType) {
         this.eventType = eventType;
+    }
+
+    public Set<DiscountCodeDTO> getDiscountCodes() {
+        return discountCodes;
+    }
+
+    public void setDiscountCodes(Set<DiscountCodeDTO> discountCodes) {
+        this.discountCodes = discountCodes;
     }
 
     @Override
@@ -293,10 +334,14 @@ public class EventDetailsDTO implements Serializable {
             ", allowGuests='" + getAllowGuests() + "'" +
             ", requireGuestApproval='" + getRequireGuestApproval() + "'" +
             ", enableGuestPricing='" + getEnableGuestPricing() + "'" +
+            ", isRegistrationRequired='" + getIsRegistrationRequired() + "'" +
+            ", isSportsEvent='" + getIsSportsEvent() + "'" +
+            ", isLive='" + getIsLive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", createdBy=" + getCreatedBy() +
             ", eventType=" + getEventType() +
+            ", discountCodes=" + getDiscountCodes() +
             "}";
     }
 }

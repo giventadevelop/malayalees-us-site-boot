@@ -63,14 +63,12 @@ public class TenantOrganization implements Serializable {
     @Column(name = "contact_phone", length = 50)
     private String contactPhone;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "subscription_plan", length = 50, nullable = false)
+    @Size(max = 20)
+    @Column(name = "subscription_plan", length = 20)
     private String subscriptionPlan;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "subscription_status", length = 50, nullable = false)
+    @Size(max = 20)
+    @Column(name = "subscription_status", length = 20)
     private String subscriptionStatus;
 
     @Column(name = "subscription_start_date")

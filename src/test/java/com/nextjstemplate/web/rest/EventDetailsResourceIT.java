@@ -3,14 +3,17 @@ package com.nextjstemplate.web.rest;
 import static com.nextjstemplate.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.nextjstemplate.IntegrationTest;
+import com.nextjstemplate.domain.DiscountCode;
 import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.EventTypeDetails;
 import com.nextjstemplate.domain.UserProfile;
 import com.nextjstemplate.repository.EventDetailsRepository;
+import com.nextjstemplate.service.EventDetailsService;
 import com.nextjstemplate.service.dto.EventDetailsDTO;
 import com.nextjstemplate.service.mapper.EventDetailsMapper;
 import jakarta.persistence.EntityManager;
@@ -19,13 +22,19 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,6 +44,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Integration tests for the {@link EventDetailsResource} REST controller.
  */
 @IntegrationTest
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 class EventDetailsResourceIT {
@@ -94,6 +104,15 @@ class EventDetailsResourceIT {
     private static final Boolean DEFAULT_ENABLE_GUEST_PRICING = false;
     private static final Boolean UPDATED_ENABLE_GUEST_PRICING = true;
 
+    private static final Boolean DEFAULT_IS_REGISTRATION_REQUIRED = false;
+    private static final Boolean UPDATED_IS_REGISTRATION_REQUIRED = true;
+
+    private static final Boolean DEFAULT_IS_SPORTS_EVENT = false;
+    private static final Boolean UPDATED_IS_SPORTS_EVENT = true;
+
+    private static final Boolean DEFAULT_IS_LIVE = false;
+    private static final Boolean UPDATED_IS_LIVE = true;
+
     private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
@@ -111,8 +130,14 @@ class EventDetailsResourceIT {
     @Autowired
     private EventDetailsRepository eventDetailsRepository;
 
+    @Mock
+    private EventDetailsRepository eventDetailsRepositoryMock;
+
     @Autowired
     private EventDetailsMapper eventDetailsMapper;
+
+    @Mock
+    private EventDetailsService eventDetailsServiceMock;
 
     @Autowired
     private EntityManager em;
@@ -147,6 +172,9 @@ class EventDetailsResourceIT {
             .allowGuests(DEFAULT_ALLOW_GUESTS)
             .requireGuestApproval(DEFAULT_REQUIRE_GUEST_APPROVAL)
             .enableGuestPricing(DEFAULT_ENABLE_GUEST_PRICING)
+            .isRegistrationRequired(DEFAULT_IS_REGISTRATION_REQUIRED)
+            .isSportsEvent(DEFAULT_IS_SPORTS_EVENT)
+            .isLive(DEFAULT_IS_LIVE)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return eventDetails;
@@ -177,6 +205,9 @@ class EventDetailsResourceIT {
             .allowGuests(UPDATED_ALLOW_GUESTS)
             .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
             .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
+            .isRegistrationRequired(UPDATED_IS_REGISTRATION_REQUIRED)
+            .isSportsEvent(UPDATED_IS_SPORTS_EVENT)
+            .isLive(UPDATED_IS_LIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return eventDetails;
@@ -220,6 +251,9 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getAllowGuests()).isEqualTo(DEFAULT_ALLOW_GUESTS);
         assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(DEFAULT_REQUIRE_GUEST_APPROVAL);
         assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(DEFAULT_ENABLE_GUEST_PRICING);
+        assertThat(testEventDetails.getIsRegistrationRequired()).isEqualTo(DEFAULT_IS_REGISTRATION_REQUIRED);
+        assertThat(testEventDetails.getIsSportsEvent()).isEqualTo(DEFAULT_IS_SPORTS_EVENT);
+        assertThat(testEventDetails.getIsLive()).isEqualTo(DEFAULT_IS_LIVE);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -347,26 +381,6 @@ class EventDetailsResourceIT {
 
     @Test
     @Transactional
-    void checkAdmissionTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventDetailsRepository.findAll().size();
-        // set the field null
-        eventDetails.setAdmissionType(null);
-
-        // Create the EventDetails, which fails.
-        EventDetailsDTO eventDetailsDTO = eventDetailsMapper.toDto(eventDetails);
-
-        restEventDetailsMockMvc
-            .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(eventDetailsDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<EventDetails> eventDetailsList = eventDetailsRepository.findAll();
-        assertThat(eventDetailsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkCreatedAtIsRequired() throws Exception {
         int databaseSizeBeforeTest = eventDetailsRepository.findAll().size();
         // set the field null
@@ -434,8 +448,28 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.[*].allowGuests").value(hasItem(DEFAULT_ALLOW_GUESTS.booleanValue())))
             .andExpect(jsonPath("$.[*].requireGuestApproval").value(hasItem(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue())))
             .andExpect(jsonPath("$.[*].enableGuestPricing").value(hasItem(DEFAULT_ENABLE_GUEST_PRICING.booleanValue())))
+            .andExpect(jsonPath("$.[*].isRegistrationRequired").value(hasItem(DEFAULT_IS_REGISTRATION_REQUIRED.booleanValue())))
+            .andExpect(jsonPath("$.[*].isSportsEvent").value(hasItem(DEFAULT_IS_SPORTS_EVENT.booleanValue())))
+            .andExpect(jsonPath("$.[*].isLive").value(hasItem(DEFAULT_IS_LIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllEventDetailsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(eventDetailsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restEventDetailsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
+
+        verify(eventDetailsServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({ "unchecked" })
+    void getAllEventDetailsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(eventDetailsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restEventDetailsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
+        verify(eventDetailsRepositoryMock, times(1)).findAll(any(Pageable.class));
     }
 
     @Test
@@ -467,6 +501,9 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.allowGuests").value(DEFAULT_ALLOW_GUESTS.booleanValue()))
             .andExpect(jsonPath("$.requireGuestApproval").value(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue()))
             .andExpect(jsonPath("$.enableGuestPricing").value(DEFAULT_ENABLE_GUEST_PRICING.booleanValue()))
+            .andExpect(jsonPath("$.isRegistrationRequired").value(DEFAULT_IS_REGISTRATION_REQUIRED.booleanValue()))
+            .andExpect(jsonPath("$.isSportsEvent").value(DEFAULT_IS_SPORTS_EVENT.booleanValue()))
+            .andExpect(jsonPath("$.isLive").value(DEFAULT_IS_LIVE.booleanValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
     }
@@ -1600,6 +1637,125 @@ class EventDetailsResourceIT {
 
     @Test
     @Transactional
+    void getAllEventDetailsByIsRegistrationRequiredIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isRegistrationRequired equals to DEFAULT_IS_REGISTRATION_REQUIRED
+        defaultEventDetailsShouldBeFound("isRegistrationRequired.equals=" + DEFAULT_IS_REGISTRATION_REQUIRED);
+
+        // Get all the eventDetailsList where isRegistrationRequired equals to UPDATED_IS_REGISTRATION_REQUIRED
+        defaultEventDetailsShouldNotBeFound("isRegistrationRequired.equals=" + UPDATED_IS_REGISTRATION_REQUIRED);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsRegistrationRequiredIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isRegistrationRequired in DEFAULT_IS_REGISTRATION_REQUIRED or UPDATED_IS_REGISTRATION_REQUIRED
+        defaultEventDetailsShouldBeFound(
+            "isRegistrationRequired.in=" + DEFAULT_IS_REGISTRATION_REQUIRED + "," + UPDATED_IS_REGISTRATION_REQUIRED
+        );
+
+        // Get all the eventDetailsList where isRegistrationRequired equals to UPDATED_IS_REGISTRATION_REQUIRED
+        defaultEventDetailsShouldNotBeFound("isRegistrationRequired.in=" + UPDATED_IS_REGISTRATION_REQUIRED);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsRegistrationRequiredIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isRegistrationRequired is not null
+        defaultEventDetailsShouldBeFound("isRegistrationRequired.specified=true");
+
+        // Get all the eventDetailsList where isRegistrationRequired is null
+        defaultEventDetailsShouldNotBeFound("isRegistrationRequired.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsSportsEventIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isSportsEvent equals to DEFAULT_IS_SPORTS_EVENT
+        defaultEventDetailsShouldBeFound("isSportsEvent.equals=" + DEFAULT_IS_SPORTS_EVENT);
+
+        // Get all the eventDetailsList where isSportsEvent equals to UPDATED_IS_SPORTS_EVENT
+        defaultEventDetailsShouldNotBeFound("isSportsEvent.equals=" + UPDATED_IS_SPORTS_EVENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsSportsEventIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isSportsEvent in DEFAULT_IS_SPORTS_EVENT or UPDATED_IS_SPORTS_EVENT
+        defaultEventDetailsShouldBeFound("isSportsEvent.in=" + DEFAULT_IS_SPORTS_EVENT + "," + UPDATED_IS_SPORTS_EVENT);
+
+        // Get all the eventDetailsList where isSportsEvent equals to UPDATED_IS_SPORTS_EVENT
+        defaultEventDetailsShouldNotBeFound("isSportsEvent.in=" + UPDATED_IS_SPORTS_EVENT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsSportsEventIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isSportsEvent is not null
+        defaultEventDetailsShouldBeFound("isSportsEvent.specified=true");
+
+        // Get all the eventDetailsList where isSportsEvent is null
+        defaultEventDetailsShouldNotBeFound("isSportsEvent.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsLiveIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isLive equals to DEFAULT_IS_LIVE
+        defaultEventDetailsShouldBeFound("isLive.equals=" + DEFAULT_IS_LIVE);
+
+        // Get all the eventDetailsList where isLive equals to UPDATED_IS_LIVE
+        defaultEventDetailsShouldNotBeFound("isLive.equals=" + UPDATED_IS_LIVE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsLiveIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isLive in DEFAULT_IS_LIVE or UPDATED_IS_LIVE
+        defaultEventDetailsShouldBeFound("isLive.in=" + DEFAULT_IS_LIVE + "," + UPDATED_IS_LIVE);
+
+        // Get all the eventDetailsList where isLive equals to UPDATED_IS_LIVE
+        defaultEventDetailsShouldNotBeFound("isLive.in=" + UPDATED_IS_LIVE);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventDetailsByIsLiveIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventDetailsRepository.saveAndFlush(eventDetails);
+
+        // Get all the eventDetailsList where isLive is not null
+        defaultEventDetailsShouldBeFound("isLive.specified=true");
+
+        // Get all the eventDetailsList where isLive is null
+        defaultEventDetailsShouldNotBeFound("isLive.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllEventDetailsByCreatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         eventDetailsRepository.saveAndFlush(eventDetails);
@@ -1780,7 +1936,7 @@ class EventDetailsResourceIT {
         defaultEventDetailsShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
     }
 
-   /* @Test
+    /*@Test
     @Transactional
     void getAllEventDetailsByCreatedByIsEqualToSomething() throws Exception {
         UserProfile createdBy;
@@ -1824,6 +1980,28 @@ class EventDetailsResourceIT {
         defaultEventDetailsShouldNotBeFound("eventTypeId.equals=" + (eventTypeId + 1));
     }
 
+    @Test
+    @Transactional
+    void getAllEventDetailsByDiscountCodesIsEqualToSomething() throws Exception {
+        DiscountCode discountCodes;
+        if (TestUtil.findAll(em, DiscountCode.class).isEmpty()) {
+            eventDetailsRepository.saveAndFlush(eventDetails);
+            discountCodes = DiscountCodeResourceIT.createEntity(em);
+        } else {
+            discountCodes = TestUtil.findAll(em, DiscountCode.class).get(0);
+        }
+        em.persist(discountCodes);
+        em.flush();
+        eventDetails.addDiscountCodes(discountCodes);
+        eventDetailsRepository.saveAndFlush(eventDetails);
+        Long discountCodesId = discountCodes.getId();
+        // Get all the eventDetailsList where discountCodes equals to discountCodesId
+        defaultEventDetailsShouldBeFound("discountCodesId.equals=" + discountCodesId);
+
+        // Get all the eventDetailsList where discountCodes equals to (discountCodesId + 1)
+        defaultEventDetailsShouldNotBeFound("discountCodesId.equals=" + (discountCodesId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1850,6 +2028,9 @@ class EventDetailsResourceIT {
             .andExpect(jsonPath("$.[*].allowGuests").value(hasItem(DEFAULT_ALLOW_GUESTS.booleanValue())))
             .andExpect(jsonPath("$.[*].requireGuestApproval").value(hasItem(DEFAULT_REQUIRE_GUEST_APPROVAL.booleanValue())))
             .andExpect(jsonPath("$.[*].enableGuestPricing").value(hasItem(DEFAULT_ENABLE_GUEST_PRICING.booleanValue())))
+            .andExpect(jsonPath("$.[*].isRegistrationRequired").value(hasItem(DEFAULT_IS_REGISTRATION_REQUIRED.booleanValue())))
+            .andExpect(jsonPath("$.[*].isSportsEvent").value(hasItem(DEFAULT_IS_SPORTS_EVENT.booleanValue())))
+            .andExpect(jsonPath("$.[*].isLive").value(hasItem(DEFAULT_IS_LIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
 
@@ -1917,6 +2098,9 @@ class EventDetailsResourceIT {
             .allowGuests(UPDATED_ALLOW_GUESTS)
             .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
             .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
+            .isRegistrationRequired(UPDATED_IS_REGISTRATION_REQUIRED)
+            .isSportsEvent(UPDATED_IS_SPORTS_EVENT)
+            .isLive(UPDATED_IS_LIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         EventDetailsDTO eventDetailsDTO = eventDetailsMapper.toDto(updatedEventDetails);
@@ -1950,6 +2134,9 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getAllowGuests()).isEqualTo(UPDATED_ALLOW_GUESTS);
         assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
         assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(UPDATED_ENABLE_GUEST_PRICING);
+        assertThat(testEventDetails.getIsRegistrationRequired()).isEqualTo(UPDATED_IS_REGISTRATION_REQUIRED);
+        assertThat(testEventDetails.getIsSportsEvent()).isEqualTo(UPDATED_IS_SPORTS_EVENT);
+        assertThat(testEventDetails.getIsLive()).isEqualTo(UPDATED_IS_LIVE);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -2034,18 +2221,17 @@ class EventDetailsResourceIT {
         partialUpdatedEventDetails.setId(eventDetails.getId());
 
         partialUpdatedEventDetails
-            .tenantId(UPDATED_TENANT_ID)
+            .title(UPDATED_TITLE)
             .caption(UPDATED_CAPTION)
-            .description(UPDATED_DESCRIPTION)
+            .startDate(UPDATED_START_DATE)
             .endDate(UPDATED_END_DATE)
-            .endTime(UPDATED_END_TIME)
-            .directionsToVenue(UPDATED_DIRECTIONS_TO_VENUE)
-            .capacity(UPDATED_CAPACITY)
-            .admissionType(UPDATED_ADMISSION_TYPE)
+            .startTime(UPDATED_START_TIME)
             .isActive(UPDATED_IS_ACTIVE)
-            .maxGuestsPerAttendee(UPDATED_MAX_GUESTS_PER_ATTENDEE)
-            .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
-            .createdAt(UPDATED_CREATED_AT);
+            .allowGuests(UPDATED_ALLOW_GUESTS)
+            .isSportsEvent(UPDATED_IS_SPORTS_EVENT)
+            .isLive(UPDATED_IS_LIVE)
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
 
         restEventDetailsMockMvc
             .perform(
@@ -2059,25 +2245,28 @@ class EventDetailsResourceIT {
         List<EventDetails> eventDetailsList = eventDetailsRepository.findAll();
         assertThat(eventDetailsList).hasSize(databaseSizeBeforeUpdate);
         EventDetails testEventDetails = eventDetailsList.get(eventDetailsList.size() - 1);
-        assertThat(testEventDetails.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
-        assertThat(testEventDetails.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testEventDetails.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
+        assertThat(testEventDetails.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testEventDetails.getCaption()).isEqualTo(UPDATED_CAPTION);
-        assertThat(testEventDetails.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testEventDetails.getStartDate()).isEqualTo(DEFAULT_START_DATE);
+        assertThat(testEventDetails.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testEventDetails.getStartDate()).isEqualTo(UPDATED_START_DATE);
         assertThat(testEventDetails.getEndDate()).isEqualTo(UPDATED_END_DATE);
-        assertThat(testEventDetails.getStartTime()).isEqualTo(DEFAULT_START_TIME);
-        assertThat(testEventDetails.getEndTime()).isEqualTo(UPDATED_END_TIME);
+        assertThat(testEventDetails.getStartTime()).isEqualTo(UPDATED_START_TIME);
+        assertThat(testEventDetails.getEndTime()).isEqualTo(DEFAULT_END_TIME);
         assertThat(testEventDetails.getLocation()).isEqualTo(DEFAULT_LOCATION);
-        assertThat(testEventDetails.getDirectionsToVenue()).isEqualTo(UPDATED_DIRECTIONS_TO_VENUE);
-        assertThat(testEventDetails.getCapacity()).isEqualTo(UPDATED_CAPACITY);
-        assertThat(testEventDetails.getAdmissionType()).isEqualTo(UPDATED_ADMISSION_TYPE);
+        assertThat(testEventDetails.getDirectionsToVenue()).isEqualTo(DEFAULT_DIRECTIONS_TO_VENUE);
+        assertThat(testEventDetails.getCapacity()).isEqualTo(DEFAULT_CAPACITY);
+        assertThat(testEventDetails.getAdmissionType()).isEqualTo(DEFAULT_ADMISSION_TYPE);
         assertThat(testEventDetails.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
-        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(UPDATED_MAX_GUESTS_PER_ATTENDEE);
-        assertThat(testEventDetails.getAllowGuests()).isEqualTo(DEFAULT_ALLOW_GUESTS);
-        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
+        assertThat(testEventDetails.getMaxGuestsPerAttendee()).isEqualTo(DEFAULT_MAX_GUESTS_PER_ATTENDEE);
+        assertThat(testEventDetails.getAllowGuests()).isEqualTo(UPDATED_ALLOW_GUESTS);
+        assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(DEFAULT_REQUIRE_GUEST_APPROVAL);
         assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(DEFAULT_ENABLE_GUEST_PRICING);
+        assertThat(testEventDetails.getIsRegistrationRequired()).isEqualTo(DEFAULT_IS_REGISTRATION_REQUIRED);
+        assertThat(testEventDetails.getIsSportsEvent()).isEqualTo(UPDATED_IS_SPORTS_EVENT);
+        assertThat(testEventDetails.getIsLive()).isEqualTo(UPDATED_IS_LIVE);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testEventDetails.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
 
     @Test
@@ -2110,6 +2299,9 @@ class EventDetailsResourceIT {
             .allowGuests(UPDATED_ALLOW_GUESTS)
             .requireGuestApproval(UPDATED_REQUIRE_GUEST_APPROVAL)
             .enableGuestPricing(UPDATED_ENABLE_GUEST_PRICING)
+            .isRegistrationRequired(UPDATED_IS_REGISTRATION_REQUIRED)
+            .isSportsEvent(UPDATED_IS_SPORTS_EVENT)
+            .isLive(UPDATED_IS_LIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
 
@@ -2142,6 +2334,9 @@ class EventDetailsResourceIT {
         assertThat(testEventDetails.getAllowGuests()).isEqualTo(UPDATED_ALLOW_GUESTS);
         assertThat(testEventDetails.getRequireGuestApproval()).isEqualTo(UPDATED_REQUIRE_GUEST_APPROVAL);
         assertThat(testEventDetails.getEnableGuestPricing()).isEqualTo(UPDATED_ENABLE_GUEST_PRICING);
+        assertThat(testEventDetails.getIsRegistrationRequired()).isEqualTo(UPDATED_IS_REGISTRATION_REQUIRED);
+        assertThat(testEventDetails.getIsSportsEvent()).isEqualTo(UPDATED_IS_SPORTS_EVENT);
+        assertThat(testEventDetails.getIsLive()).isEqualTo(UPDATED_IS_LIVE);
         assertThat(testEventDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventDetails.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

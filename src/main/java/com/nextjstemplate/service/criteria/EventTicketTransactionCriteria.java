@@ -41,6 +41,10 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter purchaseDate;
 
+    private LongFilter discountCodeId;
+
+    private BigDecimalFilter discountAmount;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -66,6 +70,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.totalAmount = other.totalAmount == null ? null : other.totalAmount.copy();
         this.status = other.status == null ? null : other.status.copy();
         this.purchaseDate = other.purchaseDate == null ? null : other.purchaseDate.copy();
+        this.discountCodeId = other.discountCodeId == null ? null : other.discountCodeId.copy();
+        this.discountAmount = other.discountAmount == null ? null : other.discountAmount.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
@@ -229,6 +235,36 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.purchaseDate = purchaseDate;
     }
 
+    public LongFilter getDiscountCodeId() {
+        return discountCodeId;
+    }
+
+    public LongFilter discountCodeId() {
+        if (discountCodeId == null) {
+            discountCodeId = new LongFilter();
+        }
+        return discountCodeId;
+    }
+
+    public void setDiscountCodeId(LongFilter discountCodeId) {
+        this.discountCodeId = discountCodeId;
+    }
+
+    public BigDecimalFilter getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public BigDecimalFilter discountAmount() {
+        if (discountAmount == null) {
+            discountAmount = new BigDecimalFilter();
+        }
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimalFilter discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -332,6 +368,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(totalAmount, that.totalAmount) &&
             Objects.equals(status, that.status) &&
             Objects.equals(purchaseDate, that.purchaseDate) &&
+            Objects.equals(discountCodeId, that.discountCodeId) &&
+            Objects.equals(discountAmount, that.discountAmount) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
@@ -354,6 +392,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             totalAmount,
             status,
             purchaseDate,
+            discountCodeId,
+            discountAmount,
             createdAt,
             updatedAt,
             eventId,
@@ -377,6 +417,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (totalAmount != null ? "totalAmount=" + totalAmount + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
             (purchaseDate != null ? "purchaseDate=" + purchaseDate + ", " : "") +
+            (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
+            (discountAmount != null ? "discountAmount=" + discountAmount + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +

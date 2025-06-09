@@ -776,7 +776,7 @@ class EventCalendarEntryResourceIT {
         defaultEventCalendarEntryShouldNotBeFound("eventId.equals=" + (eventId + 1));
     }
 
-   /* @Test
+    /*@Test
     @Transactional
     void getAllEventCalendarEntriesByCreatedByIsEqualToSomething() throws Exception {
         UserProfile createdBy;

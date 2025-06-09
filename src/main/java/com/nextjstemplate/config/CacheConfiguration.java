@@ -67,6 +67,13 @@ public class CacheConfiguration {
             createCache(cm, com.nextjstemplate.domain.EventAttendeeGuest.class.getName());
             createCache(cm, com.nextjstemplate.domain.EventGuestPricing.class.getName());
             createCache(cm, com.nextjstemplate.domain.EventOrganizer.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventDetails.class.getName() + ".discountCodes");
+            createCache(cm, com.nextjstemplate.domain.DiscountCode.class.getName());
+            createCache(cm, com.nextjstemplate.domain.DiscountCode.class.getName() + ".events");
+            createCache(cm, com.nextjstemplate.domain.EventScoreCard.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventScoreCardDetail.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventLiveUpdate.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventLiveUpdateAttachment.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

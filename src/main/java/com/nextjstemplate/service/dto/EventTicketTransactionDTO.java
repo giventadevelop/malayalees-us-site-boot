@@ -43,6 +43,10 @@ public class EventTicketTransactionDTO implements Serializable {
     @NotNull
     private ZonedDateTime purchaseDate;
 
+    private Long discountCodeId;
+
+    private BigDecimal discountAmount;
+
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -135,6 +139,22 @@ public class EventTicketTransactionDTO implements Serializable {
         this.purchaseDate = purchaseDate;
     }
 
+    public Long getDiscountCodeId() {
+        return discountCodeId;
+    }
+
+    public void setDiscountCodeId(Long discountCodeId) {
+        this.discountCodeId = discountCodeId;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -210,6 +230,8 @@ public class EventTicketTransactionDTO implements Serializable {
             ", totalAmount=" + getTotalAmount() +
             ", status='" + getStatus() + "'" +
             ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", discountCodeId=" + getDiscountCodeId() +
+            ", discountAmount=" + getDiscountAmount() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", event=" + getEvent() +

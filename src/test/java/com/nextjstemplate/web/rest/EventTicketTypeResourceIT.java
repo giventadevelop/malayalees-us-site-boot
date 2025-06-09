@@ -59,6 +59,10 @@ class EventTicketTypeResourceIT {
     private static final Integer UPDATED_AVAILABLE_QUANTITY = 2;
     private static final Integer SMALLER_AVAILABLE_QUANTITY = 1 - 1;
 
+    private static final Integer DEFAULT_SOLD_QUANTITY = 1;
+    private static final Integer UPDATED_SOLD_QUANTITY = 2;
+    private static final Integer SMALLER_SOLD_QUANTITY = 1 - 1;
+
     private static final Boolean DEFAULT_IS_ACTIVE = false;
     private static final Boolean UPDATED_IS_ACTIVE = true;
 
@@ -104,6 +108,7 @@ class EventTicketTypeResourceIT {
             .price(DEFAULT_PRICE)
             .code(DEFAULT_CODE)
             .availableQuantity(DEFAULT_AVAILABLE_QUANTITY)
+            .soldQuantity(DEFAULT_SOLD_QUANTITY)
             .isActive(DEFAULT_IS_ACTIVE)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
@@ -124,6 +129,7 @@ class EventTicketTypeResourceIT {
             .price(UPDATED_PRICE)
             .code(UPDATED_CODE)
             .availableQuantity(UPDATED_AVAILABLE_QUANTITY)
+            .soldQuantity(UPDATED_SOLD_QUANTITY)
             .isActive(UPDATED_IS_ACTIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
@@ -157,6 +163,7 @@ class EventTicketTypeResourceIT {
         assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(DEFAULT_PRICE);
         assertThat(testEventTicketType.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(DEFAULT_AVAILABLE_QUANTITY);
+        assertThat(testEventTicketType.getSoldQuantity()).isEqualTo(DEFAULT_SOLD_QUANTITY);
         assertThat(testEventTicketType.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
         assertThat(testEventTicketType.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
@@ -301,6 +308,7 @@ class EventTicketTypeResourceIT {
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].availableQuantity").value(hasItem(DEFAULT_AVAILABLE_QUANTITY)))
+            .andExpect(jsonPath("$.[*].soldQuantity").value(hasItem(DEFAULT_SOLD_QUANTITY)))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
@@ -324,6 +332,7 @@ class EventTicketTypeResourceIT {
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.availableQuantity").value(DEFAULT_AVAILABLE_QUANTITY))
+            .andExpect(jsonPath("$.soldQuantity").value(DEFAULT_SOLD_QUANTITY))
             .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
@@ -791,6 +800,97 @@ class EventTicketTypeResourceIT {
 
     @Test
     @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity equals to DEFAULT_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.equals=" + DEFAULT_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity equals to UPDATED_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.equals=" + UPDATED_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity in DEFAULT_SOLD_QUANTITY or UPDATED_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.in=" + DEFAULT_SOLD_QUANTITY + "," + UPDATED_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity equals to UPDATED_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.in=" + UPDATED_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity is not null
+        defaultEventTicketTypeShouldBeFound("soldQuantity.specified=true");
+
+        // Get all the eventTicketTypeList where soldQuantity is null
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity is greater than or equal to DEFAULT_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.greaterThanOrEqual=" + DEFAULT_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity is greater than or equal to UPDATED_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.greaterThanOrEqual=" + UPDATED_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity is less than or equal to DEFAULT_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.lessThanOrEqual=" + DEFAULT_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity is less than or equal to SMALLER_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.lessThanOrEqual=" + SMALLER_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity is less than DEFAULT_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.lessThan=" + DEFAULT_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity is less than UPDATED_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.lessThan=" + UPDATED_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTypesBySoldQuantityIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTypeRepository.saveAndFlush(eventTicketType);
+
+        // Get all the eventTicketTypeList where soldQuantity is greater than DEFAULT_SOLD_QUANTITY
+        defaultEventTicketTypeShouldNotBeFound("soldQuantity.greaterThan=" + DEFAULT_SOLD_QUANTITY);
+
+        // Get all the eventTicketTypeList where soldQuantity is greater than SMALLER_SOLD_QUANTITY
+        defaultEventTicketTypeShouldBeFound("soldQuantity.greaterThan=" + SMALLER_SOLD_QUANTITY);
+    }
+
+    @Test
+    @Transactional
     void getAllEventTicketTypesByIsActiveIsEqualToSomething() throws Exception {
         // Initialize the database
         eventTicketTypeRepository.saveAndFlush(eventTicketType);
@@ -1047,6 +1147,7 @@ class EventTicketTypeResourceIT {
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].availableQuantity").value(hasItem(DEFAULT_AVAILABLE_QUANTITY)))
+            .andExpect(jsonPath("$.[*].soldQuantity").value(hasItem(DEFAULT_SOLD_QUANTITY)))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
@@ -1104,6 +1205,7 @@ class EventTicketTypeResourceIT {
             .price(UPDATED_PRICE)
             .code(UPDATED_CODE)
             .availableQuantity(UPDATED_AVAILABLE_QUANTITY)
+            .soldQuantity(UPDATED_SOLD_QUANTITY)
             .isActive(UPDATED_IS_ACTIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
@@ -1127,6 +1229,7 @@ class EventTicketTypeResourceIT {
         assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
         assertThat(testEventTicketType.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(UPDATED_AVAILABLE_QUANTITY);
+        assertThat(testEventTicketType.getSoldQuantity()).isEqualTo(UPDATED_SOLD_QUANTITY);
         assertThat(testEventTicketType.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
         assertThat(testEventTicketType.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
@@ -1211,7 +1314,7 @@ class EventTicketTypeResourceIT {
         EventTicketType partialUpdatedEventTicketType = new EventTicketType();
         partialUpdatedEventTicketType.setId(eventTicketType.getId());
 
-        partialUpdatedEventTicketType.price(UPDATED_PRICE).code(UPDATED_CODE).isActive(UPDATED_IS_ACTIVE);
+        partialUpdatedEventTicketType.tenantId(UPDATED_TENANT_ID).name(UPDATED_NAME).price(UPDATED_PRICE).isActive(UPDATED_IS_ACTIVE);
 
         restEventTicketTypeMockMvc
             .perform(
@@ -1225,12 +1328,13 @@ class EventTicketTypeResourceIT {
         List<EventTicketType> eventTicketTypeList = eventTicketTypeRepository.findAll();
         assertThat(eventTicketTypeList).hasSize(databaseSizeBeforeUpdate);
         EventTicketType testEventTicketType = eventTicketTypeList.get(eventTicketTypeList.size() - 1);
-        assertThat(testEventTicketType.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventTicketType.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testEventTicketType.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testEventTicketType.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testEventTicketType.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
-        assertThat(testEventTicketType.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testEventTicketType.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(DEFAULT_AVAILABLE_QUANTITY);
+        assertThat(testEventTicketType.getSoldQuantity()).isEqualTo(DEFAULT_SOLD_QUANTITY);
         assertThat(testEventTicketType.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
         assertThat(testEventTicketType.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
@@ -1255,6 +1359,7 @@ class EventTicketTypeResourceIT {
             .price(UPDATED_PRICE)
             .code(UPDATED_CODE)
             .availableQuantity(UPDATED_AVAILABLE_QUANTITY)
+            .soldQuantity(UPDATED_SOLD_QUANTITY)
             .isActive(UPDATED_IS_ACTIVE)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
@@ -1277,6 +1382,7 @@ class EventTicketTypeResourceIT {
         assertThat(testEventTicketType.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
         assertThat(testEventTicketType.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testEventTicketType.getAvailableQuantity()).isEqualTo(UPDATED_AVAILABLE_QUANTITY);
+        assertThat(testEventTicketType.getSoldQuantity()).isEqualTo(UPDATED_SOLD_QUANTITY);
         assertThat(testEventTicketType.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
         assertThat(testEventTicketType.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventTicketType.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);

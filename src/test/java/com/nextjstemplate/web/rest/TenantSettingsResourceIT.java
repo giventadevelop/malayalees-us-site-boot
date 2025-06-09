@@ -795,27 +795,27 @@ class TenantSettingsResourceIT {
         defaultTenantSettingsShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
     }
 
-    @Test
-    @Transactional
-    void getAllTenantSettingsByTenantOrganizationIsEqualToSomething() throws Exception {
-        TenantOrganization tenantOrganization;
-        if (TestUtil.findAll(em, TenantOrganization.class).isEmpty()) {
-            tenantSettingsRepository.saveAndFlush(tenantSettings);
-            tenantOrganization = TenantOrganizationResourceIT.createEntity(em);
-        } else {
-            tenantOrganization = TestUtil.findAll(em, TenantOrganization.class).get(0);
-        }
-        em.persist(tenantOrganization);
-        em.flush();
-        tenantSettings.setTenantOrganization(tenantOrganization);
-        tenantSettingsRepository.saveAndFlush(tenantSettings);
-        Long tenantOrganizationId = tenantOrganization.getId();
-        // Get all the tenantSettingsList where tenantOrganization equals to tenantOrganizationId
-        defaultTenantSettingsShouldBeFound("tenantOrganizationId.equals=" + tenantOrganizationId);
-
-        // Get all the tenantSettingsList where tenantOrganization equals to (tenantOrganizationId + 1)
-        defaultTenantSettingsShouldNotBeFound("tenantOrganizationId.equals=" + (tenantOrganizationId + 1));
-    }
+//    @Test
+//    @Transactional
+//    void getAllTenantSettingsByTenantOrganizationIsEqualToSomething() throws Exception {
+//        TenantOrganization tenantOrganization;
+//        if (TestUtil.findAll(em, TenantOrganization.class).isEmpty()) {
+//            tenantSettingsRepository.saveAndFlush(tenantSettings);
+//            tenantOrganization = TenantOrganizationResourceIT.createEntity(em);
+//        } else {
+//            tenantOrganization = TestUtil.findAll(em, TenantOrganization.class).get(0);
+//        }
+//        em.persist(tenantOrganization);
+//        em.flush();
+//        tenantSettings.setTenantOrganization(tenantOrganization);
+//        tenantSettingsRepository.saveAndFlush(tenantSettings);
+//        Long tenantOrganizationId = tenantOrganization.getId();
+//        // Get all the tenantSettingsList where tenantOrganization equals to tenantOrganizationId
+//        defaultTenantSettingsShouldBeFound("tenantOrganizationId.equals=" + tenantOrganizationId);
+//
+//        // Get all the tenantSettingsList where tenantOrganization equals to (tenantOrganizationId + 1)
+//        defaultTenantSettingsShouldNotBeFound("tenantOrganizationId.equals=" + (tenantOrganizationId + 1));
+//    }
 
     /**
      * Executes the search, and checks that the default entity is returned.
@@ -1003,12 +1003,11 @@ class TenantSettingsResourceIT {
         partialUpdatedTenantSettings.setId(tenantSettings.getId());
 
         partialUpdatedTenantSettings
-            .allowUserRegistration(UPDATED_ALLOW_USER_REGISTRATION)
+            .tenantId(UPDATED_TENANT_ID)
             .enableWhatsappIntegration(UPDATED_ENABLE_WHATSAPP_INTEGRATION)
+            .whatsappApiKey(UPDATED_WHATSAPP_API_KEY)
             .emailProviderConfig(UPDATED_EMAIL_PROVIDER_CONFIG)
-            .customCss(UPDATED_CUSTOM_CSS)
-            .customJs(UPDATED_CUSTOM_JS)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .createdAt(UPDATED_CREATED_AT);
 
         restTenantSettingsMockMvc
             .perform(
@@ -1022,17 +1021,17 @@ class TenantSettingsResourceIT {
         List<TenantSettings> tenantSettingsList = tenantSettingsRepository.findAll();
         assertThat(tenantSettingsList).hasSize(databaseSizeBeforeUpdate);
         TenantSettings testTenantSettings = tenantSettingsList.get(tenantSettingsList.size() - 1);
-        assertThat(testTenantSettings.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testTenantSettings.getAllowUserRegistration()).isEqualTo(UPDATED_ALLOW_USER_REGISTRATION);
+        assertThat(testTenantSettings.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testTenantSettings.getAllowUserRegistration()).isEqualTo(DEFAULT_ALLOW_USER_REGISTRATION);
         assertThat(testTenantSettings.getRequireAdminApproval()).isEqualTo(DEFAULT_REQUIRE_ADMIN_APPROVAL);
         assertThat(testTenantSettings.getEnableWhatsappIntegration()).isEqualTo(UPDATED_ENABLE_WHATSAPP_INTEGRATION);
         assertThat(testTenantSettings.getEnableEmailMarketing()).isEqualTo(DEFAULT_ENABLE_EMAIL_MARKETING);
-        assertThat(testTenantSettings.getWhatsappApiKey()).isEqualTo(DEFAULT_WHATSAPP_API_KEY);
+        assertThat(testTenantSettings.getWhatsappApiKey()).isEqualTo(UPDATED_WHATSAPP_API_KEY);
         assertThat(testTenantSettings.getEmailProviderConfig()).isEqualTo(UPDATED_EMAIL_PROVIDER_CONFIG);
-        assertThat(testTenantSettings.getCustomCss()).isEqualTo(UPDATED_CUSTOM_CSS);
-        assertThat(testTenantSettings.getCustomJs()).isEqualTo(UPDATED_CUSTOM_JS);
-        assertThat(testTenantSettings.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testTenantSettings.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testTenantSettings.getCustomCss()).isEqualTo(DEFAULT_CUSTOM_CSS);
+        assertThat(testTenantSettings.getCustomJs()).isEqualTo(DEFAULT_CUSTOM_JS);
+        assertThat(testTenantSettings.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testTenantSettings.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test

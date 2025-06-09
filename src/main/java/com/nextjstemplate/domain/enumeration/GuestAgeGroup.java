@@ -1,8 +1,8 @@
 package com.nextjstemplate.domain.enumeration;
 
 /**
- * Event Guest Management JDL Model
- * Enhanced entities for sophisticated guest management with age-based pricing
+ * TenantOrganization and TenantSettings JDL Entities
+ * Generated from Java domain classes
  */
 public enum GuestAgeGroup {
     ADULT,

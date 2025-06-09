@@ -66,7 +66,7 @@ public class EventTicketType implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

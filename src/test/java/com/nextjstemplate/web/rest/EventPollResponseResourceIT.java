@@ -609,7 +609,7 @@ class EventPollResponseResourceIT {
         defaultEventPollResponseShouldNotBeFound("pollOptionId.equals=" + (pollOptionId + 1));
     }
 
-    /*@Test
+   /* @Test
     @Transactional
     void getAllEventPollResponsesByUserIsEqualToSomething() throws Exception {
         UserProfile user;
@@ -795,11 +795,7 @@ class EventPollResponseResourceIT {
         EventPollResponse partialUpdatedEventPollResponse = new EventPollResponse();
         partialUpdatedEventPollResponse.setId(eventPollResponse.getId());
 
-        partialUpdatedEventPollResponse
-            .tenantId(UPDATED_TENANT_ID)
-            .comment(UPDATED_COMMENT)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+        partialUpdatedEventPollResponse.createdAt(UPDATED_CREATED_AT);
 
         restEventPollResponseMockMvc
             .perform(
@@ -813,10 +809,10 @@ class EventPollResponseResourceIT {
         List<EventPollResponse> eventPollResponseList = eventPollResponseRepository.findAll();
         assertThat(eventPollResponseList).hasSize(databaseSizeBeforeUpdate);
         EventPollResponse testEventPollResponse = eventPollResponseList.get(eventPollResponseList.size() - 1);
-        assertThat(testEventPollResponse.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
-        assertThat(testEventPollResponse.getComment()).isEqualTo(UPDATED_COMMENT);
+        assertThat(testEventPollResponse.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
+        assertThat(testEventPollResponse.getComment()).isEqualTo(DEFAULT_COMMENT);
         assertThat(testEventPollResponse.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testEventPollResponse.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testEventPollResponse.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test

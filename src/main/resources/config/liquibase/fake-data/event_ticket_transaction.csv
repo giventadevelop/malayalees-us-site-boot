@@ -1,11 +1,11 @@
-id;tenant_id;email;first_name;last_name;quantity;price_per_unit;total_amount;status;purchase_date;created_at;updated_at
-1;millisecond;Lila7@gmail.com;Terrell;Legros;32039;16928.34;2391.78;unlike;2025-05-29T18:47:05;2025-05-30T03:50:24;2025-05-30T02:48:41
-2;mouser while dialogue;Jordane.Zulauf43@gmail.com;Ayden;Rolfson;19701;9377.15;31086.39;incidentally after gosh;2025-05-30T00:38:00;2025-05-29T21:49:45;2025-05-30T09:46:54
-3;invent once supposing;Haley70@gmail.com;Maxime;Mante;9951;2217.07;28956.6;for;2025-05-30T05:25:05;2025-05-29T21:46:14;2025-05-30T04:23:48
-4;impede without;Adelia_Schneider19@hotmail.com;Helga;Kovacek;5944;28816.83;15913.01;throughout;2025-05-30T00:21:37;2025-05-30T05:20:30;2025-05-30T01:31:33
-5;youthful outside;Maddison_Durgan@gmail.com;Skye;Ullrich;5541;5775.16;24575.69;access at er;2025-05-30T03:33:47;2025-05-29T23:35:53;2025-05-30T11:11:56
-6;until vulture behind;Dante.Stiedemann@gmail.com;Jacinto;Schimmel;6711;7488.21;27975.27;philosophy expense;2025-05-29T16:40:37;2025-05-29T18:44:16;2025-05-29T22:16:36
-7;draw whereas when;Lloyd43@yahoo.com;Albertha;Anderson;8622;11935.07;30159.73;likewise triumphantly;2025-05-30T08:19:09;2025-05-29T16:52:34;2025-05-30T07:52:26
-8;above;Velva11@yahoo.com;Broderick;Kris;4769;19760.47;11785.24;upwardly yet unless;2025-05-30T11:19:20;2025-05-30T07:20:06;2025-05-29T17:59:05
-9;unless whoever;Irving_Green17@gmail.com;Jasen;Grimes;10344;7640.21;16887.8;ew brr;2025-05-29T16:58:27;2025-05-30T06:42:28;2025-05-29T16:53:38
-10;gah never back;Queen_Corwin90@gmail.com;Kayleigh;Konopelski-O'Keefe;11015;4592.2;30005.72;than always;2025-05-29T17:46:26;2025-05-30T02:39:32;2025-05-29T21:39:28
+id;tenant_id;email;first_name;last_name;quantity;price_per_unit;total_amount;status;purchase_date;discount_code_id;discount_amount;created_at;updated_at
+1;millisecond;Lila7@gmail.com;Terrell;Legros;32039;16928.34;2391.78;unlike;2025-05-29T18:47:05;13931;15335.34;2025-05-29T17:21:53;2025-05-29T19:03:50
+2;barring cesspool dampen;Zula.Simonis@gmail.com;Raymond;Mills;9377;31086.39;23478.07;ha erosion;2025-05-30T07:05:02;11457;17814.04;2025-05-30T04:37:34;2025-05-30T07:49:07
+3;what round next;Vicente.Fadel@yahoo.com;Raymond;Hamill;22970;22868.13;20253.88;aha aha;2025-05-30T02:58:51;16012;26095.94;2025-05-29T14:38:34;2025-05-30T08:16:39
+4;curiously song swing;Jeanette79@yahoo.com;Lester;Shanahan;18682;11880.83;17090.3;youthful outside;2025-05-29T22:21:24;12451;6856.25;2025-05-30T06:29:48;2025-05-29T22:44:47
+5;unless access;Dashawn32@hotmail.com;Darren;Kshlerin;9759;12451.8;27525.04;secretariat;2025-05-29T19:34:27;3290;24394.06;2025-05-29T18:11:47;2025-05-29T16:25:25
+6;procreate;Moises28@hotmail.com;Dante;Stiedemann;9663;16134.2;5420.27;like square;2025-05-30T11:00:42;18285;1031.56;2025-05-30T09:10:08;2025-05-29T16:35:49
+7;loyally;Lexie.McCullough@gmail.com;Gerardo;Casper;25044;26613.99;21273.98;er abaft hmph;2025-05-30T12:30:33;11500;2070.97;2025-05-30T04:00:03;2025-05-30T11:10:36
+8;underneath ick;Dorothea_Wilkinson@gmail.com;Destinee;Conn;18664;15668.4;4769.26;whoa clearly;2025-05-29T19:42:10;32164;21685.38;2025-05-29T23:40:07;2025-05-29T21:08:37
+9;lest unless whoever;Irving_Green17@gmail.com;Jasen;Grimes;10344;7640.21;16887.8;ew brr;2025-05-29T16:58:27;10015;28875.64;2025-05-29T14:24:32;2025-05-30T06:51:00
+10;save impossible;Tristian80@yahoo.com;Laurence;Harris;29325;23121.42;29675.51;like than;2025-05-29T19:08:32;4507;13388.62;2025-05-29T23:03:32;2025-05-30T12:30:46

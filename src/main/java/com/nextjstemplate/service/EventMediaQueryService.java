@@ -112,9 +112,6 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                 specification =
                     specification.and(buildStringSpecification(criteria.getFileDataContentType(), EventMedia_.fileDataContentType));
             }
-            if (criteria.getContentType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getContentType(), EventMedia_.contentType));
-            }
             if (criteria.getFileSize() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getFileSize(), EventMedia_.fileSize));
             }

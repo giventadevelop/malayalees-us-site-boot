@@ -10,7 +10,7 @@
         Added the entity EventAttendeeGuest.
     -->
     <changeSet id="20250603051617-1" author="jhipster">
-        <createTable tableName="event_attendee_guest">
+        <createTable tableName="event_attendee_guest" remarks="Event Guest Management JDL Model\nEnhanced entities for sophisticated guest management with age-based pricing">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -20,19 +20,19 @@
             <column name="guest_name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="age_group" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="age_group" type="varchar(20)">
+                <constraints nullable="true" />
             </column>
-            <column name="relationship" type="varchar(255)">
+            <column name="relationship" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="special_requirements" type="varchar(500)">
                 <constraints nullable="true" />
             </column>
-            <column name="registration_status" type="varchar(255)">
+            <column name="registration_status" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
-            <column name="check_in_status" type="varchar(255)">
+            <column name="check_in_status" type="varchar(50)">
                 <constraints nullable="true" />
             </column>
             <column name="check_in_time" type="${datetimeType}">

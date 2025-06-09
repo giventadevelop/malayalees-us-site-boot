@@ -120,7 +120,7 @@ public class EventMediaServiceImpl implements EventMediaService {
         log.info("preSignedUrl length: " + s3Service.generatePresignedUrl(fileUrl, 1).length());
         log.info("preSignedUrl value: " + s3Service.generatePresignedUrl(fileUrl, 1));
         eventMedia.setPreSignedUrl(s3Service.generatePresignedUrl(fileUrl, 1));
-        eventMedia.setContentType(file.getContentType());
+        eventMedia.setFileDataContentType(file.getContentType());
         eventMedia.setFileSize((int) file.getSize());
         eventMedia.setIsPublic(isPublic);
         eventMedia.setCreatedAt(ZonedDateTime.now());

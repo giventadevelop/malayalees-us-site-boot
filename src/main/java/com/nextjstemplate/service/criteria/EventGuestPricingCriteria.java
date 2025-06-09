@@ -1,6 +1,5 @@
 package com.nextjstemplate.service.criteria;
 
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,30 +19,13 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventGuestPricingCriteria implements Serializable, Criteria {
 
-    /**
-     * Class for filtering GuestAgeGroup
-     */
-    public static class GuestAgeGroupFilter extends Filter<GuestAgeGroup> {
-
-        public GuestAgeGroupFilter() {}
-
-        public GuestAgeGroupFilter(GuestAgeGroupFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public GuestAgeGroupFilter copy() {
-            return new GuestAgeGroupFilter(this);
-        }
-    }
-
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
 
     private StringFilter tenantId;
 
-    private GuestAgeGroupFilter ageGroup;
+    private StringFilter ageGroup;
 
     private BigDecimalFilter price;
 
@@ -115,18 +97,18 @@ public class EventGuestPricingCriteria implements Serializable, Criteria {
         this.tenantId = tenantId;
     }
 
-    public GuestAgeGroupFilter getAgeGroup() {
+    public StringFilter getAgeGroup() {
         return ageGroup;
     }
 
-    public GuestAgeGroupFilter ageGroup() {
+    public StringFilter ageGroup() {
         if (ageGroup == null) {
-            ageGroup = new GuestAgeGroupFilter();
+            ageGroup = new StringFilter();
         }
         return ageGroup;
     }
 
-    public void setAgeGroup(GuestAgeGroupFilter ageGroup) {
+    public void setAgeGroup(StringFilter ageGroup) {
         this.ageGroup = ageGroup;
     }
 

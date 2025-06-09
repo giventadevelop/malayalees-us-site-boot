@@ -31,9 +31,8 @@ public class UserPaymentTransaction implements Serializable {
     @Column(name = "tenant_id", length = 255, nullable = false)
     private String tenantId;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "transaction_type", length = 50, nullable = false)
+    @Size(max = 20)
+    @Column(name = "transaction_type", length = 20)
     private String transactionType;
 
     @NotNull
@@ -59,9 +58,8 @@ public class UserPaymentTransaction implements Serializable {
     @Column(name = "tenant_amount", precision = 21, scale = 2)
     private BigDecimal tenantAmount;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "status", length = 50, nullable = false)
+    @Size(max = 20)
+    @Column(name = "status", length = 20)
     private String status;
 
     @NotNull
@@ -73,7 +71,7 @@ public class UserPaymentTransaction implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1123,9 +1123,11 @@ class EventPollResourceIT {
         partialUpdatedEventPoll.setId(eventPoll.getId());
 
         partialUpdatedEventPoll
-            .title(UPDATED_TITLE)
+            .tenantId(UPDATED_TENANT_ID)
             .description(UPDATED_DESCRIPTION)
+            .isActive(UPDATED_IS_ACTIVE)
             .startDate(UPDATED_START_DATE)
+            .endDate(UPDATED_END_DATE)
             .updatedAt(UPDATED_UPDATED_AT);
 
         restEventPollMockMvc
@@ -1140,12 +1142,12 @@ class EventPollResourceIT {
         List<EventPoll> eventPollList = eventPollRepository.findAll();
         assertThat(eventPollList).hasSize(databaseSizeBeforeUpdate);
         EventPoll testEventPoll = eventPollList.get(eventPollList.size() - 1);
-        assertThat(testEventPoll.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventPoll.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testEventPoll.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testEventPoll.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testEventPoll.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testEventPoll.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
+        assertThat(testEventPoll.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
         assertThat(testEventPoll.getStartDate()).isEqualTo(UPDATED_START_DATE);
-        assertThat(testEventPoll.getEndDate()).isEqualTo(DEFAULT_END_DATE);
+        assertThat(testEventPoll.getEndDate()).isEqualTo(UPDATED_END_DATE);
         assertThat(testEventPoll.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventPoll.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

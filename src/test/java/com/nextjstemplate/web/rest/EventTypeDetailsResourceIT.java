@@ -814,7 +814,11 @@ class EventTypeDetailsResourceIT {
         EventTypeDetails partialUpdatedEventTypeDetails = new EventTypeDetails();
         partialUpdatedEventTypeDetails.setId(eventTypeDetails.getId());
 
-        partialUpdatedEventTypeDetails.description(UPDATED_DESCRIPTION);
+        partialUpdatedEventTypeDetails
+            .tenantId(UPDATED_TENANT_ID)
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .createdAt(UPDATED_CREATED_AT);
 
         restEventTypeDetailsMockMvc
             .perform(
@@ -828,10 +832,10 @@ class EventTypeDetailsResourceIT {
         List<EventTypeDetails> eventTypeDetailsList = eventTypeDetailsRepository.findAll();
         assertThat(eventTypeDetailsList).hasSize(databaseSizeBeforeUpdate);
         EventTypeDetails testEventTypeDetails = eventTypeDetailsList.get(eventTypeDetailsList.size() - 1);
-        assertThat(testEventTypeDetails.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventTypeDetails.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testEventTypeDetails.getTenantId()).isEqualTo(UPDATED_TENANT_ID);
+        assertThat(testEventTypeDetails.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testEventTypeDetails.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testEventTypeDetails.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
+        assertThat(testEventTypeDetails.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventTypeDetails.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 

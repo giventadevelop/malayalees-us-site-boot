@@ -1,9 +1,5 @@
 package com.nextjstemplate.service.criteria;
 
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
-import com.nextjstemplate.domain.enumeration.UserEventCheckInStatus;
-import com.nextjstemplate.domain.enumeration.UserEventRegistrationStatus;
-import com.nextjstemplate.domain.enumeration.UserToGuestRelationship;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.core.annotations.ParameterObject;
@@ -23,74 +19,6 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class EventAttendeeGuestCriteria implements Serializable, Criteria {
 
-    /**
-     * Class for filtering GuestAgeGroup
-     */
-    public static class GuestAgeGroupFilter extends Filter<GuestAgeGroup> {
-
-        public GuestAgeGroupFilter() {}
-
-        public GuestAgeGroupFilter(GuestAgeGroupFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public GuestAgeGroupFilter copy() {
-            return new GuestAgeGroupFilter(this);
-        }
-    }
-
-    /**
-     * Class for filtering UserToGuestRelationship
-     */
-    public static class UserToGuestRelationshipFilter extends Filter<UserToGuestRelationship> {
-
-        public UserToGuestRelationshipFilter() {}
-
-        public UserToGuestRelationshipFilter(UserToGuestRelationshipFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public UserToGuestRelationshipFilter copy() {
-            return new UserToGuestRelationshipFilter(this);
-        }
-    }
-
-    /**
-     * Class for filtering UserEventRegistrationStatus
-     */
-    public static class UserEventRegistrationStatusFilter extends Filter<UserEventRegistrationStatus> {
-
-        public UserEventRegistrationStatusFilter() {}
-
-        public UserEventRegistrationStatusFilter(UserEventRegistrationStatusFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public UserEventRegistrationStatusFilter copy() {
-            return new UserEventRegistrationStatusFilter(this);
-        }
-    }
-
-    /**
-     * Class for filtering UserEventCheckInStatus
-     */
-    public static class UserEventCheckInStatusFilter extends Filter<UserEventCheckInStatus> {
-
-        public UserEventCheckInStatusFilter() {}
-
-        public UserEventCheckInStatusFilter(UserEventCheckInStatusFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public UserEventCheckInStatusFilter copy() {
-            return new UserEventCheckInStatusFilter(this);
-        }
-    }
-
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
@@ -99,15 +27,15 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
 
     private StringFilter guestName;
 
-    private GuestAgeGroupFilter ageGroup;
+    private StringFilter ageGroup;
 
-    private UserToGuestRelationshipFilter relationship;
+    private StringFilter relationship;
 
     private StringFilter specialRequirements;
 
-    private UserEventRegistrationStatusFilter registrationStatus;
+    private StringFilter registrationStatus;
 
-    private UserEventCheckInStatusFilter checkInStatus;
+    private StringFilter checkInStatus;
 
     private ZonedDateTimeFilter checkInTime;
 
@@ -187,33 +115,33 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         this.guestName = guestName;
     }
 
-    public GuestAgeGroupFilter getAgeGroup() {
+    public StringFilter getAgeGroup() {
         return ageGroup;
     }
 
-    public GuestAgeGroupFilter ageGroup() {
+    public StringFilter ageGroup() {
         if (ageGroup == null) {
-            ageGroup = new GuestAgeGroupFilter();
+            ageGroup = new StringFilter();
         }
         return ageGroup;
     }
 
-    public void setAgeGroup(GuestAgeGroupFilter ageGroup) {
+    public void setAgeGroup(StringFilter ageGroup) {
         this.ageGroup = ageGroup;
     }
 
-    public UserToGuestRelationshipFilter getRelationship() {
+    public StringFilter getRelationship() {
         return relationship;
     }
 
-    public UserToGuestRelationshipFilter relationship() {
+    public StringFilter relationship() {
         if (relationship == null) {
-            relationship = new UserToGuestRelationshipFilter();
+            relationship = new StringFilter();
         }
         return relationship;
     }
 
-    public void setRelationship(UserToGuestRelationshipFilter relationship) {
+    public void setRelationship(StringFilter relationship) {
         this.relationship = relationship;
     }
 
@@ -232,33 +160,33 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         this.specialRequirements = specialRequirements;
     }
 
-    public UserEventRegistrationStatusFilter getRegistrationStatus() {
+    public StringFilter getRegistrationStatus() {
         return registrationStatus;
     }
 
-    public UserEventRegistrationStatusFilter registrationStatus() {
+    public StringFilter registrationStatus() {
         if (registrationStatus == null) {
-            registrationStatus = new UserEventRegistrationStatusFilter();
+            registrationStatus = new StringFilter();
         }
         return registrationStatus;
     }
 
-    public void setRegistrationStatus(UserEventRegistrationStatusFilter registrationStatus) {
+    public void setRegistrationStatus(StringFilter registrationStatus) {
         this.registrationStatus = registrationStatus;
     }
 
-    public UserEventCheckInStatusFilter getCheckInStatus() {
+    public StringFilter getCheckInStatus() {
         return checkInStatus;
     }
 
-    public UserEventCheckInStatusFilter checkInStatus() {
+    public StringFilter checkInStatus() {
         if (checkInStatus == null) {
-            checkInStatus = new UserEventCheckInStatusFilter();
+            checkInStatus = new StringFilter();
         }
         return checkInStatus;
     }
 
-    public void setCheckInStatus(UserEventCheckInStatusFilter checkInStatus) {
+    public void setCheckInStatus(StringFilter checkInStatus) {
         this.checkInStatus = checkInStatus;
     }
 

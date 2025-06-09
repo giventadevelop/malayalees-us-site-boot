@@ -69,11 +69,15 @@ public class EventDetailsServiceImpl implements EventDetailsService {
         return eventDetailsRepository.findAll(pageable).map(eventDetailsMapper::toDto);
     }
 
+    public Page<EventDetailsDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return eventDetailsRepository.findAllWithEagerRelationships(pageable).map(eventDetailsMapper::toDto);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public Optional<EventDetailsDTO> findOne(Long id) {
         log.debug("Request to get EventDetails : {}", id);
-        return eventDetailsRepository.findById(id).map(eventDetailsMapper::toDto);
+        return eventDetailsRepository.findOneWithEagerRelationships(id).map(eventDetailsMapper::toDto);
     }
 
     @Override

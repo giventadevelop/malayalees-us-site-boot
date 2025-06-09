@@ -18,8 +18,7 @@ public class UserPaymentTransactionDTO implements Serializable {
     @Size(max = 255)
     private String tenantId;
 
-    @NotNull
-    @Size(max = 50)
+    @Size(max = 20)
     private String transactionType;
 
     @NotNull
@@ -39,8 +38,7 @@ public class UserPaymentTransactionDTO implements Serializable {
 
     private BigDecimal tenantAmount;
 
-    @NotNull
-    @Size(max = 50)
+    @Size(max = 20)
     private String status;
 
     @NotNull

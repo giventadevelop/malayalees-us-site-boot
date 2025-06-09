@@ -100,10 +100,10 @@ public class EventAttendeeGuestQueryService extends QueryService<EventAttendeeGu
                 specification = specification.and(buildStringSpecification(criteria.getGuestName(), EventAttendeeGuest_.guestName));
             }
             if (criteria.getAgeGroup() != null) {
-                specification = specification.and(buildSpecification(criteria.getAgeGroup(), EventAttendeeGuest_.ageGroup));
+                specification = specification.and(buildStringSpecification(criteria.getAgeGroup(), EventAttendeeGuest_.ageGroup));
             }
             if (criteria.getRelationship() != null) {
-                specification = specification.and(buildSpecification(criteria.getRelationship(), EventAttendeeGuest_.relationship));
+                specification = specification.and(buildStringSpecification(criteria.getRelationship(), EventAttendeeGuest_.relationship));
             }
             if (criteria.getSpecialRequirements() != null) {
                 specification =
@@ -111,10 +111,10 @@ public class EventAttendeeGuestQueryService extends QueryService<EventAttendeeGu
             }
             if (criteria.getRegistrationStatus() != null) {
                 specification =
-                    specification.and(buildSpecification(criteria.getRegistrationStatus(), EventAttendeeGuest_.registrationStatus));
+                    specification.and(buildStringSpecification(criteria.getRegistrationStatus(), EventAttendeeGuest_.registrationStatus));
             }
             if (criteria.getCheckInStatus() != null) {
-                specification = specification.and(buildSpecification(criteria.getCheckInStatus(), EventAttendeeGuest_.checkInStatus));
+                specification = specification.and(buildStringSpecification(criteria.getCheckInStatus(), EventAttendeeGuest_.checkInStatus));
             }
             if (criteria.getCheckInTime() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCheckInTime(), EventAttendeeGuest_.checkInTime));

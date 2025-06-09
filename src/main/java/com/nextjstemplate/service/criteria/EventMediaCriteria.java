@@ -37,8 +37,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private StringFilter fileDataContentType;
 
-    private StringFilter contentType;
-
     private IntegerFilter fileSize;
 
     private BooleanFilter isPublic;
@@ -70,7 +68,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.storageType = other.storageType == null ? null : other.storageType.copy();
         this.fileUrl = other.fileUrl == null ? null : other.fileUrl.copy();
         this.fileDataContentType = other.fileDataContentType == null ? null : other.fileDataContentType.copy();
-        this.contentType = other.contentType == null ? null : other.contentType.copy();
         this.fileSize = other.fileSize == null ? null : other.fileSize.copy();
         this.isPublic = other.isPublic == null ? null : other.isPublic.copy();
         this.eventFlyer = other.eventFlyer == null ? null : other.eventFlyer.copy();
@@ -207,21 +204,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     public void setFileDataContentType(StringFilter fileDataContentType) {
         this.fileDataContentType = fileDataContentType;
-    }
-
-    public StringFilter getContentType() {
-        return contentType;
-    }
-
-    public StringFilter contentType() {
-        if (contentType == null) {
-            contentType = new StringFilter();
-        }
-        return contentType;
-    }
-
-    public void setContentType(StringFilter contentType) {
-        this.contentType = contentType;
     }
 
     public IntegerFilter getFileSize() {
@@ -385,7 +367,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
             Objects.equals(storageType, that.storageType) &&
             Objects.equals(fileUrl, that.fileUrl) &&
             Objects.equals(fileDataContentType, that.fileDataContentType) &&
-            Objects.equals(contentType, that.contentType) &&
             Objects.equals(fileSize, that.fileSize) &&
             Objects.equals(isPublic, that.isPublic) &&
             Objects.equals(eventFlyer, that.eventFlyer) &&
@@ -410,7 +391,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
             storageType,
             fileUrl,
             fileDataContentType,
-            contentType,
             fileSize,
             isPublic,
             eventFlyer,
@@ -436,7 +416,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
             (storageType != null ? "storageType=" + storageType + ", " : "") +
             (fileUrl != null ? "fileUrl=" + fileUrl + ", " : "") +
             (fileDataContentType != null ? "fileDataContentType=" + fileDataContentType + ", " : "") +
-            (contentType != null ? "contentType=" + contentType + ", " : "") +
             (fileSize != null ? "fileSize=" + fileSize + ", " : "") +
             (isPublic != null ? "isPublic=" + isPublic + ", " : "") +
             (eventFlyer != null ? "eventFlyer=" + eventFlyer + ", " : "") +

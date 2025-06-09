@@ -72,6 +72,14 @@ class EventTicketTransactionResourceIT {
     private static final ZonedDateTime UPDATED_PURCHASE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_PURCHASE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
 
+    private static final Long DEFAULT_DISCOUNT_CODE_ID = 1L;
+    private static final Long UPDATED_DISCOUNT_CODE_ID = 2L;
+    private static final Long SMALLER_DISCOUNT_CODE_ID = 1L - 1L;
+
+    private static final BigDecimal DEFAULT_DISCOUNT_AMOUNT = new BigDecimal(1);
+    private static final BigDecimal UPDATED_DISCOUNT_AMOUNT = new BigDecimal(2);
+    private static final BigDecimal SMALLER_DISCOUNT_AMOUNT = new BigDecimal(1 - 1);
+
     private static final ZonedDateTime DEFAULT_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
     private static final ZonedDateTime SMALLER_CREATED_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(-1L), ZoneOffset.UTC);
@@ -117,6 +125,8 @@ class EventTicketTransactionResourceIT {
             .totalAmount(DEFAULT_TOTAL_AMOUNT)
             .status(DEFAULT_STATUS)
             .purchaseDate(DEFAULT_PURCHASE_DATE)
+            .discountCodeId(DEFAULT_DISCOUNT_CODE_ID)
+            .discountAmount(DEFAULT_DISCOUNT_AMOUNT)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return eventTicketTransaction;
@@ -139,6 +149,8 @@ class EventTicketTransactionResourceIT {
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
+            .discountCodeId(UPDATED_DISCOUNT_CODE_ID)
+            .discountAmount(UPDATED_DISCOUNT_AMOUNT)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return eventTicketTransaction;
@@ -176,6 +188,8 @@ class EventTicketTransactionResourceIT {
         assertThat(testEventTicketTransaction.getTotalAmount()).isEqualByComparingTo(DEFAULT_TOTAL_AMOUNT);
         assertThat(testEventTicketTransaction.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testEventTicketTransaction.getPurchaseDate()).isEqualTo(DEFAULT_PURCHASE_DATE);
+        assertThat(testEventTicketTransaction.getDiscountCodeId()).isEqualTo(DEFAULT_DISCOUNT_CODE_ID);
+        assertThat(testEventTicketTransaction.getDiscountAmount()).isEqualByComparingTo(DEFAULT_DISCOUNT_AMOUNT);
         assertThat(testEventTicketTransaction.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testEventTicketTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -400,6 +414,8 @@ class EventTicketTransactionResourceIT {
             .andExpect(jsonPath("$.[*].totalAmount").value(hasItem(sameNumber(DEFAULT_TOTAL_AMOUNT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(sameInstant(DEFAULT_PURCHASE_DATE))))
+            .andExpect(jsonPath("$.[*].discountCodeId").value(hasItem(DEFAULT_DISCOUNT_CODE_ID.intValue())))
+            .andExpect(jsonPath("$.[*].discountAmount").value(hasItem(sameNumber(DEFAULT_DISCOUNT_AMOUNT))))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
     }
@@ -425,6 +441,8 @@ class EventTicketTransactionResourceIT {
             .andExpect(jsonPath("$.totalAmount").value(sameNumber(DEFAULT_TOTAL_AMOUNT)))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.purchaseDate").value(sameInstant(DEFAULT_PURCHASE_DATE)))
+            .andExpect(jsonPath("$.discountCodeId").value(DEFAULT_DISCOUNT_CODE_ID.intValue()))
+            .andExpect(jsonPath("$.discountAmount").value(sameNumber(DEFAULT_DISCOUNT_AMOUNT)))
             .andExpect(jsonPath("$.createdAt").value(sameInstant(DEFAULT_CREATED_AT)))
             .andExpect(jsonPath("$.updatedAt").value(sameInstant(DEFAULT_UPDATED_AT)));
     }
@@ -1138,6 +1156,188 @@ class EventTicketTransactionResourceIT {
 
     @Test
     @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId equals to DEFAULT_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.equals=" + DEFAULT_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId equals to UPDATED_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.equals=" + UPDATED_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId in DEFAULT_DISCOUNT_CODE_ID or UPDATED_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.in=" + DEFAULT_DISCOUNT_CODE_ID + "," + UPDATED_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId equals to UPDATED_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.in=" + UPDATED_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId is not null
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.specified=true");
+
+        // Get all the eventTicketTransactionList where discountCodeId is null
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId is greater than or equal to DEFAULT_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.greaterThanOrEqual=" + DEFAULT_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId is greater than or equal to UPDATED_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.greaterThanOrEqual=" + UPDATED_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId is less than or equal to DEFAULT_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.lessThanOrEqual=" + DEFAULT_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId is less than or equal to SMALLER_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.lessThanOrEqual=" + SMALLER_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId is less than DEFAULT_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.lessThan=" + DEFAULT_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId is less than UPDATED_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.lessThan=" + UPDATED_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountCodeIdIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountCodeId is greater than DEFAULT_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldNotBeFound("discountCodeId.greaterThan=" + DEFAULT_DISCOUNT_CODE_ID);
+
+        // Get all the eventTicketTransactionList where discountCodeId is greater than SMALLER_DISCOUNT_CODE_ID
+        defaultEventTicketTransactionShouldBeFound("discountCodeId.greaterThan=" + SMALLER_DISCOUNT_CODE_ID);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount equals to DEFAULT_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.equals=" + DEFAULT_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount equals to UPDATED_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.equals=" + UPDATED_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsInShouldWork() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount in DEFAULT_DISCOUNT_AMOUNT or UPDATED_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.in=" + DEFAULT_DISCOUNT_AMOUNT + "," + UPDATED_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount equals to UPDATED_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.in=" + UPDATED_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount is not null
+        defaultEventTicketTransactionShouldBeFound("discountAmount.specified=true");
+
+        // Get all the eventTicketTransactionList where discountAmount is null
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount is greater than or equal to DEFAULT_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.greaterThanOrEqual=" + DEFAULT_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount is greater than or equal to UPDATED_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.greaterThanOrEqual=" + UPDATED_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount is less than or equal to DEFAULT_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.lessThanOrEqual=" + DEFAULT_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount is less than or equal to SMALLER_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.lessThanOrEqual=" + SMALLER_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsLessThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount is less than DEFAULT_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.lessThan=" + DEFAULT_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount is less than UPDATED_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.lessThan=" + UPDATED_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventTicketTransactionsByDiscountAmountIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
+
+        // Get all the eventTicketTransactionList where discountAmount is greater than DEFAULT_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldNotBeFound("discountAmount.greaterThan=" + DEFAULT_DISCOUNT_AMOUNT);
+
+        // Get all the eventTicketTransactionList where discountAmount is greater than SMALLER_DISCOUNT_AMOUNT
+        defaultEventTicketTransactionShouldBeFound("discountAmount.greaterThan=" + SMALLER_DISCOUNT_AMOUNT);
+    }
+
+    @Test
+    @Transactional
     void getAllEventTicketTransactionsByCreatedAtIsEqualToSomething() throws Exception {
         // Initialize the database
         eventTicketTransactionRepository.saveAndFlush(eventTicketTransaction);
@@ -1402,6 +1602,8 @@ class EventTicketTransactionResourceIT {
             .andExpect(jsonPath("$.[*].totalAmount").value(hasItem(sameNumber(DEFAULT_TOTAL_AMOUNT))))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].purchaseDate").value(hasItem(sameInstant(DEFAULT_PURCHASE_DATE))))
+            .andExpect(jsonPath("$.[*].discountCodeId").value(hasItem(DEFAULT_DISCOUNT_CODE_ID.intValue())))
+            .andExpect(jsonPath("$.[*].discountAmount").value(hasItem(sameNumber(DEFAULT_DISCOUNT_AMOUNT))))
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(sameInstant(DEFAULT_CREATED_AT))))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(sameInstant(DEFAULT_UPDATED_AT))));
 
@@ -1463,6 +1665,8 @@ class EventTicketTransactionResourceIT {
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
+            .discountCodeId(UPDATED_DISCOUNT_CODE_ID)
+            .discountAmount(UPDATED_DISCOUNT_AMOUNT)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         EventTicketTransactionDTO eventTicketTransactionDTO = eventTicketTransactionMapper.toDto(updatedEventTicketTransaction);
@@ -1488,6 +1692,8 @@ class EventTicketTransactionResourceIT {
         assertThat(testEventTicketTransaction.getTotalAmount()).isEqualByComparingTo(UPDATED_TOTAL_AMOUNT);
         assertThat(testEventTicketTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testEventTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
+        assertThat(testEventTicketTransaction.getDiscountCodeId()).isEqualTo(UPDATED_DISCOUNT_CODE_ID);
+        assertThat(testEventTicketTransaction.getDiscountAmount()).isEqualByComparingTo(UPDATED_DISCOUNT_AMOUNT);
         assertThat(testEventTicketTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventTicketTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
@@ -1574,9 +1780,11 @@ class EventTicketTransactionResourceIT {
         partialUpdatedEventTicketTransaction.setId(eventTicketTransaction.getId());
 
         partialUpdatedEventTicketTransaction
+            .email(UPDATED_EMAIL)
+            .firstName(UPDATED_FIRST_NAME)
+            .lastName(UPDATED_LAST_NAME)
             .purchaseDate(UPDATED_PURCHASE_DATE)
-            .createdAt(UPDATED_CREATED_AT)
-            .updatedAt(UPDATED_UPDATED_AT);
+            .createdAt(UPDATED_CREATED_AT);
 
         restEventTicketTransactionMockMvc
             .perform(
@@ -1591,16 +1799,18 @@ class EventTicketTransactionResourceIT {
         assertThat(eventTicketTransactionList).hasSize(databaseSizeBeforeUpdate);
         EventTicketTransaction testEventTicketTransaction = eventTicketTransactionList.get(eventTicketTransactionList.size() - 1);
         assertThat(testEventTicketTransaction.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventTicketTransaction.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testEventTicketTransaction.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
-        assertThat(testEventTicketTransaction.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
+        assertThat(testEventTicketTransaction.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testEventTicketTransaction.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
+        assertThat(testEventTicketTransaction.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testEventTicketTransaction.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testEventTicketTransaction.getPricePerUnit()).isEqualByComparingTo(DEFAULT_PRICE_PER_UNIT);
         assertThat(testEventTicketTransaction.getTotalAmount()).isEqualByComparingTo(DEFAULT_TOTAL_AMOUNT);
         assertThat(testEventTicketTransaction.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testEventTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
+        assertThat(testEventTicketTransaction.getDiscountCodeId()).isEqualTo(DEFAULT_DISCOUNT_CODE_ID);
+        assertThat(testEventTicketTransaction.getDiscountAmount()).isEqualByComparingTo(DEFAULT_DISCOUNT_AMOUNT);
         assertThat(testEventTicketTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
-        assertThat(testEventTicketTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
+        assertThat(testEventTicketTransaction.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
 
     @Test
@@ -1625,6 +1835,8 @@ class EventTicketTransactionResourceIT {
             .totalAmount(UPDATED_TOTAL_AMOUNT)
             .status(UPDATED_STATUS)
             .purchaseDate(UPDATED_PURCHASE_DATE)
+            .discountCodeId(UPDATED_DISCOUNT_CODE_ID)
+            .discountAmount(UPDATED_DISCOUNT_AMOUNT)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
 
@@ -1649,6 +1861,8 @@ class EventTicketTransactionResourceIT {
         assertThat(testEventTicketTransaction.getTotalAmount()).isEqualByComparingTo(UPDATED_TOTAL_AMOUNT);
         assertThat(testEventTicketTransaction.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testEventTicketTransaction.getPurchaseDate()).isEqualTo(UPDATED_PURCHASE_DATE);
+        assertThat(testEventTicketTransaction.getDiscountCodeId()).isEqualTo(UPDATED_DISCOUNT_CODE_ID);
+        assertThat(testEventTicketTransaction.getDiscountAmount()).isEqualByComparingTo(UPDATED_DISCOUNT_AMOUNT);
         assertThat(testEventTicketTransaction.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testEventTicketTransaction.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

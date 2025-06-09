@@ -144,6 +144,16 @@ public class EventDetailsQueryService extends QueryService<EventDetails> {
             if (criteria.getEnableGuestPricing() != null) {
                 specification = specification.and(buildSpecification(criteria.getEnableGuestPricing(), EventDetails_.enableGuestPricing));
             }
+            if (criteria.getIsRegistrationRequired() != null) {
+                specification =
+                    specification.and(buildSpecification(criteria.getIsRegistrationRequired(), EventDetails_.isRegistrationRequired));
+            }
+            if (criteria.getIsSportsEvent() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsSportsEvent(), EventDetails_.isSportsEvent));
+            }
+            if (criteria.getIsLive() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsLive(), EventDetails_.isLive));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventDetails_.createdAt));
             }
@@ -165,6 +175,15 @@ public class EventDetailsQueryService extends QueryService<EventDetails> {
                         buildSpecification(
                             criteria.getEventTypeId(),
                             root -> root.join(EventDetails_.eventType, JoinType.LEFT).get(EventTypeDetails_.id)
+                        )
+                    );
+            }
+            if (criteria.getDiscountCodesId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getDiscountCodesId(),
+                            root -> root.join(EventDetails_.discountCodes, JoinType.LEFT).get(DiscountCode_.id)
                         )
                     );
             }

@@ -56,13 +56,8 @@ public class EventMedia implements Serializable {
     @Column(name = "file_data")
     private byte[] fileData;
 
-    @Size(max = 255)
-    @Column(name = "file_data_content_type", length = 255)
+    @Column(name = "file_data_content_type")
     private String fileDataContentType;
-
-    @Size(max = 255)
-    @Column(name = "content_type", length = 255)
-    private String contentType;
 
     @Column(name = "file_size")
     private Integer fileSize;
@@ -89,7 +84,7 @@ public class EventMedia implements Serializable {
     private String preSignedUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -207,25 +202,12 @@ public class EventMedia implements Serializable {
     }
 
     public EventMedia fileDataContentType(String fileDataContentType) {
-        this.setFileDataContentType(fileDataContentType);
+        this.fileDataContentType = fileDataContentType;
         return this;
     }
 
     public void setFileDataContentType(String fileDataContentType) {
         this.fileDataContentType = fileDataContentType;
-    }
-
-    public String getContentType() {
-        return this.contentType;
-    }
-
-    public EventMedia contentType(String contentType) {
-        this.setContentType(contentType);
-        return this;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     public Integer getFileSize() {
@@ -377,8 +359,6 @@ public class EventMedia implements Serializable {
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
             ", fileDataContentType='" + getFileDataContentType() + "'" +
-            ", fileDataContentType='" + getFileDataContentType() + "'" +
-            ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
             ", eventFlyer='" + getEventFlyer() + "'" +

@@ -57,6 +57,12 @@ public class EventDetailsCriteria implements Serializable, Criteria {
 
     private BooleanFilter enableGuestPricing;
 
+    private BooleanFilter isRegistrationRequired;
+
+    private BooleanFilter isSportsEvent;
+
+    private BooleanFilter isLive;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -64,6 +70,8 @@ public class EventDetailsCriteria implements Serializable, Criteria {
     private LongFilter createdById;
 
     private LongFilter eventTypeId;
+
+    private LongFilter discountCodesId;
 
     private Boolean distinct;
 
@@ -88,10 +96,14 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.allowGuests = other.allowGuests == null ? null : other.allowGuests.copy();
         this.requireGuestApproval = other.requireGuestApproval == null ? null : other.requireGuestApproval.copy();
         this.enableGuestPricing = other.enableGuestPricing == null ? null : other.enableGuestPricing.copy();
+        this.isRegistrationRequired = other.isRegistrationRequired == null ? null : other.isRegistrationRequired.copy();
+        this.isSportsEvent = other.isSportsEvent == null ? null : other.isSportsEvent.copy();
+        this.isLive = other.isLive == null ? null : other.isLive.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.createdById = other.createdById == null ? null : other.createdById.copy();
         this.eventTypeId = other.eventTypeId == null ? null : other.eventTypeId.copy();
+        this.discountCodesId = other.discountCodesId == null ? null : other.discountCodesId.copy();
         this.distinct = other.distinct;
     }
 
@@ -370,6 +382,51 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.enableGuestPricing = enableGuestPricing;
     }
 
+    public BooleanFilter getIsRegistrationRequired() {
+        return isRegistrationRequired;
+    }
+
+    public BooleanFilter isRegistrationRequired() {
+        if (isRegistrationRequired == null) {
+            isRegistrationRequired = new BooleanFilter();
+        }
+        return isRegistrationRequired;
+    }
+
+    public void setIsRegistrationRequired(BooleanFilter isRegistrationRequired) {
+        this.isRegistrationRequired = isRegistrationRequired;
+    }
+
+    public BooleanFilter getIsSportsEvent() {
+        return isSportsEvent;
+    }
+
+    public BooleanFilter isSportsEvent() {
+        if (isSportsEvent == null) {
+            isSportsEvent = new BooleanFilter();
+        }
+        return isSportsEvent;
+    }
+
+    public void setIsSportsEvent(BooleanFilter isSportsEvent) {
+        this.isSportsEvent = isSportsEvent;
+    }
+
+    public BooleanFilter getIsLive() {
+        return isLive;
+    }
+
+    public BooleanFilter isLive() {
+        if (isLive == null) {
+            isLive = new BooleanFilter();
+        }
+        return isLive;
+    }
+
+    public void setIsLive(BooleanFilter isLive) {
+        this.isLive = isLive;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -430,6 +487,21 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.eventTypeId = eventTypeId;
     }
 
+    public LongFilter getDiscountCodesId() {
+        return discountCodesId;
+    }
+
+    public LongFilter discountCodesId() {
+        if (discountCodesId == null) {
+            discountCodesId = new LongFilter();
+        }
+        return discountCodesId;
+    }
+
+    public void setDiscountCodesId(LongFilter discountCodesId) {
+        this.discountCodesId = discountCodesId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -466,10 +538,14 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             Objects.equals(allowGuests, that.allowGuests) &&
             Objects.equals(requireGuestApproval, that.requireGuestApproval) &&
             Objects.equals(enableGuestPricing, that.enableGuestPricing) &&
+            Objects.equals(isRegistrationRequired, that.isRegistrationRequired) &&
+            Objects.equals(isSportsEvent, that.isSportsEvent) &&
+            Objects.equals(isLive, that.isLive) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(createdById, that.createdById) &&
             Objects.equals(eventTypeId, that.eventTypeId) &&
+            Objects.equals(discountCodesId, that.discountCodesId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -495,10 +571,14 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             allowGuests,
             requireGuestApproval,
             enableGuestPricing,
+            isRegistrationRequired,
+            isSportsEvent,
+            isLive,
             createdAt,
             updatedAt,
             createdById,
             eventTypeId,
+            discountCodesId,
             distinct
         );
     }
@@ -525,10 +605,14 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             (allowGuests != null ? "allowGuests=" + allowGuests + ", " : "") +
             (requireGuestApproval != null ? "requireGuestApproval=" + requireGuestApproval + ", " : "") +
             (enableGuestPricing != null ? "enableGuestPricing=" + enableGuestPricing + ", " : "") +
+            (isRegistrationRequired != null ? "isRegistrationRequired=" + isRegistrationRequired + ", " : "") +
+            (isSportsEvent != null ? "isSportsEvent=" + isSportsEvent + ", " : "") +
+            (isLive != null ? "isLive=" + isLive + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (createdById != null ? "createdById=" + createdById + ", " : "") +
             (eventTypeId != null ? "eventTypeId=" + eventTypeId + ", " : "") +
+            (discountCodesId != null ? "discountCodesId=" + discountCodesId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

@@ -64,6 +64,12 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "purchase_date", nullable = false)
     private ZonedDateTime purchaseDate;
 
+    @Column(name = "discount_code_id")
+    private Long discountCodeId;
+
+    @Column(name = "discount_amount", precision = 21, scale = 2)
+    private BigDecimal discountAmount;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -73,7 +79,7 @@ public class EventTicketTransaction implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -216,6 +222,32 @@ public class EventTicketTransaction implements Serializable {
         this.purchaseDate = purchaseDate;
     }
 
+    public Long getDiscountCodeId() {
+        return this.discountCodeId;
+    }
+
+    public EventTicketTransaction discountCodeId(Long discountCodeId) {
+        this.setDiscountCodeId(discountCodeId);
+        return this;
+    }
+
+    public void setDiscountCodeId(Long discountCodeId) {
+        this.discountCodeId = discountCodeId;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return this.discountAmount;
+    }
+
+    public EventTicketTransaction discountAmount(BigDecimal discountAmount) {
+        this.setDiscountAmount(discountAmount);
+        return this;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -314,6 +346,8 @@ public class EventTicketTransaction implements Serializable {
             ", totalAmount=" + getTotalAmount() +
             ", status='" + getStatus() + "'" +
             ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", discountCodeId=" + getDiscountCodeId() +
+            ", discountAmount=" + getDiscountAmount() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

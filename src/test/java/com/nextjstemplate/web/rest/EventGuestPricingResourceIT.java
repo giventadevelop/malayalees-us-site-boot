@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.nextjstemplate.IntegrationTest;
 import com.nextjstemplate.domain.EventDetails;
 import com.nextjstemplate.domain.EventGuestPricing;
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
 import com.nextjstemplate.repository.EventGuestPricingRepository;
 import com.nextjstemplate.service.dto.EventGuestPricingDTO;
 import com.nextjstemplate.service.mapper.EventGuestPricingMapper;
@@ -44,8 +43,8 @@ class EventGuestPricingResourceIT {
     private static final String DEFAULT_TENANT_ID = "AAAAAAAAAA";
     private static final String UPDATED_TENANT_ID = "BBBBBBBBBB";
 
-    private static final GuestAgeGroup DEFAULT_AGE_GROUP = GuestAgeGroup.ADULT;
-    private static final GuestAgeGroup UPDATED_AGE_GROUP = GuestAgeGroup.TEEN;
+    private static final String DEFAULT_AGE_GROUP = "AAAAAAAAAA";
+    private static final String UPDATED_AGE_GROUP = "BBBBBBBBBB";
 
     private static final BigDecimal DEFAULT_PRICE = new BigDecimal(0);
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(1);
@@ -212,28 +211,6 @@ class EventGuestPricingResourceIT {
 
     @Test
     @Transactional
-    void checkAgeGroupIsRequired() throws Exception {
-        int databaseSizeBeforeTest = eventGuestPricingRepository.findAll().size();
-        // set the field null
-        eventGuestPricing.setAgeGroup(null);
-
-        // Create the EventGuestPricing, which fails.
-        EventGuestPricingDTO eventGuestPricingDTO = eventGuestPricingMapper.toDto(eventGuestPricing);
-
-        restEventGuestPricingMockMvc
-            .perform(
-                post(ENTITY_API_URL)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(eventGuestPricingDTO))
-            )
-            .andExpect(status().isBadRequest());
-
-        List<EventGuestPricing> eventGuestPricingList = eventGuestPricingRepository.findAll();
-        assertThat(eventGuestPricingList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkPriceIsRequired() throws Exception {
         int databaseSizeBeforeTest = eventGuestPricingRepository.findAll().size();
         // set the field null
@@ -311,7 +288,7 @@ class EventGuestPricingResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(eventGuestPricing.getId().intValue())))
             .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
-            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP.toString())))
+            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -334,7 +311,7 @@ class EventGuestPricingResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(eventGuestPricing.getId().intValue()))
             .andExpect(jsonPath("$.tenantId").value(DEFAULT_TENANT_ID))
-            .andExpect(jsonPath("$.ageGroup").value(DEFAULT_AGE_GROUP.toString()))
+            .andExpect(jsonPath("$.ageGroup").value(DEFAULT_AGE_GROUP))
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()))
             .andExpect(jsonPath("$.validFrom").value(DEFAULT_VALID_FROM.toString()))
@@ -464,6 +441,32 @@ class EventGuestPricingResourceIT {
 
         // Get all the eventGuestPricingList where ageGroup is null
         defaultEventGuestPricingShouldNotBeFound("ageGroup.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllEventGuestPricingsByAgeGroupContainsSomething() throws Exception {
+        // Initialize the database
+        eventGuestPricingRepository.saveAndFlush(eventGuestPricing);
+
+        // Get all the eventGuestPricingList where ageGroup contains DEFAULT_AGE_GROUP
+        defaultEventGuestPricingShouldBeFound("ageGroup.contains=" + DEFAULT_AGE_GROUP);
+
+        // Get all the eventGuestPricingList where ageGroup contains UPDATED_AGE_GROUP
+        defaultEventGuestPricingShouldNotBeFound("ageGroup.contains=" + UPDATED_AGE_GROUP);
+    }
+
+    @Test
+    @Transactional
+    void getAllEventGuestPricingsByAgeGroupNotContainsSomething() throws Exception {
+        // Initialize the database
+        eventGuestPricingRepository.saveAndFlush(eventGuestPricing);
+
+        // Get all the eventGuestPricingList where ageGroup does not contain DEFAULT_AGE_GROUP
+        defaultEventGuestPricingShouldNotBeFound("ageGroup.doesNotContain=" + DEFAULT_AGE_GROUP);
+
+        // Get all the eventGuestPricingList where ageGroup does not contain UPDATED_AGE_GROUP
+        defaultEventGuestPricingShouldBeFound("ageGroup.doesNotContain=" + UPDATED_AGE_GROUP);
     }
 
     @Test
@@ -1057,7 +1060,7 @@ class EventGuestPricingResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(eventGuestPricing.getId().intValue())))
             .andExpect(jsonPath("$.[*].tenantId").value(hasItem(DEFAULT_TENANT_ID)))
-            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP.toString())))
+            .andExpect(jsonPath("$.[*].ageGroup").value(hasItem(DEFAULT_AGE_GROUP)))
             .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
             .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].validFrom").value(hasItem(DEFAULT_VALID_FROM.toString())))
@@ -1226,7 +1229,14 @@ class EventGuestPricingResourceIT {
         EventGuestPricing partialUpdatedEventGuestPricing = new EventGuestPricing();
         partialUpdatedEventGuestPricing.setId(eventGuestPricing.getId());
 
-        partialUpdatedEventGuestPricing.price(UPDATED_PRICE).description(UPDATED_DESCRIPTION);
+        partialUpdatedEventGuestPricing
+            .ageGroup(UPDATED_AGE_GROUP)
+            .price(UPDATED_PRICE)
+            .isActive(UPDATED_IS_ACTIVE)
+            .validFrom(UPDATED_VALID_FROM)
+            .description(UPDATED_DESCRIPTION)
+            .createdAt(UPDATED_CREATED_AT)
+            .updatedAt(UPDATED_UPDATED_AT);
 
         restEventGuestPricingMockMvc
             .perform(
@@ -1241,14 +1251,14 @@ class EventGuestPricingResourceIT {
         assertThat(eventGuestPricingList).hasSize(databaseSizeBeforeUpdate);
         EventGuestPricing testEventGuestPricing = eventGuestPricingList.get(eventGuestPricingList.size() - 1);
         assertThat(testEventGuestPricing.getTenantId()).isEqualTo(DEFAULT_TENANT_ID);
-        assertThat(testEventGuestPricing.getAgeGroup()).isEqualTo(DEFAULT_AGE_GROUP);
+        assertThat(testEventGuestPricing.getAgeGroup()).isEqualTo(UPDATED_AGE_GROUP);
         assertThat(testEventGuestPricing.getPrice()).isEqualByComparingTo(UPDATED_PRICE);
-        assertThat(testEventGuestPricing.getIsActive()).isEqualTo(DEFAULT_IS_ACTIVE);
-        assertThat(testEventGuestPricing.getValidFrom()).isEqualTo(DEFAULT_VALID_FROM);
+        assertThat(testEventGuestPricing.getIsActive()).isEqualTo(UPDATED_IS_ACTIVE);
+        assertThat(testEventGuestPricing.getValidFrom()).isEqualTo(UPDATED_VALID_FROM);
         assertThat(testEventGuestPricing.getValidTo()).isEqualTo(DEFAULT_VALID_TO);
         assertThat(testEventGuestPricing.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testEventGuestPricing.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
-        assertThat(testEventGuestPricing.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
+        assertThat(testEventGuestPricing.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
+        assertThat(testEventGuestPricing.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }
 
     @Test

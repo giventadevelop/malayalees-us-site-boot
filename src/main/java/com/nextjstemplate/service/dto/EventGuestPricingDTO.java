@@ -1,6 +1,5 @@
 package com.nextjstemplate.service.dto;
 
-import com.nextjstemplate.domain.enumeration.GuestAgeGroup;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,8 +18,8 @@ public class EventGuestPricingDTO implements Serializable {
     @Size(max = 255)
     private String tenantId;
 
-    @NotNull
-    private GuestAgeGroup ageGroup;
+    @Size(max = 20)
+    private String ageGroup;
 
     @NotNull
     @DecimalMin(value = "0")
@@ -59,11 +58,11 @@ public class EventGuestPricingDTO implements Serializable {
         this.tenantId = tenantId;
     }
 
-    public GuestAgeGroup getAgeGroup() {
+    public String getAgeGroup() {
         return ageGroup;
     }
 
-    public void setAgeGroup(GuestAgeGroup ageGroup) {
+    public void setAgeGroup(String ageGroup) {
         this.ageGroup = ageGroup;
     }
 

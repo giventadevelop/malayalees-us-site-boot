@@ -38,12 +38,6 @@
             <column name="file_data_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="file_data_content_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            <column name="content_type" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
             <column name="file_size" type="integer">
                 <constraints nullable="true" />
             </column>
@@ -102,8 +96,6 @@
             <column name="file_url" type="string"/>
             <column name="file_data" type="blob"/>
             <column name="file_data_content_type" type="string"/>
-            <column name="file_data_content_type" type="string"/>
-            <column name="content_type" type="string"/>
             <column name="file_size" type="numeric"/>
             <column name="is_public" type="boolean"/>
             <column name="event_flyer" type="boolean"/>

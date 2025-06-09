@@ -55,6 +55,11 @@
     <include file="config/liquibase/changelog/20250530141538_added_entity_BulkOperationLog.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250603051617_added_entity_EventAttendeeGuest.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250603051717_added_entity_EventGuestPricing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220142_added_entity_DiscountCode.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220242_added_entity_EventScoreCard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220342_added_entity_EventScoreCardDetail.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220442_added_entity_EventLiveUpdate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220542_added_entity_EventLiveUpdateAttachment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20250422195956_added_entity_constraints_UserSubscription.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250422200256_added_entity_constraints_TicketTransaction.xml" relativeToChangelogFile="false"/>
@@ -88,6 +93,10 @@
     <include file="config/liquibase/changelog/20250422195856_added_entity_constraints_UserProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250603051617_added_entity_constraints_EventAttendeeGuest.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20250603051717_added_entity_constraints_EventGuestPricing.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220242_added_entity_constraints_EventScoreCard.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220342_added_entity_constraints_EventScoreCardDetail.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220442_added_entity_constraints_EventLiveUpdate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20250607220542_added_entity_constraints_EventLiveUpdateAttachment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>
