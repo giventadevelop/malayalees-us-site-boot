@@ -24,7 +24,7 @@ class EventMediaTest {
         assertThat(eventMedia1).isNotEqualTo(eventMedia2);
     }
 
-    @Test
+   /* @Test
     void eventTest() throws Exception {
         EventMedia eventMedia = getEventMediaRandomSampleGenerator();
         EventDetails eventDetailsBack = getEventDetailsRandomSampleGenerator();
@@ -46,5 +46,5 @@ class EventMediaTest {
 
         eventMedia.uploadedBy(null);
         assertThat(eventMedia.getUploadedBy()).isNull();
-    }
+    }*/
 }

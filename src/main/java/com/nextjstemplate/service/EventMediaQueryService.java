@@ -96,9 +96,6 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), EventMedia_.title));
             }
-            if (criteria.getDescription() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getDescription(), EventMedia_.description));
-            }
             if (criteria.getEventMediaType() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getEventMediaType(), EventMedia_.eventMediaType));
             }
@@ -108,9 +105,8 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getFileUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getFileUrl(), EventMedia_.fileUrl));
             }
-            if (criteria.getFileDataContentType() != null) {
-                specification =
-                    specification.and(buildStringSpecification(criteria.getFileDataContentType(), EventMedia_.fileDataContentType));
+            if (criteria.getContentType() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getContentType(), EventMedia_.contentType));
             }
             if (criteria.getFileSize() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getFileSize(), EventMedia_.fileSize));
@@ -127,16 +123,39 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                         buildSpecification(criteria.getIsEventManagementOfficialDocument(), EventMedia_.isEventManagementOfficialDocument)
                     );
             }
+            if (criteria.getPreSignedUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
+            }
+            if (criteria.getPreSignedUrlExpiresAt() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getPreSignedUrlExpiresAt(), EventMedia_.preSignedUrlExpiresAt));
+            }
+            if (criteria.getAltText() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getAltText(), EventMedia_.altText));
+            }
+            if (criteria.getDisplayOrder() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDisplayOrder(), EventMedia_.displayOrder));
+            }
+            if (criteria.getDownloadCount() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getDownloadCount(), EventMedia_.downloadCount));
+            }
+            if (criteria.getIsFeatured() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsFeatured(), EventMedia_.isFeatured));
+            }
+            if (criteria.getIsHeroImage() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsHeroImage(), EventMedia_.isHeroImage));
+            }
+            if (criteria.getIsActiveHeroImage() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsActiveHeroImage(), EventMedia_.isActiveHeroImage));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventMedia_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventMedia_.updatedAt));
             }
-            if (criteria.getPreSignedUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
-            }
-            if (criteria.getEventId() != null) {
+
+           /* if (criteria.getEventId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(criteria.getEventId(), root -> root.join(EventMedia_.event, JoinType.LEFT).get(EventDetails_.id))
@@ -150,7 +169,7 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                             root -> root.join(EventMedia_.uploadedBy, JoinType.LEFT).get(UserProfile_.id)
                         )
                     );
-            }
+            }*/
         }
         return specification;
     }

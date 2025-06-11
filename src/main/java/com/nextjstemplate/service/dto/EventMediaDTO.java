@@ -21,7 +21,7 @@ public class EventMediaDTO implements Serializable {
     @Size(max = 255)
     private String title;
 
-    @Size(max = 255)
+    @Lob
     private String description;
 
     @NotNull
@@ -32,13 +32,17 @@ public class EventMediaDTO implements Serializable {
     @Size(max = 255)
     private String storageType;
 
-    @Size(max = 1200)
+    @Size(max = 2048)
     private String fileUrl;
 
     @Lob
     private byte[] fileData;
 
     private String fileDataContentType;
+
+    @Size(max = 255)
+    private String contentType;
+
     private Integer fileSize;
 
     private Boolean isPublic;
@@ -47,18 +51,39 @@ public class EventMediaDTO implements Serializable {
 
     private Boolean isEventManagementOfficialDocument;
 
+    @Size(max = 2048)
+    private String preSignedUrl;
+
+    private ZonedDateTime preSignedUrlExpiresAt;
+
+    @Size(max = 500)
+    private String altText;
+
+    private Integer displayOrder;
+
+    private Integer downloadCount;
+
+    private Boolean isFeatured;
+
+    private Boolean isHeroImage;
+
+    private Boolean isActiveHeroImage;
+
+    private Long eventId;
+
+    private Long uploadedById;
+
     @NotNull
     private ZonedDateTime createdAt;
 
     @NotNull
     private ZonedDateTime updatedAt;
 
-    @Size(max = 2048)
-    private String preSignedUrl;
 
-    private EventDetailsDTO event;
 
-    private UserProfileDTO uploadedBy;
+   /* private EventDetailsDTO event;
+
+    private UserProfileDTO uploadedBy;*/
 
     public Long getId() {
         return id;
@@ -132,6 +157,14 @@ public class EventMediaDTO implements Serializable {
         this.fileDataContentType = fileDataContentType;
     }
 
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     public Integer getFileSize() {
         return fileSize;
     }
@@ -164,6 +197,85 @@ public class EventMediaDTO implements Serializable {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
+    public String getPreSignedUrl() {
+        return preSignedUrl;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
+    }
+
+    public ZonedDateTime getPreSignedUrlExpiresAt() {
+        return preSignedUrlExpiresAt;
+    }
+
+    public void setPreSignedUrlExpiresAt(ZonedDateTime preSignedUrlExpiresAt) {
+        this.preSignedUrlExpiresAt = preSignedUrlExpiresAt;
+    }
+
+    public String getAltText() {
+        return altText;
+    }
+
+    public void setAltText(String altText) {
+        this.altText = altText;
+    }
+
+    public Integer getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public Integer getDownloadCount() {
+        return downloadCount;
+    }
+
+    public void setDownloadCount(Integer downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public Boolean getIsFeatured() {
+        return isFeatured;
+    }
+
+    public void setIsFeatured(Boolean isFeatured) {
+        this.isFeatured = isFeatured;
+    }
+
+    public Boolean getIsHeroImage() {
+        return isHeroImage;
+    }
+
+    public void setIsHeroImage(Boolean isHeroImage) {
+        this.isHeroImage = isHeroImage;
+    }
+
+    public Boolean getIsActiveHeroImage() {
+        return isActiveHeroImage;
+    }
+
+    public void setIsActiveHeroImage(Boolean isActiveHeroImage) {
+        this.isActiveHeroImage = isActiveHeroImage;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+    public Long getUploadedById() {
+        return uploadedById;
+    }
+
+    public void setUploadedById(Long uploadedById) {
+        this.uploadedById = uploadedById;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -180,15 +292,9 @@ public class EventMediaDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public String getPreSignedUrl() {
-        return preSignedUrl;
-    }
 
-    public void setPreSignedUrl(String preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
-    }
 
-    public EventDetailsDTO getEvent() {
+    /*public EventDetailsDTO getEvent() {
         return event;
     }
 
@@ -202,7 +308,7 @@ public class EventMediaDTO implements Serializable {
 
     public void setUploadedBy(UserProfileDTO uploadedBy) {
         this.uploadedBy = uploadedBy;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -237,15 +343,25 @@ public class EventMediaDTO implements Serializable {
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
+            ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
             ", eventFlyer='" + getEventFlyer() + "'" +
             ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
+            ", preSignedUrl='" + getPreSignedUrl() + "'" +
+            ", preSignedUrlExpiresAt='" + getPreSignedUrlExpiresAt() + "'" +
+            ", altText='" + getAltText() + "'" +
+            ", displayOrder=" + getDisplayOrder() +
+            ", downloadCount=" + getDownloadCount() +
+            ", isFeatured='" + getIsFeatured() + "'" +
+            ", isHeroImage='" + getIsHeroImage() + "'" +
+            ", isActiveHeroImage='" + getIsActiveHeroImage() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
-            ", preSignedUrl='" + getPreSignedUrl() + "'" +
-            ", event=" + getEvent() +
-            ", uploadedBy=" + getUploadedBy() +
+           /* ", event=" + getEvent() +
+            ", uploadedBy=" + getUploadedBy() +*/
             "}";
     }
+
+
 }

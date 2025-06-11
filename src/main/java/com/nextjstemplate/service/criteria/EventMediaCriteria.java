@@ -27,15 +27,13 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private StringFilter title;
 
-    private StringFilter description;
-
     private StringFilter eventMediaType;
 
     private StringFilter storageType;
 
     private StringFilter fileUrl;
 
-    private StringFilter fileDataContentType;
+    private StringFilter contentType;
 
     private IntegerFilter fileSize;
 
@@ -45,11 +43,25 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private BooleanFilter isEventManagementOfficialDocument;
 
+    private StringFilter preSignedUrl;
+
+    private ZonedDateTimeFilter preSignedUrlExpiresAt;
+
+    private StringFilter altText;
+
+    private IntegerFilter displayOrder;
+
+    private IntegerFilter downloadCount;
+
+    private BooleanFilter isFeatured;
+
+    private BooleanFilter isHeroImage;
+
+    private BooleanFilter isActiveHeroImage;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
-
-    private StringFilter preSignedUrl;
 
     private LongFilter eventId;
 
@@ -63,19 +75,27 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.title = other.title == null ? null : other.title.copy();
-        this.description = other.description == null ? null : other.description.copy();
         this.eventMediaType = other.eventMediaType == null ? null : other.eventMediaType.copy();
         this.storageType = other.storageType == null ? null : other.storageType.copy();
         this.fileUrl = other.fileUrl == null ? null : other.fileUrl.copy();
-        this.fileDataContentType = other.fileDataContentType == null ? null : other.fileDataContentType.copy();
+        this.contentType = other.contentType == null ? null : other.contentType.copy();
         this.fileSize = other.fileSize == null ? null : other.fileSize.copy();
         this.isPublic = other.isPublic == null ? null : other.isPublic.copy();
         this.eventFlyer = other.eventFlyer == null ? null : other.eventFlyer.copy();
         this.isEventManagementOfficialDocument =
             other.isEventManagementOfficialDocument == null ? null : other.isEventManagementOfficialDocument.copy();
+        this.preSignedUrl = other.preSignedUrl == null ? null : other.preSignedUrl.copy();
+        this.preSignedUrlExpiresAt = other.preSignedUrlExpiresAt == null ? null : other.preSignedUrlExpiresAt.copy();
+        this.altText = other.altText == null ? null : other.altText.copy();
+        this.displayOrder = other.displayOrder == null ? null : other.displayOrder.copy();
+        this.downloadCount = other.downloadCount == null ? null : other.downloadCount.copy();
+        this.isFeatured = other.isFeatured == null ? null : other.isFeatured.copy();
+        this.isHeroImage = other.isHeroImage == null ? null : other.isHeroImage.copy();
+        this.isActiveHeroImage = other.isActiveHeroImage == null ? null : other.isActiveHeroImage.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
-        this.preSignedUrl = other.preSignedUrl == null ? null : other.preSignedUrl.copy();
+        this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.uploadedById = other.uploadedById == null ? null : other.uploadedById.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.uploadedById = other.uploadedById == null ? null : other.uploadedById.copy();
         this.distinct = other.distinct;
@@ -131,21 +151,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.title = title;
     }
 
-    public StringFilter getDescription() {
-        return description;
-    }
-
-    public StringFilter description() {
-        if (description == null) {
-            description = new StringFilter();
-        }
-        return description;
-    }
-
-    public void setDescription(StringFilter description) {
-        this.description = description;
-    }
-
     public StringFilter getEventMediaType() {
         return eventMediaType;
     }
@@ -191,19 +196,19 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.fileUrl = fileUrl;
     }
 
-    public StringFilter getFileDataContentType() {
-        return fileDataContentType;
+    public StringFilter getContentType() {
+        return contentType;
     }
 
-    public StringFilter fileDataContentType() {
-        if (fileDataContentType == null) {
-            fileDataContentType = new StringFilter();
+    public StringFilter contentType() {
+        if (contentType == null) {
+            contentType = new StringFilter();
         }
-        return fileDataContentType;
+        return contentType;
     }
 
-    public void setFileDataContentType(StringFilter fileDataContentType) {
-        this.fileDataContentType = fileDataContentType;
+    public void setContentType(StringFilter contentType) {
+        this.contentType = contentType;
     }
 
     public IntegerFilter getFileSize() {
@@ -266,6 +271,126 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
+    public StringFilter getPreSignedUrl() {
+        return preSignedUrl;
+    }
+
+    public StringFilter preSignedUrl() {
+        if (preSignedUrl == null) {
+            preSignedUrl = new StringFilter();
+        }
+        return preSignedUrl;
+    }
+
+    public void setPreSignedUrl(StringFilter preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
+    }
+
+    public ZonedDateTimeFilter getPreSignedUrlExpiresAt() {
+        return preSignedUrlExpiresAt;
+    }
+
+    public ZonedDateTimeFilter preSignedUrlExpiresAt() {
+        if (preSignedUrlExpiresAt == null) {
+            preSignedUrlExpiresAt = new ZonedDateTimeFilter();
+        }
+        return preSignedUrlExpiresAt;
+    }
+
+    public void setPreSignedUrlExpiresAt(ZonedDateTimeFilter preSignedUrlExpiresAt) {
+        this.preSignedUrlExpiresAt = preSignedUrlExpiresAt;
+    }
+
+    public StringFilter getAltText() {
+        return altText;
+    }
+
+    public StringFilter altText() {
+        if (altText == null) {
+            altText = new StringFilter();
+        }
+        return altText;
+    }
+
+    public void setAltText(StringFilter altText) {
+        this.altText = altText;
+    }
+
+    public IntegerFilter getDisplayOrder() {
+        return displayOrder;
+    }
+
+    public IntegerFilter displayOrder() {
+        if (displayOrder == null) {
+            displayOrder = new IntegerFilter();
+        }
+        return displayOrder;
+    }
+
+    public void setDisplayOrder(IntegerFilter displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public IntegerFilter getDownloadCount() {
+        return downloadCount;
+    }
+
+    public IntegerFilter downloadCount() {
+        if (downloadCount == null) {
+            downloadCount = new IntegerFilter();
+        }
+        return downloadCount;
+    }
+
+    public void setDownloadCount(IntegerFilter downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public BooleanFilter getIsFeatured() {
+        return isFeatured;
+    }
+
+    public BooleanFilter isFeatured() {
+        if (isFeatured == null) {
+            isFeatured = new BooleanFilter();
+        }
+        return isFeatured;
+    }
+
+    public void setIsFeatured(BooleanFilter isFeatured) {
+        this.isFeatured = isFeatured;
+    }
+
+    public BooleanFilter getIsHeroImage() {
+        return isHeroImage;
+    }
+
+    public BooleanFilter isHeroImage() {
+        if (isHeroImage == null) {
+            isHeroImage = new BooleanFilter();
+        }
+        return isHeroImage;
+    }
+
+    public void setIsHeroImage(BooleanFilter isHeroImage) {
+        this.isHeroImage = isHeroImage;
+    }
+
+    public BooleanFilter getIsActiveHeroImage() {
+        return isActiveHeroImage;
+    }
+
+    public BooleanFilter isActiveHeroImage() {
+        if (isActiveHeroImage == null) {
+            isActiveHeroImage = new BooleanFilter();
+        }
+        return isActiveHeroImage;
+    }
+
+    public void setIsActiveHeroImage(BooleanFilter isActiveHeroImage) {
+        this.isActiveHeroImage = isActiveHeroImage;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -294,21 +419,6 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public StringFilter getPreSignedUrl() {
-        return preSignedUrl;
-    }
-
-    public StringFilter preSignedUrl() {
-        if (preSignedUrl == null) {
-            preSignedUrl = new StringFilter();
-        }
-        return preSignedUrl;
-    }
-
-    public void setPreSignedUrl(StringFilter preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
     }
 
     public LongFilter getEventId() {
@@ -362,18 +472,26 @@ public class EventMediaCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(title, that.title) &&
-            Objects.equals(description, that.description) &&
             Objects.equals(eventMediaType, that.eventMediaType) &&
             Objects.equals(storageType, that.storageType) &&
             Objects.equals(fileUrl, that.fileUrl) &&
-            Objects.equals(fileDataContentType, that.fileDataContentType) &&
+            Objects.equals(contentType, that.contentType) &&
             Objects.equals(fileSize, that.fileSize) &&
             Objects.equals(isPublic, that.isPublic) &&
             Objects.equals(eventFlyer, that.eventFlyer) &&
             Objects.equals(isEventManagementOfficialDocument, that.isEventManagementOfficialDocument) &&
+            Objects.equals(preSignedUrl, that.preSignedUrl) &&
+            Objects.equals(preSignedUrlExpiresAt, that.preSignedUrlExpiresAt) &&
+            Objects.equals(altText, that.altText) &&
+            Objects.equals(displayOrder, that.displayOrder) &&
+            Objects.equals(downloadCount, that.downloadCount) &&
+            Objects.equals(isFeatured, that.isFeatured) &&
+            Objects.equals(isHeroImage, that.isHeroImage) &&
+            Objects.equals(isActiveHeroImage, that.isActiveHeroImage) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
-            Objects.equals(preSignedUrl, that.preSignedUrl) &&
+            Objects.equals(eventId, that.eventId) &&
+            Objects.equals(uploadedById, that.uploadedById) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(uploadedById, that.uploadedById) &&
             Objects.equals(distinct, that.distinct)
@@ -386,18 +504,26 @@ public class EventMediaCriteria implements Serializable, Criteria {
             id,
             tenantId,
             title,
-            description,
             eventMediaType,
             storageType,
             fileUrl,
-            fileDataContentType,
+            contentType,
             fileSize,
             isPublic,
             eventFlyer,
             isEventManagementOfficialDocument,
+            preSignedUrl,
+            preSignedUrlExpiresAt,
+            altText,
+            displayOrder,
+            downloadCount,
+            isFeatured,
+            isHeroImage,
+            isActiveHeroImage,
             createdAt,
             updatedAt,
-            preSignedUrl,
+            eventId,
+            uploadedById,
             eventId,
             uploadedById,
             distinct
@@ -411,18 +537,26 @@ public class EventMediaCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (title != null ? "title=" + title + ", " : "") +
-            (description != null ? "description=" + description + ", " : "") +
             (eventMediaType != null ? "eventMediaType=" + eventMediaType + ", " : "") +
             (storageType != null ? "storageType=" + storageType + ", " : "") +
             (fileUrl != null ? "fileUrl=" + fileUrl + ", " : "") +
-            (fileDataContentType != null ? "fileDataContentType=" + fileDataContentType + ", " : "") +
+            (contentType != null ? "contentType=" + contentType + ", " : "") +
             (fileSize != null ? "fileSize=" + fileSize + ", " : "") +
             (isPublic != null ? "isPublic=" + isPublic + ", " : "") +
             (eventFlyer != null ? "eventFlyer=" + eventFlyer + ", " : "") +
             (isEventManagementOfficialDocument != null ? "isEventManagementOfficialDocument=" + isEventManagementOfficialDocument + ", " : "") +
+            (preSignedUrl != null ? "preSignedUrl=" + preSignedUrl + ", " : "") +
+            (preSignedUrlExpiresAt != null ? "preSignedUrlExpiresAt=" + preSignedUrlExpiresAt + ", " : "") +
+            (altText != null ? "altText=" + altText + ", " : "") +
+            (displayOrder != null ? "displayOrder=" + displayOrder + ", " : "") +
+            (downloadCount != null ? "downloadCount=" + downloadCount + ", " : "") +
+            (isFeatured != null ? "isFeatured=" + isFeatured + ", " : "") +
+            (isHeroImage != null ? "isHeroImage=" + isHeroImage + ", " : "") +
+            (isActiveHeroImage != null ? "isActiveHeroImage=" + isActiveHeroImage + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
-            (preSignedUrl != null ? "preSignedUrl=" + preSignedUrl + ", " : "") +
+            (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (uploadedById != null ? "uploadedById=" + uploadedById + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (uploadedById != null ? "uploadedById=" + uploadedById + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +

@@ -10,6 +10,8 @@ import com.nextjstemplate.service.mapper.EventMediaMapper;
 
 import java.time.ZonedDateTime;
 import java.util.Optional;
+
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nextjstemplate.service.S3Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,15 +103,15 @@ public class EventMediaServiceImpl implements EventMediaService {
         eventMediaRepository.deleteById(id);
     }
 
-    @Override
     public EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title,
-            String description, String  tenantId, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument) {
+                                    String description, String  tenantId, boolean isPublic, Boolean eventFlyer, Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
         // Upload to S3
         String fileUrl = s3Service.uploadFile(file, eventId, title, tenantId);
 
         EventMedia eventMedia = new EventMedia();
-        EventDetails event = eventRepository.findById(eventId).get();
-        eventMedia.setEvent(event);
+        EventDetails event = eventRepository.findById(eventId)
+            .orElseThrow(() -> new EntityNotFoundException("Event not found with id " + eventId));
+//        eventMedia.setEvent(event);
         eventMedia.setTitle(title);
         eventMedia.setDescription(description);
         eventMedia.setTenantId(tenantId);
@@ -127,32 +128,38 @@ public class EventMediaServiceImpl implements EventMediaService {
         eventMedia.setUpdatedAt(ZonedDateTime.now());
         eventMedia.setEventFlyer(eventFlyer);
         eventMedia.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
+        eventMedia.setIsHeroImage(isHeroImage);
+        eventMedia.setIsActiveHeroImage(isActiveHeroImage);
+        eventMedia.setEventId(eventId);
+        eventMedia.setUploadedById(userProfileId);
         // Optionally set event and uploadedBy if needed (requires fetching entities)
         // eventMedia.setEvent(...);
         // eventMedia.setUploadedBy(...);
 
         eventMedia = eventMediaRepository.save(eventMedia);
-        return eventMediaMapper.toDto(eventMedia);
+//        since eventId field is removed and replaced with mapper we can return null for now.
+        return null;
+//        return eventMediaMapper.toDto(eventMedia);
     }
 
     @Override
     public List<EventMediaDTO> uploadMultipleFiles(List<MultipartFile> files, Long eventId, Long userProfileId,
-            List<String> titles, List<String> descriptions, String  tenantId, boolean isPublic, Boolean eventFlyer,
-            Boolean isEventManagementOfficialDocument) {
+                                                   List<String> titles, List<String> descriptions, String  tenantId, boolean isPublic, Boolean eventFlyer,
+                                                   Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
         List<EventMediaDTO> result = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
             String title = (titles != null && i < titles.size()) ? titles.get(i) : file.getOriginalFilename();
             String description = (descriptions != null && i < descriptions.size()) ? descriptions.get(i) : null;
             result.add(uploadFile(file, eventId, userProfileId, title, description, tenantId, isPublic, eventFlyer,
-                    isEventManagementOfficialDocument));
+                    isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage));
         }
         return result;
     }
 
     @Override
     public List<EventMediaDTO> getEventMediaWithUrls(Long eventId, Long userProfileId, boolean includePrivate) {
-        List<EventMedia> mediaList = eventMediaRepository.findByEvent_Id(eventId);
+        List<EventMedia> mediaList = eventMediaRepository.findByEventId(eventId);
         List<EventMediaDTO> result = new ArrayList<>();
         for (EventMedia media : mediaList) {
             if (Boolean.TRUE.equals(media.getIsPublic()) || includePrivate) {
@@ -172,7 +179,7 @@ public class EventMediaServiceImpl implements EventMediaService {
     public String getViewingUrl(Long mediaId, Long userProfileId) {
         Optional<EventMedia> mediaOpt = eventMediaRepository.findById(mediaId);
         if (mediaOpt.isPresent()) {
-            EventMedia media = mediaOpt.get();
+            EventMedia media = mediaOpt.orElseThrow(() -> new EntityNotFoundException("EventMedia not found"));
             if (media.getFileUrl() != null && !media.getFileUrl().isEmpty()) {
                 return s3Service.generatePresignedUrl(media.getFileUrl(), 2); // 2 hours default
             }

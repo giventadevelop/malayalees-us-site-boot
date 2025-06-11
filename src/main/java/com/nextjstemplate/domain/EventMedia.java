@@ -34,8 +34,8 @@ public class EventMedia implements Serializable {
     @Column(name = "title", length = 255, nullable = false)
     private String title;
 
-    @Size(max = 255)
-    @Column(name = "description", length = 255)
+    @Lob
+    @Column(name = "description")
     private String description;
 
     @NotNull
@@ -48,8 +48,8 @@ public class EventMedia implements Serializable {
     @Column(name = "storage_type", length = 255, nullable = false)
     private String storageType;
 
-    @Size(max = 1200)
-    @Column(name = "file_url", length = 1200)
+    @Size(max = 2048)
+    @Column(name = "file_url", length = 2048)
     private String fileUrl;
 
     @Lob
@@ -58,6 +58,10 @@ public class EventMedia implements Serializable {
 
     @Column(name = "file_data_content_type")
     private String fileDataContentType;
+
+    @Size(max = 255)
+    @Column(name = "content_type", length = 255)
+    private String contentType;
 
     @Column(name = "file_size")
     private Integer fileSize;
@@ -71,6 +75,32 @@ public class EventMedia implements Serializable {
     @Column(name = "is_event_management_official_document")
     private Boolean isEventManagementOfficialDocument;
 
+    @Size(max = 2048)
+    @Column(name = "pre_signed_url", length = 2048)
+    private String preSignedUrl;
+
+    @Column(name = "pre_signed_url_expires_at")
+    private ZonedDateTime preSignedUrlExpiresAt;
+
+    @Size(max = 500)
+    @Column(name = "alt_text", length = 500)
+    private String altText;
+
+    @Column(name = "display_order")
+    private Integer displayOrder;
+
+    @Column(name = "download_count")
+    private Integer downloadCount;
+
+    @Column(name = "is_featured")
+    private Boolean isFeatured;
+
+    @Column(name = "is_hero_image")
+    private Boolean isHeroImage;
+
+    @Column(name = "is_active_hero_image")
+    private Boolean isActiveHeroImage;
+
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -79,17 +109,19 @@ public class EventMedia implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @Size(max = 2048)
-    @Column(name = "pre_signed_url", length = 2048)
-    private String preSignedUrl;
+    @Column(name = "event_id")
+    private Long eventId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "uploaded_by_id")
+    private Long uploadedById;
+
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
-    private UserProfile uploadedBy;
+    private UserProfile uploadedBy;*/
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -210,6 +242,19 @@ public class EventMedia implements Serializable {
         this.fileDataContentType = fileDataContentType;
     }
 
+    public String getContentType() {
+        return this.contentType;
+    }
+
+    public EventMedia contentType(String contentType) {
+        this.setContentType(contentType);
+        return this;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     public Integer getFileSize() {
         return this.fileSize;
     }
@@ -262,6 +307,110 @@ public class EventMedia implements Serializable {
         this.isEventManagementOfficialDocument = isEventManagementOfficialDocument;
     }
 
+    public String getPreSignedUrl() {
+        return this.preSignedUrl;
+    }
+
+    public EventMedia preSignedUrl(String preSignedUrl) {
+        this.setPreSignedUrl(preSignedUrl);
+        return this;
+    }
+
+    public void setPreSignedUrl(String preSignedUrl) {
+        this.preSignedUrl = preSignedUrl;
+    }
+
+    public ZonedDateTime getPreSignedUrlExpiresAt() {
+        return this.preSignedUrlExpiresAt;
+    }
+
+    public EventMedia preSignedUrlExpiresAt(ZonedDateTime preSignedUrlExpiresAt) {
+        this.setPreSignedUrlExpiresAt(preSignedUrlExpiresAt);
+        return this;
+    }
+
+    public void setPreSignedUrlExpiresAt(ZonedDateTime preSignedUrlExpiresAt) {
+        this.preSignedUrlExpiresAt = preSignedUrlExpiresAt;
+    }
+
+    public String getAltText() {
+        return this.altText;
+    }
+
+    public EventMedia altText(String altText) {
+        this.setAltText(altText);
+        return this;
+    }
+
+    public void setAltText(String altText) {
+        this.altText = altText;
+    }
+
+    public Integer getDisplayOrder() {
+        return this.displayOrder;
+    }
+
+    public EventMedia displayOrder(Integer displayOrder) {
+        this.setDisplayOrder(displayOrder);
+        return this;
+    }
+
+    public void setDisplayOrder(Integer displayOrder) {
+        this.displayOrder = displayOrder;
+    }
+
+    public Integer getDownloadCount() {
+        return this.downloadCount;
+    }
+
+    public EventMedia downloadCount(Integer downloadCount) {
+        this.setDownloadCount(downloadCount);
+        return this;
+    }
+
+    public void setDownloadCount(Integer downloadCount) {
+        this.downloadCount = downloadCount;
+    }
+
+    public Boolean getIsFeatured() {
+        return this.isFeatured;
+    }
+
+    public EventMedia isFeatured(Boolean isFeatured) {
+        this.setIsFeatured(isFeatured);
+        return this;
+    }
+
+    public void setIsFeatured(Boolean isFeatured) {
+        this.isFeatured = isFeatured;
+    }
+
+    public Boolean getIsHeroImage() {
+        return this.isHeroImage;
+    }
+
+    public EventMedia isHeroImage(Boolean isHeroImage) {
+        this.setIsHeroImage(isHeroImage);
+        return this;
+    }
+
+    public void setIsHeroImage(Boolean isHeroImage) {
+        this.isHeroImage = isHeroImage;
+    }
+
+    public Boolean getIsActiveHeroImage() {
+        return this.isActiveHeroImage;
+    }
+
+    public EventMedia isActiveHeroImage(Boolean isActiveHeroImage) {
+        this.setIsActiveHeroImage(isActiveHeroImage);
+        return this;
+    }
+
+    public void setIsActiveHeroImage(Boolean isActiveHeroImage) {
+        this.isActiveHeroImage = isActiveHeroImage;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -288,20 +437,33 @@ public class EventMedia implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public String getPreSignedUrl() {
-        return this.preSignedUrl;
+    public Long getEventId() {
+        return this.eventId;
     }
 
-    public EventMedia preSignedUrl(String preSignedUrl) {
-        this.setPreSignedUrl(preSignedUrl);
+    public EventMedia eventId(Long eventId) {
+        this.setEventId(eventId);
         return this;
     }
 
-    public void setPreSignedUrl(String preSignedUrl) {
-        this.preSignedUrl = preSignedUrl;
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
-    public EventDetails getEvent() {
+    public Long getUploadedById() {
+        return this.uploadedById;
+    }
+
+    public EventMedia uploadedById(Long uploadedById) {
+        this.setUploadedById(uploadedById);
+        return this;
+    }
+
+    public void setUploadedById(Long uploadedById) {
+        this.uploadedById = uploadedById;
+    }
+
+   /* public EventDetails getEvent() {
         return this.event;
     }
 
@@ -325,7 +487,7 @@ public class EventMedia implements Serializable {
     public EventMedia uploadedBy(UserProfile userProfile) {
         this.setUploadedBy(userProfile);
         return this;
-    }
+    }*/
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -359,13 +521,23 @@ public class EventMedia implements Serializable {
             ", fileUrl='" + getFileUrl() + "'" +
             ", fileData='" + getFileData() + "'" +
             ", fileDataContentType='" + getFileDataContentType() + "'" +
+            ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +
             ", eventFlyer='" + getEventFlyer() + "'" +
             ", isEventManagementOfficialDocument='" + getIsEventManagementOfficialDocument() + "'" +
+            ", preSignedUrl='" + getPreSignedUrl() + "'" +
+            ", preSignedUrlExpiresAt='" + getPreSignedUrlExpiresAt() + "'" +
+            ", altText='" + getAltText() + "'" +
+            ", displayOrder=" + getDisplayOrder() +
+            ", downloadCount=" + getDownloadCount() +
+            ", isFeatured='" + getIsFeatured() + "'" +
+            ", isHeroImage='" + getIsHeroImage() + "'" +
+            ", isActiveHeroImage='" + getIsActiveHeroImage() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
-            ", preSignedUrl='" + getPreSignedUrl() + "'" +
+            ", eventId=" + getEventId() +
+            ", uploadedById=" + getUploadedById() +
             "}";
     }
 }

@@ -4,6 +4,7 @@ import com.nextjstemplate.repository.DiscountCodeRepository;
 import com.nextjstemplate.service.DiscountCodeQueryService;
 import com.nextjstemplate.service.DiscountCodeService;
 import com.nextjstemplate.service.criteria.DiscountCodeCriteria;
+import com.nextjstemplate.service.dto.AidaDTO;
 import com.nextjstemplate.service.dto.DiscountCodeDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -54,6 +55,19 @@ public class DiscountCodeResource {
         this.discountCodeService = discountCodeService;
         this.discountCodeRepository = discountCodeRepository;
         this.discountCodeQueryService = discountCodeQueryService;
+    }
+
+
+    @PostMapping("test")
+    public ResponseEntity<AidaDTO> test(@Valid @RequestBody AidaDTO eventMediaDTO)
+        throws URISyntaxException {
+        log.debug("REST request to save EventMedia : {}", eventMediaDTO);
+        if (eventMediaDTO.getId() != null) {
+            throw new BadRequestAlertException("A new eventMedia cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        return ResponseEntity
+            .ok()
+            .body(eventMediaDTO);
     }
 
     /**

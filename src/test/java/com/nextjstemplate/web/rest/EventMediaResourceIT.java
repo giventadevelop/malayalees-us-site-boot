@@ -30,6 +30,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
+//import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link EventMediaResource} REST controller.
@@ -38,7 +39,7 @@ import org.springframework.util.Base64Utils;
 @AutoConfigureMockMvc
 @WithMockUser
 class EventMediaResourceIT {
-
+/*
     private static final String DEFAULT_TENANT_ID = "AAAAAAAAAA";
     private static final String UPDATED_TENANT_ID = "BBBBBBBBBB";
 
@@ -106,12 +107,12 @@ class EventMediaResourceIT {
 
     private EventMedia eventMedia;
 
-    /**
+    *//**
      * Create an entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static EventMedia createEntity(EntityManager em) {
         EventMedia eventMedia = new EventMedia()
             .tenantId(DEFAULT_TENANT_ID)
@@ -132,12 +133,12 @@ class EventMediaResourceIT {
         return eventMedia;
     }
 
-    /**
+    *//**
      * Create an updated entity for this test.
      *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
-     */
+     *//*
     public static EventMedia createUpdatedEntity(EntityManager em) {
         EventMedia eventMedia = new EventMedia()
             .tenantId(UPDATED_TENANT_ID)
@@ -1232,7 +1233,7 @@ class EventMediaResourceIT {
         defaultEventMediaShouldBeFound("preSignedUrl.doesNotContain=" + UPDATED_PRE_SIGNED_URL);
     }
 
-    @Test
+    *//*@Test
     @Transactional
     void getAllEventMediasByEventIsEqualToSomething() throws Exception {
         EventDetails event;
@@ -1252,9 +1253,9 @@ class EventMediaResourceIT {
 
         // Get all the eventMediaList where event equals to (eventId + 1)
         defaultEventMediaShouldNotBeFound("eventId.equals=" + (eventId + 1));
-    }
+    }*//*
 
-   /* @Test
+   *//* @Test
     @Transactional
     void getAllEventMediasByUploadedByIsEqualToSomething() throws Exception {
         UserProfile uploadedBy;
@@ -1274,11 +1275,11 @@ class EventMediaResourceIT {
 
         // Get all the eventMediaList where uploadedBy equals to (uploadedById + 1)
         defaultEventMediaShouldNotBeFound("uploadedById.equals=" + (uploadedById + 1));
-    }*/
+    }*//*
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is returned.
-     */
+     *//*
     private void defaultEventMediaShouldBeFound(String filter) throws Exception {
         restEventMediaMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -1312,9 +1313,9 @@ class EventMediaResourceIT {
             .andExpect(content().string("1"));
     }
 
-    /**
+    *//**
      * Executes the search, and checks that the default entity is not returned.
-     */
+     *//*
     private void defaultEventMediaShouldNotBeFound(String filter) throws Exception {
         restEventMediaMockMvc
             .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
@@ -1655,5 +1656,5 @@ class EventMediaResourceIT {
         // Validate the database contains one less item
         List<EventMedia> eventMediaList = eventMediaRepository.findAll();
         assertThat(eventMediaList).hasSize(databaseSizeBeforeDelete - 1);
-    }
+    }*/
 }

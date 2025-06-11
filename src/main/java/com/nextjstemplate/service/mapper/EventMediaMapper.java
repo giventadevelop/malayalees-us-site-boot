@@ -13,8 +13,8 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface EventMediaMapper extends EntityMapper<EventMediaDTO, EventMedia> {
-    @Mapping(target = "event", source = "event", qualifiedByName = "eventDetailsId")
-    @Mapping(target = "uploadedBy", source = "uploadedBy", qualifiedByName = "userProfileId")
+    /*@Mapping(target = "event", source = "event", qualifiedByName = "eventDetailsId")
+    @Mapping(target = "uploadedBy", source = "uploadedBy", qualifiedByName = "userProfileId")*/
     EventMediaDTO toDto(EventMedia s);
 
     @Named("eventDetailsId")
