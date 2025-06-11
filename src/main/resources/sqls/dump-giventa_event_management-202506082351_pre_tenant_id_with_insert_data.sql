@@ -66,15 +66,15 @@ DROP TYPE IF EXISTS transaction_status CASCADE;
 -- ===================================================
 -- drop functions
 -- ===================================================
-DROP FUNCTION IF EXISTS public.generate_attendee_qr_code();
-DROP FUNCTION IF EXISTS public.generate_enhanced_qr_code();
-DROP FUNCTION IF EXISTS public.manage_ticket_inventory();
-DROP FUNCTION IF EXISTS public.update_ticket_sold_quantity();
-DROP FUNCTION IF EXISTS public.update_updated_at_column();
-DROP FUNCTION IF EXISTS public.validate_event_dates();
-DROP FUNCTION IF EXISTS public.validate_event_dates_alt1();
-DROP FUNCTION IF EXISTS public.validate_event_dates_alt2();
-DROP FUNCTION IF EXISTS public.validate_event_details();
+DROP FUNCTION IF EXISTS public.generate_attendee_qr_code() CASCADE;
+DROP FUNCTION IF EXISTS public.generate_enhanced_qr_code() CASCADE;
+DROP FUNCTION IF EXISTS public.manage_ticket_inventory() CASCADE;
+DROP FUNCTION IF EXISTS public.update_ticket_sold_quantity() CASCADE;
+DROP FUNCTION IF EXISTS public.update_updated_at_column() CASCADE;
+DROP FUNCTION IF EXISTS public.validate_event_dates() CASCADE;
+DROP FUNCTION IF EXISTS public.validate_event_dates_alt1() CASCADE;
+DROP FUNCTION IF EXISTS public.validate_event_dates_alt2() CASCADE;
+DROP FUNCTION IF EXISTS public.validate_event_details() CASCADE;
 
 -- Drop sequence if exists and recreate
 DROP SEQUENCE IF EXISTS public.sequence_generator CASCADE;
@@ -101,6 +101,11 @@ DROP TABLE IF EXISTS public.event_ticket_type CASCADE;
 DROP TABLE IF EXISTS public.event_organizer CASCADE;
 DROP TABLE IF EXISTS public.event_details CASCADE;
 DROP TABLE IF EXISTS public.event_admin CASCADE;
+DROP TABLE IF EXISTS public.event_live_update_attachment CASCADE;
+DROP TABLE IF EXISTS public.event_live_update CASCADE;
+DROP TABLE IF EXISTS public.event_score_card CASCADE;
+DROP TABLE IF EXISTS public.event_score_card_detail CASCADE;
+DROP TABLE IF EXISTS public.rel_event_details__discount_codes CASCADE;
 DROP TABLE IF EXISTS public.user_task CASCADE;
 DROP TABLE IF EXISTS public.user_subscription CASCADE;
 DROP TABLE IF EXISTS public.event_type_details CASCADE;
@@ -119,9 +124,9 @@ BEGIN
     IF NEW.registration_status = 'CONFIRMED' AND (OLD IS NULL OR OLD.registration_status != 'CONFIRMED') THEN
         NEW.qr_code_data = 'ATTENDEE:' || NEW.id || '|EVENT:' || NEW.event_id || '|TENANT:' || NEW.tenant_id || '|TIMESTAMP:' || extract(epoch from NOW());
         NEW.qr_code_generated = TRUE;
-    END IF;
-    
-    RETURN NEW;
+END IF;
+
+RETURN NEW;
 END;
 $$;
 
@@ -137,7 +142,7 @@ CREATE FUNCTION  public.generate_enhanced_qr_code() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    qr_data TEXT;
+qr_data TEXT;
     event_title TEXT;
     attendee_name TEXT;
 BEGIN
@@ -146,16 +151,16 @@ BEGIN
        (OLD IS NULL OR OLD.registration_status != 'CONFIRMED' OR OLD.qr_code_data IS NULL) THEN
 
         -- Get event title and attendee name for better QR code
-        SELECT e.title INTO event_title
-        FROM public.event_details e
-        WHERE e.id = NEW.event_id;
+SELECT e.title INTO event_title
+FROM public.event_details e
+WHERE e.id = NEW.event_id;
 
-        SELECT up.first_name || ' ' || up.last_name INTO attendee_name
-        FROM public.user_profile up
-        WHERE up.id = NEW.attendee_id;
+SELECT up.first_name || ' ' || up.last_name INTO attendee_name
+FROM public.user_profile up
+WHERE up.id = NEW.attendee_id;
 
-        -- Generate comprehensive QR code data
-        qr_data := 'ATTENDEE:' || NEW.id ||
+-- Generate comprehensive QR code data
+qr_data := 'ATTENDEE:' || NEW.id ||
                    '|EVENT:' || NEW.event_id ||
                    '|TENANT:' || NEW.tenant_id ||
                    '|NAME:' || COALESCE(attendee_name, 'Unknown') ||
@@ -168,9 +173,9 @@ BEGIN
         NEW.qr_code_generated_at = NOW();
 
         RAISE NOTICE 'Generated QR code for attendee % at event %', attendee_name, event_title;
-    END IF;
+END IF;
 
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -186,17 +191,17 @@ CREATE FUNCTION  public.manage_ticket_inventory() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 DECLARE
-    ticket_type_record RECORD;
+ticket_type_record RECORD;
     available_quantity INTEGER;
 BEGIN
     -- Get ticket type details
-    SELECT * INTO ticket_type_record
-    FROM public.event_ticket_type
-    WHERE id = COALESCE(NEW.ticket_type_id, OLD.ticket_type_id);
+SELECT * INTO ticket_type_record
+FROM public.event_ticket_type
+WHERE id = COALESCE(NEW.ticket_type_id, OLD.ticket_type_id);
 
-    IF NOT FOUND THEN
+IF NOT FOUND THEN
         RAISE EXCEPTION 'Ticket type not found for ID: %', COALESCE(NEW.ticket_type_id, OLD.ticket_type_id);
-    END IF;
+END IF;
 
     -- Handle different operations
     IF TG_OP = 'INSERT' AND NEW.status = 'COMPLETED' THEN
@@ -205,54 +210,54 @@ BEGIN
         IF available_quantity < NEW.quantity THEN
             RAISE EXCEPTION 'Insufficient tickets available. Requested: %, Available: %',
                 NEW.quantity, available_quantity;
-        END IF;
+END IF;
 
-        UPDATE public.event_ticket_type
-        SET sold_quantity = sold_quantity + NEW.quantity,
-            updated_at = NOW()
-        WHERE id = NEW.ticket_type_id;
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity + NEW.quantity,
+    updated_at = NOW()
+WHERE id = NEW.ticket_type_id;
 
-        RAISE NOTICE 'Added % tickets to sold quantity for ticket type %', NEW.quantity, NEW.ticket_type_id;
+RAISE NOTICE 'Added % tickets to sold quantity for ticket type %', NEW.quantity, NEW.ticket_type_id;
 
     ELSIF TG_OP = 'UPDATE' THEN
         IF OLD.status != 'COMPLETED' AND NEW.status = 'COMPLETED' THEN
             -- Ticket sale completed
-            UPDATE public.event_ticket_type
-            SET sold_quantity = sold_quantity + NEW.quantity,
-                updated_at = NOW()
-            WHERE id = NEW.ticket_type_id;
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity + NEW.quantity,
+    updated_at = NOW()
+WHERE id = NEW.ticket_type_id;
 
-        ELSIF OLD.status = 'COMPLETED' AND NEW.status != 'COMPLETED' THEN
+ELSIF OLD.status = 'COMPLETED' AND NEW.status != 'COMPLETED' THEN
             -- Ticket sale cancelled/refunded
-            UPDATE public.event_ticket_type
-            SET sold_quantity = sold_quantity - OLD.quantity,
-                updated_at = NOW()
-            WHERE id = OLD.ticket_type_id;
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity - OLD.quantity,
+    updated_at = NOW()
+WHERE id = OLD.ticket_type_id;
 
-        ELSIF OLD.status = 'COMPLETED' AND NEW.status = 'COMPLETED' AND OLD.quantity != NEW.quantity THEN
+ELSIF OLD.status = 'COMPLETED' AND NEW.status = 'COMPLETED' AND OLD.quantity != NEW.quantity THEN
             -- Quantity changed for completed sale
-            UPDATE public.event_ticket_type
-            SET sold_quantity = sold_quantity - OLD.quantity + NEW.quantity,
-                updated_at = NOW()
-            WHERE id = NEW.ticket_type_id;
-        END IF;
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity - OLD.quantity + NEW.quantity,
+    updated_at = NOW()
+WHERE id = NEW.ticket_type_id;
+END IF;
 
     ELSIF TG_OP = 'DELETE' AND OLD.status = 'COMPLETED' THEN
         -- Remove sold tickets when transaction is deleted
-        UPDATE public.event_ticket_type
-        SET sold_quantity = sold_quantity - OLD.quantity,
-            updated_at = NOW()
-        WHERE id = OLD.ticket_type_id;
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity - OLD.quantity,
+    updated_at = NOW()
+WHERE id = OLD.ticket_type_id;
 
-        RAISE NOTICE 'Removed % tickets from sold quantity for ticket type %', OLD.quantity, OLD.ticket_type_id;
-    END IF;
+RAISE NOTICE 'Removed % tickets from sold quantity for ticket type %', OLD.quantity, OLD.ticket_type_id;
+END IF;
 
     -- Return appropriate record
     IF TG_OP = 'DELETE' THEN
         RETURN OLD;
-    ELSE
+ELSE
         RETURN NEW;
-    END IF;
+END IF;
 END;
 $$;
 
@@ -269,28 +274,28 @@ CREATE FUNCTION  public.update_ticket_sold_quantity() RETURNS trigger
     AS $$
 BEGIN
     IF TG_OP = 'INSERT' AND NEW.status = 'COMPLETED' THEN
-        UPDATE public.event_ticket_type 
-        SET sold_quantity = sold_quantity + NEW.quantity 
-        WHERE id = NEW.ticket_type_id;
-    ELSIF TG_OP = 'UPDATE' AND OLD.status != 'COMPLETED' AND NEW.status = 'COMPLETED' THEN
-        UPDATE public.event_ticket_type 
-        SET sold_quantity = sold_quantity + NEW.quantity 
-        WHERE id = NEW.ticket_type_id;
-    ELSIF TG_OP = 'UPDATE' AND OLD.status = 'COMPLETED' AND NEW.status != 'COMPLETED' THEN
-        UPDATE public.event_ticket_type 
-        SET sold_quantity = sold_quantity - OLD.quantity 
-        WHERE id = OLD.ticket_type_id;
-    ELSIF TG_OP = 'DELETE' AND OLD.status = 'COMPLETED' THEN
-        UPDATE public.event_ticket_type 
-        SET sold_quantity = sold_quantity - OLD.quantity 
-        WHERE id = OLD.ticket_type_id;
-    END IF;
-    
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity + NEW.quantity
+WHERE id = NEW.ticket_type_id;
+ELSIF TG_OP = 'UPDATE' AND OLD.status != 'COMPLETED' AND NEW.status = 'COMPLETED' THEN
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity + NEW.quantity
+WHERE id = NEW.ticket_type_id;
+ELSIF TG_OP = 'UPDATE' AND OLD.status = 'COMPLETED' AND NEW.status != 'COMPLETED' THEN
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity - OLD.quantity
+WHERE id = OLD.ticket_type_id;
+ELSIF TG_OP = 'DELETE' AND OLD.status = 'COMPLETED' THEN
+UPDATE public.event_ticket_type
+SET sold_quantity = sold_quantity - OLD.quantity
+WHERE id = OLD.ticket_type_id;
+END IF;
+
     IF TG_OP = 'DELETE' THEN
         RETURN OLD;
-    ELSE
+ELSE
         RETURN NEW;
-    END IF;
+END IF;
 END;
 $$;
 
@@ -307,7 +312,7 @@ CREATE FUNCTION  public.update_updated_at_column() RETURNS trigger
     AS $$
 BEGIN
     NEW.updated_at = NOW();
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -326,14 +331,14 @@ BEGIN
     -- Ensure start_date is not in the past (allow same day)
     IF NEW.start_date < CURRENT_DATE THEN
         RAISE EXCEPTION 'Event start date cannot be in the past';
-    END IF;
-    
+END IF;
+
     -- Ensure registration deadline is before event start
     IF NEW.registration_deadline IS NOT NULL AND NEW.registration_deadline::date > NEW.start_date THEN
         RAISE EXCEPTION 'Registration deadline must be before event start date';
-    END IF;
-    
-    RETURN NEW;
+END IF;
+
+RETURN NEW;
 END;
 $$;
 
@@ -351,13 +356,13 @@ CREATE FUNCTION  public.validate_event_dates_alt1() RETURNS trigger
 BEGIN
     IF NEW.start_date < CURRENT_DATE THEN
         RAISE EXCEPTION 'Event start date cannot be in the past';
-    END IF;
-    
+END IF;
+
     IF NEW.registration_deadline IS NOT NULL AND NEW.registration_deadline::date > NEW.start_date THEN
         RAISE EXCEPTION 'Registration deadline must be before event start date';
-    END IF;
-    
-    RETURN NEW;
+END IF;
+
+RETURN NEW;
 END;
 $$;
 
@@ -375,13 +380,13 @@ CREATE FUNCTION  public.validate_event_dates_alt2() RETURNS trigger
 BEGIN
     IF NEW.start_date < CURRENT_DATE THEN
         RAISE EXCEPTION 'Event start date cannot be in the past';
-    END IF;
-    
+END IF;
+
     IF NEW.registration_deadline IS NOT NULL AND NEW.registration_deadline::date > NEW.start_date THEN
         RAISE EXCEPTION 'Registration deadline must be before event start date';
-    END IF;
-    
-    RETURN NEW;
+END IF;
+
+RETURN NEW;
 END;
 $$;
 
@@ -401,28 +406,28 @@ BEGIN
     IF NEW.start_date < CURRENT_DATE THEN
         RAISE EXCEPTION 'Event start date (%) cannot be in the past. Current date: %',
             NEW.start_date, CURRENT_DATE;
-    END IF;
+END IF;
 
     -- Validate end date
     IF NEW.end_date < NEW.start_date THEN
         RAISE EXCEPTION 'Event end date (%) cannot be before start date (%)',
             NEW.end_date, NEW.start_date;
-    END IF;
+END IF;
 
     -- JDL VALIDATION: If allowGuests = true, maxGuestsPerAttendee should be > 0
     IF NEW.allow_guests = TRUE AND (NEW.max_guests_per_attendee IS NULL OR NEW.max_guests_per_attendee <= 0) THEN
         RAISE EXCEPTION 'When guests are allowed, max_guests_per_attendee must be greater than 0';
-    END IF;
+END IF;
 
     -- JDL VALIDATION: Validate capacity
     IF NEW.capacity IS NOT NULL AND NEW.capacity <= 0 THEN
         RAISE EXCEPTION 'Event capacity must be greater than zero, got: %', NEW.capacity;
-    END IF;
+END IF;
 
     -- Log the validation success
     RAISE NOTICE 'Event validation passed for event: %', NEW.title;
 
-    RETURN NEW;
+RETURN NEW;
 END;
 $$;
 
@@ -454,21 +459,21 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.bulk_operation_log (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    operation_type character varying(50) NOT NULL,
-    operation_name character varying(255),
-    performed_by bigint,
-    target_count integer NOT NULL,
-    success_count integer DEFAULT 0,
-    error_count integer DEFAULT 0,
-    skipped_count integer DEFAULT 0,
-    operation_details text,
-    error_details text,
-    execution_time_ms integer,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    completed_at timestamp without time zone,
-    CONSTRAINT check_operation_counts CHECK ((((success_count + error_count) + skipped_count) <= target_count))
+                                           id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                           tenant_id character varying(255),
+                                           operation_type character varying(50) NOT NULL,
+                                           operation_name character varying(255),
+                                           performed_by bigint,
+                                           target_count integer NOT NULL,
+                                           success_count integer DEFAULT 0,
+                                           error_count integer DEFAULT 0,
+                                           skipped_count integer DEFAULT 0,
+                                           operation_details text,
+                                           error_details text,
+                                           execution_time_ms integer,
+                                           created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                           completed_at timestamp without time zone,
+                                           CONSTRAINT check_operation_counts CHECK ((((success_count + error_count) + skipped_count) <= target_count))
 );
 
 
@@ -480,20 +485,20 @@ ALTER TABLE public.bulk_operation_log OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.databasechangelog (
-    id character varying(255) NOT NULL,
-    author character varying(255) NOT NULL,
-    filename character varying(255) NOT NULL,
-    dateexecuted timestamp without time zone NOT NULL,
-    orderexecuted integer NOT NULL,
-    exectype character varying(10) NOT NULL,
-    md5sum character varying(35),
-    description character varying(255),
-    comments character varying(255),
-    tag character varying(255),
-    liquibase character varying(20),
-    contexts character varying(255),
-    labels character varying(255),
-    deployment_id character varying(10)
+                                          id character varying(255) NOT NULL,
+                                          author character varying(255) NOT NULL,
+                                          filename character varying(255) NOT NULL,
+                                          dateexecuted timestamp without time zone NOT NULL,
+                                          orderexecuted integer NOT NULL,
+                                          exectype character varying(10) NOT NULL,
+                                          md5sum character varying(35),
+                                          description character varying(255),
+                                          comments character varying(255),
+                                          tag character varying(255),
+                                          liquibase character varying(20),
+                                          contexts character varying(255),
+                                          labels character varying(255),
+                                          deployment_id character varying(10)
 );
 
 
@@ -505,10 +510,10 @@ ALTER TABLE public.databasechangelog OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.databasechangeloglock (
-    id integer NOT NULL,
-    locked boolean NOT NULL,
-    lockgranted timestamp without time zone,
-    lockedby character varying(255)
+                                              id integer NOT NULL,
+                                              locked boolean NOT NULL,
+                                              lockgranted timestamp without time zone,
+                                              lockedby character varying(255)
 );
 
 
@@ -520,18 +525,18 @@ ALTER TABLE public.databasechangeloglock OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.discount_code (
-    id bigint NOT NULL,
-    code character varying(50) NOT NULL,
-    description character varying(255),
-    discount_type character varying(20) DEFAULT 'PERCENT'::character varying NOT NULL,
-    discount_value numeric(10,2) NOT NULL,
-    max_uses integer,
-    uses_count integer DEFAULT 0,
-    valid_from timestamp without time zone,
-    valid_to timestamp without time zone,
-    is_active boolean DEFAULT true,
-    created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+                                      id bigint NOT NULL,
+                                      code character varying(50) NOT NULL,
+                                      description character varying(255),
+                                      discount_type character varying(20) DEFAULT 'PERCENT'::character varying NOT NULL,
+                                      discount_value numeric(10,2) NOT NULL,
+                                      max_uses integer,
+                                      uses_count integer DEFAULT 0,
+                                      valid_from timestamp without time zone,
+                                      valid_to timestamp without time zone,
+                                      is_active boolean DEFAULT true,
+                                      created_at timestamp without time zone DEFAULT now(),
+                                      updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -576,15 +581,15 @@ ALTER SEQUENCE public.discount_code_id_seq OWNED BY public.discount_code.id;
 --
 
 CREATE TABLE public.event_admin (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    role character varying(255) NOT NULL,
-    permissions text[],
-    is_active boolean DEFAULT true,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    user_id bigint,
-    created_by_id bigint
+                                    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                    tenant_id character varying(255),
+                                    role character varying(255) NOT NULL,
+                                    permissions text[],
+                                    is_active boolean DEFAULT true,
+                                    created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                    user_id bigint,
+                                    created_by_id bigint
 );
 
 
@@ -596,19 +601,19 @@ ALTER TABLE public.event_admin OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_admin_audit_log (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    action character varying(255) NOT NULL,
-    table_name character varying(255) NOT NULL,
-    record_id character varying(255) NOT NULL,
-    changes jsonb,
-    old_values jsonb,
-    new_values jsonb,
-    ip_address inet,
-    user_agent text,
-    session_id character varying(255),
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    admin_id bigint
+                                              id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                              tenant_id character varying(255),
+                                              action character varying(255) NOT NULL,
+                                              table_name character varying(255) NOT NULL,
+                                              record_id character varying(255) NOT NULL,
+                                              changes jsonb,
+                                              old_values jsonb,
+                                              new_values jsonb,
+                                              ip_address inet,
+                                              user_agent text,
+                                              session_id character varying(255),
+                                              created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                              admin_id bigint
 );
 
 
@@ -629,38 +634,38 @@ COMMENT ON TABLE public.event_admin_audit_log IS 'Comprehensive audit logging fo
 --
 
 CREATE TABLE public.event_attendee (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    event_id bigint NOT NULL,
-    attendee_id bigint NOT NULL,
-    registration_status character varying(20) DEFAULT 'PENDING'::character varying NOT NULL,
-    registration_date timestamp without time zone DEFAULT now() NOT NULL,
-    confirmation_date timestamp without time zone,
-    cancellation_date timestamp without time zone,
-    cancellation_reason text,
-    attendee_type character varying(50) DEFAULT 'MEMBER'::character varying,
-    special_requirements text,
-    dietary_restrictions text,
-    accessibility_needs text,
-    emergency_contact_name character varying(255),
-    emergency_contact_phone character varying(50),
-    emergency_contact_relationship character varying(100),
-    check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
-    check_in_time timestamp without time zone,
-    check_out_time timestamp without time zone,
-    attendance_rating integer,
-    feedback text,
-    notes text,
-    qr_code_data character varying(1000),
-    qr_code_generated boolean DEFAULT false,
-    qr_code_generated_at timestamp without time zone,
-    registration_source character varying(100) DEFAULT 'DIRECT'::character varying,
-    waitlist_position integer,
-    priority_score integer DEFAULT 0,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_waitlist_position_positive CHECK (((waitlist_position IS NULL) OR (waitlist_position > 0))),
-    CONSTRAINT event_attendee_attendance_rating_check CHECK (((attendance_rating >= 1) AND (attendance_rating <= 5)))
+                                       id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                       tenant_id character varying(255),
+                                       event_id bigint NOT NULL,
+                                       attendee_id bigint NOT NULL,
+                                       registration_status character varying(20) DEFAULT 'PENDING'::character varying NOT NULL,
+                                       registration_date timestamp without time zone DEFAULT now() NOT NULL,
+                                       confirmation_date timestamp without time zone,
+                                       cancellation_date timestamp without time zone,
+                                       cancellation_reason text,
+                                       attendee_type character varying(50) DEFAULT 'MEMBER'::character varying,
+                                       special_requirements text,
+                                       dietary_restrictions text,
+                                       accessibility_needs text,
+                                       emergency_contact_name character varying(255),
+                                       emergency_contact_phone character varying(50),
+                                       emergency_contact_relationship character varying(100),
+                                       check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
+                                       check_in_time timestamp without time zone,
+                                       check_out_time timestamp without time zone,
+                                       attendance_rating integer,
+                                       feedback text,
+                                       notes text,
+                                       qr_code_data character varying(1000),
+                                       qr_code_generated boolean DEFAULT false,
+                                       qr_code_generated_at timestamp without time zone,
+                                       registration_source character varying(100) DEFAULT 'DIRECT'::character varying,
+                                       waitlist_position integer,
+                                       priority_score integer DEFAULT 0,
+                                       created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                       updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                       CONSTRAINT check_waitlist_position_positive CHECK (((waitlist_position IS NULL) OR (waitlist_position > 0))),
+                                       CONSTRAINT event_attendee_attendance_rating_check CHECK (((attendance_rating >= 1) AND (attendance_rating <= 5)))
 );
 
 
@@ -708,30 +713,30 @@ COMMENT ON COLUMN public.event_attendee.qr_code_generated_at IS 'Timestamp when 
 --
 
 CREATE TABLE public.event_attendee_guest (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    primary_attendee_id bigint NOT NULL,
-    guest_name character varying(255) NOT NULL,
-    age_group character varying(20) NOT NULL,
-    relationship character varying(20),
-    special_requirements text,
-    dietary_restrictions text,
-    accessibility_needs text,
-    registration_status character varying(20) DEFAULT 'PENDING'::character varying,
-    check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
-    check_in_time timestamp without time zone,
-    check_out_time timestamp without time zone,
-    approval_status character varying(50) DEFAULT 'PENDING'::character varying,
-    approved_by_id bigint,
-    approved_at timestamp without time zone,
-    rejection_reason text,
-    pricing_tier character varying(100),
-    fee_amount numeric(21,2) DEFAULT 0,
-    payment_status character varying(50) DEFAULT 'PENDING'::character varying,
-    notes text,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_guest_fee_non_negative CHECK ((fee_amount >= (0)::numeric))
+                                             id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                             tenant_id character varying(255),
+                                             primary_attendee_id bigint NOT NULL,
+                                             guest_name character varying(255) NOT NULL,
+                                             age_group character varying(20) NOT NULL,
+                                             relationship character varying(20),
+                                             special_requirements text,
+                                             dietary_restrictions text,
+                                             accessibility_needs text,
+                                             registration_status character varying(20) DEFAULT 'PENDING'::character varying,
+                                             check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
+                                             check_in_time timestamp without time zone,
+                                             check_out_time timestamp without time zone,
+                                             approval_status character varying(50) DEFAULT 'PENDING'::character varying,
+                                             approved_by_id bigint,
+                                             approved_at timestamp without time zone,
+                                             rejection_reason text,
+                                             pricing_tier character varying(100),
+                                             fee_amount numeric(21,2) DEFAULT 0,
+                                             payment_status character varying(50) DEFAULT 'PENDING'::character varying,
+                                             notes text,
+                                             created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                             updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                             CONSTRAINT check_guest_fee_non_negative CHECK ((fee_amount >= (0)::numeric))
 );
 
 
@@ -770,18 +775,18 @@ COMMENT ON COLUMN public.event_attendee_guest.relationship IS 'Relationship to p
 --
 
 CREATE TABLE public.event_calendar_entry (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    calendar_provider character varying(255) NOT NULL,
-    external_event_id character varying(255),
-    calendar_link character varying(2048) NOT NULL,
-    sync_status character varying(50) DEFAULT 'PENDING'::character varying,
-    last_sync_at timestamp without time zone,
-    sync_error_message text,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    created_by_id bigint
+                                             id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                             tenant_id character varying(255),
+                                             calendar_provider character varying(255) NOT NULL,
+                                             external_event_id character varying(255),
+                                             calendar_link character varying(2048) NOT NULL,
+                                             sync_status character varying(50) DEFAULT 'PENDING'::character varying,
+                                             last_sync_at timestamp without time zone,
+                                             sync_error_message text,
+                                             created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                             updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                             event_id bigint,
+                                             created_by_id bigint
 );
 
 
@@ -793,43 +798,43 @@ ALTER TABLE public.event_calendar_entry OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_details (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    title character varying(255) NOT NULL,
-    caption character varying(500),
-    description text,
-    start_date date NOT NULL,
-    end_date date NOT NULL,
-    start_time character varying(100) NOT NULL,
-    end_time character varying(100) NOT NULL,
-    location character varying(500),
-    directions_to_venue text,
-    capacity integer,
-    admission_type character varying(50),
-    is_active boolean DEFAULT true,
-    max_guests_per_attendee integer DEFAULT 0,
-    allow_guests boolean DEFAULT false,
-    require_guest_approval boolean DEFAULT false,
-    enable_guest_pricing boolean DEFAULT false,
-    registration_deadline timestamp without time zone,
-    cancellation_deadline timestamp without time zone,
-    minimum_age integer,
-    maximum_age integer,
-    requires_approval boolean DEFAULT false,
-    enable_waitlist boolean DEFAULT true,
-    external_registration_url character varying(1024),
-    created_by_id bigint,
-    event_type_id bigint,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    is_registration_required boolean DEFAULT false,
-    is_sports_event boolean DEFAULT false,
-    is_live boolean DEFAULT false,
-    CONSTRAINT check_age_ranges CHECK (((minimum_age IS NULL) OR (maximum_age IS NULL) OR (maximum_age >= minimum_age))),
-    CONSTRAINT check_capacity_positive CHECK (((capacity IS NULL) OR (capacity > 0))),
-    CONSTRAINT check_deadlines CHECK (((registration_deadline IS NULL) OR (cancellation_deadline IS NULL) OR (cancellation_deadline <= registration_deadline))),
-    CONSTRAINT check_event_dates CHECK ((end_date >= start_date)),
-    CONSTRAINT event_details_max_guests_per_attendee_check CHECK ((max_guests_per_attendee >= 0))
+                                      id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                      tenant_id character varying(255),
+                                      title character varying(255) NOT NULL,
+                                      caption character varying(500),
+                                      description text,
+                                      start_date date NOT NULL,
+                                      end_date date NOT NULL,
+                                      start_time character varying(100) NOT NULL,
+                                      end_time character varying(100) NOT NULL,
+                                      location character varying(500),
+                                      directions_to_venue text,
+                                      capacity integer,
+                                      admission_type character varying(50),
+                                      is_active boolean DEFAULT true,
+                                      max_guests_per_attendee integer DEFAULT 0,
+                                      allow_guests boolean DEFAULT false,
+                                      require_guest_approval boolean DEFAULT false,
+                                      enable_guest_pricing boolean DEFAULT false,
+                                      registration_deadline timestamp without time zone,
+                                      cancellation_deadline timestamp without time zone,
+                                      minimum_age integer,
+                                      maximum_age integer,
+                                      requires_approval boolean DEFAULT false,
+                                      enable_waitlist boolean DEFAULT true,
+                                      external_registration_url character varying(1024),
+                                      created_by_id bigint,
+                                      event_type_id bigint,
+                                      created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                      updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                      is_registration_required boolean DEFAULT false,
+                                      is_sports_event boolean DEFAULT false,
+                                      is_live boolean DEFAULT false,
+                                      CONSTRAINT check_age_ranges CHECK (((minimum_age IS NULL) OR (maximum_age IS NULL) OR (maximum_age >= minimum_age))),
+                                      CONSTRAINT check_capacity_positive CHECK (((capacity IS NULL) OR (capacity > 0))),
+                                      CONSTRAINT check_deadlines CHECK (((registration_deadline IS NULL) OR (cancellation_deadline IS NULL) OR (cancellation_deadline <= registration_deadline))),
+                                      CONSTRAINT check_event_dates CHECK ((end_date >= start_date)),
+                                      CONSTRAINT event_details_max_guests_per_attendee_check CHECK ((max_guests_per_attendee >= 0))
 );
 
 
@@ -913,8 +918,8 @@ COMMENT ON COLUMN public.event_details.is_live IS 'Whether this event is current
 --
 
 CREATE TABLE public.event_discount_code (
-    event_id bigint NOT NULL,
-    discount_code_id bigint NOT NULL
+                                            event_id bigint NOT NULL,
+                                            discount_code_id bigint NOT NULL
 );
 
 
@@ -935,28 +940,28 @@ COMMENT ON TABLE public.event_discount_code IS 'Links discount codes to events';
 --
 
 CREATE TABLE public.event_guest_pricing (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    event_id bigint NOT NULL,
-    age_group character varying(20) NOT NULL,
-    price numeric(21,2) DEFAULT 0.00 NOT NULL,
-    is_active boolean DEFAULT true,
-    valid_from date,
-    valid_to date,
-    description character varying(255),
-    max_guests integer,
-    pricing_tier character varying(100),
-    early_bird_price numeric(21,2),
-    early_bird_deadline timestamp without time zone,
-    group_discount_threshold integer,
-    group_discount_percentage numeric(5,2),
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_group_discount_threshold CHECK (((group_discount_threshold IS NULL) OR (group_discount_threshold > 1))),
-    CONSTRAINT check_guest_pricing_amounts CHECK (((price >= (0)::numeric) AND ((early_bird_price IS NULL) OR (early_bird_price >= (0)::numeric)) AND ((group_discount_percentage IS NULL) OR ((group_discount_percentage >= (0)::numeric) AND (group_discount_percentage <= (100)::numeric))))),
-    CONSTRAINT check_max_guests_positive CHECK (((max_guests IS NULL) OR (max_guests > 0))),
-    CONSTRAINT check_valid_date_range CHECK (((valid_from IS NULL) OR (valid_to IS NULL) OR (valid_to >= valid_from))),
-    CONSTRAINT event_guest_pricing_price_check CHECK ((price >= (0)::numeric))
+                                            id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                            tenant_id character varying(255),
+                                            event_id bigint NOT NULL,
+                                            age_group character varying(20) NOT NULL,
+                                            price numeric(21,2) DEFAULT 0.00 NOT NULL,
+                                            is_active boolean DEFAULT true,
+                                            valid_from date,
+                                            valid_to date,
+                                            description character varying(255),
+                                            max_guests integer,
+                                            pricing_tier character varying(100),
+                                            early_bird_price numeric(21,2),
+                                            early_bird_deadline timestamp without time zone,
+                                            group_discount_threshold integer,
+                                            group_discount_percentage numeric(5,2),
+                                            created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            CONSTRAINT check_group_discount_threshold CHECK (((group_discount_threshold IS NULL) OR (group_discount_threshold > 1))),
+                                            CONSTRAINT check_guest_pricing_amounts CHECK (((price >= (0)::numeric) AND ((early_bird_price IS NULL) OR (early_bird_price >= (0)::numeric)) AND ((group_discount_percentage IS NULL) OR ((group_discount_percentage >= (0)::numeric) AND (group_discount_percentage <= (100)::numeric))))),
+                                            CONSTRAINT check_max_guests_positive CHECK (((max_guests IS NULL) OR (max_guests > 0))),
+                                            CONSTRAINT check_valid_date_range CHECK (((valid_from IS NULL) OR (valid_to IS NULL) OR (valid_to >= valid_from))),
+                                            CONSTRAINT event_guest_pricing_price_check CHECK ((price >= (0)::numeric))
 );
 
 
@@ -1022,18 +1027,18 @@ COMMENT ON COLUMN public.event_guest_pricing.description IS 'Pricing description
 --
 
 CREATE TABLE public.event_live_update (
-    id bigint NOT NULL,
-    event_id bigint NOT NULL,
-    update_type character varying(20) NOT NULL,
-    content_text text,
-    content_image_url character varying(1024),
-    content_video_url character varying(1024),
-    content_link_url character varying(1024),
-    metadata jsonb,
-    display_order integer DEFAULT 0,
-    is_default boolean DEFAULT false,
-    created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+                                          id bigint NOT NULL,
+                                          event_id bigint NOT NULL,
+                                          update_type character varying(20) NOT NULL,
+                                          content_text text,
+                                          content_image_url character varying(1024),
+                                          content_video_url character varying(1024),
+                                          content_link_url character varying(1024),
+                                          metadata jsonb,
+                                          display_order integer DEFAULT 0,
+                                          is_default boolean DEFAULT false,
+                                          created_at timestamp without time zone DEFAULT now(),
+                                          updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1054,14 +1059,14 @@ COMMENT ON TABLE public.event_live_update IS 'Live updates (text, image, video, 
 --
 
 CREATE TABLE public.event_live_update_attachment (
-    id bigint NOT NULL,
-    live_update_id bigint NOT NULL,
-    attachment_type character varying(20),
-    attachment_url character varying(1024),
-    display_order integer DEFAULT 0,
-    metadata jsonb,
-    created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+                                                     id bigint NOT NULL,
+                                                     live_update_id bigint NOT NULL,
+                                                     attachment_type character varying(20),
+                                                     attachment_url character varying(1024),
+                                                     display_order integer DEFAULT 0,
+                                                     metadata jsonb,
+                                                     created_at timestamp without time zone DEFAULT now(),
+                                                     updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1130,34 +1135,35 @@ ALTER SEQUENCE public.event_live_update_id_seq OWNED BY public.event_live_update
 --
 
 CREATE TABLE public.event_media (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    title character varying(255) NOT NULL,
-    description text,
-    event_media_type character varying(255) NOT NULL,
-    storage_type character varying(255) NOT NULL,
-    file_url character varying(2048),
-    file_data oid,
-    file_data_content_type character varying(255),
-    content_type character varying(255),
-    file_size bigint,
-    is_public boolean DEFAULT true,
-    event_flyer boolean DEFAULT false,
-    is_event_management_official_document boolean DEFAULT false,
-    pre_signed_url character varying(2048),
-    pre_signed_url_expires_at timestamp without time zone,
-    alt_text character varying(500),
-    display_order integer DEFAULT 0,
-    download_count integer DEFAULT 0,
-    is_featured boolean DEFAULT false,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    uploaded_by_id bigint,
-    CONSTRAINT check_download_count_non_negative CHECK ((download_count >= 0)),
-    CONSTRAINT check_file_size_positive CHECK (((file_size IS NULL) OR (file_size >= 0)))
+                                    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                    tenant_id character varying(255),
+                                    title character varying(255) NOT NULL,
+                                    description text,
+                                    event_media_type character varying(255) NOT NULL,
+                                    storage_type character varying(255) NOT NULL,
+                                    file_url character varying(2048),
+                                    file_data oid,
+                                    file_data_content_type character varying(255),
+                                    content_type character varying(255),
+                                    file_size bigint,
+                                    is_public boolean DEFAULT true,
+                                    event_flyer boolean DEFAULT false,
+                                    is_event_management_official_document boolean DEFAULT false,
+                                    pre_signed_url character varying(2048),
+                                    pre_signed_url_expires_at timestamp without time zone,
+                                    alt_text character varying(500),
+                                    display_order integer DEFAULT 0,
+                                    download_count integer DEFAULT 0,
+                                    is_featured boolean DEFAULT false,
+                                    is_hero_image boolean DEFAULT false,
+                                    is_active_hero_image boolean DEFAULT false,
+                                    created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                    event_id bigint,
+                                    uploaded_by_id bigint,
+                                    CONSTRAINT check_download_count_non_negative CHECK ((download_count >= 0)),
+                                    CONSTRAINT check_file_size_positive CHECK (((file_size IS NULL) OR (file_size >= 0)))
 );
-
 
 ALTER TABLE public.event_media OWNER TO nextjs_template_boot;
 
@@ -1176,21 +1182,21 @@ COMMENT ON COLUMN public.event_media.pre_signed_url IS 'Pre-signed URL for tempo
 --
 
 CREATE TABLE public.event_organizer (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    title character varying(255) NOT NULL,
-    designation character varying(255),
-    contact_email character varying(255),
-    contact_phone character varying(255),
-    is_primary boolean DEFAULT false,
-    display_order integer DEFAULT 0,
-    bio text,
-    profile_image_url character varying(1024),
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    organizer_id bigint,
-    CONSTRAINT check_contact_email_format CHECK (((contact_email IS NULL) OR ((contact_email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)))
+                                        id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                        tenant_id character varying(255),
+                                        title character varying(255) NOT NULL,
+                                        designation character varying(255),
+                                        contact_email character varying(255),
+                                        contact_phone character varying(255),
+                                        is_primary boolean DEFAULT false,
+                                        display_order integer DEFAULT 0,
+                                        bio text,
+                                        profile_image_url character varying(1024),
+                                        created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                        updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                        event_id bigint,
+                                        organizer_id bigint,
+                                        CONSTRAINT check_contact_email_format CHECK (((contact_email IS NULL) OR ((contact_email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)))
 );
 
 
@@ -1202,23 +1208,23 @@ ALTER TABLE public.event_organizer OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_poll (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    title character varying(255) NOT NULL,
-    description text,
-    is_active boolean DEFAULT true,
-    is_anonymous boolean DEFAULT false,
-    allow_multiple_choices boolean DEFAULT false,
-    start_date timestamp without time zone NOT NULL,
-    end_date timestamp without time zone,
-    max_responses_per_user integer DEFAULT 1,
-    results_visible_to character varying(50) DEFAULT 'ALL'::character varying,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    created_by_id bigint,
-    CONSTRAINT check_max_responses_positive CHECK ((max_responses_per_user > 0)),
-    CONSTRAINT check_poll_dates CHECK (((end_date IS NULL) OR (end_date >= start_date)))
+                                   id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                   tenant_id character varying(255),
+                                   title character varying(255) NOT NULL,
+                                   description text,
+                                   is_active boolean DEFAULT true,
+                                   is_anonymous boolean DEFAULT false,
+                                   allow_multiple_choices boolean DEFAULT false,
+                                   start_date timestamp without time zone NOT NULL,
+                                   end_date timestamp without time zone,
+                                   max_responses_per_user integer DEFAULT 1,
+                                   results_visible_to character varying(50) DEFAULT 'ALL'::character varying,
+                                   created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                   updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                   event_id bigint,
+                                   created_by_id bigint,
+                                   CONSTRAINT check_max_responses_positive CHECK ((max_responses_per_user > 0)),
+                                   CONSTRAINT check_poll_dates CHECK (((end_date IS NULL) OR (end_date >= start_date)))
 );
 
 
@@ -1230,14 +1236,14 @@ ALTER TABLE public.event_poll OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_poll_option (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    option_text character varying(500) NOT NULL,
-    display_order integer DEFAULT 0,
-    is_active boolean DEFAULT true,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    poll_id bigint
+                                          id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                          tenant_id character varying(255),
+                                          option_text character varying(500) NOT NULL,
+                                          display_order integer DEFAULT 0,
+                                          is_active boolean DEFAULT true,
+                                          created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                          updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                          poll_id bigint
 );
 
 
@@ -1249,16 +1255,16 @@ ALTER TABLE public.event_poll_option OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_poll_response (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    comment text,
-    response_value character varying(1000),
-    is_anonymous boolean DEFAULT false,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    poll_id bigint,
-    poll_option_id bigint,
-    user_id bigint
+                                            id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                            tenant_id character varying(255),
+                                            comment text,
+                                            response_value character varying(1000),
+                                            is_anonymous boolean DEFAULT false,
+                                            created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            poll_id bigint,
+                                            poll_option_id bigint,
+                                            user_id bigint
 );
 
 
@@ -1270,15 +1276,15 @@ ALTER TABLE public.event_poll_response OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.event_score_card (
-    id bigint NOT NULL,
-    event_id bigint NOT NULL,
-    team_a_name character varying(255) NOT NULL,
-    team_b_name character varying(255) NOT NULL,
-    team_a_score integer DEFAULT 0 NOT NULL,
-    team_b_score integer DEFAULT 0 NOT NULL,
-    remarks text,
-    created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+                                         id bigint NOT NULL,
+                                         event_id bigint NOT NULL,
+                                         team_a_name character varying(255) NOT NULL,
+                                         team_b_name character varying(255) NOT NULL,
+                                         team_a_score integer DEFAULT 0 NOT NULL,
+                                         team_b_score integer DEFAULT 0 NOT NULL,
+                                         remarks text,
+                                         created_at timestamp without time zone DEFAULT now(),
+                                         updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1299,14 +1305,14 @@ COMMENT ON TABLE public.event_score_card IS 'Score card for sports events';
 --
 
 CREATE TABLE public.event_score_card_detail (
-    id bigint NOT NULL,
-    score_card_id bigint NOT NULL,
-    team_name character varying(255) NOT NULL,
-    player_name character varying(255),
-    points integer DEFAULT 0 NOT NULL,
-    remarks text,
-    created_at timestamp without time zone DEFAULT now(),
-    updated_at timestamp without time zone DEFAULT now()
+                                                id bigint NOT NULL,
+                                                score_card_id bigint NOT NULL,
+                                                team_name character varying(255) NOT NULL,
+                                                player_name character varying(255),
+                                                points integer DEFAULT 0 NOT NULL,
+                                                remarks text,
+                                                created_at timestamp without time zone DEFAULT now(),
+                                                updated_at timestamp without time zone DEFAULT now()
 );
 
 
@@ -1375,35 +1381,35 @@ ALTER SEQUENCE public.event_score_card_id_seq OWNED BY public.event_score_card.i
 --
 
 CREATE TABLE public.event_ticket_transaction (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    transaction_reference character varying(255),
-    email character varying(255) NOT NULL,
-    first_name character varying(255),
-    last_name character varying(255),
-    phone character varying(255),
-    quantity integer NOT NULL,
-    price_per_unit numeric(21,2) NOT NULL,
-    total_amount numeric(21,2) NOT NULL,
-    tax_amount numeric(21,2) DEFAULT 0,
-    fee_amount numeric(21,2) DEFAULT 0,
-    discount_code_id bigint,
-    discount_amount numeric(21,2) DEFAULT 0,
-    final_amount numeric(21,2) NOT NULL,
-    status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
-    payment_method character varying(100),
-    payment_reference character varying(255),
-    purchase_date timestamp without time zone NOT NULL,
-    confirmation_sent_at timestamp without time zone,
-    refund_amount numeric(21,2) DEFAULT 0,
-    refund_date timestamp without time zone,
-    refund_reason text,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    ticket_type_id bigint,
-    user_id bigint,
-    CONSTRAINT check_email_format_transaction CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)),
+                                                 id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                                 tenant_id character varying(255),
+                                                 transaction_reference character varying(255),
+                                                 email character varying(255) NOT NULL,
+                                                 first_name character varying(255),
+                                                 last_name character varying(255),
+                                                 phone character varying(255),
+                                                 quantity integer NOT NULL,
+                                                 price_per_unit numeric(21,2) NOT NULL,
+                                                 total_amount numeric(21,2) NOT NULL,
+                                                 tax_amount numeric(21,2) DEFAULT 0,
+                                                 fee_amount numeric(21,2) DEFAULT 0,
+                                                 discount_code_id bigint,
+                                                 discount_amount numeric(21,2) DEFAULT 0,
+                                                 final_amount numeric(21,2) NOT NULL,
+                                                 status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
+                                                 payment_method character varying(100),
+                                                 payment_reference character varying(255),
+                                                 purchase_date timestamp without time zone NOT NULL,
+                                                 confirmation_sent_at timestamp without time zone,
+                                                 refund_amount numeric(21,2) DEFAULT 0,
+                                                 refund_date timestamp without time zone,
+                                                 refund_reason text,
+                                                 created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                 updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                 event_id bigint,
+                                                 ticket_type_id bigint,
+                                                 user_id bigint,
+                                                 CONSTRAINT check_email_format_transaction CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)),
     CONSTRAINT check_transaction_amounts CHECK (((total_amount >= (0)::numeric) AND (tax_amount >= (0)::numeric) AND (fee_amount >= (0)::numeric) AND (discount_amount >= (0)::numeric) AND (refund_amount >= (0)::numeric) AND (final_amount >= (0)::numeric) AND (quantity > 0)))
 );
 
@@ -1434,28 +1440,28 @@ COMMENT ON COLUMN public.event_ticket_transaction.discount_amount IS 'Discount a
 --
 
 CREATE TABLE public.event_ticket_type (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    name character varying(255) NOT NULL,
-    description text,
-    price numeric(21,2) NOT NULL,
-    code character varying(255) NOT NULL,
-    available_quantity integer,
-    sold_quantity integer DEFAULT 0,
-    is_active boolean DEFAULT true,
-    sale_start_date timestamp without time zone,
-    sale_end_date timestamp without time zone,
-    min_quantity_per_order integer DEFAULT 1,
-    max_quantity_per_order integer DEFAULT 10,
-    requires_approval boolean DEFAULT false,
-    sort_order integer DEFAULT 0,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    event_id bigint,
-    CONSTRAINT check_price_non_negative CHECK ((price >= (0)::numeric)),
-    CONSTRAINT check_quantities_positive CHECK ((((available_quantity IS NULL) OR (available_quantity >= 0)) AND (sold_quantity >= 0) AND (min_quantity_per_order > 0) AND (max_quantity_per_order >= min_quantity_per_order))),
-    CONSTRAINT check_sale_dates CHECK (((sale_end_date IS NULL) OR (sale_start_date IS NULL) OR (sale_end_date >= sale_start_date))),
-    CONSTRAINT check_sold_vs_available CHECK (((available_quantity IS NULL) OR (sold_quantity <= available_quantity)))
+                                          id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                          tenant_id character varying(255),
+                                          name character varying(255) NOT NULL,
+                                          description text,
+                                          price numeric(21,2) NOT NULL,
+                                          code character varying(255) NOT NULL,
+                                          available_quantity integer,
+                                          sold_quantity integer DEFAULT 0,
+                                          is_active boolean DEFAULT true,
+                                          sale_start_date timestamp without time zone,
+                                          sale_end_date timestamp without time zone,
+                                          min_quantity_per_order integer DEFAULT 1,
+                                          max_quantity_per_order integer DEFAULT 10,
+                                          requires_approval boolean DEFAULT false,
+                                          sort_order integer DEFAULT 0,
+                                          created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                          updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                          event_id bigint,
+                                          CONSTRAINT check_price_non_negative CHECK ((price >= (0)::numeric)),
+                                          CONSTRAINT check_quantities_positive CHECK ((((available_quantity IS NULL) OR (available_quantity >= 0)) AND (sold_quantity >= 0) AND (min_quantity_per_order > 0) AND (max_quantity_per_order >= min_quantity_per_order))),
+                                          CONSTRAINT check_sale_dates CHECK (((sale_end_date IS NULL) OR (sale_start_date IS NULL) OR (sale_end_date >= sale_start_date))),
+                                          CONSTRAINT check_sold_vs_available CHECK (((available_quantity IS NULL) OR (sold_quantity <= available_quantity)))
 );
 
 
@@ -1476,17 +1482,17 @@ COMMENT ON COLUMN public.event_ticket_type.sold_quantity IS 'Number of tickets s
 --
 
 CREATE TABLE public.event_type_details (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    name character varying(255) NOT NULL,
-    description text,
-    color character varying(7) DEFAULT '#3B82F6'::character varying,
-    icon character varying(100),
-    is_active boolean DEFAULT true,
-    display_order integer DEFAULT 0,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_color_format CHECK (((color)::text ~* '^#[0-9A-Fa-f]{6}$'::text))
+                                           id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                           tenant_id character varying(255),
+                                           name character varying(255) NOT NULL,
+                                           description text,
+                                           color character varying(7) DEFAULT '#3B82F6'::character varying,
+                                           icon character varying(100),
+                                           is_active boolean DEFAULT true,
+                                           display_order integer DEFAULT 0,
+                                           created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                           updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                           CONSTRAINT check_color_format CHECK (((color)::text ~* '^#[0-9A-Fa-f]{6}$'::text))
 );
 
 
@@ -1507,25 +1513,25 @@ COMMENT ON TABLE public.event_type_details IS 'Event type classifications with v
 --
 
 CREATE TABLE public.qr_code_usage (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    attendee_id bigint NOT NULL,
-    qr_code_data character varying(1000) NOT NULL,
-    qr_code_type character varying(50) DEFAULT 'CHECK_IN'::character varying,
-    generated_at timestamp without time zone DEFAULT now() NOT NULL,
-    expires_at timestamp without time zone,
-    used_at timestamp without time zone,
-    usage_count integer DEFAULT 0,
-    max_usage_count integer DEFAULT 1,
-    last_scanned_by character varying(255),
-    scan_location character varying(255),
-    device_info text,
-    ip_address inet,
-    is_valid boolean DEFAULT true,
-    invalidated_at timestamp without time zone,
-    invalidation_reason text,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_usage_counts CHECK (((usage_count >= 0) AND (max_usage_count > 0) AND (usage_count <= max_usage_count)))
+                                      id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                      tenant_id character varying(255),
+                                      attendee_id bigint NOT NULL,
+                                      qr_code_data character varying(1000) NOT NULL,
+                                      qr_code_type character varying(50) DEFAULT 'CHECK_IN'::character varying,
+                                      generated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                      expires_at timestamp without time zone,
+                                      used_at timestamp without time zone,
+                                      usage_count integer DEFAULT 0,
+                                      max_usage_count integer DEFAULT 1,
+                                      last_scanned_by character varying(255),
+                                      scan_location character varying(255),
+                                      device_info text,
+                                      ip_address inet,
+                                      is_valid boolean DEFAULT true,
+                                      invalidated_at timestamp without time zone,
+                                      invalidation_reason text,
+                                      created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                      CONSTRAINT check_usage_counts CHECK (((usage_count >= 0) AND (max_usage_count > 0) AND (usage_count <= max_usage_count)))
 );
 
 
@@ -1546,8 +1552,8 @@ COMMENT ON TABLE public.qr_code_usage IS 'Enhanced QR code generation and usage 
 --
 
 CREATE TABLE public.rel_event_details__discount_codes (
-    event_details_id bigint NOT NULL,
-    discount_codes_id bigint NOT NULL
+                                                          event_details_id bigint NOT NULL,
+                                                          discount_codes_id bigint NOT NULL
 );
 
 
@@ -1568,26 +1574,26 @@ COMMENT ON TABLE public.rel_event_details__discount_codes IS 'Join table for Eve
 --
 
 CREATE TABLE public.tenant_organization (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255) NOT NULL,
-    organization_name character varying(255) NOT NULL,
-    domain character varying(255),
-    primary_color character varying(7),
-    secondary_color character varying(7),
-    logo_url character varying(1024),
-    contact_email character varying(255) NOT NULL,
-    contact_phone character varying(50),
-    subscription_plan character varying(20),
-    subscription_status character varying(20),
-    subscription_start_date date,
-    subscription_end_date date,
-    monthly_fee_usd numeric(21,2),
-    stripe_customer_id character varying(255),
-    is_active boolean DEFAULT true,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_monthly_fee_positive CHECK ((monthly_fee_usd >= (0)::numeric)),
-    CONSTRAINT check_subscription_dates CHECK (((subscription_end_date IS NULL) OR (subscription_end_date >= subscription_start_date)))
+                                            id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                            tenant_id character varying(255) NOT NULL,
+                                            organization_name character varying(255) NOT NULL,
+                                            domain character varying(255),
+                                            primary_color character varying(7),
+                                            secondary_color character varying(7),
+                                            logo_url character varying(1024),
+                                            contact_email character varying(255) NOT NULL,
+                                            contact_phone character varying(50),
+                                            subscription_plan character varying(20),
+                                            subscription_status character varying(20),
+                                            subscription_start_date date,
+                                            subscription_end_date date,
+                                            monthly_fee_usd numeric(21,2),
+                                            stripe_customer_id character varying(255),
+                                            is_active boolean DEFAULT true,
+                                            created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                            CONSTRAINT check_monthly_fee_positive CHECK ((monthly_fee_usd >= (0)::numeric)),
+                                            CONSTRAINT check_subscription_dates CHECK (((subscription_end_date IS NULL) OR (subscription_end_date >= subscription_start_date)))
 );
 
 
@@ -1608,27 +1614,27 @@ COMMENT ON TABLE public.tenant_organization IS 'Multi-tenant organization config
 --
 
 CREATE TABLE public.tenant_settings (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255) NOT NULL,
-    allow_user_registration boolean DEFAULT true,
-    require_admin_approval boolean DEFAULT false,
-    enable_whatsapp_integration boolean DEFAULT false,
-    enable_email_marketing boolean DEFAULT false,
-    whatsapp_api_key character varying(500),
-    email_provider_config text,
-    custom_css text,
-    custom_js text,
-    max_events_per_month integer,
-    max_attendees_per_event integer,
-    enable_guest_registration boolean DEFAULT true,
-    max_guests_per_attendee integer DEFAULT 5,
-    default_event_capacity integer DEFAULT 100,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_default_capacity_positive CHECK (((default_event_capacity IS NULL) OR (default_event_capacity > 0))),
-    CONSTRAINT check_max_attendees_positive CHECK (((max_attendees_per_event IS NULL) OR (max_attendees_per_event > 0))),
-    CONSTRAINT check_max_events_positive CHECK (((max_events_per_month IS NULL) OR (max_events_per_month > 0))),
-    CONSTRAINT check_max_guests_positive CHECK (((max_guests_per_attendee IS NULL) OR (max_guests_per_attendee >= 0)))
+                                        id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                        tenant_id character varying(255) NOT NULL,
+                                        allow_user_registration boolean DEFAULT true,
+                                        require_admin_approval boolean DEFAULT false,
+                                        enable_whatsapp_integration boolean DEFAULT false,
+                                        enable_email_marketing boolean DEFAULT false,
+                                        whatsapp_api_key character varying(500),
+                                        email_provider_config text,
+                                        custom_css text,
+                                        custom_js text,
+                                        max_events_per_month integer,
+                                        max_attendees_per_event integer,
+                                        enable_guest_registration boolean DEFAULT true,
+                                        max_guests_per_attendee integer DEFAULT 5,
+                                        default_event_capacity integer DEFAULT 100,
+                                        created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                        updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                        CONSTRAINT check_default_capacity_positive CHECK (((default_event_capacity IS NULL) OR (default_event_capacity > 0))),
+                                        CONSTRAINT check_max_attendees_positive CHECK (((max_attendees_per_event IS NULL) OR (max_attendees_per_event > 0))),
+                                        CONSTRAINT check_max_events_positive CHECK (((max_events_per_month IS NULL) OR (max_events_per_month > 0))),
+                                        CONSTRAINT check_max_guests_positive CHECK (((max_guests_per_attendee IS NULL) OR (max_guests_per_attendee >= 0)))
 );
 
 
@@ -1649,27 +1655,27 @@ COMMENT ON TABLE public.tenant_settings IS 'Tenant-specific configuration settin
 --
 
 CREATE TABLE public.user_payment_transaction (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255) NOT NULL,
-    transaction_type character varying(20) NOT NULL,
-    amount numeric(21,2) NOT NULL,
-    currency character varying(3) DEFAULT 'USD'::character varying NOT NULL,
-    stripe_payment_intent_id character varying(255),
-    stripe_transfer_group character varying(255),
-    platform_fee_amount numeric(21,2) DEFAULT 0,
-    tenant_amount numeric(21,2) DEFAULT 0,
-    status character varying(20) DEFAULT 'PENDING'::character varying NOT NULL,
-    processing_fee numeric(21,2) DEFAULT 0,
-    metadata jsonb,
-    external_transaction_id character varying(255),
-    payment_method character varying(100),
-    failure_reason text,
-    reconciliation_date date,
-    event_id bigint,
-    ticket_transaction_id bigint,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_payment_amounts CHECK (((amount >= (0)::numeric) AND (platform_fee_amount >= (0)::numeric) AND (tenant_amount >= (0)::numeric) AND (processing_fee >= (0)::numeric)))
+                                                 id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                                 tenant_id character varying(255) NOT NULL,
+                                                 transaction_type character varying(20) NOT NULL,
+                                                 amount numeric(21,2) NOT NULL,
+                                                 currency character varying(3) DEFAULT 'USD'::character varying NOT NULL,
+                                                 stripe_payment_intent_id character varying(255),
+                                                 stripe_transfer_group character varying(255),
+                                                 platform_fee_amount numeric(21,2) DEFAULT 0,
+                                                 tenant_amount numeric(21,2) DEFAULT 0,
+                                                 status character varying(20) DEFAULT 'PENDING'::character varying NOT NULL,
+                                                 processing_fee numeric(21,2) DEFAULT 0,
+                                                 metadata jsonb,
+                                                 external_transaction_id character varying(255),
+                                                 payment_method character varying(100),
+                                                 failure_reason text,
+                                                 reconciliation_date date,
+                                                 event_id bigint,
+                                                 ticket_transaction_id bigint,
+                                                 created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                 updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                 CONSTRAINT check_payment_amounts CHECK (((amount >= (0)::numeric) AND (platform_fee_amount >= (0)::numeric) AND (tenant_amount >= (0)::numeric) AND (processing_fee >= (0)::numeric)))
 );
 
 
@@ -1681,32 +1687,32 @@ ALTER TABLE public.user_payment_transaction OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.user_profile (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    user_id character varying(255) NOT NULL,
-    first_name character varying(255),
-    last_name character varying(255),
-    email character varying(255),
-    phone character varying(255),
-    address_line_1 character varying(255),
-    address_line_2 character varying(255),
-    city character varying(255),
-    state character varying(255),
-    zip_code character varying(255),
-    country character varying(255),
-    notes text,
-    family_name character varying(255),
-    city_town character varying(255),
-    district character varying(255),
-    educational_institution character varying(255),
-    profile_image_url character varying(1024),
-    user_status character varying(50),
-    user_role character varying(50),
-    reviewed_by_admin_at timestamp without time zone,
-    reviewed_by_admin_id bigint,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_email_format CHECK (((email IS NULL) OR ((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)))
+                                     id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                     tenant_id character varying(255),
+                                     user_id character varying(255) NOT NULL,
+                                     first_name character varying(255),
+                                     last_name character varying(255),
+                                     email character varying(255),
+                                     phone character varying(255),
+                                     address_line_1 character varying(255),
+                                     address_line_2 character varying(255),
+                                     city character varying(255),
+                                     state character varying(255),
+                                     zip_code character varying(255),
+                                     country character varying(255),
+                                     notes text,
+                                     family_name character varying(255),
+                                     city_town character varying(255),
+                                     district character varying(255),
+                                     educational_institution character varying(255),
+                                     profile_image_url character varying(1024),
+                                     user_status character varying(50),
+                                     user_role character varying(50),
+                                     reviewed_by_admin_at timestamp without time zone,
+                                     reviewed_by_admin_id bigint,
+                                     created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                     updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                     CONSTRAINT check_email_format CHECK (((email IS NULL) OR ((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)))
 );
 
 
@@ -1727,38 +1733,38 @@ COMMENT ON TABLE public.user_profile IS 'User profiles with tenant isolation and
 --
 
 CREATE TABLE public.user_registration_request (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255) NOT NULL,
-    request_id character varying(255) NOT NULL,
-    user_id character varying(255) NOT NULL,
-    first_name character varying(255),
-    last_name character varying(255),
-    email character varying(255) NOT NULL,
-    phone character varying(255),
-    address_line_1 character varying(255),
-    address_line_2 character varying(255),
-    city character varying(255),
-    state character varying(255),
-    zip_code character varying(255),
-    country character varying(255),
-    family_name character varying(255),
-    city_town character varying(255),
-    district character varying(255),
-    educational_institution character varying(255),
-    profile_image_url character varying(1024),
-    request_reason text,
-    status character varying(50) DEFAULT 'PENDING'::character varying NOT NULL,
-    admin_comments text,
-    automatic_approval_eligible boolean DEFAULT false,
-    priority_score integer DEFAULT 0,
-    submitted_at timestamp without time zone DEFAULT now() NOT NULL,
-    reviewed_at timestamp without time zone,
-    approved_at timestamp without time zone,
-    rejected_at timestamp without time zone,
-    reviewed_by_id bigint,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    CONSTRAINT check_email_format_request CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text))
+                                                  id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                                  tenant_id character varying(255) NOT NULL,
+                                                  request_id character varying(255) NOT NULL,
+                                                  user_id character varying(255) NOT NULL,
+                                                  first_name character varying(255),
+                                                  last_name character varying(255),
+                                                  email character varying(255) NOT NULL,
+                                                  phone character varying(255),
+                                                  address_line_1 character varying(255),
+                                                  address_line_2 character varying(255),
+                                                  city character varying(255),
+                                                  state character varying(255),
+                                                  zip_code character varying(255),
+                                                  country character varying(255),
+                                                  family_name character varying(255),
+                                                  city_town character varying(255),
+                                                  district character varying(255),
+                                                  educational_institution character varying(255),
+                                                  profile_image_url character varying(1024),
+                                                  request_reason text,
+                                                  status character varying(50) DEFAULT 'PENDING'::character varying NOT NULL,
+                                                  admin_comments text,
+                                                  automatic_approval_eligible boolean DEFAULT false,
+                                                  priority_score integer DEFAULT 0,
+                                                  submitted_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                  reviewed_at timestamp without time zone,
+                                                  approved_at timestamp without time zone,
+                                                  rejected_at timestamp without time zone,
+                                                  reviewed_by_id bigint,
+                                                  created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                  updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                                  CONSTRAINT check_email_format_request CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text))
 );
 
 
@@ -1770,18 +1776,18 @@ ALTER TABLE public.user_registration_request OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.user_subscription (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    stripe_customer_id character varying(255),
-    stripe_subscription_id character varying(255),
-    stripe_price_id character varying(255),
-    stripe_current_period_end timestamp without time zone,
-    status character varying(255) NOT NULL,
-    trial_ends_at timestamp without time zone,
-    cancel_at_period_end boolean DEFAULT false,
-    user_profile_id bigint,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL
+                                          id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                          tenant_id character varying(255),
+                                          stripe_customer_id character varying(255),
+                                          stripe_subscription_id character varying(255),
+                                          stripe_price_id character varying(255),
+                                          stripe_current_period_end timestamp without time zone,
+                                          status character varying(255) NOT NULL,
+                                          trial_ends_at timestamp without time zone,
+                                          cancel_at_period_end boolean DEFAULT false,
+                                          user_profile_id bigint,
+                                          created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                          updated_at timestamp without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -1793,27 +1799,27 @@ ALTER TABLE public.user_subscription OWNER TO nextjs_template_boot;
 --
 
 CREATE TABLE public.user_task (
-    id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
-    tenant_id character varying(255),
-    title character varying(255) NOT NULL,
-    description text,
-    status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
-    priority character varying(255) DEFAULT 'MEDIUM'::character varying NOT NULL,
-    due_date timestamp without time zone,
-    completed boolean DEFAULT false NOT NULL,
-    completion_date timestamp without time zone,
-    estimated_hours numeric(5,2),
-    actual_hours numeric(5,2),
-    progress_percentage integer DEFAULT 0,
-    event_id bigint,
-    assignee_name character varying(255),
-    assignee_contact_phone character varying(50),
-    assignee_contact_email character varying(255),
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL,
-    user_id bigint,
-    CONSTRAINT check_completion_logic CHECK (((completed = false) OR ((completed = true) AND (completion_date IS NOT NULL)))),
-    CONSTRAINT user_task_progress_percentage_check CHECK (((progress_percentage >= 0) AND (progress_percentage <= 100)))
+                                  id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
+                                  tenant_id character varying(255),
+                                  title character varying(255) NOT NULL,
+                                  description text,
+                                  status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
+                                  priority character varying(255) DEFAULT 'MEDIUM'::character varying NOT NULL,
+                                  due_date timestamp without time zone,
+                                  completed boolean DEFAULT false NOT NULL,
+                                  completion_date timestamp without time zone,
+                                  estimated_hours numeric(5,2),
+                                  actual_hours numeric(5,2),
+                                  progress_percentage integer DEFAULT 0,
+                                  event_id bigint,
+                                  assignee_name character varying(255),
+                                  assignee_contact_phone character varying(50),
+                                  assignee_contact_email character varying(255),
+                                  created_at timestamp without time zone DEFAULT now() NOT NULL,
+                                  updated_at timestamp without time zone DEFAULT now() NOT NULL,
+                                  user_id bigint,
+                                  CONSTRAINT check_completion_logic CHECK (((completed = false) OR ((completed = true) AND (completion_date IS NOT NULL)))),
+                                  CONSTRAINT user_task_progress_percentage_check CHECK (((progress_percentage >= 0) AND (progress_percentage <= 100)))
 );
 
 
