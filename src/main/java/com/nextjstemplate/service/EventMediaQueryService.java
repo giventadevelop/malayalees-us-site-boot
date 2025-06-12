@@ -155,21 +155,12 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventMedia_.updatedAt));
             }
 
-           /* if (criteria.getEventId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getEventId(), root -> root.join(EventMedia_.event, JoinType.LEFT).get(EventDetails_.id))
-                    );
+            if (criteria.getEventId() != null) {
+                specification = specification.and(buildSpecification(criteria.getEventId(), EventMedia_.eventId));
             }
             if (criteria.getUploadedById() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getUploadedById(),
-                            root -> root.join(EventMedia_.uploadedBy, JoinType.LEFT).get(UserProfile_.id)
-                        )
-                    );
-            }*/
+                specification = specification.and(buildSpecification(criteria.getUploadedById(), EventMedia_.uploadedById));
+            }
         }
         return specification;
     }
