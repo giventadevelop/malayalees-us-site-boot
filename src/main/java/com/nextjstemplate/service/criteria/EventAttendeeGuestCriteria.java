@@ -25,7 +25,13 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
 
     private StringFilter tenantId;
 
-    private StringFilter guestName;
+    private StringFilter firstName;
+
+    private StringFilter lastName;
+
+    private StringFilter email;
+
+    private StringFilter phone;
 
     private StringFilter ageGroup;
 
@@ -52,7 +58,10 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
     public EventAttendeeGuestCriteria(EventAttendeeGuestCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
-        this.guestName = other.guestName == null ? null : other.guestName.copy();
+        this.firstName = other.firstName == null ? null : other.firstName.copy();
+        this.lastName = other.lastName == null ? null : other.lastName.copy();
+        this.email = other.email == null ? null : other.email.copy();
+        this.phone = other.phone == null ? null : other.phone.copy();
         this.ageGroup = other.ageGroup == null ? null : other.ageGroup.copy();
         this.relationship = other.relationship == null ? null : other.relationship.copy();
         this.specialRequirements = other.specialRequirements == null ? null : other.specialRequirements.copy();
@@ -100,19 +109,64 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         this.tenantId = tenantId;
     }
 
-    public StringFilter getGuestName() {
-        return guestName;
+    public StringFilter getFirstName() {
+        return firstName;
     }
 
-    public StringFilter guestName() {
-        if (guestName == null) {
-            guestName = new StringFilter();
+    public StringFilter firstName() {
+        if (firstName == null) {
+            firstName = new StringFilter();
         }
-        return guestName;
+        return firstName;
     }
 
-    public void setGuestName(StringFilter guestName) {
-        this.guestName = guestName;
+    public void setFirstName(StringFilter firstName) {
+        this.firstName = firstName;
+    }
+
+    public StringFilter getLastName() {
+        return lastName;
+    }
+
+    public StringFilter lastName() {
+        if (lastName == null) {
+            lastName = new StringFilter();
+        }
+        return lastName;
+    }
+
+    public void setLastName(StringFilter lastName) {
+        this.lastName = lastName;
+    }
+
+    public StringFilter getEmail() {
+        return email;
+    }
+
+    public StringFilter email() {
+        if (email == null) {
+            email = new StringFilter();
+        }
+        return email;
+    }
+
+    public void setEmail(StringFilter email) {
+        this.email = email;
+    }
+
+    public StringFilter getPhone() {
+        return phone;
+    }
+
+    public StringFilter phone() {
+        if (phone == null) {
+            phone = new StringFilter();
+        }
+        return phone;
+    }
+
+    public void setPhone(StringFilter phone) {
+        this.phone = phone;
     }
 
     public StringFilter getAgeGroup() {
@@ -270,7 +324,10 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(tenantId, that.tenantId) &&
-            Objects.equals(guestName, that.guestName) &&
+            Objects.equals(firstName, that.firstName) &&
+            Objects.equals(lastName, that.lastName) &&
+            Objects.equals(email, that.email) &&
+            Objects.equals(phone, that.phone) &&
             Objects.equals(ageGroup, that.ageGroup) &&
             Objects.equals(relationship, that.relationship) &&
             Objects.equals(specialRequirements, that.specialRequirements) &&
@@ -289,7 +346,10 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         return Objects.hash(
             id,
             tenantId,
-            guestName,
+            firstName,
+            lastName,
+            email,
+            phone,
             ageGroup,
             relationship,
             specialRequirements,
@@ -309,7 +369,10 @@ public class EventAttendeeGuestCriteria implements Serializable, Criteria {
         return "EventAttendeeGuestCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
-            (guestName != null ? "guestName=" + guestName + ", " : "") +
+            (firstName != null ? "firstName=" + firstName + ", " : "") +
+            (lastName != null ? "lastName=" + lastName + ", " : "") +
+            (email != null ? "email=" + email + ", " : "") +
+            (phone != null ? "phone=" + phone + ", " : "") +
             (ageGroup != null ? "ageGroup=" + ageGroup + ", " : "") +
             (relationship != null ? "relationship=" + relationship + ", " : "") +
             (specialRequirements != null ? "specialRequirements=" + specialRequirements + ", " : "") +

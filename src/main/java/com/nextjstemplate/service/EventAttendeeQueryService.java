@@ -90,6 +90,21 @@ public class EventAttendeeQueryService extends QueryService<EventAttendee> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), EventAttendee_.id));
             }
+            if (criteria.getFirstName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFirstName(), EventAttendee_.firstName));
+            }
+            if (criteria.getLastName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastName(), EventAttendee_.lastName));
+            }
+            if (criteria.getEmail() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getEmail(), EventAttendee_.email));
+            }
+            if (criteria.getPhone() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPhone(), EventAttendee_.phone));
+            }
+            if (criteria.getIsMember() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsMember(), EventAttendee_.isMember));
+            }
             if (criteria.getTenantId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventAttendee_.tenantId));
             }
@@ -151,22 +166,10 @@ public class EventAttendeeQueryService extends QueryService<EventAttendee> {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventAttendee_.updatedAt));
             }
             if (criteria.getEventId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getEventId(),
-                            root -> root.join(EventAttendee_.event, JoinType.LEFT).get(EventDetails_.id)
-                        )
-                    );
+                specification = specification.and(buildSpecification(criteria.getEventId(), EventAttendee_.eventId));
             }
             if (criteria.getAttendeeId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getAttendeeId(),
-                            root -> root.join(EventAttendee_.attendee, JoinType.LEFT).get(UserProfile_.id)
-                        )
-                    );
+                specification = specification.and(buildSpecification(criteria.getAttendeeId(), EventAttendee_.attendeeId));
             }
         }
         return specification;

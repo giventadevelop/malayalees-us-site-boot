@@ -26,6 +26,25 @@ public class EventAttendee implements Serializable {
     private Long id;
 
     @Size(max = 255)
+    @Column(name = "first_name", length = 255)
+    private String firstName;
+
+    @Size(max = 255)
+    @Column(name = "last_name", length = 255)
+    private String lastName;
+
+    @Size(max = 255)
+    @Column(name = "email", length = 255)
+    private String email;
+
+    @Size(max = 255)
+    @Column(name = "phone", length = 255)
+    private String phone;
+
+    @Column(name = "is_member")
+    private Boolean isMember;
+
+    @Size(max = 255)
     @Column(name = "tenant_id", length = 255)
     private String tenantId;
 
@@ -93,7 +112,13 @@ public class EventAttendee implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @ManyToOne(optional = false)
+    @Column(name = "event_id")
+    private Long eventId;
+
+    @Column(name = "attendee_id")
+    private Long attendeeId;
+
+    /*@ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
     private EventDetails event;
@@ -102,8 +127,24 @@ public class EventAttendee implements Serializable {
     @NotNull
     @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
     private UserProfile attendee;
-
+*/
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getAttendeeId() {
+        return attendeeId;
+    }
+
+    public void setAttendeeId(Long attendeeId) {
+        this.attendeeId = attendeeId;
+    }
 
     public Long getId() {
         return this.id;
@@ -116,6 +157,71 @@ public class EventAttendee implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public EventAttendee firstName(String firstName) {
+        this.setFirstName(firstName);
+        return this;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public EventAttendee lastName(String lastName) {
+        this.setLastName(lastName);
+        return this;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public EventAttendee email(String email) {
+        this.setEmail(email);
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public EventAttendee phone(String phone) {
+        this.setPhone(phone);
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Boolean getIsMember() {
+        return this.isMember;
+    }
+
+    public EventAttendee isMember(Boolean isMember) {
+        this.setIsMember(isMember);
+        return this;
+    }
+
+    public void setIsMember(Boolean isMember) {
+        this.isMember = isMember;
     }
 
     public String getTenantId() {
@@ -352,7 +458,7 @@ public class EventAttendee implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public EventDetails getEvent() {
+  /*  public EventDetails getEvent() {
         return this.event;
     }
 
@@ -371,12 +477,12 @@ public class EventAttendee implements Serializable {
 
     public void setAttendee(UserProfile userProfile) {
         this.attendee = userProfile;
-    }
-
+    }*/
+/*
     public EventAttendee attendee(UserProfile userProfile) {
         this.setAttendee(userProfile);
         return this;
-    }
+    }*/
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -402,6 +508,11 @@ public class EventAttendee implements Serializable {
     public String toString() {
         return "EventAttendee{" +
             "id=" + getId() +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phone='" + getPhone() + "'" +
+            ", isMember='" + getIsMember() + "'" +
             ", tenantId='" + getTenantId() + "'" +
             ", registrationStatus='" + getRegistrationStatus() + "'" +
             ", registrationDate='" + getRegistrationDate() + "'" +

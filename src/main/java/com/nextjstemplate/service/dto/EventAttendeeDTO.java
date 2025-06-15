@@ -1,9 +1,13 @@
 package com.nextjstemplate.service.dto;
 
+import com.nextjstemplate.domain.EventAttendee;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import static com.nextjstemplate.domain.QrCodeUsage_.attendee;
 
 /**
  * A DTO for the {@link com.nextjstemplate.domain.EventAttendee} entity.
@@ -15,6 +19,26 @@ public class EventAttendeeDTO implements Serializable {
 
     @Size(max = 255)
     private String tenantId;
+
+    private String firstName;
+
+    @Size(max = 255)
+    private String lastName;
+
+    @Size(max = 255)
+    private String email;
+
+    @Size(max = 255)
+    private String phone;
+
+    @Column(name = "is_member")
+    private Boolean isMember;
+
+    @Column(name = "event_id")
+    private Long eventId;
+
+    @Column(name = "attendee_id")
+    private Long attendeeId;
 
     @NotNull
     @Size(max = 50)
@@ -63,9 +87,9 @@ public class EventAttendeeDTO implements Serializable {
     @NotNull
     private ZonedDateTime updatedAt;
 
-    private EventDetailsDTO event;
+   /* private EventDetailsDTO event;
 
-    private UserProfileDTO attendee;
+    private UserProfileDTO attendee;*/
 
     public Long getId() {
         return id;
@@ -74,6 +98,64 @@ public class EventAttendeeDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getAttendeeId() {
+        return attendeeId;
+    }
+
+    public void setAttendeeId(Long attendeeId) {
+        this.attendeeId = attendeeId;
+
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+
+    public Boolean getIsMember() {
+        return this.isMember;
+    }
+
+    public void setIsMember(Boolean isMember) {
+        this.isMember = isMember;
+    }
+
 
     public String getTenantId() {
         return tenantId;
@@ -219,7 +301,7 @@ public class EventAttendeeDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public EventDetailsDTO getEvent() {
+   /* public EventDetailsDTO getEvent() {
         return event;
     }
 
@@ -234,7 +316,7 @@ public class EventAttendeeDTO implements Serializable {
     public void setAttendee(UserProfileDTO attendee) {
         this.attendee = attendee;
     }
-
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -261,6 +343,10 @@ public class EventAttendeeDTO implements Serializable {
     public String toString() {
         return "EventAttendeeDTO{" +
             "id=" + getId() +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phone='" + getPhone() + "'" +
             ", tenantId='" + getTenantId() + "'" +
             ", registrationStatus='" + getRegistrationStatus() + "'" +
             ", registrationDate='" + getRegistrationDate() + "'" +
@@ -279,8 +365,8 @@ public class EventAttendeeDTO implements Serializable {
             ", qrCodeGeneratedAt='" + getQrCodeGeneratedAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
-            ", event=" + getEvent() +
-            ", attendee=" + getAttendee() +
+           /* ", event=" + getEvent() +
+            ", attendee=" + getAttendee() +*/
             "}";
     }
 }

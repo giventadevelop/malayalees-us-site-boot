@@ -24,7 +24,7 @@ class EventAttendeeTest {
         assertThat(eventAttendee1).isNotEqualTo(eventAttendee2);
     }
 
-    @Test
+   /* @Test
     void eventTest() throws Exception {
         EventAttendee eventAttendee = getEventAttendeeRandomSampleGenerator();
         EventDetails eventDetailsBack = getEventDetailsRandomSampleGenerator();
@@ -46,5 +46,5 @@ class EventAttendeeTest {
 
         eventAttendee.attendee(null);
         assertThat(eventAttendee.getAttendee()).isNull();
-    }
+    }*/
 }

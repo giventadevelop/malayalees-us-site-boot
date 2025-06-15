@@ -110,6 +110,33 @@ public class UserProfile implements Serializable {
     @Column(name = "reviewed_by_admin_at")
     private LocalDate reviewedByAdminAt;
 
+    @Size(max = 255)
+    @Column(name = "request_id", length = 255, unique = true)
+    private String requestId;
+
+    @Size(max = 1000)
+    @Column(name = "request_reason", length = 1000)
+    private String requestReason;
+
+    @Size(max = 50)
+    @Column(name = "status", length = 50)
+    private String status;
+
+    @Size(max = 1000)
+    @Column(name = "admin_comments", length = 1000)
+    private String adminComments;
+
+    @Column(name = "submitted_at")
+    private ZonedDateTime submittedAt;
+
+    @Column(name = "reviewed_at")
+    private ZonedDateTime reviewedAt;
+
+    @Column(name = "approved_at")
+    private ZonedDateTime approvedAt;
+
+    @Column(name = "rejected_at")
+    private ZonedDateTime rejectedAt;
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -414,6 +441,110 @@ public class UserProfile implements Serializable {
         this.reviewedByAdminAt = reviewedByAdminAt;
     }
 
+    public String getRequestId() {
+        return this.requestId;
+    }
+
+    public UserProfile requestId(String requestId) {
+        this.setRequestId(requestId);
+        return this;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public String getRequestReason() {
+        return this.requestReason;
+    }
+
+    public UserProfile requestReason(String requestReason) {
+        this.setRequestReason(requestReason);
+        return this;
+    }
+
+    public void setRequestReason(String requestReason) {
+        this.requestReason = requestReason;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public UserProfile status(String status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAdminComments() {
+        return this.adminComments;
+    }
+
+    public UserProfile adminComments(String adminComments) {
+        this.setAdminComments(adminComments);
+        return this;
+    }
+
+    public void setAdminComments(String adminComments) {
+        this.adminComments = adminComments;
+    }
+
+    public ZonedDateTime getSubmittedAt() {
+        return this.submittedAt;
+    }
+
+    public UserProfile submittedAt(ZonedDateTime submittedAt) {
+        this.setSubmittedAt(submittedAt);
+        return this;
+    }
+
+    public void setSubmittedAt(ZonedDateTime submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public ZonedDateTime getReviewedAt() {
+        return this.reviewedAt;
+    }
+
+    public UserProfile reviewedAt(ZonedDateTime reviewedAt) {
+        this.setReviewedAt(reviewedAt);
+        return this;
+    }
+
+    public void setReviewedAt(ZonedDateTime reviewedAt) {
+        this.reviewedAt = reviewedAt;
+    }
+
+    public ZonedDateTime getApprovedAt() {
+        return this.approvedAt;
+    }
+
+    public UserProfile approvedAt(ZonedDateTime approvedAt) {
+        this.setApprovedAt(approvedAt);
+        return this;
+    }
+
+    public void setApprovedAt(ZonedDateTime approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public ZonedDateTime getRejectedAt() {
+        return this.rejectedAt;
+    }
+
+    public UserProfile rejectedAt(ZonedDateTime rejectedAt) {
+        this.setRejectedAt(rejectedAt);
+        return this;
+    }
+
+    public void setRejectedAt(ZonedDateTime rejectedAt) {
+        this.rejectedAt = rejectedAt;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -517,6 +648,14 @@ public class UserProfile implements Serializable {
             ", userStatus='" + getUserStatus() + "'" +
             ", userRole='" + getUserRole() + "'" +
             ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +
+            ", requestId='" + getRequestId() + "'" +
+            ", requestReason='" + getRequestReason() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", adminComments='" + getAdminComments() + "'" +
+            ", submittedAt='" + getSubmittedAt() + "'" +
+            ", reviewedAt='" + getReviewedAt() + "'" +
+            ", approvedAt='" + getApprovedAt() + "'" +
+            ", rejectedAt='" + getRejectedAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

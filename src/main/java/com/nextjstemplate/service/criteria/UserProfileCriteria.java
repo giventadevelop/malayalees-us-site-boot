@@ -65,6 +65,22 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private LocalDateFilter reviewedByAdminAt;
 
+    private StringFilter requestId;
+
+    private StringFilter requestReason;
+
+    private StringFilter status;
+
+    private StringFilter adminComments;
+
+    private ZonedDateTimeFilter submittedAt;
+
+    private ZonedDateTimeFilter reviewedAt;
+
+    private ZonedDateTimeFilter approvedAt;
+
+    private ZonedDateTimeFilter rejectedAt;
+
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -100,6 +116,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.userStatus = other.userStatus == null ? null : other.userStatus.copy();
         this.userRole = other.userRole == null ? null : other.userRole.copy();
         this.reviewedByAdminAt = other.reviewedByAdminAt == null ? null : other.reviewedByAdminAt.copy();
+        this.requestId = other.requestId == null ? null : other.requestId.copy();
+        this.requestReason = other.requestReason == null ? null : other.requestReason.copy();
+        this.status = other.status == null ? null : other.status.copy();
+        this.adminComments = other.adminComments == null ? null : other.adminComments.copy();
+        this.submittedAt = other.submittedAt == null ? null : other.submittedAt.copy();
+        this.reviewedAt = other.reviewedAt == null ? null : other.reviewedAt.copy();
+        this.approvedAt = other.approvedAt == null ? null : other.approvedAt.copy();
+        this.rejectedAt = other.rejectedAt == null ? null : other.rejectedAt.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.reviewedByAdminId = other.reviewedByAdminId == null ? null : other.reviewedByAdminId.copy();
@@ -442,6 +466,126 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.reviewedByAdminAt = reviewedByAdminAt;
     }
 
+    public StringFilter getRequestId() {
+        return requestId;
+    }
+
+    public StringFilter requestId() {
+        if (requestId == null) {
+            requestId = new StringFilter();
+        }
+        return requestId;
+    }
+
+    public void setRequestId(StringFilter requestId) {
+        this.requestId = requestId;
+    }
+
+    public StringFilter getRequestReason() {
+        return requestReason;
+    }
+
+    public StringFilter requestReason() {
+        if (requestReason == null) {
+            requestReason = new StringFilter();
+        }
+        return requestReason;
+    }
+
+    public void setRequestReason(StringFilter requestReason) {
+        this.requestReason = requestReason;
+    }
+
+    public StringFilter getStatus() {
+        return status;
+    }
+
+    public StringFilter status() {
+        if (status == null) {
+            status = new StringFilter();
+        }
+        return status;
+    }
+
+    public void setStatus(StringFilter status) {
+        this.status = status;
+    }
+
+    public StringFilter getAdminComments() {
+        return adminComments;
+    }
+
+    public StringFilter adminComments() {
+        if (adminComments == null) {
+            adminComments = new StringFilter();
+        }
+        return adminComments;
+    }
+
+    public void setAdminComments(StringFilter adminComments) {
+        this.adminComments = adminComments;
+    }
+
+    public ZonedDateTimeFilter getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public ZonedDateTimeFilter submittedAt() {
+        if (submittedAt == null) {
+            submittedAt = new ZonedDateTimeFilter();
+        }
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(ZonedDateTimeFilter submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public ZonedDateTimeFilter getReviewedAt() {
+        return reviewedAt;
+    }
+
+    public ZonedDateTimeFilter reviewedAt() {
+        if (reviewedAt == null) {
+            reviewedAt = new ZonedDateTimeFilter();
+        }
+        return reviewedAt;
+    }
+
+    public void setReviewedAt(ZonedDateTimeFilter reviewedAt) {
+        this.reviewedAt = reviewedAt;
+    }
+
+    public ZonedDateTimeFilter getApprovedAt() {
+        return approvedAt;
+    }
+
+    public ZonedDateTimeFilter approvedAt() {
+        if (approvedAt == null) {
+            approvedAt = new ZonedDateTimeFilter();
+        }
+        return approvedAt;
+    }
+
+    public void setApprovedAt(ZonedDateTimeFilter approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public ZonedDateTimeFilter getRejectedAt() {
+        return rejectedAt;
+    }
+
+    public ZonedDateTimeFilter rejectedAt() {
+        if (rejectedAt == null) {
+            rejectedAt = new ZonedDateTimeFilter();
+        }
+        return rejectedAt;
+    }
+
+    public void setRejectedAt(ZonedDateTimeFilter rejectedAt) {
+        this.rejectedAt = rejectedAt;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -542,6 +686,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(userStatus, that.userStatus) &&
             Objects.equals(userRole, that.userRole) &&
             Objects.equals(reviewedByAdminAt, that.reviewedByAdminAt) &&
+            Objects.equals(requestId, that.requestId) &&
+            Objects.equals(requestReason, that.requestReason) &&
+            Objects.equals(status, that.status) &&
+            Objects.equals(adminComments, that.adminComments) &&
+            Objects.equals(submittedAt, that.submittedAt) &&
+            Objects.equals(reviewedAt, that.reviewedAt) &&
+            Objects.equals(approvedAt, that.approvedAt) &&
+            Objects.equals(rejectedAt, that.rejectedAt) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(reviewedByAdminId, that.reviewedByAdminId) &&
@@ -575,6 +727,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
             userStatus,
             userRole,
             reviewedByAdminAt,
+            requestId,
+            requestReason,
+            status,
+            adminComments,
+            submittedAt,
+            reviewedAt,
+            approvedAt,
+            rejectedAt,
             createdAt,
             updatedAt,
             reviewedByAdminId,
@@ -609,6 +769,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
             (userStatus != null ? "userStatus=" + userStatus + ", " : "") +
             (userRole != null ? "userRole=" + userRole + ", " : "") +
             (reviewedByAdminAt != null ? "reviewedByAdminAt=" + reviewedByAdminAt + ", " : "") +
+            (requestId != null ? "requestId=" + requestId + ", " : "") +
+            (requestReason != null ? "requestReason=" + requestReason + ", " : "") +
+            (status != null ? "status=" + status + ", " : "") +
+            (adminComments != null ? "adminComments=" + adminComments + ", " : "") +
+            (submittedAt != null ? "submittedAt=" + submittedAt + ", " : "") +
+            (reviewedAt != null ? "reviewedAt=" + reviewedAt + ", " : "") +
+            (approvedAt != null ? "approvedAt=" + approvedAt + ", " : "") +
+            (rejectedAt != null ? "rejectedAt=" + rejectedAt + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (reviewedByAdminId != null ? "reviewedByAdminId=" + reviewedByAdminId + ", " : "") +

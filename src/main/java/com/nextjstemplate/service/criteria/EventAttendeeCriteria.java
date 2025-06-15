@@ -23,6 +23,16 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
+    private StringFilter firstName;
+
+    private StringFilter lastName;
+
+    private StringFilter email;
+
+    private StringFilter phone;
+
+    private BooleanFilter isMember;
+
     private StringFilter tenantId;
 
     private StringFilter registrationStatus;
@@ -69,6 +79,11 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     public EventAttendeeCriteria(EventAttendeeCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
+        this.firstName = other.firstName == null ? null : other.firstName.copy();
+        this.lastName = other.lastName == null ? null : other.lastName.copy();
+        this.email = other.email == null ? null : other.email.copy();
+        this.phone = other.phone == null ? null : other.phone.copy();
+        this.isMember = other.isMember == null ? null : other.isMember.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.registrationStatus = other.registrationStatus == null ? null : other.registrationStatus.copy();
         this.registrationDate = other.registrationDate == null ? null : other.registrationDate.copy();
@@ -110,6 +125,81 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public StringFilter getFirstName() {
+        return firstName;
+    }
+
+    public StringFilter firstName() {
+        if (firstName == null) {
+            firstName = new StringFilter();
+        }
+        return firstName;
+    }
+
+    public void setFirstName(StringFilter firstName) {
+        this.firstName = firstName;
+    }
+
+    public StringFilter getLastName() {
+        return lastName;
+    }
+
+    public StringFilter lastName() {
+        if (lastName == null) {
+            lastName = new StringFilter();
+        }
+        return lastName;
+    }
+
+    public void setLastName(StringFilter lastName) {
+        this.lastName = lastName;
+    }
+
+    public StringFilter getEmail() {
+        return email;
+    }
+
+    public StringFilter email() {
+        if (email == null) {
+            email = new StringFilter();
+        }
+        return email;
+    }
+
+    public void setEmail(StringFilter email) {
+        this.email = email;
+    }
+
+    public StringFilter getPhone() {
+        return phone;
+    }
+
+    public StringFilter phone() {
+        if (phone == null) {
+            phone = new StringFilter();
+        }
+        return phone;
+    }
+
+    public void setPhone(StringFilter phone) {
+        this.phone = phone;
+    }
+
+    public BooleanFilter getIsMember() {
+        return isMember;
+    }
+
+    public BooleanFilter isMember() {
+        if (isMember == null) {
+            isMember = new BooleanFilter();
+        }
+        return isMember;
+    }
+
+    public void setIsMember(BooleanFilter isMember) {
+        this.isMember = isMember;
     }
 
     public StringFilter getTenantId() {
@@ -431,6 +521,11 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         final EventAttendeeCriteria that = (EventAttendeeCriteria) o;
         return (
             Objects.equals(id, that.id) &&
+            Objects.equals(firstName, that.firstName) &&
+            Objects.equals(lastName, that.lastName) &&
+            Objects.equals(email, that.email) &&
+            Objects.equals(phone, that.phone) &&
+            Objects.equals(isMember, that.isMember) &&
             Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(registrationStatus, that.registrationStatus) &&
             Objects.equals(registrationDate, that.registrationDate) &&
@@ -459,6 +554,11 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
     public int hashCode() {
         return Objects.hash(
             id,
+            firstName,
+            lastName,
+            email,
+            phone,
+            isMember,
             tenantId,
             registrationStatus,
             registrationDate,
@@ -488,6 +588,11 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
     public String toString() {
         return "EventAttendeeCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
+            (firstName != null ? "firstName=" + firstName + ", " : "") +
+            (lastName != null ? "lastName=" + lastName + ", " : "") +
+            (email != null ? "email=" + email + ", " : "") +
+            (phone != null ? "phone=" + phone + ", " : "") +
+            (isMember != null ? "isMember=" + isMember + ", " : "") +
             (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (registrationStatus != null ? "registrationStatus=" + registrationStatus + ", " : "") +
             (registrationDate != null ? "registrationDate=" + registrationDate + ", " : "") +

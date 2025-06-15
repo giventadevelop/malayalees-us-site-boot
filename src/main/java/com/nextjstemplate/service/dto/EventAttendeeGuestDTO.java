@@ -18,9 +18,17 @@ public class EventAttendeeGuestDTO implements Serializable {
     @Size(max = 255)
     private String tenantId;
 
-    @NotNull
     @Size(max = 255)
-    private String guestName;
+    private String firstName;
+
+    @Size(max = 255)
+    private String lastName;
+
+    @Size(max = 255)
+    private String email;
+
+    @Size(max = 255)
+    private String phone;
 
     @Size(max = 20)
     private String ageGroup;
@@ -63,12 +71,36 @@ public class EventAttendeeGuestDTO implements Serializable {
         this.tenantId = tenantId;
     }
 
-    public String getGuestName() {
-        return guestName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getAgeGroup() {
@@ -170,7 +202,10 @@ public class EventAttendeeGuestDTO implements Serializable {
         return "EventAttendeeGuestDTO{" +
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
-            ", guestName='" + getGuestName() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phone='" + getPhone() + "'" +
             ", ageGroup='" + getAgeGroup() + "'" +
             ", relationship='" + getRelationship() + "'" +
             ", specialRequirements='" + getSpecialRequirements() + "'" +

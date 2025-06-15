@@ -30,10 +30,21 @@ public class EventAttendeeGuest implements Serializable {
     @Column(name = "tenant_id", length = 255)
     private String tenantId;
 
-    @NotNull
     @Size(max = 255)
-    @Column(name = "guest_name", length = 255, nullable = false)
-    private String guestName;
+    @Column(name = "first_name", length = 255)
+    private String firstName;
+
+    @Size(max = 255)
+    @Column(name = "last_name", length = 255)
+    private String lastName;
+
+    @Size(max = 255)
+    @Column(name = "email", length = 255)
+    private String email;
+
+    @Size(max = 255)
+    @Column(name = "phone", length = 255)
+    private String phone;
 
     @Size(max = 20)
     @Column(name = "age_group", length = 20)
@@ -99,17 +110,56 @@ public class EventAttendeeGuest implements Serializable {
         this.tenantId = tenantId;
     }
 
-    public String getGuestName() {
-        return this.guestName;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public EventAttendeeGuest guestName(String guestName) {
-        this.setGuestName(guestName);
+    public EventAttendeeGuest firstName(String firstName) {
+        this.setFirstName(firstName);
         return this;
     }
 
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public EventAttendeeGuest lastName(String lastName) {
+        this.setLastName(lastName);
+        return this;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public EventAttendeeGuest email(String email) {
+        this.setEmail(email);
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public EventAttendeeGuest phone(String phone) {
+        this.setPhone(phone);
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getAgeGroup() {
@@ -254,7 +304,10 @@ public class EventAttendeeGuest implements Serializable {
         return "EventAttendeeGuest{" +
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
-            ", guestName='" + getGuestName() + "'" +
+            ", firstName='" + getFirstName() + "'" +
+            ", lastName='" + getLastName() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", phone='" + getPhone() + "'" +
             ", ageGroup='" + getAgeGroup() + "'" +
             ", relationship='" + getRelationship() + "'" +
             ", specialRequirements='" + getSpecialRequirements() + "'" +

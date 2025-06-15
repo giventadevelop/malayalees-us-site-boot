@@ -154,6 +154,30 @@ public class UserProfileQueryService extends QueryService<UserProfile> {
             if (criteria.getReviewedByAdminAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getReviewedByAdminAt(), UserProfile_.reviewedByAdminAt));
             }
+            if (criteria.getRequestId() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getRequestId(), UserProfile_.requestId));
+            }
+            if (criteria.getRequestReason() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getRequestReason(), UserProfile_.requestReason));
+            }
+            if (criteria.getStatus() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getStatus(), UserProfile_.status));
+            }
+            if (criteria.getAdminComments() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getAdminComments(), UserProfile_.adminComments));
+            }
+            if (criteria.getSubmittedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getSubmittedAt(), UserProfile_.submittedAt));
+            }
+            if (criteria.getReviewedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getReviewedAt(), UserProfile_.reviewedAt));
+            }
+            if (criteria.getApprovedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getApprovedAt(), UserProfile_.approvedAt));
+            }
+            if (criteria.getRejectedAt() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getRejectedAt(), UserProfile_.rejectedAt));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), UserProfile_.createdAt));
             }

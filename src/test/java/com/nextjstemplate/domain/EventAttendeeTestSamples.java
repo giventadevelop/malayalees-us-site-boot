@@ -12,6 +12,10 @@ public class EventAttendeeTestSamples {
     public static EventAttendee getEventAttendeeSample1() {
         return new EventAttendee()
             .id(1L)
+            .firstName("firstName1")
+            .lastName("lastName1")
+            .email("email1")
+            .phone("phone1")
             .tenantId("tenantId1")
             .registrationStatus("registrationStatus1")
             .cancellationReason("cancellationReason1")
@@ -27,6 +31,10 @@ public class EventAttendeeTestSamples {
     public static EventAttendee getEventAttendeeSample2() {
         return new EventAttendee()
             .id(2L)
+            .firstName("firstName2")
+            .lastName("lastName2")
+            .email("email2")
+            .phone("phone2")
             .tenantId("tenantId2")
             .registrationStatus("registrationStatus2")
             .cancellationReason("cancellationReason2")
@@ -42,6 +50,10 @@ public class EventAttendeeTestSamples {
     public static EventAttendee getEventAttendeeRandomSampleGenerator() {
         return new EventAttendee()
             .id(longCount.incrementAndGet())
+            .firstName(UUID.randomUUID().toString())
+            .lastName(UUID.randomUUID().toString())
+            .email(UUID.randomUUID().toString())
+            .phone(UUID.randomUUID().toString())
             .tenantId(UUID.randomUUID().toString())
             .registrationStatus(UUID.randomUUID().toString())
             .cancellationReason(UUID.randomUUID().toString())

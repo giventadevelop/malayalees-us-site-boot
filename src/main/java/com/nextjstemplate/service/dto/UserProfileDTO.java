@@ -77,6 +77,26 @@ public class UserProfileDTO implements Serializable {
 
     private LocalDate reviewedByAdminAt;
 
+    @Size(max = 255)
+    private String requestId;
+
+    @Size(max = 1000)
+    private String requestReason;
+
+    @Size(max = 50)
+    private String status;
+
+    @Size(max = 1000)
+    private String adminComments;
+
+    private ZonedDateTime submittedAt;
+
+    private ZonedDateTime reviewedAt;
+
+    private ZonedDateTime approvedAt;
+
+    private ZonedDateTime rejectedAt;
+
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -261,6 +281,70 @@ public class UserProfileDTO implements Serializable {
         this.reviewedByAdminAt = reviewedByAdminAt;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
+    public String getRequestReason() {
+        return requestReason;
+    }
+
+    public void setRequestReason(String requestReason) {
+        this.requestReason = requestReason;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAdminComments() {
+        return adminComments;
+    }
+
+    public void setAdminComments(String adminComments) {
+        this.adminComments = adminComments;
+    }
+
+    public ZonedDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(ZonedDateTime submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public ZonedDateTime getReviewedAt() {
+        return reviewedAt;
+    }
+
+    public void setReviewedAt(ZonedDateTime reviewedAt) {
+        this.reviewedAt = reviewedAt;
+    }
+
+    public ZonedDateTime getApprovedAt() {
+        return approvedAt;
+    }
+
+    public void setApprovedAt(ZonedDateTime approvedAt) {
+        this.approvedAt = approvedAt;
+    }
+
+    public ZonedDateTime getRejectedAt() {
+        return rejectedAt;
+    }
+
+    public void setRejectedAt(ZonedDateTime rejectedAt) {
+        this.rejectedAt = rejectedAt;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -332,6 +416,14 @@ public class UserProfileDTO implements Serializable {
             ", userStatus='" + getUserStatus() + "'" +
             ", userRole='" + getUserRole() + "'" +
             ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +
+            ", requestId='" + getRequestId() + "'" +
+            ", requestReason='" + getRequestReason() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", adminComments='" + getAdminComments() + "'" +
+            ", submittedAt='" + getSubmittedAt() + "'" +
+            ", reviewedAt='" + getReviewedAt() + "'" +
+            ", approvedAt='" + getApprovedAt() + "'" +
+            ", rejectedAt='" + getRejectedAt() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", reviewedByAdmin=" + getReviewedByAdmin() +

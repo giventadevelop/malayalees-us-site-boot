@@ -96,8 +96,17 @@ public class EventAttendeeGuestQueryService extends QueryService<EventAttendeeGu
             if (criteria.getTenantId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventAttendeeGuest_.tenantId));
             }
-            if (criteria.getGuestName() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getGuestName(), EventAttendeeGuest_.guestName));
+            if (criteria.getFirstName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFirstName(), EventAttendeeGuest_.firstName));
+            }
+            if (criteria.getLastName() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getLastName(), EventAttendeeGuest_.lastName));
+            }
+            if (criteria.getEmail() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getEmail(), EventAttendeeGuest_.email));
+            }
+            if (criteria.getPhone() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getPhone(), EventAttendeeGuest_.phone));
             }
             if (criteria.getAgeGroup() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAgeGroup(), EventAttendeeGuest_.ageGroup));
