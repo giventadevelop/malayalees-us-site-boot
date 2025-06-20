@@ -92,8 +92,15 @@ public class EventMedia implements Serializable {
     @Column(name = "download_count")
     private Integer downloadCount;
 
-    @Column(name = "is_featured")
-    private Boolean isFeatured;
+    @Column(name = "is_featured_video")
+    private Boolean isFeaturedVideo;
+
+    @Size(max = 2048)
+    @Column(name = "featured_video_url", length = 2048)
+    private String featuredVideoUrl;
+
+    @Column(name = "is_featured_image")
+    private Boolean isFeaturedImage;
 
     @Column(name = "is_hero_image")
     private Boolean isHeroImage;
@@ -372,17 +379,43 @@ public class EventMedia implements Serializable {
         this.downloadCount = downloadCount;
     }
 
-    public Boolean getIsFeatured() {
-        return this.isFeatured;
+    public Boolean getIsFeaturedVideo() {
+        return this.isFeaturedVideo;
     }
 
-    public EventMedia isFeatured(Boolean isFeatured) {
-        this.setIsFeatured(isFeatured);
+    public EventMedia isFeaturedVideo(Boolean isFeaturedVideo) {
+        this.setIsFeaturedVideo(isFeaturedVideo);
         return this;
     }
 
-    public void setIsFeatured(Boolean isFeatured) {
-        this.isFeatured = isFeatured;
+    public void setIsFeaturedVideo(Boolean isFeaturedVideo) {
+        this.isFeaturedVideo = isFeaturedVideo;
+    }
+
+    public String getFeaturedVideoUrl() {
+        return this.featuredVideoUrl;
+    }
+
+    public EventMedia featuredVideoUrl(String featuredVideoUrl) {
+        this.setFeaturedVideoUrl(featuredVideoUrl);
+        return this;
+    }
+
+    public void setFeaturedVideoUrl(String featuredVideoUrl) {
+        this.featuredVideoUrl = featuredVideoUrl;
+    }
+
+    public Boolean getIsFeaturedImage() {
+        return this.isFeaturedImage;
+    }
+
+    public EventMedia isFeaturedImage(Boolean isFeaturedImage) {
+        this.setIsFeaturedImage(isFeaturedImage);
+        return this;
+    }
+
+    public void setIsFeaturedImage(Boolean isFeaturedImage) {
+        this.isFeaturedImage = isFeaturedImage;
     }
 
     public Boolean getIsHeroImage() {
@@ -531,7 +564,9 @@ public class EventMedia implements Serializable {
             ", altText='" + getAltText() + "'" +
             ", displayOrder=" + getDisplayOrder() +
             ", downloadCount=" + getDownloadCount() +
-            ", isFeatured='" + getIsFeatured() + "'" +
+            ", isFeaturedVideo='" + getIsFeaturedVideo() + "'" +
+            ", featuredVideoUrl='" + getFeaturedVideoUrl() + "'" +
+            ", isFeaturedImage='" + getIsFeaturedImage() + "'" +
             ", isHeroImage='" + getIsHeroImage() + "'" +
             ", isActiveHeroImage='" + getIsActiveHeroImage() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +

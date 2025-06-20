@@ -57,7 +57,7 @@ public class EventPoll implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
     @ManyToOne(fetch = FetchType.LAZY)

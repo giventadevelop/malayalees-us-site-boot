@@ -39,6 +39,12 @@ public class EventTicketType implements Serializable {
     @Column(name = "description", length = 255)
     private String description;
 
+    @Column(name = "is_service_fee_included")
+    private Boolean isServiceFeeIncluded;
+
+    @Column(name = "service_fee", precision = 21, scale = 2)
+    private BigDecimal serviceFee;
+
     @NotNull
     @Column(name = "price", precision = 21, scale = 2, nullable = false)
     private BigDecimal price;
@@ -66,7 +72,7 @@ public class EventTicketType implements Serializable {
     private ZonedDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -121,6 +127,32 @@ public class EventTicketType implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getIsServiceFeeIncluded() {
+        return this.isServiceFeeIncluded;
+    }
+
+    public EventTicketType isServiceFeeIncluded(Boolean isServiceFeeIncluded) {
+        this.setIsServiceFeeIncluded(isServiceFeeIncluded);
+        return this;
+    }
+
+    public void setIsServiceFeeIncluded(Boolean isServiceFeeIncluded) {
+        this.isServiceFeeIncluded = isServiceFeeIncluded;
+    }
+
+    public BigDecimal getServiceFee() {
+        return this.serviceFee;
+    }
+
+    public EventTicketType serviceFee(BigDecimal serviceFee) {
+        this.setServiceFee(serviceFee);
+        return this;
+    }
+
+    public void setServiceFee(BigDecimal serviceFee) {
+        this.serviceFee = serviceFee;
     }
 
     public BigDecimal getPrice() {
@@ -254,6 +286,8 @@ public class EventTicketType implements Serializable {
             ", tenantId='" + getTenantId() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", isServiceFeeIncluded='" + getIsServiceFeeIncluded() + "'" +
+            ", serviceFee=" + getServiceFee() +
             ", price=" + getPrice() +
             ", code='" + getCode() + "'" +
             ", availableQuantity=" + getAvailableQuantity() +

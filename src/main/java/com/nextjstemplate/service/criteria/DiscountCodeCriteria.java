@@ -45,7 +45,9 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter updatedAt;
 
-    private LongFilter eventsId;
+    private LongFilter eventId;
+
+    private StringFilter tenantId;
 
     private Boolean distinct;
 
@@ -64,7 +66,8 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
         this.isActive = other.isActive == null ? null : other.isActive.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
-        this.eventsId = other.eventsId == null ? null : other.eventsId.copy();
+        this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.distinct = other.distinct;
     }
 
@@ -253,19 +256,34 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
-    public LongFilter getEventsId() {
-        return eventsId;
+    public LongFilter getEventId() {
+        return eventId;
     }
 
-    public LongFilter eventsId() {
-        if (eventsId == null) {
-            eventsId = new LongFilter();
+    public LongFilter eventId() {
+        if (eventId == null) {
+            eventId = new LongFilter();
         }
-        return eventsId;
+        return eventId;
     }
 
-    public void setEventsId(LongFilter eventsId) {
-        this.eventsId = eventsId;
+    public void setEventId(LongFilter eventId) {
+        this.eventId = eventId;
+    }
+
+    public StringFilter getTenantId() {
+        return tenantId;
+    }
+
+    public StringFilter tenantId() {
+        if (tenantId == null) {
+            tenantId = new StringFilter();
+        }
+        return tenantId;
+    }
+
+    public void setTenantId(StringFilter tenantId) {
+        this.tenantId = tenantId;
     }
 
     public Boolean getDistinct() {
@@ -298,7 +316,8 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
             Objects.equals(isActive, that.isActive) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
-            Objects.equals(eventsId, that.eventsId) &&
+            Objects.equals(eventId, that.eventId) &&
+            Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -318,7 +337,8 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
             isActive,
             createdAt,
             updatedAt,
-            eventsId,
+            eventId,
+            tenantId,
             distinct
         );
     }
@@ -339,7 +359,8 @@ public class DiscountCodeCriteria implements Serializable, Criteria {
             (isActive != null ? "isActive=" + isActive + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
-            (eventsId != null ? "eventsId=" + eventsId + ", " : "") +
+            (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

@@ -175,6 +175,8 @@ entity EventTicketType {
     tenantId String maxlength(255),
     name String required maxlength(255),
     description String maxlength(255),
+    isServiceFeeIncluded Boolean,
+    serviceFee BigDecimal,
     price BigDecimal required,
     code String required maxlength(255),
     availableQuantity Integer,
@@ -260,6 +262,8 @@ entity EventMedia {
     altText String maxlength(500),
     displayOrder Integer,
     downloadCount Integer,
+    isFeaturedVideo Boolean,
+    featuredVideoUrl String maxlength(2048),
     isFeaturedImage Boolean,
     isHeroImage Boolean,
     isActiveHeroImage Boolean,
@@ -392,16 +396,19 @@ entity DiscountCode {
     id Long,
     code String required maxlength(50),
     description String maxlength(255),
-    discountType String maxlength(20) required, // PERCENT or FIXED
+    discountType String required maxlength(20), // PERCENT or FIXED
     discountValue BigDecimal required,
     maxUses Integer,
-    usesCount Integer,
+    usesCount Integer ,
     validFrom ZonedDateTime,
     validTo ZonedDateTime,
-    isActive Boolean,
+    isActive Boolean ,
     createdAt ZonedDateTime required,
-    updatedAt ZonedDateTime required
+    updatedAt ZonedDateTime required,
+    eventId Long required,
+    tenantId String required maxlength(255)
 }
+
 
 entity EventScoreCard {
     id Long,
@@ -522,10 +529,6 @@ relationship ManyToOne {
     // Event Live Update relationships
     EventLiveUpdate{event required} to EventDetails,
     EventLiveUpdateAttachment{liveUpdate required} to EventLiveUpdate
-}
-
-relationship ManyToMany {
-    EventDetails{discountCodes} to DiscountCode{events}
 }
 
 // ADDITIONAL VALIDATION RULES (Comments for implementation)

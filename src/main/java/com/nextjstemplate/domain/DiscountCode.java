@@ -1,13 +1,10 @@
 package com.nextjstemplate.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -69,10 +66,14 @@ public class DiscountCode implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "discountCodes")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
-    private Set<EventDetails> events = new HashSet<>();
+    @NotNull
+    @Column(name = "event_id", nullable = false)
+    private Long eventId;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "tenant_id", length = 255, nullable = false)
+    private String tenantId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -232,35 +233,30 @@ public class DiscountCode implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Set<EventDetails> getEvents() {
-        return this.events;
+    public Long getEventId() {
+        return this.eventId;
     }
 
-    public void setEvents(Set<EventDetails> eventDetails) {
-        if (this.events != null) {
-            this.events.forEach(i -> i.removeDiscountCodes(this));
-        }
-        if (eventDetails != null) {
-            eventDetails.forEach(i -> i.addDiscountCodes(this));
-        }
-        this.events = eventDetails;
-    }
-
-    public DiscountCode events(Set<EventDetails> eventDetails) {
-        this.setEvents(eventDetails);
+    public DiscountCode eventId(Long eventId) {
+        this.setEventId(eventId);
         return this;
     }
 
-    public DiscountCode addEvents(EventDetails eventDetails) {
-        this.events.add(eventDetails);
-        eventDetails.getDiscountCodes().add(this);
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getTenantId() {
+        return this.tenantId;
+    }
+
+    public DiscountCode tenantId(String tenantId) {
+        this.setTenantId(tenantId);
         return this;
     }
 
-    public DiscountCode removeEvents(EventDetails eventDetails) {
-        this.events.remove(eventDetails);
-        eventDetails.getDiscountCodes().remove(this);
-        return this;
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -298,6 +294,8 @@ public class DiscountCode implements Serializable {
             ", isActive='" + getIsActive() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", eventId=" + getEventId() +
+            ", tenantId='" + getTenantId() + "'" +
             "}";
     }
 }

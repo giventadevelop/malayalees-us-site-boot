@@ -1237,7 +1237,7 @@ class DiscountCodeResourceIT {
         defaultDiscountCodeShouldBeFound("updatedAt.greaterThan=" + SMALLER_UPDATED_AT);
     }
 
-    @Test
+  /*  @Test
     @Transactional
     void getAllDiscountCodesByEventsIsEqualToSomething() throws Exception {
         EventDetails events;
@@ -1257,7 +1257,7 @@ class DiscountCodeResourceIT {
 
         // Get all the discountCodeList where events equals to (eventsId + 1)
         defaultDiscountCodeShouldNotBeFound("eventsId.equals=" + (eventsId + 1));
-    }
+    }*/
 
     /**
      * Executes the search, and checks that the default entity is returned.

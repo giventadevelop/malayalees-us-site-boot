@@ -12,11 +12,27 @@ public class DiscountCodeTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static DiscountCode getDiscountCodeSample1() {
-        return new DiscountCode().id(1L).code("code1").description("description1").discountType("discountType1").maxUses(1).usesCount(1);
+        return new DiscountCode()
+            .id(1L)
+            .code("code1")
+            .description("description1")
+            .discountType("discountType1")
+            .maxUses(1)
+            .usesCount(1)
+            .eventId(1L)
+            .tenantId("tenantId1");
     }
 
     public static DiscountCode getDiscountCodeSample2() {
-        return new DiscountCode().id(2L).code("code2").description("description2").discountType("discountType2").maxUses(2).usesCount(2);
+        return new DiscountCode()
+            .id(2L)
+            .code("code2")
+            .description("description2")
+            .discountType("discountType2")
+            .maxUses(2)
+            .usesCount(2)
+            .eventId(2L)
+            .tenantId("tenantId2");
     }
 
     public static DiscountCode getDiscountCodeRandomSampleGenerator() {
@@ -26,6 +42,8 @@ public class DiscountCodeTestSamples {
             .description(UUID.randomUUID().toString())
             .discountType(UUID.randomUUID().toString())
             .maxUses(intCount.incrementAndGet())
-            .usesCount(intCount.incrementAndGet());
+            .usesCount(intCount.incrementAndGet())
+            .eventId(longCount.incrementAndGet())
+            .tenantId(UUID.randomUUID().toString());
     }
 }

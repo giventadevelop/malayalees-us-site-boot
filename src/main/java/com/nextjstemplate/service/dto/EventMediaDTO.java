@@ -63,7 +63,12 @@ public class EventMediaDTO implements Serializable {
 
     private Integer downloadCount;
 
-    private Boolean isFeatured;
+    private Boolean isFeaturedVideo;
+
+    @Size(max = 2048)
+    private String featuredVideoUrl;
+
+    private Boolean isFeaturedImage;
 
     private Boolean isHeroImage;
 
@@ -237,13 +242,30 @@ public class EventMediaDTO implements Serializable {
         this.downloadCount = downloadCount;
     }
 
-    public Boolean getIsFeatured() {
-        return isFeatured;
+    public Boolean getIsFeaturedVideo() {
+        return isFeaturedVideo;
     }
 
-    public void setIsFeatured(Boolean isFeatured) {
-        this.isFeatured = isFeatured;
+    public void setIsFeaturedVideo(Boolean isFeaturedVideo) {
+        this.isFeaturedVideo = isFeaturedVideo;
     }
+
+    public String getFeaturedVideoUrl() {
+        return featuredVideoUrl;
+    }
+
+    public void setFeaturedVideoUrl(String featuredVideoUrl) {
+        this.featuredVideoUrl = featuredVideoUrl;
+    }
+
+    public Boolean getIsFeaturedImage() {
+        return isFeaturedImage;
+    }
+
+    public void setIsFeaturedImage(Boolean isFeaturedImage) {
+        this.isFeaturedImage = isFeaturedImage;
+    }
+
 
     public Boolean getIsHeroImage() {
         return isHeroImage;
@@ -353,7 +375,9 @@ public class EventMediaDTO implements Serializable {
             ", altText='" + getAltText() + "'" +
             ", displayOrder=" + getDisplayOrder() +
             ", downloadCount=" + getDownloadCount() +
-            ", isFeatured='" + getIsFeatured() + "'" +
+            ", isFeaturedVideo='" + getIsFeaturedVideo() + "'" +
+            ", featuredVideoUrl='" + getFeaturedVideoUrl() + "'" +
+            ", isFeaturedImage='" + getIsFeaturedImage() + "'" +
             ", isHeroImage='" + getIsHeroImage() + "'" +
             ", isActiveHeroImage='" + getIsActiveHeroImage() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +

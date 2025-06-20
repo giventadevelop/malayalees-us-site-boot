@@ -104,7 +104,7 @@ public class EventMediaServiceImpl implements EventMediaService {
     }
 
     public EventMediaDTO uploadFile(MultipartFile file, Long eventId, Long userProfileId, String title,
-                                    String description, String  tenantId, boolean isPublic, Boolean eventFlyer,  Boolean isFeatured,Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
+                                    String description, String  tenantId, boolean isPublic, Boolean eventFlyer,  Boolean isFeaturedImage,Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
         // Upload to S3
         String fileUrl = s3Service.uploadFile(file, eventId, title, tenantId);
 
@@ -127,7 +127,7 @@ public class EventMediaServiceImpl implements EventMediaService {
         eventMedia.setCreatedAt(ZonedDateTime.now());
         eventMedia.setUpdatedAt(ZonedDateTime.now());
         eventMedia.setEventFlyer(eventFlyer);
-        eventMedia.setIsFeatured(isFeatured);
+        eventMedia.setIsFeaturedImage(isFeaturedImage);
         eventMedia.setIsEventManagementOfficialDocument(isEventManagementOfficialDocument);
         eventMedia.setIsHeroImage(isHeroImage);
         eventMedia.setIsActiveHeroImage(isActiveHeroImage);
@@ -146,14 +146,14 @@ public class EventMediaServiceImpl implements EventMediaService {
     @Override
     public List<EventMediaDTO> uploadMultipleFiles(List<MultipartFile> files, Long eventId, Long userProfileId,
                                                    List<String> titles, List<String> descriptions, String  tenantId, boolean isPublic, Boolean eventFlyer,
-                                                   Boolean isFeatured, Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
+                                                   Boolean isFeaturedImage, Boolean isEventManagementOfficialDocument, Boolean isHeroImage, Boolean isActiveHeroImage) {
         List<EventMediaDTO> result = new ArrayList<>();
         for (int i = 0; i < files.size(); i++) {
             MultipartFile file = files.get(i);
             String title = (titles != null && i < titles.size()) ? titles.get(i) : file.getOriginalFilename();
             String description = (descriptions != null && i < descriptions.size()) ? descriptions.get(i) : null;
             result.add(uploadFile(file, eventId, userProfileId, title, description, tenantId, isPublic, eventFlyer,
-                isFeatured,isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage));
+                isFeaturedImage,isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage));
         }
         return result;
     }

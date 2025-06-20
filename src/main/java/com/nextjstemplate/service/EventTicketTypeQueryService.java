@@ -99,6 +99,13 @@ public class EventTicketTypeQueryService extends QueryService<EventTicketType> {
             if (criteria.getDescription() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescription(), EventTicketType_.description));
             }
+            if (criteria.getIsServiceFeeIncluded() != null) {
+                specification =
+                    specification.and(buildSpecification(criteria.getIsServiceFeeIncluded(), EventTicketType_.isServiceFeeIncluded));
+            }
+            if (criteria.getServiceFee() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getServiceFee(), EventTicketType_.serviceFee));
+            }
             if (criteria.getPrice() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPrice(), EventTicketType_.price));
             }

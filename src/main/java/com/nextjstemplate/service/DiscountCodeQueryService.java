@@ -6,7 +6,6 @@ import com.nextjstemplate.repository.DiscountCodeRepository;
 import com.nextjstemplate.service.criteria.DiscountCodeCriteria;
 import com.nextjstemplate.service.dto.DiscountCodeDTO;
 import com.nextjstemplate.service.mapper.DiscountCodeMapper;
-import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -123,14 +122,11 @@ public class DiscountCodeQueryService extends QueryService<DiscountCode> {
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), DiscountCode_.updatedAt));
             }
-            if (criteria.getEventsId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getEventsId(),
-                            root -> root.join(DiscountCode_.events, JoinType.LEFT).get(EventDetails_.id)
-                        )
-                    );
+            if (criteria.getEventId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getEventId(), DiscountCode_.eventId));
+            }
+            if (criteria.getTenantId() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTenantId(), DiscountCode_.tenantId));
             }
         }
         return specification;

@@ -274,7 +274,7 @@ public class EventMediaResource {
             @RequestParam("tenantId") String tenantId,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
             @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
-            @RequestParam(value = "isFeatured", required = false) Boolean isFeatured,
+            @RequestParam(value = "isFeaturedImage", required = false) Boolean isFeaturedImage,
             @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
             @RequestParam(value = "isHeroImage", required = false) Boolean isHeroImage,
             @RequestParam(value = "isActiveHeroImage", required = false) Boolean isActiveHeroImage,
@@ -286,7 +286,7 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         EventMediaDTO result = eventMediaService.uploadFile(file, eventId, userProfileId, title, description,
-            tenantId, isPublicValue, eventFlyer, isFeatured, isEventManagementOfficialDocument, isHeroImage, isActiveHeroImage);
+            tenantId, isPublicValue, eventFlyer, isFeaturedImage, isEventManagementOfficialDocument, isHeroImage, isActiveHeroImage);
         return ResponseEntity
                 .created(new URI("/api/event-medias/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
@@ -307,7 +307,7 @@ public class EventMediaResource {
             @RequestParam("tenantId") String tenantId,
             @RequestParam(value = "isPublic", required = false) Boolean isPublic,
             @RequestParam(value = "eventFlyer", required = false) Boolean eventFlyer,
-            @RequestParam(value = "isFeatured", required = false) Boolean isFeatured,
+            @RequestParam(value = "isFeaturedImage", required = false) Boolean isFeaturedImage,
             @RequestParam(value = "isEventManagementOfficialDocument", required = false) Boolean isEventManagementOfficialDocument,
             @RequestParam(value = "isHeroImage", required = false) Boolean isHeroImage,
             @RequestParam(value = "isActiveHeroImage", required = false) Boolean isActiveHeroImage,
@@ -328,7 +328,7 @@ public class EventMediaResource {
         }
         boolean isPublicValue = isPublic != null ? isPublic : false;
         List<EventMediaDTO> results = eventMediaService.uploadMultipleFiles(files, eventId, userProfileId, titles,
-                descriptions, tenantId, isPublicValue, eventFlyer,isFeatured, isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage);
+                descriptions, tenantId, isPublicValue, eventFlyer,isFeaturedImage, isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert(applicationName, "eventMedia.uploaded", String.valueOf(results.size())))
                 .body(results);

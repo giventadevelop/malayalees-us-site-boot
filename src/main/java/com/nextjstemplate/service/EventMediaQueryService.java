@@ -139,8 +139,14 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
             if (criteria.getDownloadCount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getDownloadCount(), EventMedia_.downloadCount));
             }
-            if (criteria.getIsFeatured() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsFeatured(), EventMedia_.isFeatured));
+            if (criteria.getIsFeaturedVideo() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsFeaturedVideo(), EventMedia_.isFeaturedVideo));
+            }
+            if (criteria.getFeaturedVideoUrl() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFeaturedVideoUrl(), EventMedia_.featuredVideoUrl));
+            }
+            if (criteria.getIsFeaturedImage() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsFeaturedImage(), EventMedia_.isFeaturedImage));
             }
             if (criteria.getIsHeroImage() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsHeroImage(), EventMedia_.isHeroImage));

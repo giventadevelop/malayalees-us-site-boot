@@ -24,6 +24,10 @@ public class EventTicketTypeDTO implements Serializable {
     @Size(max = 255)
     private String description;
 
+    private Boolean isServiceFeeIncluded;
+
+    private BigDecimal serviceFee;
+
     @NotNull
     private BigDecimal price;
 
@@ -75,6 +79,22 @@ public class EventTicketTypeDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getIsServiceFeeIncluded() {
+        return isServiceFeeIncluded;
+    }
+
+    public void setIsServiceFeeIncluded(Boolean isServiceFeeIncluded) {
+        this.isServiceFeeIncluded = isServiceFeeIncluded;
+    }
+
+    public BigDecimal getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(BigDecimal serviceFee) {
+        this.serviceFee = serviceFee;
     }
 
     public BigDecimal getPrice() {
@@ -170,6 +190,8 @@ public class EventTicketTypeDTO implements Serializable {
             ", tenantId='" + getTenantId() + "'" +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", isServiceFeeIncluded='" + getIsServiceFeeIncluded() + "'" +
+            ", serviceFee=" + getServiceFee() +
             ", price=" + getPrice() +
             ", code='" + getCode() + "'" +
             ", availableQuantity=" + getAvailableQuantity() +

@@ -80,7 +80,7 @@ public class UserTask implements Serializable {
     private UserProfile user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

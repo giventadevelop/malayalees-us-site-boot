@@ -29,6 +29,10 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
+    private BooleanFilter isServiceFeeIncluded;
+
+    private BigDecimalFilter serviceFee;
+
     private BigDecimalFilter price;
 
     private StringFilter code;
@@ -54,6 +58,8 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.name = other.name == null ? null : other.name.copy();
         this.description = other.description == null ? null : other.description.copy();
+        this.isServiceFeeIncluded = other.isServiceFeeIncluded == null ? null : other.isServiceFeeIncluded.copy();
+        this.serviceFee = other.serviceFee == null ? null : other.serviceFee.copy();
         this.price = other.price == null ? null : other.price.copy();
         this.code = other.code == null ? null : other.code.copy();
         this.availableQuantity = other.availableQuantity == null ? null : other.availableQuantity.copy();
@@ -128,6 +134,36 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
 
     public void setDescription(StringFilter description) {
         this.description = description;
+    }
+
+    public BooleanFilter getIsServiceFeeIncluded() {
+        return isServiceFeeIncluded;
+    }
+
+    public BooleanFilter isServiceFeeIncluded() {
+        if (isServiceFeeIncluded == null) {
+            isServiceFeeIncluded = new BooleanFilter();
+        }
+        return isServiceFeeIncluded;
+    }
+
+    public void setIsServiceFeeIncluded(BooleanFilter isServiceFeeIncluded) {
+        this.isServiceFeeIncluded = isServiceFeeIncluded;
+    }
+
+    public BigDecimalFilter getServiceFee() {
+        return serviceFee;
+    }
+
+    public BigDecimalFilter serviceFee() {
+        if (serviceFee == null) {
+            serviceFee = new BigDecimalFilter();
+        }
+        return serviceFee;
+    }
+
+    public void setServiceFee(BigDecimalFilter serviceFee) {
+        this.serviceFee = serviceFee;
     }
 
     public BigDecimalFilter getPrice() {
@@ -272,6 +308,8 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(name, that.name) &&
             Objects.equals(description, that.description) &&
+            Objects.equals(isServiceFeeIncluded, that.isServiceFeeIncluded) &&
+            Objects.equals(serviceFee, that.serviceFee) &&
             Objects.equals(price, that.price) &&
             Objects.equals(code, that.code) &&
             Objects.equals(availableQuantity, that.availableQuantity) &&
@@ -291,6 +329,8 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             tenantId,
             name,
             description,
+            isServiceFeeIncluded,
+            serviceFee,
             price,
             code,
             availableQuantity,
@@ -311,6 +351,8 @@ public class EventTicketTypeCriteria implements Serializable, Criteria {
             (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
             (name != null ? "name=" + name + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
+            (isServiceFeeIncluded != null ? "isServiceFeeIncluded=" + isServiceFeeIncluded + ", " : "") +
+            (serviceFee != null ? "serviceFee=" + serviceFee + ", " : "") +
             (price != null ? "price=" + price + ", " : "") +
             (code != null ? "code=" + code + ", " : "") +
             (availableQuantity != null ? "availableQuantity=" + availableQuantity + ", " : "") +

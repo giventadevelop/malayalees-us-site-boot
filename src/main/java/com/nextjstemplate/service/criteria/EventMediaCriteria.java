@@ -53,7 +53,11 @@ public class EventMediaCriteria implements Serializable, Criteria {
 
     private IntegerFilter downloadCount;
 
-    private BooleanFilter isFeatured;
+    private BooleanFilter isFeaturedVideo;
+
+    private StringFilter featuredVideoUrl;
+
+    private BooleanFilter isFeaturedImage;
 
     private BooleanFilter isHeroImage;
 
@@ -89,7 +93,9 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.altText = other.altText == null ? null : other.altText.copy();
         this.displayOrder = other.displayOrder == null ? null : other.displayOrder.copy();
         this.downloadCount = other.downloadCount == null ? null : other.downloadCount.copy();
-        this.isFeatured = other.isFeatured == null ? null : other.isFeatured.copy();
+        this.isFeaturedVideo = other.isFeaturedVideo == null ? null : other.isFeaturedVideo.copy();
+        this.featuredVideoUrl = other.featuredVideoUrl == null ? null : other.featuredVideoUrl.copy();
+        this.isFeaturedImage = other.isFeaturedImage == null ? null : other.isFeaturedImage.copy();
         this.isHeroImage = other.isHeroImage == null ? null : other.isHeroImage.copy();
         this.isActiveHeroImage = other.isActiveHeroImage == null ? null : other.isActiveHeroImage.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
@@ -346,19 +352,49 @@ public class EventMediaCriteria implements Serializable, Criteria {
         this.downloadCount = downloadCount;
     }
 
-    public BooleanFilter getIsFeatured() {
-        return isFeatured;
+    public BooleanFilter getIsFeaturedVideo() {
+        return isFeaturedVideo;
     }
 
-    public BooleanFilter isFeatured() {
-        if (isFeatured == null) {
-            isFeatured = new BooleanFilter();
+    public BooleanFilter isFeaturedVideo() {
+        if (isFeaturedVideo == null) {
+            isFeaturedVideo = new BooleanFilter();
         }
-        return isFeatured;
+        return isFeaturedVideo;
     }
 
-    public void setIsFeatured(BooleanFilter isFeatured) {
-        this.isFeatured = isFeatured;
+    public void setIsFeaturedVideo(BooleanFilter isFeaturedVideo) {
+        this.isFeaturedVideo = isFeaturedVideo;
+    }
+
+    public StringFilter getFeaturedVideoUrl() {
+        return featuredVideoUrl;
+    }
+
+    public StringFilter featuredVideoUrl() {
+        if (featuredVideoUrl == null) {
+            featuredVideoUrl = new StringFilter();
+        }
+        return featuredVideoUrl;
+    }
+
+    public void setFeaturedVideoUrl(StringFilter featuredVideoUrl) {
+        this.featuredVideoUrl = featuredVideoUrl;
+    }
+
+    public BooleanFilter getIsFeaturedImage() {
+        return isFeaturedImage;
+    }
+
+    public BooleanFilter isFeaturedImage() {
+        if (isFeaturedImage == null) {
+            isFeaturedImage = new BooleanFilter();
+        }
+        return isFeaturedImage;
+    }
+
+    public void setIsFeaturedImage(BooleanFilter isFeaturedImage) {
+        this.isFeaturedImage = isFeaturedImage;
     }
 
     public BooleanFilter getIsHeroImage() {
@@ -485,7 +521,9 @@ public class EventMediaCriteria implements Serializable, Criteria {
             Objects.equals(altText, that.altText) &&
             Objects.equals(displayOrder, that.displayOrder) &&
             Objects.equals(downloadCount, that.downloadCount) &&
-            Objects.equals(isFeatured, that.isFeatured) &&
+            Objects.equals(isFeaturedVideo, that.isFeaturedVideo) &&
+            Objects.equals(featuredVideoUrl, that.featuredVideoUrl) &&
+            Objects.equals(isFeaturedImage, that.isFeaturedImage) &&
             Objects.equals(isHeroImage, that.isHeroImage) &&
             Objects.equals(isActiveHeroImage, that.isActiveHeroImage) &&
             Objects.equals(createdAt, that.createdAt) &&
@@ -517,7 +555,9 @@ public class EventMediaCriteria implements Serializable, Criteria {
             altText,
             displayOrder,
             downloadCount,
-            isFeatured,
+            isFeaturedVideo,
+            featuredVideoUrl,
+            isFeaturedImage,
             isHeroImage,
             isActiveHeroImage,
             createdAt,
@@ -550,7 +590,9 @@ public class EventMediaCriteria implements Serializable, Criteria {
             (altText != null ? "altText=" + altText + ", " : "") +
             (displayOrder != null ? "displayOrder=" + displayOrder + ", " : "") +
             (downloadCount != null ? "downloadCount=" + downloadCount + ", " : "") +
-            (isFeatured != null ? "isFeatured=" + isFeatured + ", " : "") +
+            (isFeaturedVideo != null ? "isFeaturedVideo=" + isFeaturedVideo + ", " : "") +
+            (featuredVideoUrl != null ? "featuredVideoUrl=" + featuredVideoUrl + ", " : "") +
+            (isFeaturedImage != null ? "isFeaturedImage=" + isFeaturedImage + ", " : "") +
             (isHeroImage != null ? "isHeroImage=" + isHeroImage + ", " : "") +
             (isActiveHeroImage != null ? "isActiveHeroImage=" + isActiveHeroImage + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +

@@ -63,7 +63,7 @@ public class EventGuestPricing implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
