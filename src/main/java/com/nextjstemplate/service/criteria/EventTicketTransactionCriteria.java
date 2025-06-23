@@ -25,11 +25,15 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private StringFilter tenantId;
 
+    private StringFilter transactionReference;
+
     private StringFilter email;
 
     private StringFilter firstName;
 
     private StringFilter lastName;
+
+    private StringFilter phone;
 
     private IntegerFilter quantity;
 
@@ -37,13 +41,33 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter totalAmount;
 
-    private StringFilter status;
+    private BigDecimalFilter taxAmount;
 
-    private ZonedDateTimeFilter purchaseDate;
+    private BigDecimalFilter feeAmount;
 
     private LongFilter discountCodeId;
 
     private BigDecimalFilter discountAmount;
+
+    private BigDecimalFilter finalAmount;
+
+    private StringFilter status;
+
+    private StringFilter paymentMethod;
+
+    private StringFilter paymentReference;
+
+    private ZonedDateTimeFilter purchaseDate;
+
+    private ZonedDateTimeFilter confirmationSentAt;
+
+    private BigDecimalFilter refundAmount;
+
+    private ZonedDateTimeFilter refundDate;
+
+    private StringFilter stripeCheckoutSessionId;
+
+    private StringFilter stripePaymentIntentId;
 
     private ZonedDateTimeFilter createdAt;
 
@@ -62,16 +86,28 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
     public EventTicketTransactionCriteria(EventTicketTransactionCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
+        this.transactionReference = other.transactionReference == null ? null : other.transactionReference.copy();
         this.email = other.email == null ? null : other.email.copy();
         this.firstName = other.firstName == null ? null : other.firstName.copy();
         this.lastName = other.lastName == null ? null : other.lastName.copy();
+        this.phone = other.phone == null ? null : other.phone.copy();
         this.quantity = other.quantity == null ? null : other.quantity.copy();
         this.pricePerUnit = other.pricePerUnit == null ? null : other.pricePerUnit.copy();
         this.totalAmount = other.totalAmount == null ? null : other.totalAmount.copy();
-        this.status = other.status == null ? null : other.status.copy();
-        this.purchaseDate = other.purchaseDate == null ? null : other.purchaseDate.copy();
+        this.taxAmount = other.taxAmount == null ? null : other.taxAmount.copy();
+        this.feeAmount = other.feeAmount == null ? null : other.feeAmount.copy();
         this.discountCodeId = other.discountCodeId == null ? null : other.discountCodeId.copy();
         this.discountAmount = other.discountAmount == null ? null : other.discountAmount.copy();
+        this.finalAmount = other.finalAmount == null ? null : other.finalAmount.copy();
+        this.status = other.status == null ? null : other.status.copy();
+        this.paymentMethod = other.paymentMethod == null ? null : other.paymentMethod.copy();
+        this.paymentReference = other.paymentReference == null ? null : other.paymentReference.copy();
+        this.purchaseDate = other.purchaseDate == null ? null : other.purchaseDate.copy();
+        this.confirmationSentAt = other.confirmationSentAt == null ? null : other.confirmationSentAt.copy();
+        this.refundAmount = other.refundAmount == null ? null : other.refundAmount.copy();
+        this.refundDate = other.refundDate == null ? null : other.refundDate.copy();
+        this.stripeCheckoutSessionId = other.stripeCheckoutSessionId == null ? null : other.stripeCheckoutSessionId.copy();
+        this.stripePaymentIntentId = other.stripePaymentIntentId == null ? null : other.stripePaymentIntentId.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
@@ -113,6 +149,21 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     public void setTenantId(StringFilter tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public StringFilter getTransactionReference() {
+        return transactionReference;
+    }
+
+    public StringFilter transactionReference() {
+        if (transactionReference == null) {
+            transactionReference = new StringFilter();
+        }
+        return transactionReference;
+    }
+
+    public void setTransactionReference(StringFilter transactionReference) {
+        this.transactionReference = transactionReference;
     }
 
     public StringFilter getEmail() {
@@ -160,6 +211,21 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.lastName = lastName;
     }
 
+    public StringFilter getPhone() {
+        return phone;
+    }
+
+    public StringFilter phone() {
+        if (phone == null) {
+            phone = new StringFilter();
+        }
+        return phone;
+    }
+
+    public void setPhone(StringFilter phone) {
+        this.phone = phone;
+    }
+
     public IntegerFilter getQuantity() {
         return quantity;
     }
@@ -205,34 +271,34 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.totalAmount = totalAmount;
     }
 
-    public StringFilter getStatus() {
-        return status;
+    public BigDecimalFilter getTaxAmount() {
+        return taxAmount;
     }
 
-    public StringFilter status() {
-        if (status == null) {
-            status = new StringFilter();
+    public BigDecimalFilter taxAmount() {
+        if (taxAmount == null) {
+            taxAmount = new BigDecimalFilter();
         }
-        return status;
+        return taxAmount;
     }
 
-    public void setStatus(StringFilter status) {
-        this.status = status;
+    public void setTaxAmount(BigDecimalFilter taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
-    public ZonedDateTimeFilter getPurchaseDate() {
-        return purchaseDate;
+    public BigDecimalFilter getFeeAmount() {
+        return feeAmount;
     }
 
-    public ZonedDateTimeFilter purchaseDate() {
-        if (purchaseDate == null) {
-            purchaseDate = new ZonedDateTimeFilter();
+    public BigDecimalFilter feeAmount() {
+        if (feeAmount == null) {
+            feeAmount = new BigDecimalFilter();
         }
-        return purchaseDate;
+        return feeAmount;
     }
 
-    public void setPurchaseDate(ZonedDateTimeFilter purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setFeeAmount(BigDecimalFilter feeAmount) {
+        this.feeAmount = feeAmount;
     }
 
     public LongFilter getDiscountCodeId() {
@@ -263,6 +329,156 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     public void setDiscountAmount(BigDecimalFilter discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public BigDecimalFilter getFinalAmount() {
+        return finalAmount;
+    }
+
+    public BigDecimalFilter finalAmount() {
+        if (finalAmount == null) {
+            finalAmount = new BigDecimalFilter();
+        }
+        return finalAmount;
+    }
+
+    public void setFinalAmount(BigDecimalFilter finalAmount) {
+        this.finalAmount = finalAmount;
+    }
+
+    public StringFilter getStatus() {
+        return status;
+    }
+
+    public StringFilter status() {
+        if (status == null) {
+            status = new StringFilter();
+        }
+        return status;
+    }
+
+    public void setStatus(StringFilter status) {
+        this.status = status;
+    }
+
+    public StringFilter getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public StringFilter paymentMethod() {
+        if (paymentMethod == null) {
+            paymentMethod = new StringFilter();
+        }
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(StringFilter paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public StringFilter getPaymentReference() {
+        return paymentReference;
+    }
+
+    public StringFilter paymentReference() {
+        if (paymentReference == null) {
+            paymentReference = new StringFilter();
+        }
+        return paymentReference;
+    }
+
+    public void setPaymentReference(StringFilter paymentReference) {
+        this.paymentReference = paymentReference;
+    }
+
+    public ZonedDateTimeFilter getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public ZonedDateTimeFilter purchaseDate() {
+        if (purchaseDate == null) {
+            purchaseDate = new ZonedDateTimeFilter();
+        }
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(ZonedDateTimeFilter purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public ZonedDateTimeFilter getConfirmationSentAt() {
+        return confirmationSentAt;
+    }
+
+    public ZonedDateTimeFilter confirmationSentAt() {
+        if (confirmationSentAt == null) {
+            confirmationSentAt = new ZonedDateTimeFilter();
+        }
+        return confirmationSentAt;
+    }
+
+    public void setConfirmationSentAt(ZonedDateTimeFilter confirmationSentAt) {
+        this.confirmationSentAt = confirmationSentAt;
+    }
+
+    public BigDecimalFilter getRefundAmount() {
+        return refundAmount;
+    }
+
+    public BigDecimalFilter refundAmount() {
+        if (refundAmount == null) {
+            refundAmount = new BigDecimalFilter();
+        }
+        return refundAmount;
+    }
+
+    public void setRefundAmount(BigDecimalFilter refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public ZonedDateTimeFilter getRefundDate() {
+        return refundDate;
+    }
+
+    public ZonedDateTimeFilter refundDate() {
+        if (refundDate == null) {
+            refundDate = new ZonedDateTimeFilter();
+        }
+        return refundDate;
+    }
+
+    public void setRefundDate(ZonedDateTimeFilter refundDate) {
+        this.refundDate = refundDate;
+    }
+
+    public StringFilter getStripeCheckoutSessionId() {
+        return stripeCheckoutSessionId;
+    }
+
+    public StringFilter stripeCheckoutSessionId() {
+        if (stripeCheckoutSessionId == null) {
+            stripeCheckoutSessionId = new StringFilter();
+        }
+        return stripeCheckoutSessionId;
+    }
+
+    public void setStripeCheckoutSessionId(StringFilter stripeCheckoutSessionId) {
+        this.stripeCheckoutSessionId = stripeCheckoutSessionId;
+    }
+
+    public StringFilter getStripePaymentIntentId() {
+        return stripePaymentIntentId;
+    }
+
+    public StringFilter stripePaymentIntentId() {
+        if (stripePaymentIntentId == null) {
+            stripePaymentIntentId = new StringFilter();
+        }
+        return stripePaymentIntentId;
+    }
+
+    public void setStripePaymentIntentId(StringFilter stripePaymentIntentId) {
+        this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
     public ZonedDateTimeFilter getCreatedAt() {
@@ -360,16 +576,28 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         return (
             Objects.equals(id, that.id) &&
             Objects.equals(tenantId, that.tenantId) &&
+            Objects.equals(transactionReference, that.transactionReference) &&
             Objects.equals(email, that.email) &&
             Objects.equals(firstName, that.firstName) &&
             Objects.equals(lastName, that.lastName) &&
+            Objects.equals(phone, that.phone) &&
             Objects.equals(quantity, that.quantity) &&
             Objects.equals(pricePerUnit, that.pricePerUnit) &&
             Objects.equals(totalAmount, that.totalAmount) &&
-            Objects.equals(status, that.status) &&
-            Objects.equals(purchaseDate, that.purchaseDate) &&
+            Objects.equals(taxAmount, that.taxAmount) &&
+            Objects.equals(feeAmount, that.feeAmount) &&
             Objects.equals(discountCodeId, that.discountCodeId) &&
             Objects.equals(discountAmount, that.discountAmount) &&
+            Objects.equals(finalAmount, that.finalAmount) &&
+            Objects.equals(status, that.status) &&
+            Objects.equals(paymentMethod, that.paymentMethod) &&
+            Objects.equals(paymentReference, that.paymentReference) &&
+            Objects.equals(purchaseDate, that.purchaseDate) &&
+            Objects.equals(confirmationSentAt, that.confirmationSentAt) &&
+            Objects.equals(refundAmount, that.refundAmount) &&
+            Objects.equals(refundDate, that.refundDate) &&
+            Objects.equals(stripeCheckoutSessionId, that.stripeCheckoutSessionId) &&
+            Objects.equals(stripePaymentIntentId, that.stripePaymentIntentId) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
@@ -384,16 +612,28 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         return Objects.hash(
             id,
             tenantId,
+            transactionReference,
             email,
             firstName,
             lastName,
+            phone,
             quantity,
             pricePerUnit,
             totalAmount,
-            status,
-            purchaseDate,
+            taxAmount,
+            feeAmount,
             discountCodeId,
             discountAmount,
+            finalAmount,
+            status,
+            paymentMethod,
+            paymentReference,
+            purchaseDate,
+            confirmationSentAt,
+            refundAmount,
+            refundDate,
+            stripeCheckoutSessionId,
+            stripePaymentIntentId,
             createdAt,
             updatedAt,
             eventId,
@@ -409,16 +649,28 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         return "EventTicketTransactionCriteria{" +
             (id != null ? "id=" + id + ", " : "") +
             (tenantId != null ? "tenantId=" + tenantId + ", " : "") +
+            (transactionReference != null ? "transactionReference=" + transactionReference + ", " : "") +
             (email != null ? "email=" + email + ", " : "") +
             (firstName != null ? "firstName=" + firstName + ", " : "") +
             (lastName != null ? "lastName=" + lastName + ", " : "") +
+            (phone != null ? "phone=" + phone + ", " : "") +
             (quantity != null ? "quantity=" + quantity + ", " : "") +
             (pricePerUnit != null ? "pricePerUnit=" + pricePerUnit + ", " : "") +
             (totalAmount != null ? "totalAmount=" + totalAmount + ", " : "") +
-            (status != null ? "status=" + status + ", " : "") +
-            (purchaseDate != null ? "purchaseDate=" + purchaseDate + ", " : "") +
+            (taxAmount != null ? "taxAmount=" + taxAmount + ", " : "") +
+            (feeAmount != null ? "feeAmount=" + feeAmount + ", " : "") +
             (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
             (discountAmount != null ? "discountAmount=" + discountAmount + ", " : "") +
+            (finalAmount != null ? "finalAmount=" + finalAmount + ", " : "") +
+            (status != null ? "status=" + status + ", " : "") +
+            (paymentMethod != null ? "paymentMethod=" + paymentMethod + ", " : "") +
+            (paymentReference != null ? "paymentReference=" + paymentReference + ", " : "") +
+            (purchaseDate != null ? "purchaseDate=" + purchaseDate + ", " : "") +
+            (confirmationSentAt != null ? "confirmationSentAt=" + confirmationSentAt + ", " : "") +
+            (refundAmount != null ? "refundAmount=" + refundAmount + ", " : "") +
+            (refundDate != null ? "refundDate=" + refundDate + ", " : "") +
+            (stripeCheckoutSessionId != null ? "stripeCheckoutSessionId=" + stripeCheckoutSessionId + ", " : "") +
+            (stripePaymentIntentId != null ? "stripePaymentIntentId=" + stripePaymentIntentId + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +

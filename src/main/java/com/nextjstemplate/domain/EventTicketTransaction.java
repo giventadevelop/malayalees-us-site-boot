@@ -30,6 +30,10 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "tenant_id", length = 255)
     private String tenantId;
 
+    @Size(max = 255)
+    @Column(name = "transaction_reference", length = 255, unique = true)
+    private String transactionReference;
+
     @NotNull
     @Size(max = 255)
     @Column(name = "email", length = 255, nullable = false)
@@ -43,6 +47,10 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "last_name", length = 255)
     private String lastName;
 
+    @Size(max = 255)
+    @Column(name = "phone", length = 255)
+    private String phone;
+
     @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
@@ -55,20 +63,59 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "total_amount", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalAmount;
 
-    @NotNull
-    @Size(max = 255)
-    @Column(name = "status", length = 255, nullable = false)
-    private String status;
+    @Column(name = "tax_amount", precision = 21, scale = 2)
+    private BigDecimal taxAmount;
 
-    @NotNull
-    @Column(name = "purchase_date", nullable = false)
-    private ZonedDateTime purchaseDate;
+    @Column(name = "fee_amount", precision = 21, scale = 2)
+    private BigDecimal feeAmount;
 
     @Column(name = "discount_code_id")
     private Long discountCodeId;
 
     @Column(name = "discount_amount", precision = 21, scale = 2)
     private BigDecimal discountAmount;
+
+    @NotNull
+    @Column(name = "final_amount", precision = 21, scale = 2, nullable = false)
+    private BigDecimal finalAmount;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "status", length = 255, nullable = false)
+    private String status;
+
+    @Size(max = 100)
+    @Column(name = "payment_method", length = 100)
+    private String paymentMethod;
+
+    @Size(max = 255)
+    @Column(name = "payment_reference", length = 255)
+    private String paymentReference;
+
+    @NotNull
+    @Column(name = "purchase_date", nullable = false)
+    private ZonedDateTime purchaseDate;
+
+    @Column(name = "confirmation_sent_at")
+    private ZonedDateTime confirmationSentAt;
+
+    @Column(name = "refund_amount", precision = 21, scale = 2)
+    private BigDecimal refundAmount;
+
+    @Column(name = "refund_date")
+    private ZonedDateTime refundDate;
+
+    @Lob
+    @Column(name = "refund_reason")
+    private String refundReason;
+
+    @Size(max = 255)
+    @Column(name = "stripe_checkout_session_id", length = 255)
+    private String stripeCheckoutSessionId;
+
+    @Size(max = 255)
+    @Column(name = "stripe_payment_intent_id", length = 255)
+    private String stripePaymentIntentId;
 
     @NotNull
     @Column(name = "created_at", nullable = false)
@@ -118,6 +165,19 @@ public class EventTicketTransaction implements Serializable {
         this.tenantId = tenantId;
     }
 
+    public String getTransactionReference() {
+        return this.transactionReference;
+    }
+
+    public EventTicketTransaction transactionReference(String transactionReference) {
+        this.setTransactionReference(transactionReference);
+        return this;
+    }
+
+    public void setTransactionReference(String transactionReference) {
+        this.transactionReference = transactionReference;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -155,6 +215,19 @@ public class EventTicketTransaction implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public EventTicketTransaction phone(String phone) {
+        this.setPhone(phone);
+        return this;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Integer getQuantity() {
@@ -196,30 +269,30 @@ public class EventTicketTransaction implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return this.status;
+    public BigDecimal getTaxAmount() {
+        return this.taxAmount;
     }
 
-    public EventTicketTransaction status(String status) {
-        this.setStatus(status);
+    public EventTicketTransaction taxAmount(BigDecimal taxAmount) {
+        this.setTaxAmount(taxAmount);
         return this;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
-    public ZonedDateTime getPurchaseDate() {
-        return this.purchaseDate;
+    public BigDecimal getFeeAmount() {
+        return this.feeAmount;
     }
 
-    public EventTicketTransaction purchaseDate(ZonedDateTime purchaseDate) {
-        this.setPurchaseDate(purchaseDate);
+    public EventTicketTransaction feeAmount(BigDecimal feeAmount) {
+        this.setFeeAmount(feeAmount);
         return this;
     }
 
-    public void setPurchaseDate(ZonedDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setFeeAmount(BigDecimal feeAmount) {
+        this.feeAmount = feeAmount;
     }
 
     public Long getDiscountCodeId() {
@@ -246,6 +319,149 @@ public class EventTicketTransaction implements Serializable {
 
     public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getFinalAmount() {
+        return this.finalAmount;
+    }
+
+    public EventTicketTransaction finalAmount(BigDecimal finalAmount) {
+        this.setFinalAmount(finalAmount);
+        return this;
+    }
+
+    public void setFinalAmount(BigDecimal finalAmount) {
+        this.finalAmount = finalAmount;
+    }
+
+    public String getStatus() {
+        return this.status;
+    }
+
+    public EventTicketTransaction status(String status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    public EventTicketTransaction paymentMethod(String paymentMethod) {
+        this.setPaymentMethod(paymentMethod);
+        return this;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentReference() {
+        return this.paymentReference;
+    }
+
+    public EventTicketTransaction paymentReference(String paymentReference) {
+        this.setPaymentReference(paymentReference);
+        return this;
+    }
+
+    public void setPaymentReference(String paymentReference) {
+        this.paymentReference = paymentReference;
+    }
+
+    public ZonedDateTime getPurchaseDate() {
+        return this.purchaseDate;
+    }
+
+    public EventTicketTransaction purchaseDate(ZonedDateTime purchaseDate) {
+        this.setPurchaseDate(purchaseDate);
+        return this;
+    }
+
+    public void setPurchaseDate(ZonedDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public ZonedDateTime getConfirmationSentAt() {
+        return this.confirmationSentAt;
+    }
+
+    public EventTicketTransaction confirmationSentAt(ZonedDateTime confirmationSentAt) {
+        this.setConfirmationSentAt(confirmationSentAt);
+        return this;
+    }
+
+    public void setConfirmationSentAt(ZonedDateTime confirmationSentAt) {
+        this.confirmationSentAt = confirmationSentAt;
+    }
+
+    public BigDecimal getRefundAmount() {
+        return this.refundAmount;
+    }
+
+    public EventTicketTransaction refundAmount(BigDecimal refundAmount) {
+        this.setRefundAmount(refundAmount);
+        return this;
+    }
+
+    public void setRefundAmount(BigDecimal refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public ZonedDateTime getRefundDate() {
+        return this.refundDate;
+    }
+
+    public EventTicketTransaction refundDate(ZonedDateTime refundDate) {
+        this.setRefundDate(refundDate);
+        return this;
+    }
+
+    public void setRefundDate(ZonedDateTime refundDate) {
+        this.refundDate = refundDate;
+    }
+
+    public String getRefundReason() {
+        return this.refundReason;
+    }
+
+    public EventTicketTransaction refundReason(String refundReason) {
+        this.setRefundReason(refundReason);
+        return this;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public String getStripeCheckoutSessionId() {
+        return this.stripeCheckoutSessionId;
+    }
+
+    public EventTicketTransaction stripeCheckoutSessionId(String stripeCheckoutSessionId) {
+        this.setStripeCheckoutSessionId(stripeCheckoutSessionId);
+        return this;
+    }
+
+    public void setStripeCheckoutSessionId(String stripeCheckoutSessionId) {
+        this.stripeCheckoutSessionId = stripeCheckoutSessionId;
+    }
+
+    public String getStripePaymentIntentId() {
+        return this.stripePaymentIntentId;
+    }
+
+    public EventTicketTransaction stripePaymentIntentId(String stripePaymentIntentId) {
+        this.setStripePaymentIntentId(stripePaymentIntentId);
+        return this;
+    }
+
+    public void setStripePaymentIntentId(String stripePaymentIntentId) {
+        this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -338,16 +554,29 @@ public class EventTicketTransaction implements Serializable {
         return "EventTicketTransaction{" +
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
+            ", transactionReference='" + getTransactionReference() + "'" +
             ", email='" + getEmail() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
+            ", phone='" + getPhone() + "'" +
             ", quantity=" + getQuantity() +
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
-            ", status='" + getStatus() + "'" +
-            ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", taxAmount=" + getTaxAmount() +
+            ", feeAmount=" + getFeeAmount() +
             ", discountCodeId=" + getDiscountCodeId() +
             ", discountAmount=" + getDiscountAmount() +
+            ", finalAmount=" + getFinalAmount() +
+            ", status='" + getStatus() + "'" +
+            ", paymentMethod='" + getPaymentMethod() + "'" +
+            ", paymentReference='" + getPaymentReference() + "'" +
+            ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", confirmationSentAt='" + getConfirmationSentAt() + "'" +
+            ", refundAmount=" + getRefundAmount() +
+            ", refundDate='" + getRefundDate() + "'" +
+            ", refundReason='" + getRefundReason() + "'" +
+            ", stripeCheckoutSessionId='" + getStripeCheckoutSessionId() + "'" +
+            ", stripePaymentIntentId='" + getStripePaymentIntentId() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

@@ -1,5 +1,6 @@
 package com.nextjstemplate.service.dto;
 
+import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,6 +18,9 @@ public class EventTicketTransactionDTO implements Serializable {
     @Size(max = 255)
     private String tenantId;
 
+    @Size(max = 255)
+    private String transactionReference;
+
     @NotNull
     @Size(max = 255)
     private String email;
@@ -27,6 +31,9 @@ public class EventTicketTransactionDTO implements Serializable {
     @Size(max = 255)
     private String lastName;
 
+    @Size(max = 255)
+    private String phone;
+
     @NotNull
     private Integer quantity;
 
@@ -36,16 +43,44 @@ public class EventTicketTransactionDTO implements Serializable {
     @NotNull
     private BigDecimal totalAmount;
 
-    @NotNull
-    @Size(max = 255)
-    private String status;
+    private BigDecimal taxAmount;
 
-    @NotNull
-    private ZonedDateTime purchaseDate;
+    private BigDecimal feeAmount;
 
     private Long discountCodeId;
 
     private BigDecimal discountAmount;
+
+    @NotNull
+    private BigDecimal finalAmount;
+
+    @NotNull
+    @Size(max = 255)
+    private String status;
+
+    @Size(max = 100)
+    private String paymentMethod;
+
+    @Size(max = 255)
+    private String paymentReference;
+
+    @NotNull
+    private ZonedDateTime purchaseDate;
+
+    private ZonedDateTime confirmationSentAt;
+
+    private BigDecimal refundAmount;
+
+    private ZonedDateTime refundDate;
+
+    @Lob
+    private String refundReason;
+
+    @Size(max = 255)
+    private String stripeCheckoutSessionId;
+
+    @Size(max = 255)
+    private String stripePaymentIntentId;
 
     @NotNull
     private ZonedDateTime createdAt;
@@ -75,6 +110,14 @@ public class EventTicketTransactionDTO implements Serializable {
         this.tenantId = tenantId;
     }
 
+    public String getTransactionReference() {
+        return transactionReference;
+    }
+
+    public void setTransactionReference(String transactionReference) {
+        this.transactionReference = transactionReference;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -97,6 +140,14 @@ public class EventTicketTransactionDTO implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Integer getQuantity() {
@@ -123,20 +174,20 @@ public class EventTicketTransactionDTO implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return status;
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
-    public ZonedDateTime getPurchaseDate() {
-        return purchaseDate;
+    public BigDecimal getFeeAmount() {
+        return feeAmount;
     }
 
-    public void setPurchaseDate(ZonedDateTime purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public void setFeeAmount(BigDecimal feeAmount) {
+        this.feeAmount = feeAmount;
     }
 
     public Long getDiscountCodeId() {
@@ -153,6 +204,94 @@ public class EventTicketTransactionDTO implements Serializable {
 
     public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getFinalAmount() {
+        return finalAmount;
+    }
+
+    public void setFinalAmount(BigDecimal finalAmount) {
+        this.finalAmount = finalAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getPaymentReference() {
+        return paymentReference;
+    }
+
+    public void setPaymentReference(String paymentReference) {
+        this.paymentReference = paymentReference;
+    }
+
+    public ZonedDateTime getPurchaseDate() {
+        return purchaseDate;
+    }
+
+    public void setPurchaseDate(ZonedDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
+    }
+
+    public ZonedDateTime getConfirmationSentAt() {
+        return confirmationSentAt;
+    }
+
+    public void setConfirmationSentAt(ZonedDateTime confirmationSentAt) {
+        this.confirmationSentAt = confirmationSentAt;
+    }
+
+    public BigDecimal getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(BigDecimal refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public ZonedDateTime getRefundDate() {
+        return refundDate;
+    }
+
+    public void setRefundDate(ZonedDateTime refundDate) {
+        this.refundDate = refundDate;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public String getStripeCheckoutSessionId() {
+        return stripeCheckoutSessionId;
+    }
+
+    public void setStripeCheckoutSessionId(String stripeCheckoutSessionId) {
+        this.stripeCheckoutSessionId = stripeCheckoutSessionId;
+    }
+
+    public String getStripePaymentIntentId() {
+        return stripePaymentIntentId;
+    }
+
+    public void setStripePaymentIntentId(String stripePaymentIntentId) {
+        this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -222,16 +361,29 @@ public class EventTicketTransactionDTO implements Serializable {
         return "EventTicketTransactionDTO{" +
             "id=" + getId() +
             ", tenantId='" + getTenantId() + "'" +
+            ", transactionReference='" + getTransactionReference() + "'" +
             ", email='" + getEmail() + "'" +
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
+            ", phone='" + getPhone() + "'" +
             ", quantity=" + getQuantity() +
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
-            ", status='" + getStatus() + "'" +
-            ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", taxAmount=" + getTaxAmount() +
+            ", feeAmount=" + getFeeAmount() +
             ", discountCodeId=" + getDiscountCodeId() +
             ", discountAmount=" + getDiscountAmount() +
+            ", finalAmount=" + getFinalAmount() +
+            ", status='" + getStatus() + "'" +
+            ", paymentMethod='" + getPaymentMethod() + "'" +
+            ", paymentReference='" + getPaymentReference() + "'" +
+            ", purchaseDate='" + getPurchaseDate() + "'" +
+            ", confirmationSentAt='" + getConfirmationSentAt() + "'" +
+            ", refundAmount=" + getRefundAmount() +
+            ", refundDate='" + getRefundDate() + "'" +
+            ", refundReason='" + getRefundReason() + "'" +
+            ", stripeCheckoutSessionId='" + getStripeCheckoutSessionId() + "'" +
+            ", stripePaymentIntentId='" + getStripePaymentIntentId() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", event=" + getEvent() +
