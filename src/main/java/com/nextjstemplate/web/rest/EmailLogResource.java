@@ -3,6 +3,7 @@ package com.nextjstemplate.web.rest;
 import com.nextjstemplate.repository.EmailLogRepository;
 import com.nextjstemplate.service.EmailLogQueryService;
 import com.nextjstemplate.service.EmailLogService;
+import com.nextjstemplate.service.EmailSenderService;
 import com.nextjstemplate.service.criteria.EmailLogCriteria;
 import com.nextjstemplate.service.dto.EmailLogDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * REST controller for managing {@link com.nextjstemplate.domain.EmailLog}.
@@ -46,51 +48,61 @@ public class EmailLogResource {
 
     private final EmailLogQueryService emailLogQueryService;
 
+    private final EmailSenderService emailSenderService;
+
+    @Autowired
     public EmailLogResource(
-        EmailLogService emailLogService,
-        EmailLogRepository emailLogRepository,
-        EmailLogQueryService emailLogQueryService
-    ) {
+            EmailLogService emailLogService,
+            EmailLogRepository emailLogRepository,
+            EmailLogQueryService emailLogQueryService,
+            EmailSenderService emailSenderService) {
         this.emailLogService = emailLogService;
         this.emailLogRepository = emailLogRepository;
         this.emailLogQueryService = emailLogQueryService;
+        this.emailSenderService = emailSenderService;
     }
 
     /**
      * {@code POST  /email-logs} : Create a new emailLog.
      *
      * @param emailLogDTO the emailLogDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new emailLogDTO, or with status {@code 400 (Bad Request)} if the emailLog has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new emailLogDTO, or with status {@code 400 (Bad Request)} if
+     *         the emailLog has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    public ResponseEntity<EmailLogDTO> createEmailLog(@Valid @RequestBody EmailLogDTO emailLogDTO) throws URISyntaxException {
+    public ResponseEntity<EmailLogDTO> createEmailLog(@Valid @RequestBody EmailLogDTO emailLogDTO)
+            throws URISyntaxException {
         log.debug("REST request to save EmailLog : {}", emailLogDTO);
         if (emailLogDTO.getId() != null) {
             throw new BadRequestAlertException("A new emailLog cannot already have an ID", ENTITY_NAME, "idexists");
         }
         EmailLogDTO result = emailLogService.save(emailLogDTO);
         return ResponseEntity
-            .created(new URI("/api/email-logs/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .created(new URI("/api/email-logs/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
+                        result.getId().toString()))
+                .body(result);
     }
 
     /**
      * {@code PUT  /email-logs/:id} : Updates an existing emailLog.
      *
-     * @param id the id of the emailLogDTO to save.
+     * @param id          the id of the emailLogDTO to save.
      * @param emailLogDTO the emailLogDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated emailLogDTO,
-     * or with status {@code 400 (Bad Request)} if the emailLogDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the emailLogDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated emailLogDTO,
+     *         or with status {@code 400 (Bad Request)} if the emailLogDTO is not
+     *         valid,
+     *         or with status {@code 500 (Internal Server Error)} if the emailLogDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
     public ResponseEntity<EmailLogDTO> updateEmailLog(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody EmailLogDTO emailLogDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody EmailLogDTO emailLogDTO) throws URISyntaxException {
         log.debug("REST request to update EmailLog : {}, {}", id, emailLogDTO);
         if (emailLogDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -105,27 +117,32 @@ public class EmailLogResource {
 
         EmailLogDTO result = emailLogService.update(emailLogDTO);
         return ResponseEntity
-            .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, emailLogDTO.getId().toString()))
-            .body(result);
+                .ok()
+                .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
+                        emailLogDTO.getId().toString()))
+                .body(result);
     }
 
     /**
-     * {@code PATCH  /email-logs/:id} : Partial updates given fields of an existing emailLog, field will ignore if it is null
+     * {@code PATCH  /email-logs/:id} : Partial updates given fields of an existing
+     * emailLog, field will ignore if it is null
      *
-     * @param id the id of the emailLogDTO to save.
+     * @param id          the id of the emailLogDTO to save.
      * @param emailLogDTO the emailLogDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated emailLogDTO,
-     * or with status {@code 400 (Bad Request)} if the emailLogDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the emailLogDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the emailLogDTO couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated emailLogDTO,
+     *         or with status {@code 400 (Bad Request)} if the emailLogDTO is not
+     *         valid,
+     *         or with status {@code 404 (Not Found)} if the emailLogDTO is not
+     *         found,
+     *         or with status {@code 500 (Internal Server Error)} if the emailLogDTO
+     *         couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EmailLogDTO> partialUpdateEmailLog(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody EmailLogDTO emailLogDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @NotNull @RequestBody EmailLogDTO emailLogDTO) throws URISyntaxException {
         log.debug("REST request to partial update EmailLog partially : {}, {}", id, emailLogDTO);
         if (emailLogDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -141,9 +158,8 @@ public class EmailLogResource {
         Optional<EmailLogDTO> result = emailLogService.partialUpdate(emailLogDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, emailLogDTO.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, emailLogDTO.getId().toString()));
     }
 
     /**
@@ -151,17 +167,18 @@ public class EmailLogResource {
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of emailLogs in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of emailLogs in body.
      */
     @GetMapping("")
     public ResponseEntity<List<EmailLogDTO>> getAllEmailLogs(
-        EmailLogCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
+            EmailLogCriteria criteria,
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get EmailLogs by criteria: {}", criteria);
 
         Page<EmailLogDTO> page = emailLogQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
@@ -169,7 +186,8 @@ public class EmailLogResource {
      * {@code GET  /email-logs/count} : count all the emailLogs.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count
+     *         in body.
      */
     @GetMapping("/count")
     public ResponseEntity<Long> countEmailLogs(EmailLogCriteria criteria) {
@@ -181,7 +199,8 @@ public class EmailLogResource {
      * {@code GET  /email-logs/:id} : get the "id" emailLog.
      *
      * @param id the id of the emailLogDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the emailLogDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the emailLogDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<EmailLogDTO> getEmailLog(@PathVariable Long id) {
@@ -201,8 +220,69 @@ public class EmailLogResource {
         log.debug("REST request to delete EmailLog : {}", id);
         emailLogService.delete(id);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
+    }
+
+    /**
+     * {@code POST  /email-logs/test-send} : Send a test email using SES.
+     *
+     * @param to the recipient email address (optional, defaults to
+     *           'test@example.com')
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} if sent.
+     */
+    @PostMapping("/test-send")
+    public ResponseEntity<String> testSendEmail(@RequestParam(value = "to", required = false) String to) {
+        String recipient = (to != null && !to.isBlank()) ? to : "test@example.com";
+        String fromEmail = "noreply@yourdomain.com"; // or inject from config
+        String eventName = "Music Night 2025";
+        String eventDate = "July 20, 2025";
+        String eventVenue = "Grand Hall, City Center";
+
+        // Local HTML template as a string
+        String template = """
+                <!DOCTYPE html>
+                <html>
+                <head>
+                  <meta charset=\"UTF-8\">
+                  <title>Event Ticket Confirmation</title>
+                </head>
+                <body style=\"font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;\">
+                  <div style=\"max-width: 600px; margin: auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #eee; overflow: hidden;\">
+                    <img src=\"https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/event-id/1/email-templates/event-poster-music-event.jpg\" alt=\"Event Poster\" style=\"width: 100%; display: block; border-bottom: 1px solid #eee;\">
+                    <div style=\"padding: 24px;\">
+                      <h2 style=\"margin-top: 0;\">You're Invited!</h2>
+                      <p>Hello,</p>
+                      <p>
+                        You are invited to this event.<br>
+                        <strong>From:</strong> {{fromEmail}}<br>
+                        <strong>Event:</strong> {{eventName}}<br>
+                        <strong>Date:</strong> {{eventDate}}<br>
+                        <strong>Venue:</strong> {{eventVenue}}<br>
+                      </p>
+                      <p>
+                        <em>We look forward to seeing you there!</em>
+                      </p>
+                    </div>
+                  </div>
+                </body>
+                </html>
+                """;
+
+        // Replace placeholders
+        String htmlBody = template
+                .replace("{{fromEmail}}", fromEmail)
+                .replace("{{eventName}}", eventName)
+                .replace("{{eventDate}}", eventDate)
+                .replace("{{eventVenue}}", eventVenue);
+
+        try {
+            emailSenderService.sendEmail(recipient, "Test Event Invitation", htmlBody, true); // true = isHtml
+            return ResponseEntity.ok("Test email sent to " + recipient);
+        } catch (Exception e) {
+            log.error("Failed to send test email: {}", e.getMessage(), e);
+            return ResponseEntity.internalServerError().body("Failed to send test email: " + e.getMessage());
+        }
     }
 }

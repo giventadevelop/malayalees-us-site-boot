@@ -189,7 +189,7 @@ jhipster:
     allow-credentials: false
     max-age: 1800
   mail:
-    from: nextjs_template_boot@localhost
+    from: sales@giventa.com
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
@@ -228,3 +228,8 @@ aws:
 # ===================================================================
 # File upload configuration
 # ===================================================================
+
+twilio:
+  account-sid: ${TWILIO_ACCOUNT_SID}
+  auth-token: ${TWILIO_AUTH_TOKEN}
+  whatsapp-from: ${TWILIO_WHATSAPP_FROM} # e.g., 'whatsapp:+14155238886'
