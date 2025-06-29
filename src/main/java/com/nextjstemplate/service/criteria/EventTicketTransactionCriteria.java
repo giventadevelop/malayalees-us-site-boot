@@ -43,7 +43,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter taxAmount;
 
-    private BigDecimalFilter feeAmount;
+    private BigDecimalFilter platformFeeAmount;
 
     private LongFilter discountCodeId;
 
@@ -69,15 +69,27 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private StringFilter stripePaymentIntentId;
 
-    private ZonedDateTimeFilter createdAt;
+    private StringFilter stripeCustomerId;
 
-    private ZonedDateTimeFilter updatedAt;
+    private StringFilter stripePaymentStatus;
+
+    private StringFilter stripeCustomerEmail;
+
+    private StringFilter stripePaymentCurrency;
+
+    private BigDecimalFilter stripeAmountDiscount;
+
+    private BigDecimalFilter stripeAmountTax;
+
+    private BigDecimalFilter stripeFeeAmount;
 
     private LongFilter eventId;
 
-    private LongFilter ticketTypeId;
-
     private LongFilter userId;
+
+    private ZonedDateTimeFilter createdAt;
+
+    private ZonedDateTimeFilter updatedAt;
 
     private Boolean distinct;
 
@@ -95,7 +107,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.pricePerUnit = other.pricePerUnit == null ? null : other.pricePerUnit.copy();
         this.totalAmount = other.totalAmount == null ? null : other.totalAmount.copy();
         this.taxAmount = other.taxAmount == null ? null : other.taxAmount.copy();
-        this.feeAmount = other.feeAmount == null ? null : other.feeAmount.copy();
+        this.platformFeeAmount = other.platformFeeAmount == null ? null : other.platformFeeAmount.copy();
         this.discountCodeId = other.discountCodeId == null ? null : other.discountCodeId.copy();
         this.discountAmount = other.discountAmount == null ? null : other.discountAmount.copy();
         this.finalAmount = other.finalAmount == null ? null : other.finalAmount.copy();
@@ -108,10 +120,18 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.refundDate = other.refundDate == null ? null : other.refundDate.copy();
         this.stripeCheckoutSessionId = other.stripeCheckoutSessionId == null ? null : other.stripeCheckoutSessionId.copy();
         this.stripePaymentIntentId = other.stripePaymentIntentId == null ? null : other.stripePaymentIntentId.copy();
+        this.stripeCustomerId = other.stripeCustomerId == null ? null : other.stripeCustomerId.copy();
+        this.stripePaymentStatus = other.stripePaymentStatus == null ? null : other.stripePaymentStatus.copy();
+        this.stripeCustomerEmail = other.stripeCustomerEmail == null ? null : other.stripeCustomerEmail.copy();
+        this.stripePaymentCurrency = other.stripePaymentCurrency == null ? null : other.stripePaymentCurrency.copy();
+        this.stripeAmountDiscount = other.stripeAmountDiscount == null ? null : other.stripeAmountDiscount.copy();
+        this.stripeAmountTax = other.stripeAmountTax == null ? null : other.stripeAmountTax.copy();
+        this.stripeFeeAmount = other.stripeFeeAmount == null ? null : other.stripeFeeAmount.copy();
+        this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.userId = other.userId == null ? null : other.userId.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
-        this.ticketTypeId = other.ticketTypeId == null ? null : other.ticketTypeId.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.distinct = other.distinct;
     }
@@ -286,21 +306,20 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.taxAmount = taxAmount;
     }
 
-    public BigDecimalFilter getFeeAmount() {
-        return feeAmount;
+	public BigDecimalFilter getPlatformFeeAmount() {
+        return platformFeeAmount;
     }
 
-    public BigDecimalFilter feeAmount() {
-        if (feeAmount == null) {
-            feeAmount = new BigDecimalFilter();
+    public BigDecimalFilter platformFeeAmount() {
+        if (platformFeeAmount == null) {
+            platformFeeAmount = new BigDecimalFilter();
         }
-        return feeAmount;
+        return platformFeeAmount;
     }
 
-    public void setFeeAmount(BigDecimalFilter feeAmount) {
-        this.feeAmount = feeAmount;
+    public void setPlatformFeeAmount(BigDecimalFilter platformFeeAmount) {
+        this.platformFeeAmount = platformFeeAmount;
     }
-
     public LongFilter getDiscountCodeId() {
         return discountCodeId;
     }
@@ -481,6 +500,141 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
+        public StringFilter getStripeCustomerId() {
+        return stripeCustomerId;
+    }
+
+    public StringFilter stripeCustomerId() {
+        if (stripeCustomerId == null) {
+            stripeCustomerId = new StringFilter();
+        }
+        return stripeCustomerId;
+    }
+
+    public void setStripeCustomerId(StringFilter stripeCustomerId) {
+        this.stripeCustomerId = stripeCustomerId;
+    }
+
+    public StringFilter getStripePaymentStatus() {
+        return stripePaymentStatus;
+    }
+
+    public StringFilter stripePaymentStatus() {
+        if (stripePaymentStatus == null) {
+            stripePaymentStatus = new StringFilter();
+        }
+        return stripePaymentStatus;
+    }
+
+    public void setStripePaymentStatus(StringFilter stripePaymentStatus) {
+        this.stripePaymentStatus = stripePaymentStatus;
+    }
+
+    public StringFilter getStripeCustomerEmail() {
+        return stripeCustomerEmail;
+    }
+
+    public StringFilter stripeCustomerEmail() {
+        if (stripeCustomerEmail == null) {
+            stripeCustomerEmail = new StringFilter();
+        }
+        return stripeCustomerEmail;
+    }
+
+    public void setStripeCustomerEmail(StringFilter stripeCustomerEmail) {
+        this.stripeCustomerEmail = stripeCustomerEmail;
+    }
+
+    public StringFilter getStripePaymentCurrency() {
+        return stripePaymentCurrency;
+    }
+
+    public StringFilter stripePaymentCurrency() {
+        if (stripePaymentCurrency == null) {
+            stripePaymentCurrency = new StringFilter();
+        }
+        return stripePaymentCurrency;
+    }
+
+    public void setStripePaymentCurrency(StringFilter stripePaymentCurrency) {
+        this.stripePaymentCurrency = stripePaymentCurrency;
+    }
+
+    public BigDecimalFilter getStripeAmountDiscount() {
+        return stripeAmountDiscount;
+    }
+
+    public BigDecimalFilter stripeAmountDiscount() {
+        if (stripeAmountDiscount == null) {
+            stripeAmountDiscount = new BigDecimalFilter();
+        }
+        return stripeAmountDiscount;
+    }
+
+    public void setStripeAmountDiscount(BigDecimalFilter stripeAmountDiscount) {
+        this.stripeAmountDiscount = stripeAmountDiscount;
+    }
+
+    public BigDecimalFilter getStripeAmountTax() {
+        return stripeAmountTax;
+    }
+
+    public BigDecimalFilter stripeAmountTax() {
+        if (stripeAmountTax == null) {
+            stripeAmountTax = new BigDecimalFilter();
+        }
+        return stripeAmountTax;
+    }
+
+    public void setStripeAmountTax(BigDecimalFilter stripeAmountTax) {
+        this.stripeAmountTax = stripeAmountTax;
+    }
+
+    public BigDecimalFilter getStripeFeeAmount() {
+        return stripeFeeAmount;
+    }
+
+    public BigDecimalFilter stripeFeeAmount() {
+        if (stripeFeeAmount == null) {
+            stripeFeeAmount = new BigDecimalFilter();
+        }
+        return stripeFeeAmount;
+    }
+
+    public void setStripeFeeAmount(BigDecimalFilter stripeFeeAmount) {
+        this.stripeFeeAmount = stripeFeeAmount;
+    }
+
+    public LongFilter getEventId() {
+        return eventId;
+    }
+
+    public LongFilter eventId() {
+        if (eventId == null) {
+            eventId = new LongFilter();
+        }
+        return eventId;
+    }
+
+    public void setEventId(LongFilter eventId) {
+        this.eventId = eventId;
+    }
+
+    public LongFilter getUserId() {
+        return userId;
+    }
+
+    public LongFilter userId() {
+        if (userId == null) {
+            userId = new LongFilter();
+        }
+        return userId;
+    }
+
+    public void setUserId(LongFilter userId) {
+        this.userId = userId;
+    }
+
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -509,51 +663,6 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     public void setUpdatedAt(ZonedDateTimeFilter updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public LongFilter getEventId() {
-        return eventId;
-    }
-
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
-        }
-        return eventId;
-    }
-
-    public void setEventId(LongFilter eventId) {
-        this.eventId = eventId;
-    }
-
-    public LongFilter getTicketTypeId() {
-        return ticketTypeId;
-    }
-
-    public LongFilter ticketTypeId() {
-        if (ticketTypeId == null) {
-            ticketTypeId = new LongFilter();
-        }
-        return ticketTypeId;
-    }
-
-    public void setTicketTypeId(LongFilter ticketTypeId) {
-        this.ticketTypeId = ticketTypeId;
-    }
-
-    public LongFilter getUserId() {
-        return userId;
-    }
-
-    public LongFilter userId() {
-        if (userId == null) {
-            userId = new LongFilter();
-        }
-        return userId;
-    }
-
-    public void setUserId(LongFilter userId) {
-        this.userId = userId;
     }
 
     public Boolean getDistinct() {
@@ -585,8 +694,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(pricePerUnit, that.pricePerUnit) &&
             Objects.equals(totalAmount, that.totalAmount) &&
             Objects.equals(taxAmount, that.taxAmount) &&
-            Objects.equals(feeAmount, that.feeAmount) &&
-            Objects.equals(discountCodeId, that.discountCodeId) &&
+            Objects.equals(platformFeeAmount, that.platformFeeAmount) &&            Objects.equals(discountCodeId, that.discountCodeId) &&
             Objects.equals(discountAmount, that.discountAmount) &&
             Objects.equals(finalAmount, that.finalAmount) &&
             Objects.equals(status, that.status) &&
@@ -598,10 +706,18 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(refundDate, that.refundDate) &&
             Objects.equals(stripeCheckoutSessionId, that.stripeCheckoutSessionId) &&
             Objects.equals(stripePaymentIntentId, that.stripePaymentIntentId) &&
+            Objects.equals(stripeCustomerId, that.stripeCustomerId) &&
+            Objects.equals(stripePaymentStatus, that.stripePaymentStatus) &&
+            Objects.equals(stripeCustomerEmail, that.stripeCustomerEmail) &&
+            Objects.equals(stripePaymentCurrency, that.stripePaymentCurrency) &&
+            Objects.equals(stripeAmountDiscount, that.stripeAmountDiscount) &&
+            Objects.equals(stripeAmountTax, that.stripeAmountTax) &&
+            Objects.equals(stripeFeeAmount, that.stripeFeeAmount) &&
+            Objects.equals(eventId, that.eventId) &&
+            Objects.equals(userId, that.userId) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
-            Objects.equals(ticketTypeId, that.ticketTypeId) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -621,8 +737,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             pricePerUnit,
             totalAmount,
             taxAmount,
-            feeAmount,
-            discountCodeId,
+            platformFeeAmount,            discountCodeId,
             discountAmount,
             finalAmount,
             status,
@@ -634,12 +749,17 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             refundDate,
             stripeCheckoutSessionId,
             stripePaymentIntentId,
-            createdAt,
-            updatedAt,
+            stripeCustomerId,
+            stripePaymentStatus,
+            stripeCustomerEmail,
+            stripePaymentCurrency,
+            stripeAmountDiscount,
+            stripeAmountTax,
+            stripeFeeAmount,
             eventId,
-            ticketTypeId,
             userId,
-            distinct
+            createdAt,
+            updatedAt
         );
     }
 
@@ -658,8 +778,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (pricePerUnit != null ? "pricePerUnit=" + pricePerUnit + ", " : "") +
             (totalAmount != null ? "totalAmount=" + totalAmount + ", " : "") +
             (taxAmount != null ? "taxAmount=" + taxAmount + ", " : "") +
-            (feeAmount != null ? "feeAmount=" + feeAmount + ", " : "") +
-            (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
+            (platformFeeAmount != null ? "platformFeeAmount=" + platformFeeAmount + ", " : "") +            (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
             (discountAmount != null ? "discountAmount=" + discountAmount + ", " : "") +
             (finalAmount != null ? "finalAmount=" + finalAmount + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
@@ -671,10 +790,18 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (refundDate != null ? "refundDate=" + refundDate + ", " : "") +
             (stripeCheckoutSessionId != null ? "stripeCheckoutSessionId=" + stripeCheckoutSessionId + ", " : "") +
             (stripePaymentIntentId != null ? "stripePaymentIntentId=" + stripePaymentIntentId + ", " : "") +
+            (stripeCustomerId != null ? "stripeCustomerId=" + stripeCustomerId + ", " : "") +
+            (stripePaymentStatus != null ? "stripePaymentStatus=" + stripePaymentStatus + ", " : "") +
+            (stripeCustomerEmail != null ? "stripeCustomerEmail=" + stripeCustomerEmail + ", " : "") +
+            (stripePaymentCurrency != null ? "stripePaymentCurrency=" + stripePaymentCurrency + ", " : "") +
+            (stripeAmountDiscount != null ? "stripeAmountDiscount=" + stripeAmountDiscount + ", " : "") +
+            (stripeAmountTax != null ? "stripeAmountTax=" + stripeAmountTax + ", " : "") +
+            (stripeFeeAmount != null ? "stripeFeeAmount=" + stripeFeeAmount + ", " : "") +
+            (eventId != null ? "eventId=" + eventId + ", " : "") +
+            (userId != null ? "userId=" + userId + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
-            (ticketTypeId != null ? "ticketTypeId=" + ticketTypeId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

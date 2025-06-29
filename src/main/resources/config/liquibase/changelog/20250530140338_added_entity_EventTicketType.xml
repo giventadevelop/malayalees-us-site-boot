@@ -23,6 +23,12 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="is_service_fee_included" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="service_fee" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
             <column name="price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
@@ -73,6 +79,8 @@
             <column name="tenant_id" type="string"/>
             <column name="name" type="string"/>
             <column name="description" type="string"/>
+            <column name="is_service_fee_included" type="boolean"/>
+            <column name="service_fee" type="numeric"/>
             <column name="price" type="numeric"/>
             <column name="code" type="string"/>
             <column name="available_quantity" type="numeric"/>

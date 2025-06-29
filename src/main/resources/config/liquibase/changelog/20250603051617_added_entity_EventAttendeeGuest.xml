@@ -17,8 +17,17 @@
             <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="guest_name" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
             <column name="age_group" type="varchar(20)">
                 <constraints nullable="true" />
@@ -72,7 +81,10 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="tenant_id" type="string"/>
-            <column name="guest_name" type="string"/>
+            <column name="first_name" type="string"/>
+            <column name="last_name" type="string"/>
+            <column name="email" type="string"/>
+            <column name="phone" type="string"/>
             <column name="age_group" type="string"/>
             <column name="relationship" type="string"/>
             <column name="special_requirements" type="string"/>

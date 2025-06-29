@@ -85,7 +85,7 @@ public class EventTicketTransactionResource {
         try {
             String to = result.getEmail();
             String subject = "Your Ticket Purchase Confirmation";
-            String eventName = result.getEvent() != null ? result.getEvent().getTitle() : "Event";
+            String eventName =  "Event";
             String body = String.format(
                     "Dear %s,\n\nThank you for your purchase!\n\nEvent: %s\nTickets: %d\nTotal Paid: %s\n\nTransaction Ref: %s\n\nSee you at the event!",
                     result.getFirstName() != null ? result.getFirstName() : "Customer",

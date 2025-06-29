@@ -65,6 +65,7 @@ public class EventDetailsDTO implements Serializable {
 
     private Boolean enableGuestPricing;
 
+    private Boolean enableQrCode;
     private Boolean isRegistrationRequired;
 
     private Boolean isSportsEvent;
@@ -227,6 +228,14 @@ public class EventDetailsDTO implements Serializable {
         this.enableGuestPricing = enableGuestPricing;
     }
 
+    public Boolean getEnableQrCode() {
+        return enableQrCode;
+    }
+
+    public void setEnableQrCode(Boolean enableQrCode) {
+        this.enableQrCode = enableQrCode;
+    }
+
     public Boolean getIsRegistrationRequired() {
         return isRegistrationRequired;
     }
@@ -334,6 +343,7 @@ public class EventDetailsDTO implements Serializable {
             ", allowGuests='" + getAllowGuests() + "'" +
             ", requireGuestApproval='" + getRequireGuestApproval() + "'" +
             ", enableGuestPricing='" + getEnableGuestPricing() + "'" +
+            ", enableQrCode='" + getEnableQrCode() + "'" +
             ", isRegistrationRequired='" + getIsRegistrationRequired() + "'" +
             ", isSportsEvent='" + getIsSportsEvent() + "'" +
             ", isLive='" + getIsLive() + "'" +

@@ -66,8 +66,8 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "tax_amount", precision = 21, scale = 2)
     private BigDecimal taxAmount;
 
-    @Column(name = "fee_amount", precision = 21, scale = 2)
-    private BigDecimal feeAmount;
+    @Column(name = "platform_fee_amount", precision = 21, scale = 2)
+    private BigDecimal platformFeeAmount;
 
     @Column(name = "discount_code_id")
     private Long discountCodeId;
@@ -117,6 +117,36 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "stripe_payment_intent_id", length = 255)
     private String stripePaymentIntentId;
 
+    @Size(max = 255)
+    @Column(name = "stripe_customer_id", length = 255)
+    private String stripeCustomerId;
+
+    @Size(max = 50)
+    @Column(name = "stripe_payment_status", length = 50)
+    private String stripePaymentStatus;
+
+    @Size(max = 255)
+    @Column(name = "stripe_customer_email", length = 255)
+    private String stripeCustomerEmail;
+
+    @Size(max = 10)
+    @Column(name = "stripe_payment_currency", length = 10)
+    private String stripePaymentCurrency;
+
+    @Column(name = "stripe_amount_discount", precision = 21, scale = 2)
+    private BigDecimal stripeAmountDiscount;
+
+    @Column(name = "stripe_amount_tax", precision = 21, scale = 2)
+    private BigDecimal stripeAmountTax;
+
+    @Column(name = "stripe_fee_amount", precision = 21, scale = 2)
+    private BigDecimal stripeFeeAmount;
+
+    @Column(name = "event_id")
+    private Long eventId;
+
+    @Column(name = "user_id")
+    private Long userId;
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -125,17 +155,14 @@ public class EventTicketTransaction implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+   /* @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
     private EventDetails event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "event" }, allowSetters = true)
-    private EventTicketType ticketType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
-    private UserProfile user;
+    private UserProfile user;*/
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -282,17 +309,17 @@ public class EventTicketTransaction implements Serializable {
         this.taxAmount = taxAmount;
     }
 
-    public BigDecimal getFeeAmount() {
-        return this.feeAmount;
+        public BigDecimal getPlatformFeeAmount() {
+        return this.platformFeeAmount;
     }
 
-    public EventTicketTransaction feeAmount(BigDecimal feeAmount) {
-        this.setFeeAmount(feeAmount);
+    public EventTicketTransaction platformFeeAmount(BigDecimal platformFeeAmount) {
+        this.setPlatformFeeAmount(platformFeeAmount);
         return this;
     }
 
-    public void setFeeAmount(BigDecimal feeAmount) {
-        this.feeAmount = feeAmount;
+    public void setPlatformFeeAmount(BigDecimal platformFeeAmount) {
+        this.platformFeeAmount = platformFeeAmount;
     }
 
     public Long getDiscountCodeId() {
@@ -464,6 +491,123 @@ public class EventTicketTransaction implements Serializable {
         this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
+    public String getStripeCustomerId() {
+        return this.stripeCustomerId;
+    }
+
+    public EventTicketTransaction stripeCustomerId(String stripeCustomerId) {
+        this.setStripeCustomerId(stripeCustomerId);
+        return this;
+    }
+
+    public void setStripeCustomerId(String stripeCustomerId) {
+        this.stripeCustomerId = stripeCustomerId;
+    }
+
+    public String getStripePaymentStatus() {
+        return this.stripePaymentStatus;
+    }
+
+    public EventTicketTransaction stripePaymentStatus(String stripePaymentStatus) {
+        this.setStripePaymentStatus(stripePaymentStatus);
+        return this;
+    }
+
+    public void setStripePaymentStatus(String stripePaymentStatus) {
+        this.stripePaymentStatus = stripePaymentStatus;
+    }
+
+    public String getStripeCustomerEmail() {
+        return this.stripeCustomerEmail;
+    }
+
+    public EventTicketTransaction stripeCustomerEmail(String stripeCustomerEmail) {
+        this.setStripeCustomerEmail(stripeCustomerEmail);
+        return this;
+    }
+
+    public void setStripeCustomerEmail(String stripeCustomerEmail) {
+        this.stripeCustomerEmail = stripeCustomerEmail;
+    }
+
+    public String getStripePaymentCurrency() {
+        return this.stripePaymentCurrency;
+    }
+
+    public EventTicketTransaction stripePaymentCurrency(String stripePaymentCurrency) {
+        this.setStripePaymentCurrency(stripePaymentCurrency);
+        return this;
+    }
+
+    public void setStripePaymentCurrency(String stripePaymentCurrency) {
+        this.stripePaymentCurrency = stripePaymentCurrency;
+    }
+
+    public BigDecimal getStripeAmountDiscount() {
+        return this.stripeAmountDiscount;
+    }
+
+    public EventTicketTransaction stripeAmountDiscount(BigDecimal stripeAmountDiscount) {
+        this.setStripeAmountDiscount(stripeAmountDiscount);
+        return this;
+    }
+
+    public void setStripeAmountDiscount(BigDecimal stripeAmountDiscount) {
+        this.stripeAmountDiscount = stripeAmountDiscount;
+    }
+
+    public BigDecimal getStripeAmountTax() {
+        return this.stripeAmountTax;
+    }
+
+    public EventTicketTransaction stripeAmountTax(BigDecimal stripeAmountTax) {
+        this.setStripeAmountTax(stripeAmountTax);
+        return this;
+    }
+
+    public void setStripeAmountTax(BigDecimal stripeAmountTax) {
+        this.stripeAmountTax = stripeAmountTax;
+    }
+
+    public BigDecimal getStripeFeeAmount() {
+        return this.stripeFeeAmount;
+    }
+
+    public EventTicketTransaction stripeFeeAmount(BigDecimal stripeFeeAmount) {
+        this.setStripeFeeAmount(stripeFeeAmount);
+        return this;
+    }
+
+    public void setStripeFeeAmount(BigDecimal stripeFeeAmount) {
+        this.stripeFeeAmount = stripeFeeAmount;
+    }
+
+    public Long getEventId() {
+        return this.eventId;
+    }
+
+    public EventTicketTransaction eventId(Long eventId) {
+        this.setEventId(eventId);
+        return this;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public EventTicketTransaction userId(Long userId) {
+        this.setUserId(userId);
+        return this;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -490,7 +634,7 @@ public class EventTicketTransaction implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public EventDetails getEvent() {
+    /*public EventDetails getEvent() {
         return this.event;
     }
 
@@ -503,31 +647,18 @@ public class EventTicketTransaction implements Serializable {
         return this;
     }
 
-    public EventTicketType getTicketType() {
-        return this.ticketType;
-    }
-
-    public void setTicketType(EventTicketType eventTicketType) {
-        this.ticketType = eventTicketType;
-    }
-
-    public EventTicketTransaction ticketType(EventTicketType eventTicketType) {
-        this.setTicketType(eventTicketType);
-        return this;
-    }
-
     public UserProfile getUser() {
         return this.user;
     }
 
     public void setUser(UserProfile userProfile) {
         this.user = userProfile;
-    }
+    }*/
 
-    public EventTicketTransaction user(UserProfile userProfile) {
+   /* public EventTicketTransaction user(UserProfile userProfile) {
         this.setUser(userProfile);
         return this;
-    }
+    }*/
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -563,8 +694,7 @@ public class EventTicketTransaction implements Serializable {
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
             ", taxAmount=" + getTaxAmount() +
-            ", feeAmount=" + getFeeAmount() +
-            ", discountCodeId=" + getDiscountCodeId() +
+            ", platformFeeAmount=" + getPlatformFeeAmount() +            ", discountCodeId=" + getDiscountCodeId() +
             ", discountAmount=" + getDiscountAmount() +
             ", finalAmount=" + getFinalAmount() +
             ", status='" + getStatus() + "'" +
@@ -577,6 +707,15 @@ public class EventTicketTransaction implements Serializable {
             ", refundReason='" + getRefundReason() + "'" +
             ", stripeCheckoutSessionId='" + getStripeCheckoutSessionId() + "'" +
             ", stripePaymentIntentId='" + getStripePaymentIntentId() + "'" +
+   			", stripeCustomerId='" + getStripeCustomerId() + "'" +
+            ", stripePaymentStatus='" + getStripePaymentStatus() + "'" +
+            ", stripeCustomerEmail='" + getStripeCustomerEmail() + "'" +
+            ", stripePaymentCurrency='" + getStripePaymentCurrency() + "'" +
+            ", stripeAmountDiscount=" + getStripeAmountDiscount() +
+            ", stripeAmountTax=" + getStripeAmountTax() +
+            ", stripeFeeAmount=" + getStripeFeeAmount() +
+            ", eventId=" + getEventId() +
+            ", userId=" + getUserId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

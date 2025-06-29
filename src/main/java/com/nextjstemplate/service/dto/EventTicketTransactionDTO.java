@@ -45,7 +45,7 @@ public class EventTicketTransactionDTO implements Serializable {
 
     private BigDecimal taxAmount;
 
-    private BigDecimal feeAmount;
+    private BigDecimal platformFeeAmount;
 
     private Long discountCodeId;
 
@@ -82,17 +82,32 @@ public class EventTicketTransactionDTO implements Serializable {
     @Size(max = 255)
     private String stripePaymentIntentId;
 
+    @Size(max = 255)
+    private String stripeCustomerId;
+
+    @Size(max = 50)
+    private String stripePaymentStatus;
+
+    @Size(max = 255)
+    private String stripeCustomerEmail;
+
+    @Size(max = 10)
+    private String stripePaymentCurrency;
+
+    private BigDecimal stripeAmountDiscount;
+
+    private BigDecimal stripeAmountTax;
+
+    private BigDecimal stripeFeeAmount;
+
+    private Long eventId;
+
+    private Long userId;
     @NotNull
     private ZonedDateTime createdAt;
 
     @NotNull
     private ZonedDateTime updatedAt;
-
-    private EventDetailsDTO event;
-
-    private EventTicketTypeDTO ticketType;
-
-    private UserProfileDTO user;
 
     public Long getId() {
         return id;
@@ -182,13 +197,14 @@ public class EventTicketTransactionDTO implements Serializable {
         this.taxAmount = taxAmount;
     }
 
-    public BigDecimal getFeeAmount() {
-        return feeAmount;
+    public BigDecimal getPlatformFeeAmount() {
+        return platformFeeAmount;
     }
 
-    public void setFeeAmount(BigDecimal feeAmount) {
-        this.feeAmount = feeAmount;
+    public void setPlatformFeeAmount(BigDecimal platformFeeAmount) {
+        this.platformFeeAmount = platformFeeAmount;
     }
+
 
     public Long getDiscountCodeId() {
         return discountCodeId;
@@ -294,6 +310,78 @@ public class EventTicketTransactionDTO implements Serializable {
         this.stripePaymentIntentId = stripePaymentIntentId;
     }
 
+    public String getStripeCustomerId() {
+        return stripeCustomerId;
+    }
+
+    public void setStripeCustomerId(String stripeCustomerId) {
+        this.stripeCustomerId = stripeCustomerId;
+    }
+
+    public String getStripePaymentStatus() {
+        return stripePaymentStatus;
+    }
+
+    public void setStripePaymentStatus(String stripePaymentStatus) {
+        this.stripePaymentStatus = stripePaymentStatus;
+    }
+
+    public String getStripeCustomerEmail() {
+        return stripeCustomerEmail;
+    }
+
+    public void setStripeCustomerEmail(String stripeCustomerEmail) {
+        this.stripeCustomerEmail = stripeCustomerEmail;
+    }
+
+    public String getStripePaymentCurrency() {
+        return stripePaymentCurrency;
+    }
+
+    public void setStripePaymentCurrency(String stripePaymentCurrency) {
+        this.stripePaymentCurrency = stripePaymentCurrency;
+    }
+
+    public BigDecimal getStripeAmountDiscount() {
+        return stripeAmountDiscount;
+    }
+
+    public void setStripeAmountDiscount(BigDecimal stripeAmountDiscount) {
+        this.stripeAmountDiscount = stripeAmountDiscount;
+    }
+
+    public BigDecimal getStripeAmountTax() {
+        return stripeAmountTax;
+    }
+
+    public void setStripeAmountTax(BigDecimal stripeAmountTax) {
+        this.stripeAmountTax = stripeAmountTax;
+    }
+
+    public BigDecimal getStripeFeeAmount() {
+        return stripeFeeAmount;
+    }
+
+    public void setStripeFeeAmount(BigDecimal stripeFeeAmount) {
+        this.stripeFeeAmount = stripeFeeAmount;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -308,30 +396,6 @@ public class EventTicketTransactionDTO implements Serializable {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public EventDetailsDTO getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventDetailsDTO event) {
-        this.event = event;
-    }
-
-    public EventTicketTypeDTO getTicketType() {
-        return ticketType;
-    }
-
-    public void setTicketType(EventTicketTypeDTO ticketType) {
-        this.ticketType = ticketType;
-    }
-
-    public UserProfileDTO getUser() {
-        return user;
-    }
-
-    public void setUser(UserProfileDTO user) {
-        this.user = user;
     }
 
     @Override
@@ -370,7 +434,7 @@ public class EventTicketTransactionDTO implements Serializable {
             ", pricePerUnit=" + getPricePerUnit() +
             ", totalAmount=" + getTotalAmount() +
             ", taxAmount=" + getTaxAmount() +
-            ", feeAmount=" + getFeeAmount() +
+           ", platformFeeAmount=" + getPlatformFeeAmount() +
             ", discountCodeId=" + getDiscountCodeId() +
             ", discountAmount=" + getDiscountAmount() +
             ", finalAmount=" + getFinalAmount() +
@@ -384,11 +448,17 @@ public class EventTicketTransactionDTO implements Serializable {
             ", refundReason='" + getRefundReason() + "'" +
             ", stripeCheckoutSessionId='" + getStripeCheckoutSessionId() + "'" +
             ", stripePaymentIntentId='" + getStripePaymentIntentId() + "'" +
+            ", stripeCustomerId='" + getStripeCustomerId() + "'" +
+            ", stripePaymentStatus='" + getStripePaymentStatus() + "'" +
+            ", stripeCustomerEmail='" + getStripeCustomerEmail() + "'" +
+            ", stripePaymentCurrency='" + getStripePaymentCurrency() + "'" +
+            ", stripeAmountDiscount=" + getStripeAmountDiscount() +
+            ", stripeAmountTax=" + getStripeAmountTax() +
+            ", stripeFeeAmount=" + getStripeFeeAmount() +
+            ", eventId=" + getEventId() +
+            ", userId=" + getUserId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
-            ", event=" + getEvent() +
-            ", ticketType=" + getTicketType() +
-            ", user=" + getUser() +
             "}";
     }
 }

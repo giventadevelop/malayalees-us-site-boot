@@ -14,6 +14,21 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="first_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="phone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="is_member" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="tenant_id" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
@@ -102,6 +117,11 @@
                   tableName="event_attendee"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
+            <column name="first_name" type="string"/>
+            <column name="last_name" type="string"/>
+            <column name="email" type="string"/>
+            <column name="phone" type="string"/>
+            <column name="is_member" type="boolean"/>
             <column name="tenant_id" type="string"/>
             <column name="registration_status" type="string"/>
             <column name="registration_date" type="date"/>

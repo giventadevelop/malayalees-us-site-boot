@@ -57,6 +57,8 @@ public class EventDetailsCriteria implements Serializable, Criteria {
 
     private BooleanFilter enableGuestPricing;
 
+    private BooleanFilter enableQrCode;
+
     private BooleanFilter isRegistrationRequired;
 
     private BooleanFilter isSportsEvent;
@@ -96,6 +98,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.allowGuests = other.allowGuests == null ? null : other.allowGuests.copy();
         this.requireGuestApproval = other.requireGuestApproval == null ? null : other.requireGuestApproval.copy();
         this.enableGuestPricing = other.enableGuestPricing == null ? null : other.enableGuestPricing.copy();
+        this.enableQrCode = other.enableQrCode == null ? null : other.enableQrCode.copy();
         this.isRegistrationRequired = other.isRegistrationRequired == null ? null : other.isRegistrationRequired.copy();
         this.isSportsEvent = other.isSportsEvent == null ? null : other.isSportsEvent.copy();
         this.isLive = other.isLive == null ? null : other.isLive.copy();
@@ -382,6 +385,20 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.enableGuestPricing = enableGuestPricing;
     }
 
+    public BooleanFilter getEnableQrCode() {
+        return enableQrCode;
+    }
+
+    public BooleanFilter enableQrCode() {
+        if (enableQrCode == null) {
+            enableQrCode = new BooleanFilter();
+        }
+        return enableQrCode;
+    }
+
+    public void setEnableQrCode(BooleanFilter enableQrCode) {
+        this.enableQrCode = enableQrCode;
+    }
     public BooleanFilter getIsRegistrationRequired() {
         return isRegistrationRequired;
     }
@@ -538,6 +555,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             Objects.equals(allowGuests, that.allowGuests) &&
             Objects.equals(requireGuestApproval, that.requireGuestApproval) &&
             Objects.equals(enableGuestPricing, that.enableGuestPricing) &&
+            Objects.equals(enableQrCode, that.enableQrCode) &&
             Objects.equals(isRegistrationRequired, that.isRegistrationRequired) &&
             Objects.equals(isSportsEvent, that.isSportsEvent) &&
             Objects.equals(isLive, that.isLive) &&
@@ -571,6 +589,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             allowGuests,
             requireGuestApproval,
             enableGuestPricing,
+            enableQrCode,
             isRegistrationRequired,
             isSportsEvent,
             isLive,
@@ -605,6 +624,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             (allowGuests != null ? "allowGuests=" + allowGuests + ", " : "") +
             (requireGuestApproval != null ? "requireGuestApproval=" + requireGuestApproval + ", " : "") +
             (enableGuestPricing != null ? "enableGuestPricing=" + enableGuestPricing + ", " : "") +
+            (enableQrCode != null ? "enableQrCode=" + enableQrCode + ", " : "") +
             (isRegistrationRequired != null ? "isRegistrationRequired=" + isRegistrationRequired + ", " : "") +
             (isSportsEvent != null ? "isSportsEvent=" + isSportsEvent + ", " : "") +
             (isLive != null ? "isLive=" + isLive + ", " : "") +

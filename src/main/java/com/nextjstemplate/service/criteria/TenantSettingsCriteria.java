@@ -35,6 +35,17 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
 
     private StringFilter whatsappApiKey;
 
+    private IntegerFilter maxEventsPerMonth;
+
+    private IntegerFilter maxAttendeesPerEvent;
+
+    private BooleanFilter enableGuestRegistration;
+
+    private IntegerFilter maxGuestsPerAttendee;
+
+    private IntegerFilter defaultEventCapacity;
+
+    private BigDecimalFilter platformFeePercentage;
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
@@ -53,6 +64,12 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
         this.enableWhatsappIntegration = other.enableWhatsappIntegration == null ? null : other.enableWhatsappIntegration.copy();
         this.enableEmailMarketing = other.enableEmailMarketing == null ? null : other.enableEmailMarketing.copy();
         this.whatsappApiKey = other.whatsappApiKey == null ? null : other.whatsappApiKey.copy();
+        this.maxEventsPerMonth = other.maxEventsPerMonth == null ? null : other.maxEventsPerMonth.copy();
+        this.maxAttendeesPerEvent = other.maxAttendeesPerEvent == null ? null : other.maxAttendeesPerEvent.copy();
+        this.enableGuestRegistration = other.enableGuestRegistration == null ? null : other.enableGuestRegistration.copy();
+        this.maxGuestsPerAttendee = other.maxGuestsPerAttendee == null ? null : other.maxGuestsPerAttendee.copy();
+        this.defaultEventCapacity = other.defaultEventCapacity == null ? null : other.defaultEventCapacity.copy();
+        this.platformFeePercentage = other.platformFeePercentage == null ? null : other.platformFeePercentage.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
         this.tenantOrganizationId = other.tenantOrganizationId == null ? null : other.tenantOrganizationId.copy();
@@ -169,6 +186,95 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
         this.whatsappApiKey = whatsappApiKey;
     }
 
+    public IntegerFilter getMaxEventsPerMonth() {
+        return maxEventsPerMonth;
+    }
+
+    public IntegerFilter maxEventsPerMonth() {
+        if (maxEventsPerMonth == null) {
+            maxEventsPerMonth = new IntegerFilter();
+        }
+        return maxEventsPerMonth;
+    }
+
+    public void setMaxEventsPerMonth(IntegerFilter maxEventsPerMonth) {
+        this.maxEventsPerMonth = maxEventsPerMonth;
+    }
+
+    public IntegerFilter getMaxAttendeesPerEvent() {
+        return maxAttendeesPerEvent;
+    }
+
+    public IntegerFilter maxAttendeesPerEvent() {
+        if (maxAttendeesPerEvent == null) {
+            maxAttendeesPerEvent = new IntegerFilter();
+        }
+        return maxAttendeesPerEvent;
+    }
+
+    public void setMaxAttendeesPerEvent(IntegerFilter maxAttendeesPerEvent) {
+        this.maxAttendeesPerEvent = maxAttendeesPerEvent;
+    }
+
+    public BooleanFilter getEnableGuestRegistration() {
+        return enableGuestRegistration;
+    }
+
+    public BooleanFilter enableGuestRegistration() {
+        if (enableGuestRegistration == null) {
+            enableGuestRegistration = new BooleanFilter();
+        }
+        return enableGuestRegistration;
+    }
+
+    public void setEnableGuestRegistration(BooleanFilter enableGuestRegistration) {
+        this.enableGuestRegistration = enableGuestRegistration;
+    }
+
+    public IntegerFilter getMaxGuestsPerAttendee() {
+        return maxGuestsPerAttendee;
+    }
+
+    public IntegerFilter maxGuestsPerAttendee() {
+        if (maxGuestsPerAttendee == null) {
+            maxGuestsPerAttendee = new IntegerFilter();
+        }
+        return maxGuestsPerAttendee;
+    }
+
+    public void setMaxGuestsPerAttendee(IntegerFilter maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public IntegerFilter getDefaultEventCapacity() {
+        return defaultEventCapacity;
+    }
+
+    public IntegerFilter defaultEventCapacity() {
+        if (defaultEventCapacity == null) {
+            defaultEventCapacity = new IntegerFilter();
+        }
+        return defaultEventCapacity;
+    }
+
+    public void setDefaultEventCapacity(IntegerFilter defaultEventCapacity) {
+        this.defaultEventCapacity = defaultEventCapacity;
+    }
+
+    public BigDecimalFilter getPlatformFeePercentage() {
+        return platformFeePercentage;
+    }
+
+    public BigDecimalFilter platformFeePercentage() {
+        if (platformFeePercentage == null) {
+            platformFeePercentage = new BigDecimalFilter();
+        }
+        return platformFeePercentage;
+    }
+
+    public void setPlatformFeePercentage(BigDecimalFilter platformFeePercentage) {
+        this.platformFeePercentage = platformFeePercentage;
+    }
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -239,6 +345,12 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             Objects.equals(enableWhatsappIntegration, that.enableWhatsappIntegration) &&
             Objects.equals(enableEmailMarketing, that.enableEmailMarketing) &&
             Objects.equals(whatsappApiKey, that.whatsappApiKey) &&
+            Objects.equals(maxEventsPerMonth, that.maxEventsPerMonth) &&
+            Objects.equals(maxAttendeesPerEvent, that.maxAttendeesPerEvent) &&
+            Objects.equals(enableGuestRegistration, that.enableGuestRegistration) &&
+            Objects.equals(maxGuestsPerAttendee, that.maxGuestsPerAttendee) &&
+            Objects.equals(defaultEventCapacity, that.defaultEventCapacity) &&
+            Objects.equals(platformFeePercentage, that.platformFeePercentage) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(tenantOrganizationId, that.tenantOrganizationId) &&
@@ -256,6 +368,12 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             enableWhatsappIntegration,
             enableEmailMarketing,
             whatsappApiKey,
+            maxEventsPerMonth,
+            maxAttendeesPerEvent,
+            enableGuestRegistration,
+            maxGuestsPerAttendee,
+            defaultEventCapacity,
+            platformFeePercentage,
             createdAt,
             updatedAt,
             tenantOrganizationId,
@@ -274,6 +392,12 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             (enableWhatsappIntegration != null ? "enableWhatsappIntegration=" + enableWhatsappIntegration + ", " : "") +
             (enableEmailMarketing != null ? "enableEmailMarketing=" + enableEmailMarketing + ", " : "") +
             (whatsappApiKey != null ? "whatsappApiKey=" + whatsappApiKey + ", " : "") +
+            (maxEventsPerMonth != null ? "maxEventsPerMonth=" + maxEventsPerMonth + ", " : "") +
+            (maxAttendeesPerEvent != null ? "maxAttendeesPerEvent=" + maxAttendeesPerEvent + ", " : "") +
+            (enableGuestRegistration != null ? "enableGuestRegistration=" + enableGuestRegistration + ", " : "") +
+            (maxGuestsPerAttendee != null ? "maxGuestsPerAttendee=" + maxGuestsPerAttendee + ", " : "") +
+            (defaultEventCapacity != null ? "defaultEventCapacity=" + defaultEventCapacity + ", " : "") +
+            (platformFeePercentage != null ? "platformFeePercentage=" + platformFeePercentage + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (tenantOrganizationId != null ? "tenantOrganizationId=" + tenantOrganizationId + ", " : "") +

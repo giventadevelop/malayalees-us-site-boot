@@ -114,6 +114,30 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
             if (criteria.getWhatsappApiKey() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getWhatsappApiKey(), TenantSettings_.whatsappApiKey));
             }
+            if (criteria.getMaxEventsPerMonth() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getMaxEventsPerMonth(), TenantSettings_.maxEventsPerMonth));
+            }
+            if (criteria.getMaxAttendeesPerEvent() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getMaxAttendeesPerEvent(), TenantSettings_.maxAttendeesPerEvent));
+            }
+            if (criteria.getEnableGuestRegistration() != null) {
+                specification =
+                    specification.and(buildSpecification(criteria.getEnableGuestRegistration(), TenantSettings_.enableGuestRegistration));
+            }
+            if (criteria.getMaxGuestsPerAttendee() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getMaxGuestsPerAttendee(), TenantSettings_.maxGuestsPerAttendee));
+            }
+            if (criteria.getDefaultEventCapacity() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getDefaultEventCapacity(), TenantSettings_.defaultEventCapacity));
+            }
+            if (criteria.getPlatformFeePercentage() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getPlatformFeePercentage(), TenantSettings_.platformFeePercentage));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), TenantSettings_.createdAt));
             }

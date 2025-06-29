@@ -77,6 +77,7 @@ public class CacheConfiguration {
             createCache(cm, com.nextjstemplate.domain.EmailLog.class.getName());
             createCache(cm, com.nextjstemplate.domain.WhatsAppLog.class.getName());
             createCache(cm, com.nextjstemplate.domain.CommunicationCampaign.class.getName());
+            createCache(cm, com.nextjstemplate.domain.EventTicketTransactionItem.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

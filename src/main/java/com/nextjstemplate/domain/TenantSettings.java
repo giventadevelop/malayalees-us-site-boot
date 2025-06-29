@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -49,6 +50,24 @@ public class TenantSettings implements Serializable {
     @Lob
     @Column(name = "email_provider_config")
     private String emailProviderConfig;
+
+    @Column(name = "max_events_per_month")
+    private Integer maxEventsPerMonth;
+
+    @Column(name = "max_attendees_per_event")
+    private Integer maxAttendeesPerEvent;
+
+    @Column(name = "enable_guest_registration")
+    private Boolean enableGuestRegistration;
+
+    @Column(name = "max_guests_per_attendee")
+    private Integer maxGuestsPerAttendee;
+
+    @Column(name = "default_event_capacity")
+    private Integer defaultEventCapacity;
+
+    @Column(name = "platform_fee_percentage", precision = 21, scale = 2)
+    private BigDecimal platformFeePercentage;
 
     @Lob
     @Column(name = "custom_css")
@@ -177,6 +196,84 @@ public class TenantSettings implements Serializable {
         this.emailProviderConfig = emailProviderConfig;
     }
 
+    public Integer getMaxEventsPerMonth() {
+        return this.maxEventsPerMonth;
+    }
+
+    public TenantSettings maxEventsPerMonth(Integer maxEventsPerMonth) {
+        this.setMaxEventsPerMonth(maxEventsPerMonth);
+        return this;
+    }
+
+    public void setMaxEventsPerMonth(Integer maxEventsPerMonth) {
+        this.maxEventsPerMonth = maxEventsPerMonth;
+    }
+
+    public Integer getMaxAttendeesPerEvent() {
+        return this.maxAttendeesPerEvent;
+    }
+
+    public TenantSettings maxAttendeesPerEvent(Integer maxAttendeesPerEvent) {
+        this.setMaxAttendeesPerEvent(maxAttendeesPerEvent);
+        return this;
+    }
+
+    public void setMaxAttendeesPerEvent(Integer maxAttendeesPerEvent) {
+        this.maxAttendeesPerEvent = maxAttendeesPerEvent;
+    }
+
+    public Boolean getEnableGuestRegistration() {
+        return this.enableGuestRegistration;
+    }
+
+    public TenantSettings enableGuestRegistration(Boolean enableGuestRegistration) {
+        this.setEnableGuestRegistration(enableGuestRegistration);
+        return this;
+    }
+
+    public void setEnableGuestRegistration(Boolean enableGuestRegistration) {
+        this.enableGuestRegistration = enableGuestRegistration;
+    }
+
+    public Integer getMaxGuestsPerAttendee() {
+        return this.maxGuestsPerAttendee;
+    }
+
+    public TenantSettings maxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.setMaxGuestsPerAttendee(maxGuestsPerAttendee);
+        return this;
+    }
+
+    public void setMaxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public Integer getDefaultEventCapacity() {
+        return this.defaultEventCapacity;
+    }
+
+    public TenantSettings defaultEventCapacity(Integer defaultEventCapacity) {
+        this.setDefaultEventCapacity(defaultEventCapacity);
+        return this;
+    }
+
+    public void setDefaultEventCapacity(Integer defaultEventCapacity) {
+        this.defaultEventCapacity = defaultEventCapacity;
+    }
+
+    public BigDecimal getPlatformFeePercentage() {
+        return this.platformFeePercentage;
+    }
+
+    public TenantSettings platformFeePercentage(BigDecimal platformFeePercentage) {
+        this.setPlatformFeePercentage(platformFeePercentage);
+        return this;
+    }
+
+    public void setPlatformFeePercentage(BigDecimal platformFeePercentage) {
+        this.platformFeePercentage = platformFeePercentage;
+    }
+
     public String getCustomCss() {
         return this.customCss;
     }
@@ -273,6 +370,12 @@ public class TenantSettings implements Serializable {
             ", enableEmailMarketing='" + getEnableEmailMarketing() + "'" +
             ", whatsappApiKey='" + getWhatsappApiKey() + "'" +
             ", emailProviderConfig='" + getEmailProviderConfig() + "'" +
+            ", maxEventsPerMonth=" + getMaxEventsPerMonth() +
+            ", maxAttendeesPerEvent=" + getMaxAttendeesPerEvent() +
+            ", enableGuestRegistration='" + getEnableGuestRegistration() + "'" +
+            ", maxGuestsPerAttendee=" + getMaxGuestsPerAttendee() +
+            ", defaultEventCapacity=" + getDefaultEventCapacity() +
+            ", platformFeePercentage=" + getPlatformFeePercentage() +
             ", customCss='" + getCustomCss() + "'" +
             ", customJs='" + getCustomJs() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +

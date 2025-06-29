@@ -3,6 +3,7 @@ package com.nextjstemplate.service.dto;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -32,6 +33,17 @@ public class TenantSettingsDTO implements Serializable {
     @Lob
     private String emailProviderConfig;
 
+    private Integer maxEventsPerMonth;
+
+    private Integer maxAttendeesPerEvent;
+
+    private Boolean enableGuestRegistration;
+
+    private Integer maxGuestsPerAttendee;
+
+    private Integer defaultEventCapacity;
+
+    private BigDecimal platformFeePercentage;
     @Lob
     private String customCss;
 
@@ -110,6 +122,53 @@ public class TenantSettingsDTO implements Serializable {
         this.emailProviderConfig = emailProviderConfig;
     }
 
+    public Integer getMaxEventsPerMonth() {
+        return maxEventsPerMonth;
+    }
+
+    public void setMaxEventsPerMonth(Integer maxEventsPerMonth) {
+        this.maxEventsPerMonth = maxEventsPerMonth;
+    }
+
+    public Integer getMaxAttendeesPerEvent() {
+        return maxAttendeesPerEvent;
+    }
+
+    public void setMaxAttendeesPerEvent(Integer maxAttendeesPerEvent) {
+        this.maxAttendeesPerEvent = maxAttendeesPerEvent;
+    }
+
+    public Boolean getEnableGuestRegistration() {
+        return enableGuestRegistration;
+    }
+
+    public void setEnableGuestRegistration(Boolean enableGuestRegistration) {
+        this.enableGuestRegistration = enableGuestRegistration;
+    }
+
+    public Integer getMaxGuestsPerAttendee() {
+        return maxGuestsPerAttendee;
+    }
+
+    public void setMaxGuestsPerAttendee(Integer maxGuestsPerAttendee) {
+        this.maxGuestsPerAttendee = maxGuestsPerAttendee;
+    }
+
+    public Integer getDefaultEventCapacity() {
+        return defaultEventCapacity;
+    }
+
+    public void setDefaultEventCapacity(Integer defaultEventCapacity) {
+        this.defaultEventCapacity = defaultEventCapacity;
+    }
+
+    public BigDecimal getPlatformFeePercentage() {
+        return platformFeePercentage;
+    }
+
+    public void setPlatformFeePercentage(BigDecimal platformFeePercentage) {
+        this.platformFeePercentage = platformFeePercentage;
+    }
     public String getCustomCss() {
         return customCss;
     }
@@ -183,6 +242,12 @@ public class TenantSettingsDTO implements Serializable {
             ", enableEmailMarketing='" + getEnableEmailMarketing() + "'" +
             ", whatsappApiKey='" + getWhatsappApiKey() + "'" +
             ", emailProviderConfig='" + getEmailProviderConfig() + "'" +
+            ", maxEventsPerMonth=" + getMaxEventsPerMonth() +
+            ", maxAttendeesPerEvent=" + getMaxAttendeesPerEvent() +
+            ", enableGuestRegistration='" + getEnableGuestRegistration() + "'" +
+            ", maxGuestsPerAttendee=" + getMaxGuestsPerAttendee() +
+            ", defaultEventCapacity=" + getDefaultEventCapacity() +
+            ", platformFeePercentage=" + getPlatformFeePercentage() +
             ", customCss='" + getCustomCss() + "'" +
             ", customJs='" + getCustomJs() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +

@@ -127,9 +127,10 @@ public class EventTicketTransactionQueryService extends QueryService<EventTicket
             if (criteria.getTaxAmount() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getTaxAmount(), EventTicketTransaction_.taxAmount));
             }
-            if (criteria.getFeeAmount() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getFeeAmount(), EventTicketTransaction_.feeAmount));
-            }
+            if (criteria.getPlatformFeeAmount() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getPlatformFeeAmount(), EventTicketTransaction_.platformFeeAmount));
+            }            }
             if (criteria.getDiscountCodeId() != null) {
                 specification =
                     specification.and(buildRangeSpecification(criteria.getDiscountCodeId(), EventTicketTransaction_.discountCodeId));
@@ -181,40 +182,55 @@ public class EventTicketTransactionQueryService extends QueryService<EventTicket
                         buildStringSpecification(criteria.getStripePaymentIntentId(), EventTicketTransaction_.stripePaymentIntentId)
                     );
             }
+			if (criteria.getStripeCustomerId() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getStripeCustomerId(), EventTicketTransaction_.stripeCustomerId));
+            }
+            if (criteria.getStripePaymentStatus() != null) {
+                specification =
+                    specification.and(
+                        buildStringSpecification(criteria.getStripePaymentStatus(), EventTicketTransaction_.stripePaymentStatus)
+                    );
+            }
+            if (criteria.getStripeCustomerEmail() != null) {
+                specification =
+                    specification.and(
+                        buildStringSpecification(criteria.getStripeCustomerEmail(), EventTicketTransaction_.stripeCustomerEmail)
+                    );
+            }
+            if (criteria.getStripePaymentCurrency() != null) {
+                specification =
+                    specification.and(
+                        buildStringSpecification(criteria.getStripePaymentCurrency(), EventTicketTransaction_.stripePaymentCurrency)
+                    );
+            }
+            if (criteria.getStripeAmountDiscount() != null) {
+                specification =
+                    specification.and(
+                        buildRangeSpecification(criteria.getStripeAmountDiscount(), EventTicketTransaction_.stripeAmountDiscount)
+                    );
+            }
+            if (criteria.getStripeAmountTax() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getStripeAmountTax(), EventTicketTransaction_.stripeAmountTax));
+            }
+            if (criteria.getStripeFeeAmount() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getStripeFeeAmount(), EventTicketTransaction_.stripeFeeAmount));
+            }
+            if (criteria.getEventId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getEventId(), EventTicketTransaction_.eventId));
+            }
+            if (criteria.getUserId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getUserId(), EventTicketTransaction_.userId));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventTicketTransaction_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventTicketTransaction_.updatedAt));
             }
-            if (criteria.getEventId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getEventId(),
-                            root -> root.join(EventTicketTransaction_.event, JoinType.LEFT).get(EventDetails_.id)
-                        )
-                    );
-            }
-            if (criteria.getTicketTypeId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getTicketTypeId(),
-                            root -> root.join(EventTicketTransaction_.ticketType, JoinType.LEFT).get(EventTicketType_.id)
-                        )
-                    );
-            }
-            if (criteria.getUserId() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(
-                            criteria.getUserId(),
-                            root -> root.join(EventTicketTransaction_.user, JoinType.LEFT).get(UserProfile_.id)
-                        )
-                    );
-            }
-        }
+
         return specification;
     }
 }

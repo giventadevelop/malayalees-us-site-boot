@@ -35,6 +35,24 @@
             <column name="email_provider_config" type="${clobType}">
                 <constraints nullable="true" />
             </column>
+            <column name="max_events_per_month" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="max_attendees_per_event" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="enable_guest_registration" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="max_guests_per_attendee" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="default_event_capacity" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="platform_fee_percentage" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
             <column name="custom_css" type="${clobType}">
                 <constraints nullable="true" />
             </column>
@@ -80,6 +98,12 @@
             <column name="enable_email_marketing" type="boolean"/>
             <column name="whatsapp_api_key" type="string"/>
             <column name="email_provider_config" type="clob"/>
+            <column name="max_events_per_month" type="numeric"/>
+            <column name="max_attendees_per_event" type="numeric"/>
+            <column name="enable_guest_registration" type="boolean"/>
+            <column name="max_guests_per_attendee" type="numeric"/>
+            <column name="default_event_capacity" type="numeric"/>
+            <column name="platform_fee_percentage" type="numeric"/>
             <column name="custom_css" type="clob"/>
             <column name="custom_js" type="clob"/>
             <column name="created_at" type="date"/>

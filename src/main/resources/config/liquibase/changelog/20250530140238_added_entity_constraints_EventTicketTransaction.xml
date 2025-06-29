@@ -15,13 +15,6 @@
                                  referencedTableName="event_details"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="ticket_type_id"
-                                 baseTableName="event_ticket_transaction"
-                                 constraintName="fk_event_ticket_transaction__ticket_type_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="event_ticket_type"
-                                 />
-
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="event_ticket_transaction"
                                  constraintName="fk_event_ticket_transaction__user_id"

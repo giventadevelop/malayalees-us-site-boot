@@ -65,6 +65,9 @@
             <column name="enable_guest_pricing" type="boolean">
                 <constraints nullable="true" />
             </column>
+            <column name="enable_qr_code" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="is_registration_required" type="boolean">
                 <constraints nullable="true" />
             </column>
@@ -90,20 +93,6 @@
         </createTable>
         <dropDefaultValue tableName="event_details" columnName="created_at" columnDataType="${datetimeType}"/>
         <dropDefaultValue tableName="event_details" columnName="updated_at" columnDataType="${datetimeType}"/>
-    </changeSet>
-
-    <changeSet id="20250530140138-1-relations" author="jhipster">
-
-        <createTable tableName="rel_event_details__discount_codes">
-            <column name="discount_codes_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="event_details_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="event_details_id, discount_codes_id" tableName="rel_event_details__discount_codes"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -140,6 +129,7 @@
             <column name="allow_guests" type="boolean"/>
             <column name="require_guest_approval" type="boolean"/>
             <column name="enable_guest_pricing" type="boolean"/>
+            <column name="enable_qr_code" type="boolean"/>
             <column name="is_registration_required" type="boolean"/>
             <column name="is_sports_event" type="boolean"/>
             <column name="is_live" type="boolean"/>

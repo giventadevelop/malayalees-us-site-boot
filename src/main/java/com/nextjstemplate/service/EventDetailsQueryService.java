@@ -144,6 +144,9 @@ public class EventDetailsQueryService extends QueryService<EventDetails> {
             if (criteria.getEnableGuestPricing() != null) {
                 specification = specification.and(buildSpecification(criteria.getEnableGuestPricing(), EventDetails_.enableGuestPricing));
             }
+            if (criteria.getEnableQrCode() != null) {
+                specification = specification.and(buildSpecification(criteria.getEnableQrCode(), EventDetails_.enableQrCode));
+            }
             if (criteria.getIsRegistrationRequired() != null) {
                 specification =
                     specification.and(buildSpecification(criteria.getIsRegistrationRequired(), EventDetails_.isRegistrationRequired));

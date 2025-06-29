@@ -1,11 +1,11 @@
-id;tenant_id;name;description;price;code;available_quantity;sold_quantity;is_active;created_at;updated_at
-1;over hourly;hmph;ready diphthongise;434.88;outlying ouch;7335;11485;false;2025-05-29T23:42:04;2025-05-30T09:57:56
-2;nor;soon inveigh and;boring bud with;32558.3;inasmuch hungry;5602;20109;true;2025-05-30T02:33:04;2025-05-30T09:46:52
-3;return;afore;condescend ransack whose;14303.96;hm monumental;25810;30738;true;2025-05-29T23:00:08;2025-05-29T17:23:18
-4;aha closure;snaggle;gigantic or;14055.17;launder considering even;22800;22361;false;2025-05-29T18:07:42;2025-05-30T00:35:10
-5;worriedly wooden ferret;ugh qua loyally;questionable luck;8331.22;simulcast scratchy whether;30109;12571;true;2025-05-30T13:23:14;2025-05-29T22:30:15
-6;unto;amongst;er;17956.97;why;20448;1712;false;2025-05-29T18:56:45;2025-05-29T20:03:30
-7;iterate;geez devise;granular;25556.47;once at;20287;9122;true;2025-05-29T16:10:09;2025-05-30T04:44:49
-8;nor;round sough duh;incidentally antagonize shelter;30509.08;tackle;2014;30258;true;2025-05-30T01:03:02;2025-05-29T22:22:52
-9;woot buttonhole bequeath;pale atrophy;keenly schlepp;3173.79;guilt;18558;19555;false;2025-05-29T20:16:44;2025-05-30T13:17:45
-10;furthermore;below which wise;consequently throughout on;30470.24;whereas;7121;26714;false;2025-05-29T14:57:15;2025-05-29T22:31:18
+id;tenant_id;name;description;is_service_fee_included;service_fee;price;code;available_quantity;sold_quantity;is_active;created_at;updated_at
+1;over hourly;hmph;ready diphthongise;true;19854.28;20951.96;even hm vacantly;10403;19372;true;2025-05-30T03:05:16;2025-05-29T20:53:32
+2;although;pungent at;openly loyally;false;27522.88;16634.05;filthy shoulder;11425;18877;true;2025-05-30T09:57:23;2025-05-29T23:19:54
+3;duck instead;with;hijack bully dramatic;false;7714.1;18678.24;towards liberalise;21733;11288;true;2025-05-29T20:05:53;2025-05-30T06:42:18
+4;class tippex;welcome;upbeat rightfully;false;31030.75;16097.25;regarding;3772;30859;true;2025-05-30T13:51:08;2025-05-30T00:58:28
+5;valuable;emotion;aside welcome;false;9200.19;7740.27;lest;24324;24679;false;2025-05-29T21:57:25;2025-05-29T17:18:22
+6;unfortunate;failing inequality sediment;madly although misfile;true;29943.84;6082.53;daily;31609;31806;false;2025-05-30T10:16:26;2025-05-29T16:23:34
+7;inquisitively shortlist formal;whose;buzzing qua;false;11366.29;25556.47;once at;20287;9122;true;2025-05-29T16:10:09;2025-05-30T04:44:49
+8;nor;round sough duh;incidentally antagonize shelter;false;917.02;16446;transfer jealously colonization;10013;4984;false;2025-05-30T11:27:03;2025-05-29T22:17:07
+9;sprout sniveling;er where;extremely guilt;false;19554.8;18720.98;punctually transportation vice;9742;20678;false;2025-05-29T18:03:19;2025-05-29T22:28:53
+10;political courageously handsome;concentration;slide why whether;true;21929.08;17616.09;communicate;17623;28752;true;2025-05-30T08:53:38;2025-05-30T04:54:31

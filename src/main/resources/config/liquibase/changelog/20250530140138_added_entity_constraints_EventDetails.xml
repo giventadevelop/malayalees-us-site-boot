@@ -21,19 +21,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="event_type_details"
                                  />
-
-        <addForeignKeyConstraint baseColumnNames="event_details_id"
-                                 baseTableName="rel_event_details__discount_codes"
-                                 constraintName="fk_rel_event_details__discount_codes__event_details_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="event_details"
-                                 />
-
-        <addForeignKeyConstraint baseColumnNames="discount_codes_id"
-                                 baseTableName="rel_event_details__discount_codes"
-                                 constraintName="fk_rel_event_details__discount_codes__discount_codes_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="discount_code"
-                                 />
     </changeSet>
 </databaseChangeLog>
