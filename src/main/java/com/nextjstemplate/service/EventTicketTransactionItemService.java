@@ -1,12 +1,14 @@
 package com.nextjstemplate.service;
 
 import com.nextjstemplate.service.dto.EventTicketTransactionItemDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link com.nextjstemplate.domain.EventTicketTransactionItem}.
+ * Service Interface for managing
+ * {@link com.nextjstemplate.domain.EventTicketTransactionItem}.
  */
 public interface EventTicketTransactionItemService {
     /**
@@ -55,4 +57,12 @@ public interface EventTicketTransactionItemService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Save a list of eventTicketTransactionItems.
+     *
+     * @param eventTicketTransactionItemDTOs the entities to save.
+     * @return the list of persisted entities.
+     */
+    List<EventTicketTransactionItemDTO> saveAll(List<EventTicketTransactionItemDTO> eventTicketTransactionItemDTOs);
 }

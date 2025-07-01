@@ -27,6 +27,10 @@ public class EventAttendeeDTO implements Serializable {
 
     private Boolean isMember;
 
+    @NotNull
+    private Long eventId;
+
+    private Long userId;
     @Size(max = 255)
     private String tenantId;
 
@@ -61,6 +65,9 @@ public class EventAttendeeDTO implements Serializable {
 
     private ZonedDateTime checkInTime;
 
+    private Integer totalNumberOfGuests;
+
+    private Integer numberOfGuestsCheckedIn;
     @Size(max = 1000)
     private String notes;
 
@@ -71,6 +78,31 @@ public class EventAttendeeDTO implements Serializable {
 
     private ZonedDateTime qrCodeGeneratedAt;
 
+    @Size(max = 1000)
+    private String dietaryRestrictions;
+
+    @Size(max = 1000)
+    private String accessibilityNeeds;
+
+    @Size(max = 100)
+    private String emergencyContactRelationship;
+
+    private ZonedDateTime checkOutTime;
+
+    @Min(value = 1)
+    @Max(value = 5)
+    private Integer attendanceRating;
+
+    @Size(max = 1000)
+    private String feedback;
+
+    @Size(max = 100)
+    private String registrationSource;
+
+    @Min(value = 1)
+    private Integer waitListPosition;
+
+    private Integer priorityScore;
     @NotNull
     private ZonedDateTime createdAt;
 
@@ -129,6 +161,21 @@ public class EventAttendeeDTO implements Serializable {
         this.isMember = isMember;
     }
 
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
     public String getTenantId() {
         return tenantId;
     }
@@ -225,6 +272,21 @@ public class EventAttendeeDTO implements Serializable {
         this.checkInTime = checkInTime;
     }
 
+    public Integer getTotalNumberOfGuests() {
+        return totalNumberOfGuests;
+    }
+
+    public void setTotalNumberOfGuests(Integer totalNumberOfGuests) {
+        this.totalNumberOfGuests = totalNumberOfGuests;
+    }
+
+    public Integer getNumberOfGuestsCheckedIn() {
+        return numberOfGuestsCheckedIn;
+    }
+
+    public void setNumberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
     public String getNotes() {
         return notes;
     }
@@ -257,6 +319,77 @@ public class EventAttendeeDTO implements Serializable {
         this.qrCodeGeneratedAt = qrCodeGeneratedAt;
     }
 
+    public String getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(String dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    public String getAccessibilityNeeds() {
+        return accessibilityNeeds;
+    }
+
+    public void setAccessibilityNeeds(String accessibilityNeeds) {
+        this.accessibilityNeeds = accessibilityNeeds;
+    }
+
+    public String getEmergencyContactRelationship() {
+        return emergencyContactRelationship;
+    }
+
+    public void setEmergencyContactRelationship(String emergencyContactRelationship) {
+        this.emergencyContactRelationship = emergencyContactRelationship;
+    }
+
+    public ZonedDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(ZonedDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public Integer getAttendanceRating() {
+        return attendanceRating;
+    }
+
+    public void setAttendanceRating(Integer attendanceRating) {
+        this.attendanceRating = attendanceRating;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getRegistrationSource() {
+        return registrationSource;
+    }
+
+    public void setRegistrationSource(String registrationSource) {
+        this.registrationSource = registrationSource;
+    }
+
+    public Integer getWaitListPosition() {
+        return waitListPosition;
+    }
+
+    public void setWaitListPosition(Integer waitListPosition) {
+        this.waitListPosition = waitListPosition;
+    }
+
+    public Integer getPriorityScore() {
+        return priorityScore;
+    }
+
+    public void setPriorityScore(Integer priorityScore) {
+        this.priorityScore = priorityScore;
+    }
     public ZonedDateTime getCreatedAt() {
         return createdAt;
     }
@@ -279,14 +412,6 @@ public class EventAttendeeDTO implements Serializable {
 
     public void setEvent(EventDetailsDTO event) {
         this.event = event;
-    }
-
-    public UserProfileDTO getAttendee() {
-        return attendee;
-    }
-
-    public void setAttendee(UserProfileDTO attendee) {
-        this.attendee = attendee;
     }
 
     @Override
@@ -320,6 +445,8 @@ public class EventAttendeeDTO implements Serializable {
             ", email='" + getEmail() + "'" +
             ", phone='" + getPhone() + "'" +
             ", isMember='" + getIsMember() + "'" +
+			", eventId=" + getEventId() +
+            ", userId=" + getUserId() +
             ", tenantId='" + getTenantId() + "'" +
             ", registrationStatus='" + getRegistrationStatus() + "'" +
             ", registrationDate='" + getRegistrationDate() + "'" +
@@ -332,14 +459,24 @@ public class EventAttendeeDTO implements Serializable {
             ", emergencyContactPhone='" + getEmergencyContactPhone() + "'" +
             ", checkInStatus='" + getCheckInStatus() + "'" +
             ", checkInTime='" + getCheckInTime() + "'" +
+            ", totalNumberOfGuests=" + getTotalNumberOfGuests() +
+            ", numberOfGuestsCheckedIn=" + getNumberOfGuestsCheckedIn() +
             ", notes='" + getNotes() + "'" +
             ", qrCodeData='" + getQrCodeData() + "'" +
             ", qrCodeGenerated='" + getQrCodeGenerated() + "'" +
             ", qrCodeGeneratedAt='" + getQrCodeGeneratedAt() + "'" +
+            ", dietaryRestrictions='" + getDietaryRestrictions() + "'" +
+            ", accessibilityNeeds='" + getAccessibilityNeeds() + "'" +
+            ", emergencyContactRelationship='" + getEmergencyContactRelationship() + "'" +
+            ", checkOutTime='" + getCheckOutTime() + "'" +
+            ", attendanceRating=" + getAttendanceRating() +
+            ", feedback='" + getFeedback() + "'" +
+            ", registrationSource='" + getRegistrationSource() + "'" +
+            ", waitListPosition=" + getWaitListPosition() +
+            ", priorityScore=" + getPriorityScore() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
-            ", event=" + getEvent() +
-            ", attendee=" + getAttendee() +
+            
             "}";
     }
 }

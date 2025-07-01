@@ -6,6 +6,7 @@ import com.nextjstemplate.service.EventTicketTransactionService;
 import com.nextjstemplate.service.EmailSenderService;
 import com.nextjstemplate.service.criteria.EventTicketTransactionCriteria;
 import com.nextjstemplate.service.dto.EventTicketTransactionDTO;
+import com.nextjstemplate.service.dto.EventTicketTransactionStatisticsDTO;
 import com.nextjstemplate.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import tech.jhipster.service.filter.LongFilter;
+import tech.jhipster.service.filter.StringFilter;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -85,7 +88,7 @@ public class EventTicketTransactionResource {
         try {
             String to = result.getEmail();
             String subject = "Your Ticket Purchase Confirmation";
-            String eventName =  "Event";
+            String eventName = "Event";
             String body = String.format(
                     "Dear %s,\n\nThank you for your purchase!\n\nEvent: %s\nTickets: %d\nTotal Paid: %s\n\nTransaction Ref: %s\n\nSee you at the event!",
                     result.getFirstName() != null ? result.getFirstName() : "Customer",
@@ -202,6 +205,18 @@ public class EventTicketTransactionResource {
             @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get EventTicketTransactions by criteria: {}", criteria);
 
+        // Special handling for ID-based searches to avoid pagination issues
+        if (criteria != null && criteria.getId() != null && criteria.getId().getEquals() != null) {
+            // For ID searches, get the specific record and return it regardless of page
+            Long id = criteria.getId().getEquals();
+            Optional<EventTicketTransactionDTO> result = eventTicketTransactionService.findOne(id);
+            if (result.isPresent()) {
+                return ResponseEntity.ok().body(List.of(result.get()));
+            } else {
+                return ResponseEntity.ok().body(List.of());
+            }
+        }
+
         Page<EventTicketTransactionDTO> page = eventTicketTransactionQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil
                 .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
@@ -239,6 +254,89 @@ public class EventTicketTransactionResource {
     }
 
     /**
+     * {@code GET  /event-ticket-transactions/search/by-transaction-id} : search for
+     * eventTicketTransaction by transaction ID.
+     *
+     * @param transactionId the transaction ID to search for.
+     * @param tenantId      the tenant ID for filtering.
+     * @param eventId       the event ID for filtering.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the list of matching eventTicketTransactionDTOs.
+     */
+    @GetMapping("/search/by-transaction-id")
+    public ResponseEntity<List<EventTicketTransactionDTO>> searchByTransactionId(
+            @RequestParam(required = false) Long transactionId,
+            @RequestParam(required = false) String tenantId,
+            @RequestParam(required = false) Long eventId) {
+        log.debug("REST request to search EventTicketTransaction by transaction ID: {}", transactionId);
+
+        if (transactionId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        EventTicketTransactionCriteria criteria = new EventTicketTransactionCriteria();
+        criteria.setId(new LongFilter());
+        criteria.getId().setEquals(transactionId);
+
+        if (tenantId != null) {
+            criteria.setTenantId(new StringFilter());
+            criteria.getTenantId().setEquals(tenantId);
+        }
+
+        if (eventId != null) {
+            criteria.setEventId(new LongFilter());
+            criteria.getEventId().setEquals(eventId);
+        }
+
+        List<EventTicketTransactionDTO> results = eventTicketTransactionQueryService.findByCriteria(criteria);
+        return ResponseEntity.ok().body(results);
+    }
+
+    /**
+     * {@code GET  /event-ticket-transactions/search/by-name} : search for
+     * eventTicketTransaction by name.
+     *
+     * @param name     the name to search for (can be first name, last name, or full
+     *                 name).
+     * @param tenantId the tenant ID for filtering.
+     * @param eventId  the event ID for filtering.
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the list of matching eventTicketTransactionDTOs.
+     */
+    @GetMapping("/search/by-name")
+    public ResponseEntity<List<EventTicketTransactionDTO>> searchByName(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String tenantId,
+            @RequestParam(required = false) Long eventId,
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to search EventTicketTransaction by name: {}", name);
+
+        if (name == null || name.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        EventTicketTransactionCriteria criteria = new EventTicketTransactionCriteria();
+        criteria.setFirstName(new StringFilter());
+        criteria.getFirstName().setContains(name.trim());
+
+        if (tenantId != null) {
+            criteria.setTenantId(new StringFilter());
+            criteria.getTenantId().setEquals(tenantId);
+        }
+
+        if (eventId != null) {
+            criteria.setEventId(new LongFilter());
+            criteria.getEventId().setEquals(eventId);
+        }
+
+        Page<EventTicketTransactionDTO> page = eventTicketTransactionQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
      * {@code DELETE  /event-ticket-transactions/:id} : delete the "id"
      * eventTicketTransaction.
      *
@@ -253,5 +351,20 @@ public class EventTicketTransactionResource {
                 .noContent()
                 .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
                 .build();
+    }
+
+    /**
+     * {@code GET /event-ticket-transactions/statistics/{eventId}} : get statistics
+     * for an event.
+     *
+     * @param eventId the id of the event.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the
+     *         statistics in body.
+     */
+    @GetMapping("/statistics/{eventId}")
+    public ResponseEntity<EventTicketTransactionStatisticsDTO> getEventStatistics(@PathVariable Long eventId) {
+        log.debug("REST request to get statistics for event : {}", eventId);
+        EventTicketTransactionStatisticsDTO stats = eventTicketTransactionService.getEventStatistics(eventId);
+        return ResponseEntity.ok(stats);
     }
 }

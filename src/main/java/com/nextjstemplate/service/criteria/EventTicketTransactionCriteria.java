@@ -83,6 +83,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter stripeFeeAmount;
 
+    private StringFilter qrCodeImageUrl;
     private LongFilter eventId;
 
     private LongFilter userId;
@@ -127,6 +128,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.stripeAmountDiscount = other.stripeAmountDiscount == null ? null : other.stripeAmountDiscount.copy();
         this.stripeAmountTax = other.stripeAmountTax == null ? null : other.stripeAmountTax.copy();
         this.stripeFeeAmount = other.stripeFeeAmount == null ? null : other.stripeFeeAmount.copy();
+        this.qrCodeImageUrl = other.qrCodeImageUrl == null ? null : other.qrCodeImageUrl.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
@@ -605,6 +607,20 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.stripeFeeAmount = stripeFeeAmount;
     }
 
+    public StringFilter getQrCodeImageUrl() {
+        return qrCodeImageUrl;
+    }
+
+    public StringFilter qrCodeImageUrl() {
+        if (qrCodeImageUrl == null) {
+            qrCodeImageUrl = new StringFilter();
+        }
+        return qrCodeImageUrl;
+    }
+
+    public void setQrCodeImageUrl(StringFilter qrCodeImageUrl) {
+        this.qrCodeImageUrl = qrCodeImageUrl;
+    }
     public LongFilter getEventId() {
         return eventId;
     }
@@ -694,7 +710,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(pricePerUnit, that.pricePerUnit) &&
             Objects.equals(totalAmount, that.totalAmount) &&
             Objects.equals(taxAmount, that.taxAmount) &&
-            Objects.equals(platformFeeAmount, that.platformFeeAmount) &&            Objects.equals(discountCodeId, that.discountCodeId) &&
+            Objects.equals(platformFeeAmount, that.platformFeeAmount) &&
+            Objects.equals(discountCodeId, that.discountCodeId) &&
             Objects.equals(discountAmount, that.discountAmount) &&
             Objects.equals(finalAmount, that.finalAmount) &&
             Objects.equals(status, that.status) &&
@@ -713,6 +730,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(stripeAmountDiscount, that.stripeAmountDiscount) &&
             Objects.equals(stripeAmountTax, that.stripeAmountTax) &&
             Objects.equals(stripeFeeAmount, that.stripeFeeAmount) &&
+            Objects.equals(qrCodeImageUrl, that.qrCodeImageUrl) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(createdAt, that.createdAt) &&
@@ -737,7 +755,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             pricePerUnit,
             totalAmount,
             taxAmount,
-            platformFeeAmount,            discountCodeId,
+            platformFeeAmount,
+            discountCodeId,
             discountAmount,
             finalAmount,
             status,
@@ -756,6 +775,7 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             stripeAmountDiscount,
             stripeAmountTax,
             stripeFeeAmount,
+            qrCodeImageUrl,
             eventId,
             userId,
             createdAt,
@@ -778,7 +798,8 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (pricePerUnit != null ? "pricePerUnit=" + pricePerUnit + ", " : "") +
             (totalAmount != null ? "totalAmount=" + totalAmount + ", " : "") +
             (taxAmount != null ? "taxAmount=" + taxAmount + ", " : "") +
-            (platformFeeAmount != null ? "platformFeeAmount=" + platformFeeAmount + ", " : "") +            (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
+            (platformFeeAmount != null ? "platformFeeAmount=" + platformFeeAmount + ", " : "") +
+            (discountCodeId != null ? "discountCodeId=" + discountCodeId + ", " : "") +
             (discountAmount != null ? "discountAmount=" + discountAmount + ", " : "") +
             (finalAmount != null ? "finalAmount=" + finalAmount + ", " : "") +
             (status != null ? "status=" + status + ", " : "") +
@@ -797,13 +818,15 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (stripeAmountDiscount != null ? "stripeAmountDiscount=" + stripeAmountDiscount + ", " : "") +
             (stripeAmountTax != null ? "stripeAmountTax=" + stripeAmountTax + ", " : "") +
             (stripeFeeAmount != null ? "stripeFeeAmount=" + stripeFeeAmount + ", " : "") +
+			(qrCodeImageUrl != null ? "qrCodeImageUrl=" + qrCodeImageUrl + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
+            (distinct != null ? "distinct=" + distinct + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
-            (distinct != null ? "distinct=" + distinct + ", " : "") +
+            
             "}";
     }
 }

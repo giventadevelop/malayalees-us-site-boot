@@ -44,6 +44,13 @@ public class EventAttendee implements Serializable {
     @Column(name = "is_member")
     private Boolean isMember;
 
+    @NotNull
+    @Column(name = "event_id", nullable = false)
+    private Long eventId;
+
+    @Column(name = "user_id")
+    private Long userId;
+
     @Size(max = 255)
     @Column(name = "tenant_id", length = 255)
     private String tenantId;
@@ -90,6 +97,12 @@ public class EventAttendee implements Serializable {
     @Column(name = "check_in_time")
     private ZonedDateTime checkInTime;
 
+    @Column(name = "total_number_of_guests")
+    private Integer totalNumberOfGuests;
+
+    @Column(name = "number_of_guests_checked_in")
+    private Integer numberOfGuestsCheckedIn;
+
     @Size(max = 1000)
     @Column(name = "notes", length = 1000)
     private String notes;
@@ -104,6 +117,40 @@ public class EventAttendee implements Serializable {
     @Column(name = "qr_code_generated_at")
     private ZonedDateTime qrCodeGeneratedAt;
 
+    @Size(max = 1000)
+    @Column(name = "dietary_restrictions", length = 1000)
+    private String dietaryRestrictions;
+
+    @Size(max = 1000)
+    @Column(name = "accessibility_needs", length = 1000)
+    private String accessibilityNeeds;
+
+    @Size(max = 100)
+    @Column(name = "emergency_contact_relationship", length = 100)
+    private String emergencyContactRelationship;
+
+    @Column(name = "check_out_time")
+    private ZonedDateTime checkOutTime;
+
+    @Min(value = 1)
+    @Max(value = 5)
+    @Column(name = "attendance_rating")
+    private Integer attendanceRating;
+
+    @Size(max = 1000)
+    @Column(name = "feedback", length = 1000)
+    private String feedback;
+
+    @Size(max = 100)
+    @Column(name = "registration_source", length = 100)
+    private String registrationSource;
+
+    @Min(value = 1)
+    @Column(name = "wait_list_position")
+    private Integer waitListPosition;
+
+    @Column(name = "priority_score")
+    private Integer priorityScore;
     @NotNull
     @Column(name = "created_at", nullable = false)
     private ZonedDateTime createdAt;
@@ -111,12 +158,6 @@ public class EventAttendee implements Serializable {
     @NotNull
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
-
-    @Column(name = "event_id")
-    private Long eventId;
-
-    @Column(name = "attendee_id")
-    private Long attendeeId;
 
     /*@ManyToOne(optional = false)
     @NotNull
@@ -138,13 +179,19 @@ public class EventAttendee implements Serializable {
         this.eventId = eventId;
     }
 
-    public Long getAttendeeId() {
-        return attendeeId;
+     public Long getUserId() {
+        return this.userId;
     }
 
-    public void setAttendeeId(Long attendeeId) {
-        this.attendeeId = attendeeId;
+    public EventAttendee userId(Long userId) {
+        this.setUserId(userId);
+        return this;
     }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+    
 
     public Long getId() {
         return this.id;
@@ -380,6 +427,31 @@ public class EventAttendee implements Serializable {
         this.checkInTime = checkInTime;
     }
 
+    public Integer getTotalNumberOfGuests() {
+        return this.totalNumberOfGuests;
+    }
+
+    public EventAttendee totalNumberOfGuests(Integer totalNumberOfGuests) {
+        this.setTotalNumberOfGuests(totalNumberOfGuests);
+        return this;
+    }
+
+    public void setTotalNumberOfGuests(Integer totalNumberOfGuests) {
+        this.totalNumberOfGuests = totalNumberOfGuests;
+    }
+
+    public Integer getNumberOfGuestsCheckedIn() {
+        return this.numberOfGuestsCheckedIn;
+    }
+
+    public EventAttendee numberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.setNumberOfGuestsCheckedIn(numberOfGuestsCheckedIn);
+        return this;
+    }
+
+    public void setNumberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
     public String getNotes() {
         return this.notes;
     }
@@ -432,6 +504,122 @@ public class EventAttendee implements Serializable {
         this.qrCodeGeneratedAt = qrCodeGeneratedAt;
     }
 
+    public String getDietaryRestrictions() {
+        return this.dietaryRestrictions;
+    }
+
+    public EventAttendee dietaryRestrictions(String dietaryRestrictions) {
+        this.setDietaryRestrictions(dietaryRestrictions);
+        return this;
+    }
+
+    public void setDietaryRestrictions(String dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    public String getAccessibilityNeeds() {
+        return this.accessibilityNeeds;
+    }
+
+    public EventAttendee accessibilityNeeds(String accessibilityNeeds) {
+        this.setAccessibilityNeeds(accessibilityNeeds);
+        return this;
+    }
+
+    public void setAccessibilityNeeds(String accessibilityNeeds) {
+        this.accessibilityNeeds = accessibilityNeeds;
+    }
+
+    public String getEmergencyContactRelationship() {
+        return this.emergencyContactRelationship;
+    }
+
+    public EventAttendee emergencyContactRelationship(String emergencyContactRelationship) {
+        this.setEmergencyContactRelationship(emergencyContactRelationship);
+        return this;
+    }
+
+    public void setEmergencyContactRelationship(String emergencyContactRelationship) {
+        this.emergencyContactRelationship = emergencyContactRelationship;
+    }
+
+    public ZonedDateTime getCheckOutTime() {
+        return this.checkOutTime;
+    }
+
+    public EventAttendee checkOutTime(ZonedDateTime checkOutTime) {
+        this.setCheckOutTime(checkOutTime);
+        return this;
+    }
+
+    public void setCheckOutTime(ZonedDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public Integer getAttendanceRating() {
+        return this.attendanceRating;
+    }
+
+    public EventAttendee attendanceRating(Integer attendanceRating) {
+        this.setAttendanceRating(attendanceRating);
+        return this;
+    }
+
+    public void setAttendanceRating(Integer attendanceRating) {
+        this.attendanceRating = attendanceRating;
+    }
+
+    public String getFeedback() {
+        return this.feedback;
+    }
+
+    public EventAttendee feedback(String feedback) {
+        this.setFeedback(feedback);
+        return this;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    public String getRegistrationSource() {
+        return this.registrationSource;
+    }
+
+    public EventAttendee registrationSource(String registrationSource) {
+        this.setRegistrationSource(registrationSource);
+        return this;
+    }
+
+    public void setRegistrationSource(String registrationSource) {
+        this.registrationSource = registrationSource;
+    }
+
+    public Integer getWaitListPosition() {
+        return this.waitListPosition;
+    }
+
+    public EventAttendee waitListPosition(Integer waitListPosition) {
+        this.setWaitListPosition(waitListPosition);
+        return this;
+    }
+
+    public void setWaitListPosition(Integer waitListPosition) {
+        this.waitListPosition = waitListPosition;
+    }
+
+    public Integer getPriorityScore() {
+        return this.priorityScore;
+    }
+
+    public EventAttendee priorityScore(Integer priorityScore) {
+        this.setPriorityScore(priorityScore);
+        return this;
+    }
+
+    public void setPriorityScore(Integer priorityScore) {
+        this.priorityScore = priorityScore;
+    }
     public ZonedDateTime getCreatedAt() {
         return this.createdAt;
     }
@@ -513,6 +701,8 @@ public class EventAttendee implements Serializable {
             ", email='" + getEmail() + "'" +
             ", phone='" + getPhone() + "'" +
             ", isMember='" + getIsMember() + "'" +
+            ", eventId=" + getEventId() +
+            ", userId=" + getUserId() +
             ", tenantId='" + getTenantId() + "'" +
             ", registrationStatus='" + getRegistrationStatus() + "'" +
             ", registrationDate='" + getRegistrationDate() + "'" +
@@ -525,10 +715,21 @@ public class EventAttendee implements Serializable {
             ", emergencyContactPhone='" + getEmergencyContactPhone() + "'" +
             ", checkInStatus='" + getCheckInStatus() + "'" +
             ", checkInTime='" + getCheckInTime() + "'" +
+            ", totalNumberOfGuests=" + getTotalNumberOfGuests() +
+            ", numberOfGuestsCheckedIn=" + getNumberOfGuestsCheckedIn() +
             ", notes='" + getNotes() + "'" +
             ", qrCodeData='" + getQrCodeData() + "'" +
             ", qrCodeGenerated='" + getQrCodeGenerated() + "'" +
             ", qrCodeGeneratedAt='" + getQrCodeGeneratedAt() + "'" +
+            ", dietaryRestrictions='" + getDietaryRestrictions() + "'" +
+            ", accessibilityNeeds='" + getAccessibilityNeeds() + "'" +
+            ", emergencyContactRelationship='" + getEmergencyContactRelationship() + "'" +
+            ", checkOutTime='" + getCheckOutTime() + "'" +
+            ", attendanceRating=" + getAttendanceRating() +
+            ", feedback='" + getFeedback() + "'" +
+            ", registrationSource='" + getRegistrationSource() + "'" +
+            ", waitListPosition=" + getWaitListPosition() +
+            ", priorityScore=" + getPriorityScore() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

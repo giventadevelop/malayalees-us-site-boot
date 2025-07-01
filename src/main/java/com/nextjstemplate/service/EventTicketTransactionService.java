@@ -1,12 +1,14 @@
 package com.nextjstemplate.service;
 
 import com.nextjstemplate.service.dto.EventTicketTransactionDTO;
+import com.nextjstemplate.service.dto.EventTicketTransactionStatisticsDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing {@link com.nextjstemplate.domain.EventTicketTransaction}.
+ * Service Interface for managing
+ * {@link com.nextjstemplate.domain.EventTicketTransaction}.
  */
 public interface EventTicketTransactionService {
     /**
@@ -55,4 +57,12 @@ public interface EventTicketTransactionService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    /**
+     * Get statistics for an event by eventId.
+     *
+     * @param eventId the id of the event.
+     * @return the statistics DTO.
+     */
+    EventTicketTransactionStatisticsDTO getEventStatistics(Long eventId);
 }

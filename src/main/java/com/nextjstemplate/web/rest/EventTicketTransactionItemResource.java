@@ -27,7 +27,8 @@ import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
- * REST controller for managing {@link com.nextjstemplate.domain.EventTicketTransactionItem}.
+ * REST controller for managing
+ * {@link com.nextjstemplate.domain.EventTicketTransactionItem}.
  */
 @RestController
 @RequestMapping("/api/event-ticket-transaction-items")
@@ -47,52 +48,62 @@ public class EventTicketTransactionItemResource {
     private final EventTicketTransactionItemQueryService eventTicketTransactionItemQueryService;
 
     public EventTicketTransactionItemResource(
-        EventTicketTransactionItemService eventTicketTransactionItemService,
-        EventTicketTransactionItemRepository eventTicketTransactionItemRepository,
-        EventTicketTransactionItemQueryService eventTicketTransactionItemQueryService
-    ) {
+            EventTicketTransactionItemService eventTicketTransactionItemService,
+            EventTicketTransactionItemRepository eventTicketTransactionItemRepository,
+            EventTicketTransactionItemQueryService eventTicketTransactionItemQueryService) {
         this.eventTicketTransactionItemService = eventTicketTransactionItemService;
         this.eventTicketTransactionItemRepository = eventTicketTransactionItemRepository;
         this.eventTicketTransactionItemQueryService = eventTicketTransactionItemQueryService;
     }
 
     /**
-     * {@code POST  /event-ticket-transaction-items} : Create a new eventTicketTransactionItem.
+     * {@code POST  /event-ticket-transaction-items} : Create a new
+     * eventTicketTransactionItem.
      *
-     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new eventTicketTransactionItemDTO, or with status {@code 400 (Bad Request)} if the eventTicketTransactionItem has already an ID.
+     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to
+     *                                      create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the new eventTicketTransactionItemDTO, or with status
+     *         {@code 400 (Bad Request)} if the eventTicketTransactionItem has
+     *         already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
     public ResponseEntity<EventTicketTransactionItemDTO> createEventTicketTransactionItem(
-        @Valid @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO
-    ) throws URISyntaxException {
+            @Valid @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO) throws URISyntaxException {
         log.debug("REST request to save EventTicketTransactionItem : {}", eventTicketTransactionItemDTO);
         if (eventTicketTransactionItemDTO.getId() != null) {
-            throw new BadRequestAlertException("A new eventTicketTransactionItem cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new eventTicketTransactionItem cannot already have an ID",
+                    ENTITY_NAME, "idexists");
         }
         EventTicketTransactionItemDTO result = eventTicketTransactionItemService.save(eventTicketTransactionItemDTO);
         return ResponseEntity
-            .created(new URI("/api/event-ticket-transaction-items/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                .created(new URI("/api/event-ticket-transaction-items/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
+                        result.getId().toString()))
+                .body(result);
     }
 
     /**
-     * {@code PUT  /event-ticket-transaction-items/:id} : Updates an existing eventTicketTransactionItem.
+     * {@code PUT  /event-ticket-transaction-items/:id} : Updates an existing
+     * eventTicketTransactionItem.
      *
-     * @param id the id of the eventTicketTransactionItemDTO to save.
-     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventTicketTransactionItemDTO,
-     * or with status {@code 400 (Bad Request)} if the eventTicketTransactionItemDTO is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the eventTicketTransactionItemDTO couldn't be updated.
+     * @param id                            the id of the
+     *                                      eventTicketTransactionItemDTO to save.
+     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to
+     *                                      update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated eventTicketTransactionItemDTO,
+     *         or with status {@code 400 (Bad Request)} if the
+     *         eventTicketTransactionItemDTO is not valid,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         eventTicketTransactionItemDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
     public ResponseEntity<EventTicketTransactionItemDTO> updateEventTicketTransactionItem(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO
-    ) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO) throws URISyntaxException {
         log.debug("REST request to update EventTicketTransactionItem : {}, {}", id, eventTicketTransactionItemDTO);
         if (eventTicketTransactionItemDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -107,30 +118,39 @@ public class EventTicketTransactionItemResource {
 
         EventTicketTransactionItemDTO result = eventTicketTransactionItemService.update(eventTicketTransactionItemDTO);
         return ResponseEntity
-            .ok()
-            .headers(
-                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventTicketTransactionItemDTO.getId().toString())
-            )
-            .body(result);
+                .ok()
+                .headers(
+                        HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
+                                eventTicketTransactionItemDTO.getId().toString()))
+                .body(result);
     }
 
     /**
-     * {@code PATCH  /event-ticket-transaction-items/:id} : Partial updates given fields of an existing eventTicketTransactionItem, field will ignore if it is null
+     * {@code PATCH  /event-ticket-transaction-items/:id} : Partial updates given
+     * fields of an existing eventTicketTransactionItem, field will ignore if it is
+     * null
      *
-     * @param id the id of the eventTicketTransactionItemDTO to save.
-     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated eventTicketTransactionItemDTO,
-     * or with status {@code 400 (Bad Request)} if the eventTicketTransactionItemDTO is not valid,
-     * or with status {@code 404 (Not Found)} if the eventTicketTransactionItemDTO is not found,
-     * or with status {@code 500 (Internal Server Error)} if the eventTicketTransactionItemDTO couldn't be updated.
+     * @param id                            the id of the
+     *                                      eventTicketTransactionItemDTO to save.
+     * @param eventTicketTransactionItemDTO the eventTicketTransactionItemDTO to
+     *                                      update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the updated eventTicketTransactionItemDTO,
+     *         or with status {@code 400 (Bad Request)} if the
+     *         eventTicketTransactionItemDTO is not valid,
+     *         or with status {@code 404 (Not Found)} if the
+     *         eventTicketTransactionItemDTO is not found,
+     *         or with status {@code 500 (Internal Server Error)} if the
+     *         eventTicketTransactionItemDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EventTicketTransactionItemDTO> partialUpdateEventTicketTransactionItem(
-        @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO
-    ) throws URISyntaxException {
-        log.debug("REST request to partial update EventTicketTransactionItem partially : {}, {}", id, eventTicketTransactionItemDTO);
+            @PathVariable(value = "id", required = false) final Long id,
+            @NotNull @RequestBody EventTicketTransactionItemDTO eventTicketTransactionItemDTO)
+            throws URISyntaxException {
+        log.debug("REST request to partial update EventTicketTransactionItem partially : {}, {}", id,
+                eventTicketTransactionItemDTO);
         if (eventTicketTransactionItemDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
@@ -142,38 +162,44 @@ public class EventTicketTransactionItemResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<EventTicketTransactionItemDTO> result = eventTicketTransactionItemService.partialUpdate(eventTicketTransactionItemDTO);
+        Optional<EventTicketTransactionItemDTO> result = eventTicketTransactionItemService
+                .partialUpdate(eventTicketTransactionItemDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, eventTicketTransactionItemDTO.getId().toString())
-        );
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
+                        eventTicketTransactionItemDTO.getId().toString()));
     }
 
     /**
-     * {@code GET  /event-ticket-transaction-items} : get all the eventTicketTransactionItems.
+     * {@code GET  /event-ticket-transaction-items} : get all the
+     * eventTicketTransactionItems.
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of eventTicketTransactionItems in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of eventTicketTransactionItems in body.
      */
     @GetMapping("")
     public ResponseEntity<List<EventTicketTransactionItemDTO>> getAllEventTicketTransactionItems(
-        EventTicketTransactionItemCriteria criteria,
-        @org.springdoc.core.annotations.ParameterObject Pageable pageable
-    ) {
+            EventTicketTransactionItemCriteria criteria,
+            @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get EventTicketTransactionItems by criteria: {}", criteria);
 
-        Page<EventTicketTransactionItemDTO> page = eventTicketTransactionItemQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        Page<EventTicketTransactionItemDTO> page = eventTicketTransactionItemQueryService.findByCriteria(criteria,
+                pageable);
+        HttpHeaders headers = PaginationUtil
+                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
-     * {@code GET  /event-ticket-transaction-items/count} : count all the eventTicketTransactionItems.
+     * {@code GET  /event-ticket-transaction-items/count} : count all the
+     * eventTicketTransactionItems.
      *
      * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count
+     *         in body.
      */
     @GetMapping("/count")
     public ResponseEntity<Long> countEventTicketTransactionItems(EventTicketTransactionItemCriteria criteria) {
@@ -182,20 +208,25 @@ public class EventTicketTransactionItemResource {
     }
 
     /**
-     * {@code GET  /event-ticket-transaction-items/:id} : get the "id" eventTicketTransactionItem.
+     * {@code GET  /event-ticket-transaction-items/:id} : get the "id"
+     * eventTicketTransactionItem.
      *
      * @param id the id of the eventTicketTransactionItemDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the eventTicketTransactionItemDTO, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body
+     *         the eventTicketTransactionItemDTO, or with status
+     *         {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<EventTicketTransactionItemDTO> getEventTicketTransactionItem(@PathVariable Long id) {
         log.debug("REST request to get EventTicketTransactionItem : {}", id);
-        Optional<EventTicketTransactionItemDTO> eventTicketTransactionItemDTO = eventTicketTransactionItemService.findOne(id);
+        Optional<EventTicketTransactionItemDTO> eventTicketTransactionItemDTO = eventTicketTransactionItemService
+                .findOne(id);
         return ResponseUtil.wrapOrNotFound(eventTicketTransactionItemDTO);
     }
 
     /**
-     * {@code DELETE  /event-ticket-transaction-items/:id} : delete the "id" eventTicketTransactionItem.
+     * {@code DELETE  /event-ticket-transaction-items/:id} : delete the "id"
+     * eventTicketTransactionItem.
      *
      * @param id the id of the eventTicketTransactionItemDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
@@ -205,8 +236,27 @@ public class EventTicketTransactionItemResource {
         log.debug("REST request to delete EventTicketTransactionItem : {}", id);
         eventTicketTransactionItemService.delete(id);
         return ResponseEntity
-            .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
-            .build();
+                .noContent()
+                .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+                .build();
+    }
+
+    /**
+     * {@code POST  /event-ticket-transaction-items/bulk} : Create multiple
+     * eventTicketTransactionItems.
+     *
+     * @param eventTicketTransactionItemDTOs the list of DTOs to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with
+     *         body the list of created DTOs.
+     */
+    @PostMapping("/bulk")
+    public ResponseEntity<List<EventTicketTransactionItemDTO>> createEventTicketTransactionItemsBulk(
+            @Valid @RequestBody List<EventTicketTransactionItemDTO> eventTicketTransactionItemDTOs) {
+        log.debug("REST request to save bulk EventTicketTransactionItems : {}", eventTicketTransactionItemDTOs);
+        List<EventTicketTransactionItemDTO> result = eventTicketTransactionItemService
+                .saveAll(eventTicketTransactionItemDTOs);
+        return ResponseEntity
+                .ok()
+                .body(result);
     }
 }

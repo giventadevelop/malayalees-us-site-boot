@@ -105,6 +105,12 @@ public class EventAttendeeQueryService extends QueryService<EventAttendee> {
             if (criteria.getIsMember() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsMember(), EventAttendee_.isMember));
             }
+            if (criteria.getEventId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getEventId(), EventAttendee_.eventId));
+            }
+            if (criteria.getUserId() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getUserId(), EventAttendee_.userId));
+            }
             if (criteria.getTenantId() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventAttendee_.tenantId));
             }
@@ -146,6 +152,16 @@ public class EventAttendeeQueryService extends QueryService<EventAttendee> {
             if (criteria.getCheckInTime() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCheckInTime(), EventAttendee_.checkInTime));
             }
+            if (criteria.getTotalNumberOfGuests() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getTotalNumberOfGuests(), EventAttendee_.totalNumberOfGuests));
+            }
+            if (criteria.getNumberOfGuestsCheckedIn() != null) {
+                specification =
+                    specification.and(
+                        buildRangeSpecification(criteria.getNumberOfGuestsCheckedIn(), EventAttendee_.numberOfGuestsCheckedIn)
+                    );
+            }
             if (criteria.getNotes() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getNotes(), EventAttendee_.notes));
             }
@@ -159,18 +175,46 @@ public class EventAttendeeQueryService extends QueryService<EventAttendee> {
                 specification =
                     specification.and(buildRangeSpecification(criteria.getQrCodeGeneratedAt(), EventAttendee_.qrCodeGeneratedAt));
             }
+            if (criteria.getDietaryRestrictions() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getDietaryRestrictions(), EventAttendee_.dietaryRestrictions));
+            }
+            if (criteria.getAccessibilityNeeds() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getAccessibilityNeeds(), EventAttendee_.accessibilityNeeds));
+            }
+            if (criteria.getEmergencyContactRelationship() != null) {
+                specification =
+                    specification.and(
+                        buildStringSpecification(criteria.getEmergencyContactRelationship(), EventAttendee_.emergencyContactRelationship)
+                    );
+            }
+            if (criteria.getCheckOutTime() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getCheckOutTime(), EventAttendee_.checkOutTime));
+            }
+            if (criteria.getAttendanceRating() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getAttendanceRating(), EventAttendee_.attendanceRating));
+            }
+            if (criteria.getFeedback() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getFeedback(), EventAttendee_.feedback));
+            }
+            if (criteria.getRegistrationSource() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getRegistrationSource(), EventAttendee_.registrationSource));
+            }
+            if (criteria.getWaitListPosition() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getWaitListPosition(), EventAttendee_.waitListPosition));
+            }
+            if (criteria.getPriorityScore() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPriorityScore(), EventAttendee_.priorityScore));
+            }
             if (criteria.getCreatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventAttendee_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventAttendee_.updatedAt));
             }
-            if (criteria.getEventId() != null) {
-                specification = specification.and(buildSpecification(criteria.getEventId(), EventAttendee_.eventId));
-            }
-            if (criteria.getAttendeeId() != null) {
-                specification = specification.and(buildSpecification(criteria.getAttendeeId(), EventAttendee_.attendeeId));
-            }
+            
         }
         return specification;
     }

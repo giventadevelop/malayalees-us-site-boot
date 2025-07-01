@@ -57,6 +57,9 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter checkInTime;
 
+    private IntegerFilter totalNumberOfGuests;
+
+    private IntegerFilter numberOfGuestsCheckedIn;
     private StringFilter notes;
 
     private StringFilter qrCodeData;
@@ -65,13 +68,30 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter qrCodeGeneratedAt;
 
+    private StringFilter dietaryRestrictions;
+
+    private StringFilter accessibilityNeeds;
+
+    private StringFilter emergencyContactRelationship;
+
+    private ZonedDateTimeFilter checkOutTime;
+
+    private IntegerFilter attendanceRating;
+
+    private StringFilter feedback;
+
+    private StringFilter registrationSource;
+
+    private IntegerFilter waitListPosition;
+
+    private IntegerFilter priorityScore;
     private ZonedDateTimeFilter createdAt;
 
     private ZonedDateTimeFilter updatedAt;
 
     private LongFilter eventId;
 
-    private LongFilter attendeeId;
+    private LongFilter userId;
 
     private Boolean distinct;
 
@@ -84,6 +104,8 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.email = other.email == null ? null : other.email.copy();
         this.phone = other.phone == null ? null : other.phone.copy();
         this.isMember = other.isMember == null ? null : other.isMember.copy();
+        this.eventId = other.eventId == null ? null : other.eventId.copy();
+        this.userId = other.userId == null ? null : other.userId.copy();
         this.tenantId = other.tenantId == null ? null : other.tenantId.copy();
         this.registrationStatus = other.registrationStatus == null ? null : other.registrationStatus.copy();
         this.registrationDate = other.registrationDate == null ? null : other.registrationDate.copy();
@@ -96,14 +118,23 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.emergencyContactPhone = other.emergencyContactPhone == null ? null : other.emergencyContactPhone.copy();
         this.checkInStatus = other.checkInStatus == null ? null : other.checkInStatus.copy();
         this.checkInTime = other.checkInTime == null ? null : other.checkInTime.copy();
+        this.totalNumberOfGuests = other.totalNumberOfGuests == null ? null : other.totalNumberOfGuests.copy();
+        this.numberOfGuestsCheckedIn = other.numberOfGuestsCheckedIn == null ? null : other.numberOfGuestsCheckedIn.copy();
         this.notes = other.notes == null ? null : other.notes.copy();
         this.qrCodeData = other.qrCodeData == null ? null : other.qrCodeData.copy();
         this.qrCodeGenerated = other.qrCodeGenerated == null ? null : other.qrCodeGenerated.copy();
         this.qrCodeGeneratedAt = other.qrCodeGeneratedAt == null ? null : other.qrCodeGeneratedAt.copy();
+        this.dietaryRestrictions = other.dietaryRestrictions == null ? null : other.dietaryRestrictions.copy();
+        this.accessibilityNeeds = other.accessibilityNeeds == null ? null : other.accessibilityNeeds.copy();
+        this.emergencyContactRelationship = other.emergencyContactRelationship == null ? null : other.emergencyContactRelationship.copy();
+        this.checkOutTime = other.checkOutTime == null ? null : other.checkOutTime.copy();
+        this.attendanceRating = other.attendanceRating == null ? null : other.attendanceRating.copy();
+        this.feedback = other.feedback == null ? null : other.feedback.copy();
+        this.registrationSource = other.registrationSource == null ? null : other.registrationSource.copy();
+        this.waitListPosition = other.waitListPosition == null ? null : other.waitListPosition.copy();
+        this.priorityScore = other.priorityScore == null ? null : other.priorityScore.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
-        this.eventId = other.eventId == null ? null : other.eventId.copy();
-        this.attendeeId = other.attendeeId == null ? null : other.attendeeId.copy();
         this.distinct = other.distinct;
     }
 
@@ -202,6 +233,35 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.isMember = isMember;
     }
 
+    public LongFilter getEventId() {
+        return eventId;
+    }
+
+    public LongFilter eventId() {
+        if (eventId == null) {
+            eventId = new LongFilter();
+        }
+        return eventId;
+    }
+
+    public void setEventId(LongFilter eventId) {
+        this.eventId = eventId;
+    }
+
+    public LongFilter getUserId() {
+        return userId;
+    }
+
+    public LongFilter userId() {
+        if (userId == null) {
+            userId = new LongFilter();
+        }
+        return userId;
+    }
+
+    public void setUserId(LongFilter userId) {
+        this.userId = userId;
+    }
     public StringFilter getTenantId() {
         return tenantId;
     }
@@ -382,6 +442,35 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.checkInTime = checkInTime;
     }
 
+    public IntegerFilter getTotalNumberOfGuests() {
+        return totalNumberOfGuests;
+    }
+
+    public IntegerFilter totalNumberOfGuests() {
+        if (totalNumberOfGuests == null) {
+            totalNumberOfGuests = new IntegerFilter();
+        }
+        return totalNumberOfGuests;
+    }
+
+    public void setTotalNumberOfGuests(IntegerFilter totalNumberOfGuests) {
+        this.totalNumberOfGuests = totalNumberOfGuests;
+    }
+
+    public IntegerFilter getNumberOfGuestsCheckedIn() {
+        return numberOfGuestsCheckedIn;
+    }
+
+    public IntegerFilter numberOfGuestsCheckedIn() {
+        if (numberOfGuestsCheckedIn == null) {
+            numberOfGuestsCheckedIn = new IntegerFilter();
+        }
+        return numberOfGuestsCheckedIn;
+    }
+
+    public void setNumberOfGuestsCheckedIn(IntegerFilter numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
     public StringFilter getNotes() {
         return notes;
     }
@@ -442,6 +531,140 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.qrCodeGeneratedAt = qrCodeGeneratedAt;
     }
 
+    public StringFilter getDietaryRestrictions() {
+        return dietaryRestrictions;
+    }
+
+    public StringFilter dietaryRestrictions() {
+        if (dietaryRestrictions == null) {
+            dietaryRestrictions = new StringFilter();
+        }
+        return dietaryRestrictions;
+    }
+
+    public void setDietaryRestrictions(StringFilter dietaryRestrictions) {
+        this.dietaryRestrictions = dietaryRestrictions;
+    }
+
+    public StringFilter getAccessibilityNeeds() {
+        return accessibilityNeeds;
+    }
+
+    public StringFilter accessibilityNeeds() {
+        if (accessibilityNeeds == null) {
+            accessibilityNeeds = new StringFilter();
+        }
+        return accessibilityNeeds;
+    }
+
+    public void setAccessibilityNeeds(StringFilter accessibilityNeeds) {
+        this.accessibilityNeeds = accessibilityNeeds;
+    }
+
+    public StringFilter getEmergencyContactRelationship() {
+        return emergencyContactRelationship;
+    }
+
+    public StringFilter emergencyContactRelationship() {
+        if (emergencyContactRelationship == null) {
+            emergencyContactRelationship = new StringFilter();
+        }
+        return emergencyContactRelationship;
+    }
+
+    public void setEmergencyContactRelationship(StringFilter emergencyContactRelationship) {
+        this.emergencyContactRelationship = emergencyContactRelationship;
+    }
+
+    public ZonedDateTimeFilter getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public ZonedDateTimeFilter checkOutTime() {
+        if (checkOutTime == null) {
+            checkOutTime = new ZonedDateTimeFilter();
+        }
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(ZonedDateTimeFilter checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public IntegerFilter getAttendanceRating() {
+        return attendanceRating;
+    }
+
+    public IntegerFilter attendanceRating() {
+        if (attendanceRating == null) {
+            attendanceRating = new IntegerFilter();
+        }
+        return attendanceRating;
+    }
+
+    public void setAttendanceRating(IntegerFilter attendanceRating) {
+        this.attendanceRating = attendanceRating;
+    }
+
+    public StringFilter getFeedback() {
+        return feedback;
+    }
+
+    public StringFilter feedback() {
+        if (feedback == null) {
+            feedback = new StringFilter();
+        }
+        return feedback;
+    }
+
+    public void setFeedback(StringFilter feedback) {
+        this.feedback = feedback;
+    }
+
+    public StringFilter getRegistrationSource() {
+        return registrationSource;
+    }
+
+    public StringFilter registrationSource() {
+        if (registrationSource == null) {
+            registrationSource = new StringFilter();
+        }
+        return registrationSource;
+    }
+
+    public void setRegistrationSource(StringFilter registrationSource) {
+        this.registrationSource = registrationSource;
+    }
+
+    public IntegerFilter getWaitListPosition() {
+        return waitListPosition;
+    }
+
+    public IntegerFilter waitListPosition() {
+        if (waitListPosition == null) {
+            waitListPosition = new IntegerFilter();
+        }
+        return waitListPosition;
+    }
+
+    public void setWaitListPosition(IntegerFilter waitListPosition) {
+        this.waitListPosition = waitListPosition;
+    }
+
+    public IntegerFilter getPriorityScore() {
+        return priorityScore;
+    }
+
+    public IntegerFilter priorityScore() {
+        if (priorityScore == null) {
+            priorityScore = new IntegerFilter();
+        }
+        return priorityScore;
+    }
+
+    public void setPriorityScore(IntegerFilter priorityScore) {
+        this.priorityScore = priorityScore;
+    }
     public ZonedDateTimeFilter getCreatedAt() {
         return createdAt;
     }
@@ -472,36 +695,6 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
-    public LongFilter getEventId() {
-        return eventId;
-    }
-
-    public LongFilter eventId() {
-        if (eventId == null) {
-            eventId = new LongFilter();
-        }
-        return eventId;
-    }
-
-    public void setEventId(LongFilter eventId) {
-        this.eventId = eventId;
-    }
-
-    public LongFilter getAttendeeId() {
-        return attendeeId;
-    }
-
-    public LongFilter attendeeId() {
-        if (attendeeId == null) {
-            attendeeId = new LongFilter();
-        }
-        return attendeeId;
-    }
-
-    public void setAttendeeId(LongFilter attendeeId) {
-        this.attendeeId = attendeeId;
-    }
-
     public Boolean getDistinct() {
         return distinct;
     }
@@ -526,6 +719,8 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             Objects.equals(email, that.email) &&
             Objects.equals(phone, that.phone) &&
             Objects.equals(isMember, that.isMember) &&
+            Objects.equals(eventId, that.eventId) &&
+            Objects.equals(userId, that.userId) &&
             Objects.equals(tenantId, that.tenantId) &&
             Objects.equals(registrationStatus, that.registrationStatus) &&
             Objects.equals(registrationDate, that.registrationDate) &&
@@ -538,14 +733,24 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             Objects.equals(emergencyContactPhone, that.emergencyContactPhone) &&
             Objects.equals(checkInStatus, that.checkInStatus) &&
             Objects.equals(checkInTime, that.checkInTime) &&
+            Objects.equals(totalNumberOfGuests, that.totalNumberOfGuests) &&
+            Objects.equals(numberOfGuestsCheckedIn, that.numberOfGuestsCheckedIn) &&
             Objects.equals(notes, that.notes) &&
             Objects.equals(qrCodeData, that.qrCodeData) &&
             Objects.equals(qrCodeGenerated, that.qrCodeGenerated) &&
             Objects.equals(qrCodeGeneratedAt, that.qrCodeGeneratedAt) &&
+            Objects.equals(dietaryRestrictions, that.dietaryRestrictions) &&
+            Objects.equals(accessibilityNeeds, that.accessibilityNeeds) &&
+            Objects.equals(emergencyContactRelationship, that.emergencyContactRelationship) &&
+            Objects.equals(checkOutTime, that.checkOutTime) &&
+            Objects.equals(attendanceRating, that.attendanceRating) &&
+            Objects.equals(feedback, that.feedback) &&
+            Objects.equals(registrationSource, that.registrationSource) &&
+            Objects.equals(waitListPosition, that.waitListPosition) &&
+            Objects.equals(priorityScore, that.priorityScore) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
             Objects.equals(eventId, that.eventId) &&
-            Objects.equals(attendeeId, that.attendeeId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -559,6 +764,8 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             email,
             phone,
             isMember,
+			eventId,
+            userId,
             tenantId,
             registrationStatus,
             registrationDate,
@@ -571,14 +778,23 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             emergencyContactPhone,
             checkInStatus,
             checkInTime,
+ 			totalNumberOfGuests,
+            numberOfGuestsCheckedIn,
             notes,
             qrCodeData,
             qrCodeGenerated,
             qrCodeGeneratedAt,
+			dietaryRestrictions,
+            accessibilityNeeds,
+            emergencyContactRelationship,
+            checkOutTime,
+            attendanceRating,
+            feedback,
+            registrationSource,
+            waitListPosition,
+            priorityScore,
             createdAt,
             updatedAt,
-            eventId,
-            attendeeId,
             distinct
         );
     }
@@ -612,7 +828,6 @@ public class EventAttendeeCriteria implements Serializable, Criteria {
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
-            (attendeeId != null ? "attendeeId=" + attendeeId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }
