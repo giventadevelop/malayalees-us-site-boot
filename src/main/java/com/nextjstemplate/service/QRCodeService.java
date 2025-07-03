@@ -36,7 +36,7 @@ public class QRCodeService {
     this.s3Service = s3Service;
   }
 
-  public String generateAndUploadQRCode(String qrContent, Long eventId, String transactionId, String tenantId)
+  public String generateAndUploadQRCode(String qrScanUrlContent, Long eventId, String transactionId, String tenantId)
       throws IOException {
     int width = 300;
     int height = 300;
@@ -48,7 +48,7 @@ public class QRCodeService {
 
     try {
       QRCodeWriter qrCodeWriter = new QRCodeWriter();
-      BitMatrix bitMatrix = qrCodeWriter.encode(qrContent, BarcodeFormat.QR_CODE, width, height, hints);
+      BitMatrix bitMatrix = qrCodeWriter.encode(qrScanUrlContent, BarcodeFormat.QR_CODE, width, height, hints);
       BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
       ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -84,23 +84,6 @@ public class EventTicketTransactionResource {
                     "idexists");
         }
         EventTicketTransactionDTO result = eventTicketTransactionService.save(eventTicketTransactionDTO);
-        // Send confirmation email (non-blocking, log error if fails)
-        try {
-            String to = result.getEmail();
-            String subject = "Your Ticket Purchase Confirmation";
-            String eventName = "Event";
-            String body = String.format(
-                    "Dear %s,\n\nThank you for your purchase!\n\nEvent: %s\nTickets: %d\nTotal Paid: %s\n\nTransaction Ref: %s\n\nSee you at the event!",
-                    result.getFirstName() != null ? result.getFirstName() : "Customer",
-                    eventName,
-                    result.getQuantity(),
-                    result.getFinalAmount(),
-                    result.getTransactionReference());
-            emailSenderService.sendEmail(to, subject, body);
-        } catch (Exception e) {
-            log.error("Failed to send confirmation email for ticket transaction {}: {}", result.getId(), e.getMessage(),
-                    e);
-        }
         return ResponseEntity
                 .created(new URI("/api/event-ticket-transactions/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,

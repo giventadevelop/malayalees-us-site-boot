@@ -3,7 +3,10 @@ package com.nextjstemplate.service.dto;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
+import com.nextjstemplate.service.dto.EventDetailsDTO;
+import com.nextjstemplate.service.dto.EventTicketTypeDTO;
 
 /**
  * A DTO for the {@link com.nextjstemplate.domain.QrCodeUsage} entity.
@@ -34,6 +37,24 @@ public class QrCodeUsageDTO implements Serializable {
     private ZonedDateTime createdAt;
 
     private EventAttendeeDTO attendee;
+
+    private EventTicketTransactionDTO transaction;
+    private List<EventTicketTransactionItemDTO> items;
+
+    private EventDetailsDTO eventDetails;
+
+    private List<EventTicketTypeDTO> eventTicketTypes;
+
+    public QrCodeUsageDTO() {
+    }
+
+    public QrCodeUsageDTO(EventTicketTransactionDTO transaction, List<EventTicketTransactionItemDTO> items,
+            EventDetailsDTO eventDetails, List<EventTicketTypeDTO> eventTicketTypes) {
+        this.transaction = transaction;
+        this.items = items;
+        this.eventDetails = eventDetails;
+        this.eventTicketTypes = eventTicketTypes;
+    }
 
     public Long getId() {
         return id;
@@ -107,6 +128,38 @@ public class QrCodeUsageDTO implements Serializable {
         this.attendee = attendee;
     }
 
+    public EventTicketTransactionDTO getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(EventTicketTransactionDTO transaction) {
+        this.transaction = transaction;
+    }
+
+    public List<EventTicketTransactionItemDTO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<EventTicketTransactionItemDTO> items) {
+        this.items = items;
+    }
+
+    public EventDetailsDTO getEventDetails() {
+        return eventDetails;
+    }
+
+    public void setEventDetails(EventDetailsDTO eventDetails) {
+        this.eventDetails = eventDetails;
+    }
+
+    public List<EventTicketTypeDTO> getEventTicketTypes() {
+        return eventTicketTypes;
+    }
+
+    public void setEventTicketTypes(List<EventTicketTypeDTO> eventTicketTypes) {
+        this.eventTicketTypes = eventTicketTypes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -132,15 +185,19 @@ public class QrCodeUsageDTO implements Serializable {
     @Override
     public String toString() {
         return "QrCodeUsageDTO{" +
-            "id=" + getId() +
-            ", tenantId='" + getTenantId() + "'" +
-            ", qrCodeData='" + getQrCodeData() + "'" +
-            ", generatedAt='" + getGeneratedAt() + "'" +
-            ", usedAt='" + getUsedAt() + "'" +
-            ", usageCount=" + getUsageCount() +
-            ", lastScannedBy='" + getLastScannedBy() + "'" +
-            ", createdAt='" + getCreatedAt() + "'" +
-            ", attendee=" + getAttendee() +
-            "}";
+                "id=" + getId() +
+                ", tenantId='" + getTenantId() + "'" +
+                ", qrCodeData='" + getQrCodeData() + "'" +
+                ", generatedAt='" + getGeneratedAt() + "'" +
+                ", usedAt='" + getUsedAt() + "'" +
+                ", usageCount=" + getUsageCount() +
+                ", lastScannedBy='" + getLastScannedBy() + "'" +
+                ", createdAt='" + getCreatedAt() + "'" +
+                ", attendee=" + getAttendee() +
+                ", transaction=" + getTransaction() +
+                ", items=" + getItems() +
+                ", eventDetails=" + getEventDetails() +
+                ", eventTicketTypes=" + getEventTicketTypes() +
+                "}";
     }
 }

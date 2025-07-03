@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface EventTicketTypeRepository extends JpaRepository<EventTicketType, Long>, JpaSpecificationExecutor<EventTicketType> {}
+public interface EventTicketTypeRepository
+    extends JpaRepository<EventTicketType, Long>, JpaSpecificationExecutor<EventTicketType> {
+  // Custom method to find ticket types by event id
+  java.util.List<EventTicketType> findByEvent_Id(Long eventId);
+}

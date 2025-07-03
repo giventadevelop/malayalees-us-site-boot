@@ -111,6 +111,14 @@ public class EventTicketTransactionDTO implements Serializable {
     @NotNull
     private ZonedDateTime updatedAt;
 
+    @Size(max = 50)
+    private String checkInStatus;
+
+    private Integer numberOfGuestsCheckedIn;
+
+    private ZonedDateTime checkInTime;
+
+    private ZonedDateTime checkOutTime;
     public Long getId() {
         return id;
     }
@@ -408,6 +416,37 @@ public class EventTicketTransactionDTO implements Serializable {
         this.updatedAt = updatedAt;
     }
 
+    public String getCheckInStatus() {
+        return checkInStatus;
+    }
+
+    public void setCheckInStatus(String checkInStatus) {
+        this.checkInStatus = checkInStatus;
+    }
+
+    public Integer getNumberOfGuestsCheckedIn() {
+        return numberOfGuestsCheckedIn;
+    }
+
+    public void setNumberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
+
+    public ZonedDateTime getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(ZonedDateTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public ZonedDateTime getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(ZonedDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -470,6 +509,10 @@ public class EventTicketTransactionDTO implements Serializable {
             ", userId=" + getUserId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+            ", checkInStatus='" + getCheckInStatus() + "'" +
+            ", numberOfGuestsCheckedIn=" + getNumberOfGuestsCheckedIn() +
+            ", checkInTime='" + getCheckInTime() + "'" +
+            ", checkOutTime='" + getCheckOutTime() + "'" +
             "}";
     }
 }

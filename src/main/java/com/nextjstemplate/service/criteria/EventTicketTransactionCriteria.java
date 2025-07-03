@@ -92,6 +92,13 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter updatedAt;
 
+    private StringFilter checkInStatus;
+
+    private IntegerFilter numberOfGuestsCheckedIn;
+
+    private ZonedDateTimeFilter checkInTime;
+
+    private ZonedDateTimeFilter checkOutTime;
     private Boolean distinct;
 
     public EventTicketTransactionCriteria() {}
@@ -133,6 +140,10 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.userId = other.userId == null ? null : other.userId.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
+        this.checkInStatus = other.checkInStatus == null ? null : other.checkInStatus.copy();
+        this.numberOfGuestsCheckedIn = other.numberOfGuestsCheckedIn == null ? null : other.numberOfGuestsCheckedIn.copy();
+        this.checkInTime = other.checkInTime == null ? null : other.checkInTime.copy();
+        this.checkOutTime = other.checkOutTime == null ? null : other.checkOutTime.copy();
         this.eventId = other.eventId == null ? null : other.eventId.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.distinct = other.distinct;
@@ -681,6 +692,65 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
+    public StringFilter getCheckInStatus() {
+        return checkInStatus;
+    }
+
+    public StringFilter checkInStatus() {
+        if (checkInStatus == null) {
+            checkInStatus = new StringFilter();
+        }
+        return checkInStatus;
+    }
+
+    public void setCheckInStatus(StringFilter checkInStatus) {
+        this.checkInStatus = checkInStatus;
+    }
+
+    public IntegerFilter getNumberOfGuestsCheckedIn() {
+        return numberOfGuestsCheckedIn;
+    }
+
+    public IntegerFilter numberOfGuestsCheckedIn() {
+        if (numberOfGuestsCheckedIn == null) {
+            numberOfGuestsCheckedIn = new IntegerFilter();
+        }
+        return numberOfGuestsCheckedIn;
+    }
+
+    public void setNumberOfGuestsCheckedIn(IntegerFilter numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
+
+    public ZonedDateTimeFilter getCheckInTime() {
+        return checkInTime;
+    }
+
+    public ZonedDateTimeFilter checkInTime() {
+        if (checkInTime == null) {
+            checkInTime = new ZonedDateTimeFilter();
+        }
+        return checkInTime;
+    }
+
+    public void setCheckInTime(ZonedDateTimeFilter checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public ZonedDateTimeFilter getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public ZonedDateTimeFilter checkOutTime() {
+        if (checkOutTime == null) {
+            checkOutTime = new ZonedDateTimeFilter();
+        }
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(ZonedDateTimeFilter checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
     public Boolean getDistinct() {
         return distinct;
     }
@@ -735,6 +805,10 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             Objects.equals(userId, that.userId) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
+            Objects.equals(checkInStatus, that.checkInStatus) &&
+            Objects.equals(numberOfGuestsCheckedIn, that.numberOfGuestsCheckedIn) &&
+            Objects.equals(checkInTime, that.checkInTime) &&
+            Objects.equals(checkOutTime, that.checkOutTime) &&
             Objects.equals(eventId, that.eventId) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(distinct, that.distinct)
@@ -779,7 +853,11 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             eventId,
             userId,
             createdAt,
-            updatedAt
+            updatedAt,
+            checkInStatus,
+            numberOfGuestsCheckedIn,
+            checkInTime,
+            checkOutTime
         );
     }
 
@@ -824,6 +902,10 @@ public class EventTicketTransactionCriteria implements Serializable, Criteria {
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
+            (checkInStatus != null ? "checkInStatus=" + checkInStatus + ", " : "") +
+            (numberOfGuestsCheckedIn != null ? "numberOfGuestsCheckedIn=" + numberOfGuestsCheckedIn + ", " : "") +
+            (checkInTime != null ? "checkInTime=" + checkInTime + ", " : "") +
+            (checkOutTime != null ? "checkOutTime=" + checkOutTime + ", " : "") +
             (eventId != null ? "eventId=" + eventId + ", " : "") +
             (userId != null ? "userId=" + userId + ", " : "") +
             

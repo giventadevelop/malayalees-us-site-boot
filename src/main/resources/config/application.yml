@@ -233,3 +233,7 @@ twilio:
   account-sid: ${TWILIO_ACCOUNT_SID}
   auth-token: ${TWILIO_AUTH_TOKEN}
   whatsapp-from: ${TWILIO_WHATSAPP_FROM} # e.g., 'whatsapp:+14155238886'
+# url prefix for host http://localhost:3000/admin
+qrcode:
+  scan-host:
+    url-prefix: ${QRCODE_SCAN_HOST_PREFIX}

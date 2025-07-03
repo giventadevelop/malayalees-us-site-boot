@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class EventTicketTransactionItemServiceImpl implements EventTicketTransactionItemService {
 
+    @Value("${qrcode.scan-host.url-prefix}")
+    private String qrScanUrlPrefix;
+
     private final Logger log = LoggerFactory.getLogger(EventTicketTransactionItemServiceImpl.class);
 
     private final EventTicketTransactionItemRepository eventTicketTransactionItemRepository;
@@ -35,6 +39,7 @@ public class EventTicketTransactionItemServiceImpl implements EventTicketTransac
     private final QRCodeService qrCodeService;
 
     private final EventTicketTransactionService eventTicketTransactionService;
+
 
     public EventTicketTransactionItemServiceImpl(
             EventTicketTransactionItemRepository eventTicketTransactionItemRepository,
@@ -120,15 +125,17 @@ public class EventTicketTransactionItemServiceImpl implements EventTicketTransac
                                 .findOne(transactionId);
                         if (transactionOpt.isPresent()) {
                             EventTicketTransactionDTO transaction = transactionOpt.get();
-                            String qrContent = "https://yourdomain.com/validate/" + transaction.getId(); // or any QR
+                            String qrScanUrlContent = qrScanUrlPrefix +
+                                "/qrcode-scan/tickets"+"/events/"+transaction.getEventId()+
+                                "/transactions/"+transaction.getId(); // or any QR
                                                                                                          // content
                                                                                                          // logic
-                            String qrCodeUrl = qrCodeService.generateAndUploadQRCode(
-                                    qrContent,
+                            String qrCodeImageUrl = qrCodeService.generateAndUploadQRCode(
+                                    qrScanUrlContent,
                                     transaction.getEventId(),
                                     String.valueOf(transaction.getId()),
                                     transaction.getTenantId());
-                            transaction.setQrCodeImageUrl(qrCodeUrl);
+                            transaction.setQrCodeImageUrl(qrCodeImageUrl);
                             eventTicketTransactionService.update(transaction);
                         }
                     } catch (Exception e) {

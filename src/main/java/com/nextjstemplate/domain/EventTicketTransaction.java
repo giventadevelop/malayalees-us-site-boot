@@ -158,6 +158,19 @@ public class EventTicketTransaction implements Serializable {
     @NotNull
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
+    
+    @Size(max = 50)
+    @Column(name = "check_in_status", length = 50)
+    private String checkInStatus;
+
+    @Column(name = "number_of_guests_checked_in")
+    private Integer numberOfGuestsCheckedIn;
+
+    @Column(name = "check_in_time")
+    private ZonedDateTime checkInTime;
+
+    @Column(name = "check_out_time")
+    private ZonedDateTime checkOutTime;
 
    /* @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "createdBy", "eventType" }, allowSetters = true)
@@ -650,6 +663,58 @@ public class EventTicketTransaction implements Serializable {
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+     public String getCheckInStatus() {
+        return this.checkInStatus;
+    }
+
+    public EventTicketTransaction checkInStatus(String checkInStatus) {
+        this.setCheckInStatus(checkInStatus);
+        return this;
+    }
+
+    public void setCheckInStatus(String checkInStatus) {
+        this.checkInStatus = checkInStatus;
+    }
+
+    public Integer getNumberOfGuestsCheckedIn() {
+        return this.numberOfGuestsCheckedIn;
+    }
+
+    public EventTicketTransaction numberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.setNumberOfGuestsCheckedIn(numberOfGuestsCheckedIn);
+        return this;
+    }
+
+    public void setNumberOfGuestsCheckedIn(Integer numberOfGuestsCheckedIn) {
+        this.numberOfGuestsCheckedIn = numberOfGuestsCheckedIn;
+    }
+
+    public ZonedDateTime getCheckInTime() {
+        return this.checkInTime;
+    }
+
+    public EventTicketTransaction checkInTime(ZonedDateTime checkInTime) {
+        this.setCheckInTime(checkInTime);
+        return this;
+    }
+
+    public void setCheckInTime(ZonedDateTime checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+    public ZonedDateTime getCheckOutTime() {
+        return this.checkOutTime;
+    }
+
+    public EventTicketTransaction checkOutTime(ZonedDateTime checkOutTime) {
+        this.setCheckOutTime(checkOutTime);
+        return this;
+    }
+
+    public void setCheckOutTime(ZonedDateTime checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
 
     /*public EventDetails getEvent() {
         return this.event;
@@ -736,6 +801,10 @@ public class EventTicketTransaction implements Serializable {
             ", userId=" + getUserId() +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
+ 			", checkInStatus='" + getCheckInStatus() + "'" +
+            ", numberOfGuestsCheckedIn=" + getNumberOfGuestsCheckedIn() +
+            ", checkInTime='" + getCheckInTime() + "'" +
+            ", checkOutTime='" + getCheckOutTime() + "'" +
             "}";
     }
 }
