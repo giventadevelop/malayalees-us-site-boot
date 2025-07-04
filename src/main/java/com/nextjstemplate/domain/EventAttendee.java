@@ -146,7 +146,7 @@ public class EventAttendee implements Serializable {
     private String registrationSource;
 
     @Min(value = 1)
-    @Column(name = "wait_list_position")
+    @Column(name = "waitlist_position")
     private Integer waitListPosition;
 
     @Column(name = "priority_score")
@@ -191,7 +191,7 @@ public class EventAttendee implements Serializable {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    
+
 
     public Long getId() {
         return this.id;

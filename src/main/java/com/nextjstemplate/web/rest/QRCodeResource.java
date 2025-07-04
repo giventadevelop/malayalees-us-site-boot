@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
+import java.time.format.TextStyle;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -124,7 +125,7 @@ public class QRCodeResource {
         .body(qrCodeImageUrl);
   }
 
-  // @PostMapping("/events/{eventId}/transactions/{transactionId}/send-ticket-email")
+  @PostMapping("/events/{eventId}/transactions/{transactionId}/send-ticket-email")
   @Async
   public void sendTicketEmail(
       @PathVariable Long eventId,
@@ -145,17 +146,32 @@ public class QRCodeResource {
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH);
     DateTimeFormatter dateOnlyFormatter = DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy", Locale.ENGLISH);
     DateTimeFormatter timeRangeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
+    DateTimeFormatter timeWithZoneFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
     String eventDate = "";
     String eventStart = "";
     String eventEnd = "";
+    String eventTimeZoneId = dto.getEventDetails().getTimezone();
+    java.time.ZoneId eventZoneId = java.time.ZoneId.systemDefault();
+    String eventTimeZoneAbbr = "";
+    if (eventTimeZoneId != null && !eventTimeZoneId.isBlank()) {
+      try {
+        eventZoneId = java.time.ZoneId.of(eventTimeZoneId);
+        java.time.LocalDate endDate = dto.getEventDetails().getEndDate();
+        java.time.ZonedDateTime endZdt = endDate.atStartOfDay(eventZoneId);
+        eventTimeZoneAbbr = endZdt.getZone().getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.ENGLISH);
+      } catch (Exception e) {
+        eventZoneId = java.time.ZoneId.systemDefault();
+        eventTimeZoneAbbr = eventZoneId.getId();
+      }
+    }
     if (dto.getEventDetails().getStartDate() != null && dto.getEventDetails().getEndDate() != null) {
       java.time.LocalDate startDate = dto.getEventDetails().getStartDate();
       java.time.LocalDate endDate = dto.getEventDetails().getEndDate();
-      java.time.ZonedDateTime start = startDate.atStartOfDay(java.time.ZoneId.systemDefault());
-      java.time.ZonedDateTime end = endDate.atStartOfDay(java.time.ZoneId.systemDefault());
+      java.time.ZonedDateTime start = startDate.atStartOfDay(eventZoneId);
+      java.time.ZonedDateTime end = endDate.atStartOfDay(eventZoneId);
       eventDate = start.format(dateOnlyFormatter);
-      eventStart = dto.getEventDetails().getStartTime();
-      eventEnd = dto.getEventDetails().getEndTime();
+      eventStart = start.format(timeRangeFormatter);
+      eventEnd = end.format(timeRangeFormatter) + " (" + eventTimeZoneAbbr + ")";
     }
     String dateOfPurchase = "";
     if (dto.getTransaction().getCreatedAt() != null) {
@@ -165,18 +181,16 @@ public class QRCodeResource {
     if (dto.getTransaction().getCheckInTime() != null) {
       checkInTime = dto.getTransaction().getCheckInTime().format(dateTimeFormatter);
     }
-    // SVG icons
-    String calendarIcon = "<svg width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' style='vertical-align:middle;'><rect x='3' y='4' width='18' height='18' rx='4' stroke='#2d3748' fill='#f5f5f5'/><path d='M16 2v4M8 2v4M3 10h18' stroke='#2d3748'/></svg>";
-    String emailIcon = "<svg width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' style='vertical-align:middle;'><rect x='3' y='5' width='18' height='14' rx='2' stroke='#2d3748' fill='#f5f5f5'/><path d='M3 7l9 6 9-6' stroke='#2d3748'/></svg>";
-    String moneyIcon = "<svg width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24' style='vertical-align:middle;'><rect x='2' y='6' width='20' height='12' rx='4' stroke='#2d3748' fill='#f5f5f5'/><circle cx='12' cy='12' r='3' stroke='#2d3748'/></svg>";
     // Transaction details
     String name = dto.getTransaction().getFirstName();
     String email = dto.getTransaction().getEmail();
-    String amountPaid = dto.getTransaction().getTotalAmount() != null
-        ? String.format("$%.2f", dto.getTransaction().getTotalAmount())
+    String amountPaid = dto.getTransaction().getFinalAmount() != null
+        ? String.format("$%.2f", dto.getTransaction().getFinalAmount())
         : "";
+
     String checkInStatus = dto.getTransaction().getCheckInStatus();
-    // Build ticket breakdown rows
+
+    // Build ticket breakdown rows with centered text
     StringBuilder ticketBreakdownRows = new StringBuilder();
     for (EventTicketTransactionItemDTO item : dto.getItems()) {
       String typeName = "";
@@ -187,10 +201,33 @@ public class QRCodeResource {
         }
       }
       ticketBreakdownRows.append(String.format(
-          "<tr><td style='padding:8px;'>%s</td><td style='padding:8px;'>%d</td><td style='padding:8px;'>$%.2f</td><td style='padding:8px;'>$%.2f</td></tr>",
+          "<tr>"
+              + "<td style='padding:8px; text-align:center;'>%s</td>"
+              + "<td style='padding:8px; text-align:center;'>%d</td>"
+              + "<td style='padding:8px; text-align:center;'>$%.2f</td>"
+              + "<td style='padding:8px; text-align:center;'>$%.2f</td>"
+              + "</tr>",
           typeName, item.getQuantity(), item.getPricePerUnit(), item.getTotalAmount()));
     }
+
+    // Emojis for section headings
+    String moneyEmoji = "💵";
+    String ticketEmoji = "🎟️";
+    String calendarEmoji = "📅";
+    String qrEmoji = "🎫";
+    String discountEmoji = "🏷️";
+    String discountAmount = "";
+    if (dto.getTransaction().getDiscountAmount() != null
+        && dto.getTransaction().getDiscountAmount().doubleValue() > 0) {
+      discountAmount = String.format("%s $%.2f", discountEmoji, dto.getTransaction().getDiscountAmount());
+    }
+
     // Build HTML email body
+    String discountRow = "";
+    if (!discountAmount.isEmpty()) {
+      discountRow = String.format("<tr><td style='font-weight:bold;'>Discount</td><td colspan='3'>%s</td></tr>",
+          discountAmount);
+    }
     String template = String.format(
         """
             <!DOCTYPE html>
@@ -203,47 +240,42 @@ public class QRCodeResource {
               <div style=\"max-width: 650px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px #eee; overflow: hidden;\">
                 <img src=\"%s\" alt=\"Event Header\" style=\"width: 100%%; display: block; border-bottom: 1px solid #eee;\">
                 <div style=\"padding: 32px;\">
-                  <h2 style=\"margin-top: 0; text-align:center;\">Your Ticket QR Code</h2>
+                  <h2 style=\"margin-top: 0; text-align:center; color:#6b207c;\">%s Your Ticket QR Code</h2>
                   <div style=\"text-align:center; margin-bottom: 32px;\">
                     <img src=\"%s\" alt=\"QR Code\" style=\"width:180px;height:180px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; padding: 12px;\">
                   </div>
                   <div style=\"margin-bottom: 32px;\">
-                    <h3 style=\"margin-bottom: 12px; display: flex; align-items: center;\">
-                      <span style=\"margin-right: 8px;\">%s</span> Transaction Summary
-                    </h3>
+                    <h3 style=\"margin-bottom: 12px; color:#6b207c;\">%s Transaction Summary</h3>
                     <table style=\"width:100%%; border-collapse:collapse; margin-bottom: 12px;\">
                       <tr>
-                        <td><strong>Name</strong></td>
+                        <td style='font-weight:bold;'>Name</td>
                         <td>%s</td>
-                        <td><strong>Email</strong></td>
-                        <td>%s</td>
+                        <td style='font-weight:bold;'>Email</td>
+                        <td><a href='mailto:%s'>%s</a></td>
                       </tr>
                       <tr>
-                        <td><strong>Date of Purchase</strong></td>
+                        <td style='font-weight:bold;'>Date of Purchase</td>
                         <td>%s</td>
-                        <td><strong>Amount Paid</strong></td>
+                        <td style='font-weight:bold;'>Amount Paid</td>
                         <td>%s</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div style=\"margin-bottom: 32px;\">
-                    <h3 style=\"margin-bottom: 12px; display: flex; align-items: center;\">
-                      <span style=\"margin-right: 8px;\">%s</span> Ticket Breakdown
-                    </h3>
-                    <table style=\"width:100%%; border-collapse:collapse;\">
-                      <tr style=\"background:#f5f5f5;\">
-                        <th style=\"padding:8px;\">Ticket Type</th>
-                        <th style=\"padding:8px;\">Quantity</th>
-                        <th style=\"padding:8px;\">Price Per Unit</th>
-                        <th style=\"padding:8px;\">Total</th>
                       </tr>
                       %s
                     </table>
                   </div>
                   <div style=\"margin-bottom: 32px;\">
-                    <h3 style=\"margin-bottom: 12px; display: flex; align-items: center;\">
-                      <span style=\"margin-right: 8px;\">%s</span> Event Details
-                    </h3>
+                    <h3 style=\"margin-bottom: 12px; color:#6b207c;\">%s Ticket Breakdown</h3>
+                    <table style=\"width:100%%; border-collapse:collapse;\">
+                      <tr style=\"background:#f5f5f5;\">
+                        <th style=\"padding:8px; text-align:center;\">Ticket Type</th>
+                        <th style=\"padding:8px; text-align:center;\">Quantity</th>
+                        <th style=\"padding:8px; text-align:center;\">Price Per Unit</th>
+                        <th style=\"padding:8px; text-align:center;\">Total</th>
+                      </tr>
+                      %s
+                    </table>
+                  </div>
+                  <div style=\"margin-bottom: 32px;\">
+                    <h3 style=\"margin-bottom: 12px; color:#6b207c;\">%s Event Details</h3>
                     <p>
                       <strong>%s</strong><br>
                       <span>%s | %s - %s</span><br>
@@ -256,15 +288,18 @@ public class QRCodeResource {
             </html>
             """,
         headerImageUrl,
+        qrEmoji,
         qrCodeImageUrl,
-        moneyIcon,
+        moneyEmoji,
         name,
+        email,
         email,
         dateOfPurchase,
         amountPaid,
-        calendarIcon,
+        discountRow,
+        ticketEmoji,
         ticketBreakdownRows.toString(),
-        calendarIcon,
+        calendarEmoji,
         eventName,
         eventDate,
         eventStart,

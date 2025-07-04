@@ -114,6 +114,9 @@ public class EventDetailsQueryService extends QueryService<EventDetails> {
             if (criteria.getEndTime() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getEndTime(), EventDetails_.endTime));
             }
+            if (criteria.getTimezone() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getTimezone(), EventDetails_.timezone));
+            }
             if (criteria.getLocation() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getLocation(), EventDetails_.location));
             }

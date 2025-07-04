@@ -43,6 +43,9 @@ public class EventDetailsDTO implements Serializable {
     @Size(max = 100)
     private String endTime;
 
+    @NotNull
+    private String timezone;
+
     @Size(max = 255)
     private String location;
 
@@ -156,6 +159,13 @@ public class EventDetailsDTO implements Serializable {
         this.endTime = endTime;
     }
 
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
     public String getLocation() {
         return location;
     }
@@ -334,6 +344,7 @@ public class EventDetailsDTO implements Serializable {
             ", endDate='" + getEndDate() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
+            ", timezone='" + getTimezone() + "'" +
             ", location='" + getLocation() + "'" +
             ", directionsToVenue='" + getDirectionsToVenue() + "'" +
             ", capacity=" + getCapacity() +

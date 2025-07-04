@@ -146,6 +146,7 @@ entity EventDetails {
     endDate LocalDate required,
     startTime String required maxlength(100),
     endTime String required maxlength(100),
+    timezone String required,
     location String maxlength(255),
     directionsToVenue String maxlength(255),
     capacity Integer,
@@ -203,7 +204,11 @@ entity EventTicketTransaction {
     eventId Long,
     userId Long,
     createdAt ZonedDateTime required,
-    updatedAt ZonedDateTime required
+    updatedAt ZonedDateTime required,
+    checkInStatus String maxlength(50), // NOT_CHECKED_IN, CHECKED_IN, NO_SHOW
+    numberOfGuestsCheckedIn Integer,
+    checkInTime ZonedDateTime,
+    checkOutTime ZonedDateTime
 }
 
 // NEW: EventTicketTransactionItem entity for line items (multi-ticket-type support)

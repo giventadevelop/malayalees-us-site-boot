@@ -39,6 +39,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
 
     private StringFilter endTime;
 
+    private StringFilter timezone;
     private StringFilter location;
 
     private StringFilter directionsToVenue;
@@ -89,6 +90,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
         this.endDate = other.endDate == null ? null : other.endDate.copy();
         this.startTime = other.startTime == null ? null : other.startTime.copy();
         this.endTime = other.endTime == null ? null : other.endTime.copy();
+        this.timezone = other.timezone == null ? null : other.timezone.copy();
         this.location = other.location == null ? null : other.location.copy();
         this.directionsToVenue = other.directionsToVenue == null ? null : other.directionsToVenue.copy();
         this.capacity = other.capacity == null ? null : other.capacity.copy();
@@ -248,6 +250,21 @@ public class EventDetailsCriteria implements Serializable, Criteria {
 
     public void setEndTime(StringFilter endTime) {
         this.endTime = endTime;
+    }
+
+    public StringFilter getTimezone() {
+        return timezone;
+    }
+
+    public StringFilter timezone() {
+        if (timezone == null) {
+            timezone = new StringFilter();
+        }
+        return timezone;
+    }
+
+    public void setTimezone(StringFilter timezone) {
+        this.timezone = timezone;
     }
 
     public StringFilter getLocation() {
@@ -546,6 +563,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             Objects.equals(endDate, that.endDate) &&
             Objects.equals(startTime, that.startTime) &&
             Objects.equals(endTime, that.endTime) &&
+            Objects.equals(timezone, that.timezone) &&
             Objects.equals(location, that.location) &&
             Objects.equals(directionsToVenue, that.directionsToVenue) &&
             Objects.equals(capacity, that.capacity) &&
@@ -580,6 +598,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             endDate,
             startTime,
             endTime,
+            timezone,
             location,
             directionsToVenue,
             capacity,
@@ -615,6 +634,7 @@ public class EventDetailsCriteria implements Serializable, Criteria {
             (endDate != null ? "endDate=" + endDate + ", " : "") +
             (startTime != null ? "startTime=" + startTime + ", " : "") +
             (endTime != null ? "endTime=" + endTime + ", " : "") +
+            (timezone != null ? "timezone=" + timezone + ", " : "") +
             (location != null ? "location=" + location + ", " : "") +
             (directionsToVenue != null ? "directionsToVenue=" + directionsToVenue + ", " : "") +
             (capacity != null ? "capacity=" + capacity + ", " : "") +

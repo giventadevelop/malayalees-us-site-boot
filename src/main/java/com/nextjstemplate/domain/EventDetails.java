@@ -63,6 +63,10 @@ public class EventDetails implements Serializable {
     @Column(name = "end_time", length = 100, nullable = false)
     private String endTime;
 
+    @NotNull
+    @Column(name = "timezone", nullable = false)
+    private String timezone;
+
     @Size(max = 255)
     @Column(name = "location", length = 255)
     private String location;
@@ -250,6 +254,18 @@ public class EventDetails implements Serializable {
         this.endTime = endTime;
     }
 
+    public String getTimezone() {
+        return this.timezone;
+    }
+
+    public EventDetails timezone(String timezone) {
+        this.setTimezone(timezone);
+        return this;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
     public String getLocation() {
         return this.location;
     }
@@ -526,6 +542,7 @@ public class EventDetails implements Serializable {
             ", endDate='" + getEndDate() + "'" +
             ", startTime='" + getStartTime() + "'" +
             ", endTime='" + getEndTime() + "'" +
+            ", timezone='" + getTimezone() + "'" +
             ", location='" + getLocation() + "'" +
             ", directionsToVenue='" + getDirectionsToVenue() + "'" +
             ", capacity=" + getCapacity() +
