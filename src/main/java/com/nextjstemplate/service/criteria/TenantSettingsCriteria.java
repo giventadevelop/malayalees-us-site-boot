@@ -50,7 +50,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
 
     private ZonedDateTimeFilter updatedAt;
 
-    private LongFilter tenantOrganizationId;
+   /* private LongFilter tenantOrganizationId;*/
 
     private Boolean distinct;
 
@@ -72,7 +72,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
         this.platformFeePercentage = other.platformFeePercentage == null ? null : other.platformFeePercentage.copy();
         this.createdAt = other.createdAt == null ? null : other.createdAt.copy();
         this.updatedAt = other.updatedAt == null ? null : other.updatedAt.copy();
-        this.tenantOrganizationId = other.tenantOrganizationId == null ? null : other.tenantOrganizationId.copy();
+       /* this.tenantOrganizationId = other.tenantOrganizationId == null ? null : other.tenantOrganizationId.copy();*/
         this.distinct = other.distinct;
     }
 
@@ -305,7 +305,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
         this.updatedAt = updatedAt;
     }
 
-    public LongFilter getTenantOrganizationId() {
+   /* public LongFilter getTenantOrganizationId() {
         return tenantOrganizationId;
     }
 
@@ -318,7 +318,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
 
     public void setTenantOrganizationId(LongFilter tenantOrganizationId) {
         this.tenantOrganizationId = tenantOrganizationId;
-    }
+    }*/
 
     public Boolean getDistinct() {
         return distinct;
@@ -353,7 +353,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             Objects.equals(platformFeePercentage, that.platformFeePercentage) &&
             Objects.equals(createdAt, that.createdAt) &&
             Objects.equals(updatedAt, that.updatedAt) &&
-            Objects.equals(tenantOrganizationId, that.tenantOrganizationId) &&
+           /* Objects.equals(tenantOrganizationId, that.tenantOrganizationId) &&*/
             Objects.equals(distinct, that.distinct)
         );
     }
@@ -376,7 +376,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             platformFeePercentage,
             createdAt,
             updatedAt,
-            tenantOrganizationId,
+           /* tenantOrganizationId,*/
             distinct
         );
     }
@@ -400,7 +400,7 @@ public class TenantSettingsCriteria implements Serializable, Criteria {
             (platformFeePercentage != null ? "platformFeePercentage=" + platformFeePercentage + ", " : "") +
             (createdAt != null ? "createdAt=" + createdAt + ", " : "") +
             (updatedAt != null ? "updatedAt=" + updatedAt + ", " : "") +
-            (tenantOrganizationId != null ? "tenantOrganizationId=" + tenantOrganizationId + ", " : "") +
+           /* (tenantOrganizationId != null ? "tenantOrganizationId=" + tenantOrganizationId + ", " : "") +*/
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

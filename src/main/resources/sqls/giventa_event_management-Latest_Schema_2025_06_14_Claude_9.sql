@@ -638,6 +638,7 @@ CREATE TABLE public.event_details (
                                       end_date date NOT NULL,
                                       start_time character varying(100) NOT NULL,
                                       end_time character varying(100) NOT NULL,
+                                      timezone varchar(64) NOT null,
                                       location character varying(500),
                                       directions_to_venue text,
                                       capacity integer,
@@ -1466,6 +1467,10 @@ CREATE TABLE public.event_ticket_transaction (
                                                  user_id bigint,
                                                  created_at timestamp DEFAULT now() NOT NULL,
                                                  updated_at timestamp DEFAULT now() NOT NULL,
+                                                 number_of_guests_checked_in integer,
+                                                 check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
+                                                 check_in_time timestamp without time zone,
+                                                 check_out_time timestamp without time zone,
 
                                                  CONSTRAINT check_email_format_transaction CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)),
     CONSTRAINT check_transaction_amounts CHECK (((total_amount >= (0)::numeric) AND (tax_amount >= (0)::numeric) AND (discount_amount >= (0)::numeric) AND (refund_amount >= (0)::numeric) AND (final_amount >= (0)::numeric))),

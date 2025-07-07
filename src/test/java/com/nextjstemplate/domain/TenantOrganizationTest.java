@@ -23,7 +23,7 @@ class TenantOrganizationTest {
         assertThat(tenantOrganization1).isNotEqualTo(tenantOrganization2);
     }
 
-    @Test
+  /*  @Test
     void tenantSettingsTest() throws Exception {
         TenantOrganization tenantOrganization = getTenantOrganizationRandomSampleGenerator();
         TenantSettings tenantSettingsBack = getTenantSettingsRandomSampleGenerator();
@@ -35,5 +35,5 @@ class TenantOrganizationTest {
         tenantOrganization.tenantSettings(null);
         assertThat(tenantOrganization.getTenantSettings()).isNull();
         assertThat(tenantSettingsBack.getTenantOrganization()).isNull();
-    }
+    }*/
 }

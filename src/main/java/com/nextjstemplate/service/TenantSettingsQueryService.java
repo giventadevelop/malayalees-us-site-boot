@@ -6,7 +6,6 @@ import com.nextjstemplate.repository.TenantSettingsRepository;
 import com.nextjstemplate.service.criteria.TenantSettingsCriteria;
 import com.nextjstemplate.service.dto.TenantSettingsDTO;
 import com.nextjstemplate.service.mapper.TenantSettingsMapper;
-import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +143,7 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
             if (criteria.getUpdatedAt() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), TenantSettings_.updatedAt));
             }
-            if (criteria.getTenantOrganizationId() != null) {
+           /* if (criteria.getTenantOrganizationId() != null) {
                 specification =
                     specification.and(
                         buildSpecification(
@@ -152,7 +151,7 @@ public class TenantSettingsQueryService extends QueryService<TenantSettings> {
                             root -> root.join(TenantSettings_.tenantOrganization, JoinType.LEFT).get(TenantOrganization_.id)
                         )
                     );
-            }
+            }*/
         }
         return specification;
     }

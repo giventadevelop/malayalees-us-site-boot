@@ -85,11 +85,11 @@ public class TenantSettings implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
 
-    @JsonIgnoreProperties(value = { "tenantSettings" }, allowSetters = true)
+   /* @JsonIgnoreProperties(value = { "tenantSettings" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private TenantOrganization tenantOrganization;
-
+*/
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -326,18 +326,18 @@ public class TenantSettings implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public TenantOrganization getTenantOrganization() {
+   /* public TenantOrganization getTenantOrganization() {
         return this.tenantOrganization;
     }
 
     public void setTenantOrganization(TenantOrganization tenantOrganization) {
         this.tenantOrganization = tenantOrganization;
     }
-
-    public TenantSettings tenantOrganization(TenantOrganization tenantOrganization) {
+*/
+   /* public TenantSettings tenantOrganization(TenantOrganization tenantOrganization) {
         this.setTenantOrganization(tenantOrganization);
         return this;
-    }
+    }*/
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
