@@ -32,7 +32,7 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public String uploadFile(MultipartFile file, Long eventId, String title,  String tenantId) {
+    public String uploadFile(MultipartFile file, Long eventId, String title, String tenantId) {
         try {
             String originalFilename = file.getOriginalFilename();
             String uniqueFilename = generateUniqueFilename(tenantId, eventId, originalFilename);
@@ -115,6 +115,23 @@ public class S3ServiceImpl implements S3Service {
         }
     }
 
+    @Override
+    public String downloadHtmlFromUrl(String url) {
+        try {
+            String fileName = extractFileNameFromUrl(url);
+            S3Object s3Object = amazonS3.getObject(bucketName, fileName);
+            try (java.io.InputStream inputStream = s3Object.getObjectContent();
+                    java.util.Scanner scanner = new java.util.Scanner(inputStream,
+                            java.nio.charset.StandardCharsets.UTF_8.name())) {
+                scanner.useDelimiter("\\A");
+                return scanner.hasNext() ? scanner.next() : "";
+            }
+        } catch (Exception e) {
+            log.error("Error downloading HTML from S3: {}", url, e);
+            throw new RuntimeException("Failed to download HTML from S3", e);
+        }
+    }
+
     // Private helper methods
 
     private String generateUniqueFilename(String tenantId, Long eventId, String originalFilename) {
@@ -124,7 +141,8 @@ public class S3ServiceImpl implements S3Service {
         String baseName = getBaseFileName(originalFilename);
 
         if (eventId != null) {
-            return String.format("events/tenantId/%s/event-id/%d/%s_%s_%s%s",tenantId, eventId, baseName, timestamp, uuid, extension);
+            return String.format("events/tenantId/%s/event-id/%d/%s_%s_%s%s", tenantId, eventId, baseName, timestamp,
+                    uuid, extension);
         } else {
             return String.format("media/%s_%s_%s%s", baseName, timestamp, uuid, extension);
         }

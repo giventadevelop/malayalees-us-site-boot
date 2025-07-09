@@ -31,7 +31,7 @@ public class EventTicketTransaction implements Serializable {
     private String tenantId;
 
     @Size(max = 255)
-    @Column(name = "transaction_reference", length = 255, unique = true)
+    @Column(name = "transaction_reference", insertable = false, updatable = false)
     private String transactionReference;
 
     @NotNull
@@ -158,7 +158,7 @@ public class EventTicketTransaction implements Serializable {
     @NotNull
     @Column(name = "updated_at", nullable = false)
     private ZonedDateTime updatedAt;
-    
+
     @Size(max = 50)
     @Column(name = "check_in_status", length = 50)
     private String checkInStatus;
@@ -663,7 +663,7 @@ public class EventTicketTransaction implements Serializable {
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-    
+
      public String getCheckInStatus() {
         return this.checkInStatus;
     }
