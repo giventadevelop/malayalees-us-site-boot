@@ -59,6 +59,11 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private StringFilter profileImageUrl;
 
+    private BooleanFilter isEmailSubscribed;
+    private StringFilter emailSubscriptionToken;
+
+    private BooleanFilter isEmailSubscriptionTokenUsed;
+
     private StringFilter userStatus;
 
     private StringFilter userRole;
@@ -113,6 +118,9 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.district = other.district == null ? null : other.district.copy();
         this.educationalInstitution = other.educationalInstitution == null ? null : other.educationalInstitution.copy();
         this.profileImageUrl = other.profileImageUrl == null ? null : other.profileImageUrl.copy();
+        this.isEmailSubscribed = other.isEmailSubscribed == null ? null : other.isEmailSubscribed.copy();
+        this.emailSubscriptionToken = other.emailSubscriptionToken == null ? null : other.emailSubscriptionToken.copy();
+        this.isEmailSubscriptionTokenUsed = other.isEmailSubscriptionTokenUsed == null ? null : other.isEmailSubscriptionTokenUsed.copy();
         this.userStatus = other.userStatus == null ? null : other.userStatus.copy();
         this.userRole = other.userRole == null ? null : other.userRole.copy();
         this.reviewedByAdminAt = other.reviewedByAdminAt == null ? null : other.reviewedByAdminAt.copy();
@@ -421,6 +429,50 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public BooleanFilter getIsEmailSubscribed() {
+        return isEmailSubscribed;
+    }
+
+    public BooleanFilter isEmailSubscribed() {
+        if (isEmailSubscribed == null) {
+            isEmailSubscribed = new BooleanFilter();
+        }
+        return isEmailSubscribed;
+    }
+
+    public void setIsEmailSubscribed(BooleanFilter isEmailSubscribed) {
+        this.isEmailSubscribed = isEmailSubscribed;
+    }
+
+    public StringFilter getEmailSubscriptionToken() {
+        return emailSubscriptionToken;
+    }
+
+    public StringFilter emailSubscriptionToken() {
+        if (emailSubscriptionToken == null) {
+            emailSubscriptionToken = new StringFilter();
+        }
+        return emailSubscriptionToken;
+    }
+
+    public void setEmailSubscriptionToken(StringFilter emailSubscriptionToken) {
+        this.emailSubscriptionToken = emailSubscriptionToken;
+    }
+
+    public BooleanFilter getIsEmailSubscriptionTokenUsed() {
+        return isEmailSubscriptionTokenUsed;
+    }
+
+    public BooleanFilter isEmailSubscriptionTokenUsed() {
+        if (isEmailSubscriptionTokenUsed == null) {
+            isEmailSubscriptionTokenUsed = new BooleanFilter();
+        }
+        return isEmailSubscriptionTokenUsed;
+    }
+
+    public void setIsEmailSubscriptionTokenUsed(BooleanFilter isEmailSubscriptionTokenUsed) {
+        this.isEmailSubscriptionTokenUsed = isEmailSubscriptionTokenUsed;
+    }
     public StringFilter getUserStatus() {
         return userStatus;
     }
@@ -683,6 +735,9 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(district, that.district) &&
             Objects.equals(educationalInstitution, that.educationalInstitution) &&
             Objects.equals(profileImageUrl, that.profileImageUrl) &&
+            Objects.equals(isEmailSubscribed, that.isEmailSubscribed) &&
+            Objects.equals(emailSubscriptionToken, that.emailSubscriptionToken) &&
+            Objects.equals(isEmailSubscriptionTokenUsed, that.isEmailSubscriptionTokenUsed) &&
             Objects.equals(userStatus, that.userStatus) &&
             Objects.equals(userRole, that.userRole) &&
             Objects.equals(reviewedByAdminAt, that.reviewedByAdminAt) &&
@@ -724,6 +779,9 @@ public class UserProfileCriteria implements Serializable, Criteria {
             district,
             educationalInstitution,
             profileImageUrl,
+            isEmailSubscribed,
+            emailSubscriptionToken,
+            isEmailSubscriptionTokenUsed,
             userStatus,
             userRole,
             reviewedByAdminAt,
@@ -766,6 +824,9 @@ public class UserProfileCriteria implements Serializable, Criteria {
             (district != null ? "district=" + district + ", " : "") +
             (educationalInstitution != null ? "educationalInstitution=" + educationalInstitution + ", " : "") +
             (profileImageUrl != null ? "profileImageUrl=" + profileImageUrl + ", " : "") +
+            (isEmailSubscribed != null ? "isEmailSubscribed=" + isEmailSubscribed + ", " : "") +
+            (emailSubscriptionToken != null ? "emailSubscriptionToken=" + emailSubscriptionToken + ", " : "") +
+            (isEmailSubscriptionTokenUsed != null ? "isEmailSubscriptionTokenUsed=" + isEmailSubscriptionTokenUsed + ", " : "") +
             (userStatus != null ? "userStatus=" + userStatus + ", " : "") +
             (userRole != null ? "userRole=" + userRole + ", " : "") +
             (reviewedByAdminAt != null ? "reviewedByAdminAt=" + reviewedByAdminAt + ", " : "") +

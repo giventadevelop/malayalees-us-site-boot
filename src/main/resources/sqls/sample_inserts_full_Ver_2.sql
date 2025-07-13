@@ -7,65 +7,62 @@ INSERT INTO public.event_type_details VALUES (4, 'tenant_demo_001', 'Picnic', 'F
 INSERT INTO public.event_type_details VALUES (5, 'tenant_demo_001', 'Dinner', 'VIP dinner', '#3B82F6', NULL, true, 0, '2025-06-22 11:31:26.181502', '2025-06-22 11:31:26.181502');
 INSERT INTO public.event_type_details VALUES (6, 'tenant_demo_001', 'Festival', 'Summer festival', '#3B82F6', NULL, true, 0, '2025-06-22 11:31:26.181502', '2025-06-22 11:31:26.181502');
 
+INSERT INTO public.user_profile VALUES (
+                                           1, 'tenant_demo_001', 'user001', 'Alice', 'Johnson', 'alice.johnson@example.com', '555-1001', '123 Main St', NULL, 'Springfield', 'IL', '62701', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false, -- is_email_subscribed, email_subscription_token, is_email_subscription_token_used
+                                           'ACTIVE', 'MEMBER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
-INSERT INTO public.user_profile VALUES (1, 'tenant_demo_001', 'user001', 'Alice', 'Johnson', 'alice.johnson@example.com', '555-1001', '123 Main St', NULL, 'Springfield', 'IL', '62701', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'ACTIVE', 'MEMBER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (2, 'tenant_demo_001', 'user002', 'Bob', 'Smith', 'bob.smith@example.com', '555-1002', '456 Oak Ave', NULL, 'Springfield', 'IL', '62702', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'ACTIVE', 'ADMIN', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (3, 'tenant_demo_001', 'user003', 'Carol', 'Williams', 'carol.williams@example.com', '555-1003', '789 Pine Rd', NULL, 'Springfield', 'IL', '62703', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'INACTIVE', 'VOLUNTEER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (4, 'tenant_demo_001', 'user004', 'David', 'Brown', 'david.brown@example.com', '555-1004', '321 Maple St', NULL, 'Springfield', 'IL', '62704', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'PENDING_APPROVAL', 'ORGANIZER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (5, 'tenant_demo_001', 'user005', 'Eve', 'Davis', 'eve.davis@example.com', '555-1005', '654 Cedar Ave', NULL, 'Springfield', 'IL', '62705', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'SUSPENDED', 'SUPER_ADMIN', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (6, 'tenant_demo_001', 'user006', 'Frank', 'Miller', 'frank.miller@example.com', '555-1006', '987 Birch Blvd', NULL, 'Springfield', 'IL', '62706', 'USA', NULL, NULL, NULL, NULL, NULL, NULL, 'BANNED', 'MEMBER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-INSERT INTO public.user_profile VALUES (4651, 'tenant_demo_001', 'user_2vVLxhPnsIPGYf6qpfozk383Slr', 'Gain Joseph', 'Joseph', 'giventauser@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ydlZMeGVDUnFWTnpkTDBLUXMySXNWekFBVG8ifQ', 'PENDING_APPROVAL', 'MEMBER', NULL, NULL, '2025-06-22 16:44:08.782', '2025-06-22 23:01:49.434045', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO public.user_profile VALUES (
+                                           2, 'tenant_demo_001', 'user002', 'Bob', 'Smith', 'bob.smith@example.com', '555-1002', '456 Oak Ave', NULL, 'Springfield', 'IL', '62702', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false,
+                                           'ACTIVE', 'ADMIN', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
+INSERT INTO public.user_profile VALUES (
+                                           3, 'tenant_demo_001', 'user003', 'Carol', 'Williams', 'carol.williams@example.com', '555-1003', '789 Pine Rd', NULL, 'Springfield', 'IL', '62703', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false,
+                                           'INACTIVE', 'VOLUNTEER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (2, 'tenant_demo_001', 'Charity Run', '5K Charity Run', 'A 5K run to raise funds for charity.', '2025-09-01', '2025-09-01', '07:00', '12:00', 'City Park', NULL, 300, 'DONATION_BASED', true, 0, false, false, false, '2025-08-28 23:59:00', '2025-08-28 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false);
+INSERT INTO public.user_profile VALUES (
+                                           4, 'tenant_demo_001', 'user004', 'David', 'Brown', 'david.brown@example.com', '555-1004', '321 Maple St', NULL, 'Springfield', 'IL', '62704', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false,
+                                           'PENDING_APPROVAL', 'ORGANIZER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (3, 'tenant_demo_001', 'Family Picnic', 'Community Family Picnic', 'A fun picnic for families in the community.', '2025-09-10', '2025-09-10', '11:00', '16:00', 'Lakeside Park', NULL, 150, 'FREE', true, 4, true, false, false, '2025-09-05 23:59:00', '2025-09-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false);
+INSERT INTO public.user_profile VALUES (
+                                           5, 'tenant_demo_001', 'user005', 'Eve', 'Davis', 'eve.davis@example.com', '555-1005', '654 Cedar Ave', NULL, 'Springfield', 'IL', '62705', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false,
+                                           'SUSPENDED', 'SUPER_ADMIN', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (4, 'tenant_demo_001', 'VIP Dinner', 'Exclusive VIP Dinner', 'A dinner event for VIP guests.', '2025-09-15', '2025-09-15', '19:00', '22:00', 'Skyline Restaurant', NULL, 50, 'INVITATION_ONLY', true, 0, false, true, false, '2025-09-12 23:59:00', '2025-09-12 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false);
+INSERT INTO public.user_profile VALUES (
+                                           6, 'tenant_demo_001', 'user006', 'Frank', 'Miller', 'frank.miller@example.com', '555-1006', '987 Birch Blvd', NULL, 'Springfield', 'IL', '62706', 'USA', NULL, NULL, NULL, NULL, NULL, NULL,
+                                           false, NULL, false,
+                                           'BANNED', 'MEMBER', NULL, NULL, '2025-06-22 11:31:26.252573', '2025-06-22 11:31:26.252573', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (5, 'tenant_demo_001', 'Summer Fest', 'Summer Festival', 'A festival with games, food, and music.', '2025-09-20', '2025-09-20', '10:00', '20:00', 'Downtown Plaza', NULL, 400, 'TICKETED', true, 3, true, true, true, '2025-09-12 23:59:00', '2025-09-12 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false);
-
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (6, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
-
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (7, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
-
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (8, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
+INSERT INTO public.user_profile VALUES (
+                                           4651, 'tenant_demo_001', 'user_2vVLxhPnsIPGYf6qpfozk383Slr', 'Gain Joseph', 'Joseph', 'giventauser@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                                           'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ydlZMeGVDUnFWTnpkTDBLUXMySXNWekFBVG8ifQ',
+                                           false, NULL, false,
+                                           'PENDING_APPROVAL', 'MEMBER', NULL, NULL, '2025-06-22 16:44:08.782', '2025-06-22 23:01:49.434045', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
+                                       );
 
 INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
+    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, timezone, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, enable_qr_code, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
 ) VALUES
-    (9, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
-
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (10, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
-
-INSERT INTO public.event_details (
-    id, tenant_id, title, caption, description, start_date, end_date, start_time, end_time, location, directions_to_venue, capacity, admission_type, is_active, max_guests_per_attendee, allow_guests, require_guest_approval, enable_guest_pricing, registration_deadline, cancellation_deadline, minimum_age, maximum_age, requires_approval, enable_waitlist, external_registration_url, created_by_id, event_type_id, created_at, updated_at, is_registration_required, is_sports_event, is_live
-) VALUES
-    (1, 'tenant_demo_001', 'Tech Conference', '2025 Tech Innovations', 'A conference on the latest in technology.', '2025-08-07', '2025-08-07', '09:00', '17:00', 'Convention Center', NULL, 500, 'ticketed', true, 3, true, true, false, '2025-08-12 23:59:00', '2025-08-12 23:59:00', NULL, NULL, false, true, NULL, 4651, 1, '2025-06-14 23:13:02.565996', '2025-06-22 13:44:09.025068', false, false, false);
+      (1, 'tenant_demo_001', 'Tech Conference', '2025 Tech Innovations', 'A conference on the latest in technology.', '2025-08-07', '2025-08-07', '09:00', '17:00', 'America/New_York', 'Convention Center', NULL, 500, 'TICKETED', true, 3, true, true, false, '2025-08-12 23:59:00', '2025-08-12 23:59:00', NULL, NULL, false, true, false, NULL, 2, 2, '2025-06-14 23:13:02.565996', '2025-06-22 13:44:09.025068', false, false, false),
+      (2, 'tenant_demo_001', 'Charity Run', '5K Charity Run', 'A 5K run to raise funds for charity.', '2025-09-01', '2025-09-01', '07:00', '12:00', 'America/New_York', 'City Park', NULL, 300, 'DONATION_BASED', true, 0, false, false, false, '2025-08-28 23:59:00', '2025-08-28 23:59:00', NULL, NULL, false, true, false, NULL, 3, 3, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false),
+      (3, 'tenant_demo_001', 'Family Picnic', 'Community Family Picnic', 'A fun picnic for families in the community.', '2025-09-10', '2025-09-10', '11:00', '16:00', 'America/New_York', 'Lakeside Park', NULL, 150, 'FREE', true, 4, true, false, false, '2025-09-05 23:59:00', '2025-09-05 23:59:00', NULL, NULL, false, true, false, NULL, 4, 4, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false),
+      (4, 'tenant_demo_001', 'VIP Dinner', 'Exclusive VIP Dinner', 'A dinner event for VIP guests.', '2025-09-15', '2025-09-15', '19:00', '22:00', 'America/New_York', 'Skyline Restaurant', NULL, 50, 'INVITATION_ONLY', true, 0, false, true, false, '2025-09-12 23:59:00', '2025-09-12 23:59:00', NULL, NULL, false, true, false, NULL, 5, 5, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false),
+      (5, 'tenant_demo_001', 'Summer Fest', 'Summer Festival', 'A festival with games, food, and music.', '2025-09-20', '2025-09-20', '10:00', '20:00', 'America/New_York', 'Downtown Plaza', NULL, 400, 'TICKETED', true, 3, true, true, true, '2025-09-12 23:59:00', '2025-09-12 23:59:00', NULL, NULL, false, true, false, NULL, 6, 6, '2025-06-14 23:13:02.565996', '2025-06-14 23:13:02.565996', false, false, false),
+      (6, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'America/New_York', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, false, NULL, 1, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false),
+      (7, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'America/New_York', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, false, NULL, 1, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false),
+      (8, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'America/New_York', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, false, NULL, 1, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false),
+      (9, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'America/New_York', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, false, NULL, 1, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false),
+      (10, 'tenant_demo_001', 'Spring Gala', 'Annual Spring Gala', 'A celebration of spring with music and food.', '2025-08-10', '2025-08-10', '18:00', '23:00', 'America/New_York', 'Grand Hall', NULL, 200, 'TICKETED', true, 2, true, false, true, '2025-08-05 23:59:00', '2025-08-05 23:59:00', NULL, NULL, false, true, false, NULL, 1, 1, '2025-06-14 23:13:02.565996', '2025-06-14 23:19:16.458888', true, false, false);
 
 
 INSERT INTO public.event_guest_pricing VALUES (1, 'tenant_demo_001', 1, 'ADULT', 50.00, true, '2025-03-01', '2025-04-10', 'Adult pricing for Spring Gala', 2, 'Standard', 40.00, '2025-03-15 23:59:00', 5, 10.00, '2025-06-22 11:31:26.374558', '2025-06-22 11:31:26.374558');
@@ -74,6 +71,7 @@ INSERT INTO public.event_guest_pricing VALUES (3, 'tenant_demo_001', 2, 'ADULT',
 INSERT INTO public.event_guest_pricing VALUES (4, 'tenant_demo_001', 2, 'TEEN', 60.00, true, '2025-04-01', '2025-05-15', 'Teen pricing for Tech Conference', 1, 'Premium', 50.00, '2025-04-20 23:59:00', 3, 15.00, '2025-06-22 11:31:26.374558', '2025-06-22 11:31:26.374558');
 INSERT INTO public.event_guest_pricing VALUES (5, 'tenant_demo_001', 3, 'ADULT', 0.00, true, '2025-05-01', '2025-06-01', 'Free for Charity Run', NULL, 'Free', NULL, NULL, NULL, NULL, '2025-06-22 11:31:26.374558', '2025-06-22 11:31:26.374558');
 INSERT INTO public.event_guest_pricing VALUES (6, 'tenant_demo_001', 4, 'ADULT', 10.00, true, '2025-07-01', '2025-07-20', 'Adult pricing for Family Picnic', 4, 'Standard', 8.00, '2025-07-10 23:59:00', 2, 5.00, '2025-06-22 11:31:26.374558', '2025-06-22 11:31:26.374558');
+
 INSERT INTO public.event_admin VALUES (1, 'tenant_demo_001', 'ADMIN', '{CREATE_EVENT,EDIT_EVENT}', true, '2025-06-22 11:31:26.430806', '2025-06-22 11:31:26.430806', 2, 1);
 INSERT INTO public.event_admin VALUES (2, 'tenant_demo_001', 'SUPER_ADMIN', '{ALL}', true, '2025-06-22 11:31:26.430806', '2025-06-22 11:31:26.430806', 5, 2);
 INSERT INTO public.event_admin VALUES (3, 'tenant_demo_001', 'ORGANIZER', '{MANAGE_ATTENDEES}', true, '2025-06-22 11:31:26.430806', '2025-06-22 11:31:26.430806', 4, 2);
@@ -86,30 +84,30 @@ INSERT INTO public.event_admin_audit_log VALUES (3, 'tenant_demo_001', 'DELETE',
 INSERT INTO public.event_admin_audit_log VALUES (4, 'tenant_demo_001', 'UPDATE', 'event_admin', '4', '{"field": "role"}', '{"role": "MEMBER"}', '{"role": "ADMIN"}', '192.168.1.4', 'Mozilla/5.0', 'sess4', '2025-06-22 11:31:26.48504', 4);
 INSERT INTO public.event_admin_audit_log VALUES (5, 'tenant_demo_001', 'INSERT', 'event_admin', '5', '{"field": "permissions"}', NULL, '{"permissions": ["ALL"]}', '192.168.1.5', 'Mozilla/5.0', 'sess5', '2025-06-22 11:31:26.48504', 5);
 INSERT INTO public.event_admin_audit_log VALUES (6, 'tenant_demo_001', 'DELETE', 'event_admin', '6', NULL, '{"id": 6}', NULL, '192.168.1.6', 'Mozilla/5.0', 'sess6', '2025-06-22 11:31:26.48504', 6);
---INSERT INTO public.event_attendee VALUES (1, 'tenant_demo_001', 1, 1, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'MEMBER', NULL, NULL, NULL, NULL, NULL, NULL, 'CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:1|EVENT:1|TENANT:tenant_demo_001|NAME:Alice Johnson|EVENT_TITLE:Tech Conference|TIMESTAMP:1750606286.559053|TYPE:MEMBER', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Alice', 'Johnson', 'alice.johnson@example.com', '555-1001', true);
---INSERT INTO public.event_attendee VALUES (2, 'tenant_demo_001', 1, 2, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:2|EVENT:1|TENANT:tenant_demo_001|NAME:Bob Smith|EVENT_TITLE:Tech Conference|TIMESTAMP:1750606286.559053|TYPE:ADMIN', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Bob', 'Smith', 'bob.smith@example.com', '555-1002', true);
---INSERT INTO public.event_attendee VALUES (3, 'tenant_demo_001', 2, 3, 'PENDING', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'VOLUNTEER', NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Carol', 'Williams', 'carol.williams@example.com', '555-1003', false);
---INSERT INTO public.event_attendee VALUES (4, 'tenant_demo_001', 3, 4, 'WAITLISTED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'ORGANIZER', NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'David', 'Brown', 'david.brown@example.com', '555-1004', true);
---INSERT INTO public.event_attendee VALUES (5, 'tenant_demo_001', 4, 5, 'CANCELLED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'SUPER_ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, 'NO_SHOW', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Eve', 'Davis', 'eve.davis@example.com', '555-1005', false);
---INSERT INTO public.event_attendee VALUES (6, 'tenant_demo_001', 5, 6, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'MEMBER', NULL, NULL, NULL, NULL, NULL, NULL, 'CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:6|EVENT:5|TENANT:tenant_demo_001|NAME:Frank Miller|EVENT_TITLE:Summer Fest|TIMESTAMP:1750606286.559053|TYPE:MEMBER', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Frank', 'Miller', 'frank.miller@example.com', '555-1006', true);
---INSERT INTO public.event_attendee_guest VALUES (1, 'tenant_demo_001', 1, 'CHILD', 'CHILD', NULL, NULL, NULL, 'CONFIRMED', 'CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Sally', 'Guest', 'sally.guest@example.com', '555-2001');
---INSERT INTO public.event_attendee_guest VALUES (2, 'tenant_demo_001', 2, 'ADULT', 'SPOUSE', NULL, NULL, NULL, 'CONFIRMED', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Tom', 'Guest', 'tom.guest@example.com', '555-2002');
---INSERT INTO public.event_attendee_guest VALUES (3, 'tenant_demo_001', 3, 'TEEN', 'FRIEND', NULL, NULL, NULL, 'PENDING', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Jerry', 'Guest', 'jerry.guest@example.com', '555-2003');
---INSERT INTO public.event_attendee_guest VALUES (4, 'tenant_demo_001', 4, 'INFANT', 'CHILD', NULL, NULL, NULL, 'WAITLISTED', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Linda', 'Guest', 'linda.guest@example.com', '555-2004');
---INSERT INTO public.event_attendee_guest VALUES (5, 'tenant_demo_001', 5, 'ADULT', 'COLLEAGUE', NULL, NULL, NULL, 'CANCELLED', 'NO_SHOW', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Sam', 'Guest', 'sam.guest@example.com', '555-2005');
---INSERT INTO public.event_attendee_guest VALUES (6, 'tenant_demo_001', 6, 'CHILD', 'RELATIVE', NULL, NULL, NULL, 'CONFIRMED', 'CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Nina', 'Guest', 'nina.guest@example.com', '555-2006');
---INSERT INTO public.event_calendar_entry VALUES (1, 'tenant_demo_001', 'Google', 'gcal_1', 'https://calendar.google.com/event1', 'PENDING', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 1, 1);
---INSERT INTO public.event_calendar_entry VALUES (2, 'tenant_demo_001', 'Outlook', 'outlook_2', 'https://outlook.com/event2', 'COMPLETED', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 2, 2);
---INSERT INTO public.event_calendar_entry VALUES (3, 'tenant_demo_001', 'Apple', 'apple_3', 'https://apple.com/event3', 'FAILED', '2025-06-22 11:31:26.679295', 'Error syncing', '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 3, 3);
---INSERT INTO public.event_calendar_entry VALUES (4, 'tenant_demo_001', 'Google', 'gcal_4', 'https://calendar.google.com/event4', 'PENDING', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 4, 4);
---INSERT INTO public.event_calendar_entry VALUES (5, 'tenant_demo_001', 'Outlook', 'outlook_5', 'https://outlook.com/event5', 'COMPLETED', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 5, 5);
---INSERT INTO public.event_calendar_entry VALUES (6, 'tenant_demo_001', 'Apple', 'apple_6', 'https://apple.com/event6', 'FAILED', '2025-06-22 11:31:26.679295', 'Error syncing', '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 6, 6);
---INSERT INTO public.event_discount_code VALUES (1, 1);
---INSERT INTO public.event_discount_code VALUES (2, 2);
---INSERT INTO public.event_discount_code VALUES (3, 3);
---INSERT INTO public.event_discount_code VALUES (4, 4);
---INSERT INTO public.event_discount_code VALUES (5, 5);
---INSERT INTO public.event_discount_code VALUES (6, 6);
+
+INSERT INTO public.event_attendee (
+    id, tenant_id, event_id, user_id, registration_status, registration_date, confirmation_date, cancellation_date, cancellation_reason, attendee_type, special_requirements, dietary_restrictions, accessibility_needs, emergency_contact_name, emergency_contact_phone, emergency_contact_relationship, total_number_of_guests, number_of_guests_checked_in, check_in_status, check_in_time, check_out_time, attendance_rating, feedback, notes, qr_code_data, qr_code_generated, qr_code_generated_at, registration_source, waitlist_position, priority_score, created_at, updated_at, first_name, last_name, email, phone, is_member
+) VALUES
+      (1, 'tenant_demo_001', 1, 1, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'MEMBER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:1|EVENT:1|TENANT:tenant_demo_001|NAME:Alice Johnson|EVENT_TITLE:Tech Conference|TIMESTAMP:1750606286.559053|TYPE:MEMBER', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Alice', 'Johnson', 'alice.johnson@example.com', '555-1001', true),
+      (2, 'tenant_demo_001', 1, 2, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:2|EVENT:1|TENANT:tenant_demo_001|NAME:Bob Smith|EVENT_TITLE:Tech Conference|TIMESTAMP:1750606286.559053|TYPE:ADMIN', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Bob', 'Smith', 'bob.smith@example.com', '555-1002', true),
+      (3, 'tenant_demo_001', 2, 3, 'PENDING', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'VOLUNTEER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Carol', 'Williams', 'carol.williams@example.com', '555-1003', false),
+      (4, 'tenant_demo_001', 3, 4, 'WAITLISTED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'ORGANIZER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NOT_CHECKED_IN', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'David', 'Brown', 'david.brown@example.com', '555-1004', true),
+      (5, 'tenant_demo_001', 4, 5, 'CANCELLED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'SUPER_ADMIN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'NO_SHOW', NULL, NULL, NULL, NULL, NULL, NULL, false, NULL, 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Eve', 'Davis', 'eve.davis@example.com', '555-1005', false),
+      (6, 'tenant_demo_001', 5, 6, 'CONFIRMED', '2025-06-22 11:31:26.559053', NULL, NULL, NULL, 'MEMBER', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'CHECKED_IN', NULL, NULL, NULL, NULL, NULL, 'ATTENDEE:6|EVENT:5|TENANT:tenant_demo_001|NAME:Frank Miller|EVENT_TITLE:Summer Fest|TIMESTAMP:1750606286.559053|TYPE:MEMBER', true, '2025-06-22 11:31:26.559053', 'DIRECT', NULL, 0, '2025-06-22 11:31:26.559053', '2025-06-22 11:31:26.559053', 'Frank', 'Miller', 'frank.miller@example.com', '555-1006', true);
+
+
+INSERT INTO public.event_attendee_guest VALUES (1, 'tenant_demo_001', 1, 'CHILD', 'CHILD', NULL, NULL, NULL, 'CONFIRMED', 'CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Sally', 'Guest', 'sally.guest@example.com', '555-2001');
+INSERT INTO public.event_attendee_guest VALUES (2, 'tenant_demo_001', 2, 'ADULT', 'SPOUSE', NULL, NULL, NULL, 'CONFIRMED', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Tom', 'Guest', 'tom.guest@example.com', '555-2002');
+INSERT INTO public.event_attendee_guest VALUES (3, 'tenant_demo_001', 3, 'TEEN', 'FRIEND', NULL, NULL, NULL, 'PENDING', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Jerry', 'Guest', 'jerry.guest@example.com', '555-2003');
+INSERT INTO public.event_attendee_guest VALUES (4, 'tenant_demo_001', 4, 'INFANT', 'CHILD', NULL, NULL, NULL, 'WAITLISTED', 'NOT_CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Linda', 'Guest', 'linda.guest@example.com', '555-2004');
+INSERT INTO public.event_attendee_guest VALUES (5, 'tenant_demo_001', 5, 'ADULT', 'COLLEAGUE', NULL, NULL, NULL, 'CANCELLED', 'NO_SHOW', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Sam', 'Guest', 'sam.guest@example.com', '555-2005');
+INSERT INTO public.event_attendee_guest VALUES (6, 'tenant_demo_001', 6, 'CHILD', 'RELATIVE', NULL, NULL, NULL, 'CONFIRMED', 'CHECKED_IN', NULL, NULL, 'PENDING', NULL, NULL, NULL, NULL, 0.00, 'PENDING', NULL, '2025-06-22 11:31:26.631934', '2025-06-22 11:31:26.631934', 'Nina', 'Guest', 'nina.guest@example.com', '555-2006');
+INSERT INTO public.event_calendar_entry VALUES (1, 'tenant_demo_001', 'Google', 'gcal_1', 'https://calendar.google.com/event1', 'PENDING', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 1, 1);
+INSERT INTO public.event_calendar_entry VALUES (2, 'tenant_demo_001', 'Outlook', 'outlook_2', 'https://outlook.com/event2', 'COMPLETED', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 2, 2);
+INSERT INTO public.event_calendar_entry VALUES (3, 'tenant_demo_001', 'Apple', 'apple_3', 'https://apple.com/event3', 'FAILED', '2025-06-22 11:31:26.679295', 'Error syncing', '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 3, 3);
+INSERT INTO public.event_calendar_entry VALUES (4, 'tenant_demo_001', 'Google', 'gcal_4', 'https://calendar.google.com/event4', 'PENDING', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 4, 4);
+INSERT INTO public.event_calendar_entry VALUES (5, 'tenant_demo_001', 'Outlook', 'outlook_5', 'https://outlook.com/event5', 'COMPLETED', '2025-06-22 11:31:26.679295', NULL, '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 5, 5);
+INSERT INTO public.event_calendar_entry VALUES (6, 'tenant_demo_001', 'Apple', 'apple_6', 'https://apple.com/event6', 'FAILED', '2025-06-22 11:31:26.679295', 'Error syncing', '2025-06-22 11:31:26.679295', '2025-06-22 11:31:26.679295', 6, 6);
 INSERT INTO public.event_live_update VALUES (1, 1, 'INFO', 'Welcome to Spring Gala!', NULL, NULL, NULL, NULL, 1, true, '2025-06-22 11:31:26.727266', '2025-06-22 11:31:26.727266');
 INSERT INTO public.event_live_update VALUES (2, 2, 'ALERT', 'Tech Conference Keynote at 10am', NULL, NULL, NULL, NULL, 2, false, '2025-06-22 11:31:26.727266', '2025-06-22 11:31:26.727266');
 INSERT INTO public.event_live_update VALUES (3, 3, 'INFO', 'Charity Run starts at 7am', NULL, NULL, NULL, NULL, 3, false, '2025-06-22 11:31:26.727266', '2025-06-22 11:31:26.727266');
@@ -172,7 +170,6 @@ INSERT INTO public.event_score_card_detail VALUES (3, 2, 'Team Alpha', 'Carol', 
 INSERT INTO public.event_score_card_detail VALUES (4, 2, 'Team Beta', 'David', 7, 'Good effort', '2025-06-22 11:31:27.245277', '2025-06-22 11:31:27.245277');
 INSERT INTO public.event_score_card_detail VALUES (5, 3, 'Team One', 'Eve', 3, 'Quick start', '2025-06-22 11:31:27.245277', '2025-06-22 11:31:27.245277');
 INSERT INTO public.event_score_card_detail VALUES (6, 3, 'Team Two', 'Frank', 6, 'Solid finish', '2025-06-22 11:31:27.245277', '2025-06-22 11:31:27.245277');
-
 INSERT INTO public.discount_code VALUES (2, 'VIP50', '50% off for VIPs', 'PERCENT', 50.00, 10, 2, '2025-04-01 00:00:00', '2025-08-01 00:00:00', true, '2025-06-22 11:31:27.135034', '2025-06-22 11:31:27.135034', 2, 'tenant_demo_001');
 INSERT INTO public.discount_code VALUES (4, 'EARLYBIRD', 'Early bird discount', 'PERCENT', 20.00, 200, 20, '2025-01-01 00:00:00', '2025-04-10 00:00:00', true, '2025-06-22 11:31:27.135034', '2025-06-22 11:31:27.135034', 4, 'tenant_demo_001');
 INSERT INTO public.discount_code VALUES (5, 'SUMMERFEST', 'Summer Fest special', 'PERCENT', 15.00, 150, 15, '2025-07-01 00:00:00', '2025-08-16 00:00:00', true, '2025-06-22 11:31:27.135034', '2025-06-22 11:31:27.135034', 5, 'tenant_demo_001');
@@ -180,8 +177,6 @@ INSERT INTO public.discount_code VALUES (6, 'FAMILY5', 'Family Picnic 5% off', '
 INSERT INTO public.discount_code VALUES (1, 'SPRING10', '10% off Spring events', 'PERCENTAGE', 10.00, 100, 5, '2025-03-01 00:00:00', '2025-06-01 00:00:00', true, '2025-06-22 11:31:27.135034', '2025-06-22 11:31:27.135034', 1, 'tenant_demo_001');
 INSERT INTO public.discount_code VALUES (3, 'FREERUN', 'Free entry for Charity Run', 'FIXED_AMOUNT', 100.00, 50, 10, '2025-05-01 00:00:00', '2025-06-02 00:00:00', true, '2025-06-22 11:31:27.135034', '2025-06-22 11:31:27.135034', 3, 'tenant_demo_001');
 INSERT INTO public.discount_code VALUES (4851, 'SPRING12', 'xcxcxc', 'FIXED_AMOUNT', 4.00, 100, NULL, NULL, NULL, true, '2025-06-23 05:29:02.585', '2025-06-23 05:29:02.585', 1, 'tenant_demo_001');
-
-
 INSERT INTO public.event_ticket_type VALUES (1, 'tenant_demo_001', 'Standard', 'Standard ticket for Spring Gala', 50.00, false, NULL, 'STD', 100, 12, true, NULL, NULL, 1, 10, false, 0, '2025-06-22 11:31:27.305395', '2025-06-22 11:31:27.363866', 6);
 INSERT INTO public.event_ticket_type VALUES (3, 'tenant_demo_001', 'Runner', 'Runner ticket for Charity Run', 0.00, false, NULL, 'RUN', 300, 103, true, NULL, NULL, 1, 10, false, 0, '2025-06-22 11:31:27.305395', '2025-06-22 11:31:27.363866', 3);
 INSERT INTO public.event_ticket_type VALUES (4, 'tenant_demo_001', 'Family', 'Family ticket for Picnic', 20.00, false, NULL, 'FAM', 30, 14, true, NULL, NULL, 1, 10, false, 0, '2025-06-22 11:31:27.305395', '2025-06-22 11:31:27.363866', 4);
@@ -191,53 +186,25 @@ INSERT INTO public.event_ticket_type VALUES (2, 'tenant_demo_001', 'VIP', 'VIP t
 INSERT INTO public.event_ticket_type VALUES (4752, 'tenant_demo_001', 'FAMILY5', 'xzxzxzxz', 10.00, false, 0.00, 'FAMILY5', 83, 6, true, NULL, NULL, 1, 10, false, 0, '2025-06-22 17:50:20.591', '2025-06-22 16:46:15.904713', 1);
 INSERT INTO public.event_ticket_type VALUES (4751, 'tenant_demo_001', 'zxzxz', 'xzxzxzxz', 20.00, false, 0.00, 'DIN', 84, 25, true, NULL, NULL, 1, 10, false, 0, '2025-06-22 17:48:59.275', '2025-06-23 01:17:30.642189', 1);
 
+-- here the column transaction_reference  is omitted since its auto generated in the db sql
 
 INSERT INTO public.event_ticket_transaction (
-    id, tenant_id, transaction_reference, email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, event_id, user_id, created_at, updated_at
+    id, tenant_id,  email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, qr_code_image_url, event_id, user_id, created_at, updated_at, number_of_guests_checked_in, check_in_status, check_in_time, check_out_time
 ) VALUES
-    (1, 'tenant_demo_001', 'TXN001', 'alice.johnson@example.com', 'Alice', 'Johnson', '555-1001', 2, 50.00, 100.00, 5.00, 2.00, 1, 10.00, 87.00, 'COMPLETED', 'CARD', 'REF001', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866');
-
-INSERT INTO public.event_ticket_transaction (
-    id, tenant_id, transaction_reference, email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, event_id, user_id, created_at, updated_at
-) VALUES
-    (2, 'tenant_demo_002', 'TXN002', 'bob.smith@example.com', 'Bob', 'Smith', '555-1002', 1, 200.00, 200.00, 10.00, 5.00, 2, 20.00, 185.00, 'COMPLETED', 'CARD', 'REF002', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866');
-
-INSERT INTO public.event_ticket_transaction (
-    id, tenant_id, transaction_reference, email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, event_id, user_id, created_at, updated_at
-) VALUES
-    (3, 'tenant_demo_003', 'TXN003', 'carol.williams@example.com', 'Carol', 'Williams', '555-1003', 3, 0.00, 0.00, 0.00, 0.00, 3, 0.00, 0.00, 'COMPLETED', 'CASH', 'REF003', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 3, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866');
-
-INSERT INTO public.event_ticket_transaction (
-    id, tenant_id, transaction_reference, email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, event_id, user_id, created_at, updated_at
-) VALUES
-    (4, 'tenant_demo_004', 'TXN004', 'david.brown@example.com', 'David', 'Brown', '555-1004', 4, 20.00, 80.00, 4.00, 1.00, 4, 5.00, 70.00, 'COMPLETED', 'CARD', 'REF004', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, 4, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866');
-
-INSERT INTO public.event_ticket_transaction (
-    id, tenant_id, transaction_reference, email, first_name, last_name, phone, quantity, price_per_unit, total_amount, tax_amount, platform_fee_amount, discount_code_id, discount_amount, final_amount, status, payment_method, payment_reference, stripe_checkout_session_id, stripe_payment_intent_id, purchase_date, confirmation_sent_at, refund_amount, refund_date, refund_reason, stripe_customer_id, stripe_payment_status, stripe_customer_email, stripe_payment_currency, stripe_amount_discount, stripe_amount_tax, stripe_fee_amount, event_id, user_id, created_at, updated_at
-) VALUES
-    (5, 'tenant_demo_005', 'TXN005', 'eve.davis@example.com', 'Eve', 'Davis', '555-1005', 1, 100.00, 100.00, 5.00, 2.00, 5, 10.00, 87.00, 'COMPLETED', 'CARD', 'REF005', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 5, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866');
+      (1, 'tenant_demo_001',  'alice.johnson@example.com', 'Alice', 'Johnson', '555-1001', 2, 50.00, 100.00, 5.00, 2.00, 1, 10.00, 87.00, 'COMPLETED', 'CARD', 'REF001', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL),
+      (2, 'tenant_demo_001',  'bob.smith@example.com', 'Bob', 'Smith', '555-1002', 1, 200.00, 200.00, 10.00, 5.00, 2, 20.00, 185.00, 'COMPLETED', 'CARD', 'REF002', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL),
+      (3, 'tenant_demo_001',  'carol.williams@example.com', 'Carol', 'Williams', '555-1003', 3, 0.00, 0.00, 0.00, 0.00, 3, 0.00, 0.00, 'COMPLETED', 'CASH', 'REF003', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 3, 3, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL),
+      (4, 'tenant_demo_001',  'david.brown@example.com', 'David', 'Brown', '555-1004', 4, 20.00, 80.00, 4.00, 1.00, 4, 5.00, 70.00, 'COMPLETED', 'CARD', 'REF004', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 4, 4, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL),
+      (5, 'tenant_demo_001',  'eve.davis@example.com', 'Eve', 'Davis', '555-1005', 1, 100.00, 100.00, 5.00, 2.00, 5, 10.00, 87.00, 'COMPLETED', 'CARD', 'REF005', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 5, 5, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL),
+      (6, 'tenant_demo_001',  'frank.miller@example.com', 'Frank', 'Miller', '555-1006', 2, 30.00, 60.00, 3.00, 1.00, 6, 2.00, 54.00, 'COMPLETED', 'CARD', 'REF006', NULL, NULL, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 6, '2025-06-22 11:31:27.363866', '2025-06-22 11:31:27.363866', NULL, NULL, NULL, NULL);
 
 
---INSERT INTO public.qr_code_usage (
---    id, tenant_id, attendee_id, qr_code_data, qr_code_type, generated_at, expires_at, used_at,
---    usage_count, max_usage_count, last_scanned_by, scan_location, device_info, ip_address,
---    is_valid, invalidated_at, invalidation_reason, created_at
---) VALUES
---(1, 'tenant_demo_001', 1, 'QR1', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132'),
---(2, 'tenant_demo_001', 2, 'QR2', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132'),
---(3, 'tenant_demo_001', 3, 'QR3', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132'),
---(4, 'tenant_demo_001', 4, 'QR4', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132'),
---(5, 'tenant_demo_001', 5, 'QR5', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132'),
---(6, 'tenant_demo_001', 6, 'QR6', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
-
-
-INSERT INTO public.rel_event_details__discount_codes VALUES (1, 1);
-INSERT INTO public.rel_event_details__discount_codes VALUES (2, 2);
-INSERT INTO public.rel_event_details__discount_codes VALUES (3, 3);
-INSERT INTO public.rel_event_details__discount_codes VALUES (4, 4);
-INSERT INTO public.rel_event_details__discount_codes VALUES (5, 5);
-INSERT INTO public.rel_event_details__discount_codes VALUES (6, 6);
-
+INSERT INTO public.qr_code_usage VALUES (1, 'tenant_demo_001', 1, 'QR1', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
+INSERT INTO public.qr_code_usage VALUES (2, 'tenant_demo_001', 2, 'QR2', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
+INSERT INTO public.qr_code_usage VALUES (3, 'tenant_demo_001', 3, 'QR3', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
+INSERT INTO public.qr_code_usage VALUES (4, 'tenant_demo_001', 4, 'QR4', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
+INSERT INTO public.qr_code_usage VALUES (5, 'tenant_demo_001', 5, 'QR5', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
+INSERT INTO public.qr_code_usage VALUES (6, 'tenant_demo_001', 6, 'QR6', 'CHECK_IN', '2025-06-22 11:31:27.426132', NULL, NULL, 0, 1, NULL, NULL, NULL, NULL, true, NULL, NULL, '2025-06-22 11:31:27.426132');
 INSERT INTO public.tenant_organization VALUES (1, 'tenant_demo_001', 'Malayalees US', NULL, NULL, NULL, NULL, 'contact1@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, true, '2025-06-22 11:31:27.518852', '2025-06-22 11:31:27.518852');
 INSERT INTO public.tenant_organization VALUES (2, 'tenant_demo_002', 'Techies US', NULL, NULL, NULL, NULL, 'contact2@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, true, '2025-06-22 11:31:27.518852', '2025-06-22 11:31:27.518852');
 INSERT INTO public.tenant_organization VALUES (3, 'tenant_demo_003', 'Charity Org', NULL, NULL, NULL, NULL, 'contact3@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, true, '2025-06-22 11:31:27.518852', '2025-06-22 11:31:27.518852');
@@ -246,52 +213,14 @@ INSERT INTO public.tenant_organization VALUES (5, 'tenant_demo_005', 'VIP Org', 
 INSERT INTO public.tenant_organization VALUES (6, 'tenant_demo_006', 'Summer Org', NULL, NULL, NULL, NULL, 'contact6@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, true, '2025-06-22 11:31:27.518852', '2025-06-22 11:31:27.518852');
 
 INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
+    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing, whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event, enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage, created_at, updated_at
 ) VALUES
-    (1, 'tenant_demo_001', true, false, false, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 5, 100, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
-
-INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
-) VALUES
-    (2, 'tenant_demo_002', true, true, true, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 10, 200, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
-
-INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
-) VALUES
-    (3, 'tenant_demo_003', false, false, false, true, NULL, NULL, NULL, NULL, NULL, NULL, false, 3, 50, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
-
-INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
-) VALUES
-    (4, 'tenant_demo_004', true, false, true, true, NULL, NULL, NULL, NULL, NULL, NULL, true, 8, 150, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
-
-INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
-) VALUES
-    (5, 'tenant_demo_005', true, true, false, true, NULL, NULL, NULL, NULL, NULL, NULL, false, 2, 75, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
-
-INSERT INTO public.tenant_settings (
-    id, tenant_id, allow_user_registration, require_admin_approval, enable_whatsapp_integration, enable_email_marketing,
-    whatsapp_api_key, email_provider_config, custom_css, custom_js, max_events_per_month, max_attendees_per_event,
-    enable_guest_registration, max_guests_per_attendee, default_event_capacity, platform_fee_percentage,
-    created_at, updated_at
-) VALUES
-    (6, 'tenant_demo_006', false, true, true, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 6, 120, 0.0000, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
+      (1, 'tenant_demo_001', true, false, false, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 5, 100, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132'),
+      (2, 'tenant_demo_002', true, true, true, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 10, 200, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132'),
+      (3, 'tenant_demo_003', false, false, false, true, NULL, NULL, NULL, NULL, NULL, NULL, false, 3, 50, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132'),
+      (4, 'tenant_demo_004', true, false, true, true, NULL, NULL, NULL, NULL, NULL, NULL, true, 8, 150, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132'),
+      (5, 'tenant_demo_005', true, true, false, true, NULL, NULL, NULL, NULL, NULL, NULL, false, 2, 75, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132'),
+      (6, 'tenant_demo_006', false, true, true, false, NULL, NULL, NULL, NULL, NULL, NULL, true, 6, 120, NULL, '2025-06-22 11:31:27.571132', '2025-06-22 11:31:27.571132');
 
 
 INSERT INTO public.user_payment_transaction VALUES (1, 'tenant_demo_001', 'TICKET_SALE', 100.00, 'USD', NULL, NULL, 0.00, 0.00, 'COMPLETED', 0.00, NULL, NULL, 'CARD', NULL, NULL, 1, 1, '2025-06-22 11:31:27.614757', '2025-06-22 11:31:27.614757');
@@ -300,8 +229,6 @@ INSERT INTO public.user_payment_transaction VALUES (3, 'tenant_demo_001', 'COMMI
 INSERT INTO public.user_payment_transaction VALUES (4, 'tenant_demo_001', 'REFUND', 75.00, 'USD', NULL, NULL, 0.00, 0.00, 'FAILED', 0.00, NULL, NULL, 'CARD', NULL, NULL, 4, 3, '2025-06-22 11:31:27.614757', '2025-06-22 11:31:27.614757');
 INSERT INTO public.user_payment_transaction VALUES (5, 'tenant_demo_001', 'TICKET_SALE', 120.00, 'USD', NULL, NULL, 0.00, 0.00, 'COMPLETED', 0.00, NULL, NULL, 'CARD', NULL, NULL, 5, 4, '2025-06-22 11:31:27.614757', '2025-06-22 11:31:27.614757');
 INSERT INTO public.user_payment_transaction VALUES (6, 'tenant_demo_001', 'SUBSCRIPTION', 60.00, 'USD', NULL, NULL, 0.00, 0.00, 'REFUNDED', 0.00, NULL, NULL, 'CASH', NULL, NULL, 6, NULL, '2025-06-22 11:31:27.614757', '2025-06-22 11:31:27.614757');
-
-
 INSERT INTO public.user_subscription VALUES (1, 'tenant_demo_001', 'cus_001', 'sub_001', 'price_001', '2025-07-22 11:31:27.659946', 'ACTIVE', '2025-06-29 11:31:27.659946', false, 1, '2025-06-22 11:31:27.659946', '2025-06-22 11:31:27.659946');
 INSERT INTO public.user_subscription VALUES (2, 'tenant_demo_001', 'cus_002', 'sub_002', 'price_002', '2025-07-22 11:31:27.659946', 'TRIAL', '2025-07-06 11:31:27.659946', false, 2, '2025-06-22 11:31:27.659946', '2025-06-22 11:31:27.659946');
 INSERT INTO public.user_subscription VALUES (3, 'tenant_demo_001', 'cus_003', 'sub_003', 'price_003', '2025-07-22 11:31:27.659946', 'CANCELLED', '2025-06-29 11:31:27.659946', true, 3, '2025-06-22 11:31:27.659946', '2025-06-22 11:31:27.659946');
@@ -314,6 +241,21 @@ INSERT INTO public.user_task VALUES (3, 'tenant_demo_001', 'Distribute Flyers', 
 INSERT INTO public.user_task VALUES (4, 'tenant_demo_001', 'Book Park', 'Book park for Family Picnic', 'PENDING', 'HIGH', '2025-06-27 11:31:27.727601', false, NULL, 1.00, NULL, 0, 4, 'David', '555-1004', 'david.brown@example.com', '2025-06-22 11:31:27.727601', '2025-06-22 11:31:27.727601', 4);
 INSERT INTO public.user_task VALUES (5, 'tenant_demo_001', 'Send Invites', 'Send invitations for VIP Dinner', 'PENDING', 'MEDIUM', '2025-06-23 11:31:27.727601', false, NULL, 1.50, NULL, 0, 5, 'Eve', '555-1005', 'eve.davis@example.com', '2025-06-22 11:31:27.727601', '2025-06-22 11:31:27.727601', 5);
 INSERT INTO public.user_task VALUES (6, 'tenant_demo_001', 'Setup Stage', 'Setup stage for Summer Fest', 'PENDING', 'HIGH', '2025-06-26 11:31:27.727601', false, NULL, 4.00, NULL, 0, 6, 'Frank', '555-1006', 'frank.miller@example.com', '2025-06-22 11:31:27.727601', '2025-06-22 11:31:27.727601', 6);
+
+--INSERT INTO public.event_discount_code VALUES (1, 1);
+--INSERT INTO public.event_discount_code VALUES (2, 2);
+--INSERT INTO public.event_discount_code VALUES (3, 3);
+--INSERT INTO public.event_discount_code VALUES (4, 4);
+--INSERT INTO public.event_discount_code VALUES (5, 5);
+--INSERT INTO public.event_discount_code VALUES (6, 6);
+
+
+INSERT INTO public.rel_event_details__discount_codes VALUES (1, 1);
+INSERT INTO public.rel_event_details__discount_codes VALUES (2, 2);
+INSERT INTO public.rel_event_details__discount_codes VALUES (3, 3);
+INSERT INTO public.rel_event_details__discount_codes VALUES (4, 4);
+INSERT INTO public.rel_event_details__discount_codes VALUES (5, 5);
+INSERT INTO public.rel_event_details__discount_codes VALUES (6, 6);
 INSERT INTO public.bulk_operation_log VALUES (1, 'tenant_demo_001', 'IMPORT', 'Import Users', 1, 100, 98, 1, 1, 'Imported users', NULL, 5000, '2025-06-22 11:31:27.770938', '2025-06-22 11:31:27.770938');
 INSERT INTO public.bulk_operation_log VALUES (2, 'tenant_demo_001', 'EXPORT', 'Export Events', 2, 50, 50, 0, 0, 'Exported events', NULL, 2000, '2025-06-22 11:31:27.770938', '2025-06-22 11:31:27.770938');
 INSERT INTO public.bulk_operation_log VALUES (3, 'tenant_demo_001', 'SYNC', 'Sync Calendar', 3, 20, 19, 1, 0, 'Synced calendar', '1 error', 1000, '2025-06-22 11:31:27.770938', '2025-06-22 11:31:27.770938');

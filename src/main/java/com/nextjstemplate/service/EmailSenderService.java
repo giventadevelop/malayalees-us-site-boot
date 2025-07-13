@@ -15,6 +15,8 @@ import software.amazon.awssdk.services.ses.model.Message;
 import software.amazon.awssdk.services.ses.model.SendEmailRequest;
 import software.amazon.awssdk.services.ses.model.SendEmailResponse;
 import software.amazon.awssdk.services.ses.model.SesException;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 public class EmailSenderService {
@@ -33,7 +35,7 @@ public class EmailSenderService {
     this.fromAddress = fromAddress;
   }
 
-  public void sendEmail(String to, String subject, String body, boolean isHtml) {
+  public void sendEmail(String to, String subject, String body, boolean isHtml, Map<String, String> headers) {
     try {
       Body emailBody;
       if (isHtml) {
@@ -41,14 +43,19 @@ public class EmailSenderService {
       } else {
         emailBody = Body.builder().text(Content.builder().data(body).build()).build();
       }
-      SendEmailRequest emailRequest = SendEmailRequest.builder()
+      SendEmailRequest.Builder emailRequestBuilder = SendEmailRequest.builder()
           .destination(Destination.builder().toAddresses(to).build())
           .message(Message.builder()
               .subject(Content.builder().data(subject).build())
               .body(emailBody)
               .build())
-          .source(fromAddress)
-          .build();
+          .source(fromAddress);
+      if (headers != null && !headers.isEmpty()) {
+        emailRequestBuilder = emailRequestBuilder.overrideConfiguration(cfg -> {
+          headers.forEach(cfg::putHeader);
+        });
+      }
+      SendEmailRequest emailRequest = emailRequestBuilder.build();
       SendEmailResponse response = sesClient.sendEmail(emailRequest);
       // Optionally log response.messageId()
     } catch (SesException e) {
@@ -58,7 +65,16 @@ public class EmailSenderService {
   }
 
   // For backward compatibility
+  public void sendEmail(String to, String subject, String body, boolean isHtml) {
+    sendEmail(to, subject, body, isHtml, new HashMap<>());
+  }
+
   public void sendEmail(String to, String subject, String body) {
-    sendEmail(to, subject, body, false);
+    sendEmail(to, subject, body, false, new HashMap<>());
+  }
+
+  // Helper to build List-Unsubscribe header value
+  public static String buildListUnsubscribeHeader(String email, String link) {
+    return String.format("<mailto:unsubscribe@yourdomain.com>, <%s>", link);
   }
 }

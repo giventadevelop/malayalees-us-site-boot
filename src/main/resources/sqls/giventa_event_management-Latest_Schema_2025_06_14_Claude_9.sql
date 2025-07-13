@@ -106,6 +106,9 @@ DROP FUNCTION IF EXISTS public.validate_event_dates() CASCADE;
 DROP FUNCTION IF EXISTS public.validate_event_dates_alt1() CASCADE;
 DROP FUNCTION IF EXISTS public.validate_event_dates_alt2() CASCADE;
 DROP FUNCTION IF EXISTS public.validate_event_details() CASCADE;
+DROP FUNCTION IF EXISTS public.set_transaction_reference() CASCADE;
+
+DROP TRIGGER IF EXISTS trg_set_transaction_reference ON public.event_ticket_transaction;
 
 -- Drop sequence if exists and recreate
 DROP SEQUENCE IF EXISTS public.sequence_generator CASCADE;
@@ -310,6 +313,7 @@ $$;
 
 
 ALTER FUNCTION public.manage_ticket_inventory() OWNER TO giventa_event_management;
+
 
 --
 -- TOC entry 255 (class 1255 OID 71143)
@@ -527,6 +531,9 @@ CREATE TABLE public.user_profile (
                                      district character varying(255),
                                      educational_institution character varying(255),
                                      profile_image_url character varying(1024),
+                                     is_email_subscribed BOOLEAN,
+                                     email_subscription_token VARCHAR(255),
+                                     is_email_subscription_token_used BOOLEAN,
                                      user_status character varying(50),
                                      user_role character varying(50),
                                      reviewed_by_admin_at timestamp without time zone,
@@ -1427,52 +1434,53 @@ ALTER SEQUENCE public.event_score_card_id_seq OWNED BY public.event_score_card.i
 --
 -- TOC entry 241 (class 1259 OID 82986)
 -- Name: event_ticket_transaction; Type: TABLE; Schema: public; Owner: giventa_event_management
+-- here the transaction_reference field is auto generated as shown in the column description
 --
 
 CREATE TABLE public.event_ticket_transaction (
                                                  id bigint DEFAULT nextval('public.sequence_generator'::regclass) NOT NULL,
                                                  tenant_id character varying(255),
-                                                 transaction_reference character varying(255),
-                                                 email character varying(255) NOT NULL,
-                                                 first_name character varying(255),
-                                                 last_name character varying(255),
-                                                 phone character varying(255),
-                                                 quantity INTEGER NOT NULL,
-                                                 price_per_unit numeric(21,2) NOT NULL,
-                                                 total_amount numeric(21,2) NOT NULL,
-                                                 tax_amount numeric(21,2) DEFAULT 0,
-                                                 platform_fee_amount numeric(21,2) DEFAULT 0,
-                                                 discount_code_id bigint,
-                                                 discount_amount numeric(21,2) DEFAULT 0,
-                                                 final_amount numeric(21,2) NOT NULL,
-                                                 status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
-                                                 payment_method character varying(100),
-                                                 payment_reference character varying(255),
-                                                 stripe_checkout_session_id character varying(255),
-                                                 stripe_payment_intent_id character varying(255),
-                                                 purchase_date timestamp without time zone NOT NULL,
-                                                 confirmation_sent_at timestamp without time zone,
-                                                 refund_amount numeric(21,2) DEFAULT 0 NULL,
-                                                 refund_date timestamp NULL,
-                                                 refund_reason text NULL,
-                                                 stripe_customer_id varchar(255) NULL,
-                                                 stripe_payment_status varchar(50) NULL,
-                                                 stripe_customer_email varchar(255) NULL,
-                                                 stripe_payment_currency varchar(10) NULL,
-                                                 stripe_amount_discount numeric(21,2) NULL,
-                                                 stripe_amount_tax numeric(21,2) NULL,
-                                                 stripe_fee_amount  numeric(21,2) NULL,
-                                                 qr_code_image_url character varying(2048),
-                                                 event_id bigint,
-                                                 user_id bigint,
-                                                 created_at timestamp DEFAULT now() NOT NULL,
-                                                 updated_at timestamp DEFAULT now() NOT NULL,
-                                                 number_of_guests_checked_in integer,
-                                                 check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
-                                                 check_in_time timestamp without time zone,
-                                                 check_out_time timestamp without time zone,
+                                                 transaction_reference varchar(255) GENERATED ALWAYS AS ('TKTN' || id::text) STORED,
+    email character varying(255) NOT NULL,
+    first_name character varying(255),
+    last_name character varying(255),
+    phone character varying(255),
+    quantity INTEGER NOT NULL,
+    price_per_unit numeric(21,2) NOT NULL,
+    total_amount numeric(21,2) NOT NULL,
+    tax_amount numeric(21,2) DEFAULT 0,
+    platform_fee_amount numeric(21,2) DEFAULT 0,
+    discount_code_id bigint,
+    discount_amount numeric(21,2) DEFAULT 0,
+    final_amount numeric(21,2) NOT NULL,
+    status character varying(255) DEFAULT 'PENDING'::character varying NOT NULL,
+    payment_method character varying(100),
+    payment_reference character varying(255),
+    stripe_checkout_session_id character varying(255),
+    stripe_payment_intent_id character varying(255),
+    purchase_date timestamp without time zone NOT NULL,
+    confirmation_sent_at timestamp without time zone,
+    refund_amount numeric(21,2) DEFAULT 0 NULL,
+    refund_date timestamp NULL,
+    refund_reason text NULL,
+    stripe_customer_id varchar(255) NULL,
+    stripe_payment_status varchar(50) NULL,
+    stripe_customer_email varchar(255) NULL,
+    stripe_payment_currency varchar(10) NULL,
+    stripe_amount_discount numeric(21,2) NULL,
+    stripe_amount_tax numeric(21,2) NULL,
+    stripe_fee_amount  numeric(21,2) NULL,
+    qr_code_image_url character varying(2048),
+    event_id bigint,
+    user_id bigint,
+    created_at timestamp DEFAULT now() NOT NULL,
+    updated_at timestamp DEFAULT now() NOT NULL,
+    number_of_guests_checked_in integer,
+    check_in_status character varying(20) DEFAULT 'NOT_CHECKED_IN'::character varying,
+    check_in_time timestamp without time zone,
+    check_out_time timestamp without time zone,
 
-                                                 CONSTRAINT check_email_format_transaction CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)),
+    CONSTRAINT check_email_format_transaction CHECK (((email)::text ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'::text)),
     CONSTRAINT check_transaction_amounts CHECK (((total_amount >= (0)::numeric) AND (tax_amount >= (0)::numeric) AND (discount_amount >= (0)::numeric) AND (refund_amount >= (0)::numeric) AND (final_amount >= (0)::numeric))),
     CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES public.event_details(id) ON DELETE CASCADE,
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES public.user_profile(id) ON DELETE SET null,
@@ -1868,6 +1876,8 @@ CREATE TABLE public.user_task (
                                   CONSTRAINT check_completion_logic CHECK (((completed = false) OR ((completed = true) AND (completion_date IS NOT NULL)))),
                                   CONSTRAINT user_task_progress_percentage_check CHECK (((progress_percentage >= 0) AND (progress_percentage <= 100)))
 );
+
+
 
 
 

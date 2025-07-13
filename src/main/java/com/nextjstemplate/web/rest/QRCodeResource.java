@@ -12,6 +12,7 @@ import com.nextjstemplate.service.mapper.EventDetailsMapper;
 import com.nextjstemplate.repository.EventTicketTypeRepository;
 import com.nextjstemplate.service.mapper.EventTicketTypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import java.util.stream.Collectors;
+import com.nextjstemplate.service.UserProfileService;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 
 @RestController
 @RequestMapping("/api")
@@ -36,6 +42,11 @@ public class QRCodeResource {
   private final EventTicketTypeRepository eventTicketTypeRepository;
   private final EventTicketTypeMapper eventTicketTypeMapper;
   private final EmailSenderService emailSenderService;
+  private final UserProfileService userProfileService;
+  private final JwtEncoder jwtEncoder;
+
+  @Value("${email.host.url-prefix}")
+  private String emailHostUrlPrefix;
 
   @Autowired
   public QRCodeResource(
@@ -48,7 +59,9 @@ public class QRCodeResource {
       EventDetailsMapper eventDetailsMapper,
       EventTicketTypeRepository eventTicketTypeRepository,
       EventTicketTypeMapper eventTicketTypeMapper,
-      EmailSenderService emailSenderService) {
+      EmailSenderService emailSenderService,
+      UserProfileService userProfileService,
+      JwtEncoder jwtEncoder) {
     this.transactionRepository = transactionRepository;
     this.s3Service = s3Service;
     this.eventTicketTransactionMapper = eventTicketTransactionMapper;
@@ -59,6 +72,8 @@ public class QRCodeResource {
     this.eventTicketTypeRepository = eventTicketTypeRepository;
     this.eventTicketTypeMapper = eventTicketTypeMapper;
     this.emailSenderService = emailSenderService;
+    this.userProfileService = userProfileService;
+    this.jwtEncoder = jwtEncoder;
   }
 
   private QrCodeUsageDTO buildQrCodeUsageDTO(Long eventId, Long transactionId) {
@@ -123,6 +138,26 @@ public class QRCodeResource {
       return;
     }
     String recipient = (to != null && !to.isBlank()) ? to : "test@example.com";
+    // Check subscription
+    boolean isSubscribed = userProfileService.findByEmail(recipient)
+        .map(u -> Boolean.TRUE.equals(u.getIsEmailSubscribed()))
+        .orElse(true); // Default to true if not found
+    if (!isSubscribed) {
+      return;
+    }
+    // Generate unsubscribe token and link
+    JwtClaimsSet claims = JwtClaimsSet.builder()
+        .subject(recipient)
+        .build();
+    JwsHeader jwsHeader = JwsHeader.with(org.springframework.security.oauth2.jose.jws.MacAlgorithm.HS512).build();
+    String token = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+    String unsubscribeLinkPrefix = emailHostUrlPrefix + "/unsubscribe-email?email=%s&token=%s";
+    String unsubscribeLink = String
+        .format(unsubscribeLinkPrefix, recipient, token);
+    // https://yourdomain.com/unsubscribe-email?email=user@example.com&token=UNIQUE_TOKEN
+    String unsubscribeHtml = String.format(
+        "<div style='margin:24px 0 0 0; text-align:center; color:#888; font-size:13px;'>If you no longer wish to receive these emails, <a href='%s' style='color:#6b207c;'>click here to unsubscribe</a>.</div>",
+        unsubscribeLink);
     String tenantId = dto.getTransaction().getTenantId();
     String headerImageUrl = String.format(
         "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/event-id/%d/tickets/email-templates/email_header_image.jpeg",
@@ -303,8 +338,11 @@ public class QRCodeResource {
     }
 
     // ... build the main email HTML as before ...
-    String fullEmailHtml = template + footerHtml;
-    emailSenderService.sendEmail(recipient, "Your Event Ticket for " + eventName, fullEmailHtml, true);
+    String fullEmailHtml = template + unsubscribeHtml + footerHtml;
+    // List-Unsubscribe header
+    Map<String, String> headers = new HashMap<>();
+    headers.put("List-Unsubscribe", EmailSenderService.buildListUnsubscribeHeader(recipient, unsubscribeLink));
+    emailSenderService.sendEmail(recipient, "Your Event Ticket for " + eventName, fullEmailHtml, true, headers);
   }
 
   @PostMapping("/send-promotion-emails")
@@ -318,7 +356,7 @@ public class QRCodeResource {
     String headerImagePath = requestDTO.getHeaderImagePath();
     String footerPath = requestDTO.getFooterPath();
 
-    sendPromoEmails(tenantId, promoCode, footerPath, bodyHtml, recipient, subject);
+    sendPromoEmails(tenantId, promoCode, footerPath, bodyHtml, recipient, subject, requestDTO.isTestEmail());
 
     Map<String, Object> response = new HashMap<>();
     response.put("success", true);
@@ -327,55 +365,64 @@ public class QRCodeResource {
 
   @Async
   protected void sendPromoEmails(String tenantId, String promoCode, String footerPath, String bodyHtml,
-      String recipient, String subject) {
-    String headerImagePath = "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/"
-        + tenantId + "/promotions/promocode/" + promoCode + "/email-templates/email_header_image.jpeg";
-
-    // Download footer HTML if provided
-   /* String footerHtml = "";
-    if (footerPath != null && !footerPath.isBlank()) {
-      try {
-        footerHtml = s3Service.downloadHtmlFromUrl(footerPath);
-        String logoUrl = String.format(
-            "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/email-templates/email_footer_logo.png",
-            tenantId);
-        footerHtml = footerHtml.replace("{{LOGO_URL}}", logoUrl);
-      } catch (Exception e) {
-        footerHtml = "";
-      }
+      String recipient, String subject, boolean isTestEmail) {
+    List<String> emails;
+    if (isTestEmail) {
+      emails = List.of(recipient);
+    } else {
+      emails = userProfileService.findSubscribedEmailsByTenantId(tenantId);
     }
 
-    // Add a default footer if footerHtml is still empty
-    if (footerHtml == null || footerHtml.isBlank()) {
-      footerHtml = "<footer style=\"background:#1a202c; color:#fff; padding:32px 16px; margin-top:32px;\">"
-          + "<div style=\"text-align:center; color:#a0aec0; margin-top:32px;\">"
-          + "© 2025 United Team India. All rights reserved."
-          + "</div></footer>";
-    }*/
-
-      // Prepare S3 URLs for footer and logo, replacing tenant_demo_001 with actual
-      // tenantId
-      String tenantIdPath = tenantId != null ? tenantId : "tenant_demo_001";
-      String footerHtmlS3Url = String.format(
-          "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/email-templates/email_footer.html",
-          tenantIdPath);
-      String logoS3Url = String.format(
-          "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/email-templates/email_footer_logo.png",
-          tenantIdPath);
-
-      // Download the footer HTML from S3
-      String footerHtml = "";
-      try {
-          footerHtml = s3Service.downloadHtmlFromUrl(footerHtmlS3Url); // Implement this method in S3Service
-          // Replace the logo placeholder
-          footerHtml = footerHtml.replace("{{LOGO_URL}}", logoS3Url);
-      } catch (Exception e) {
-          // If download fails, fallback to empty or default footer
-          footerHtml = "";
+    for (String email : emails) {
+      Optional<UserProfileDTO> userOpt = userProfileService.findByEmailAndTenantId(email, tenantId);
+      if (userOpt.isEmpty() || !Boolean.TRUE.equals(userOpt.get().getIsEmailSubscribed())) {
+        continue;
       }
+      String token = userProfileService.getUnsubscribeTokenByEmailAndTenantId(email, tenantId);
+      if (token == null || token.isBlank()) {
+        // If no token, skip sending (or handle as needed)
+        continue;
+      }
+      String unsubscribeLink = String.format(emailHostUrlPrefix + "/unsubscribe-email?email=%s&token=%s", email, token);
+      String fullEmailHtml = buildPromotionEmailHtml(subject, tenantId, promoCode, bodyHtml, unsubscribeLink,
+          s3Service);
+      Map<String, String> headers = new HashMap<>();
+      headers.put("List-Unsubscribe", EmailSenderService.buildListUnsubscribeHeader(email, unsubscribeLink));
+      emailSenderService.sendEmail(email, subject, fullEmailHtml, true, headers);
+      if (!isTestEmail) {
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          break;
+        }
+      }
+    }
+  }
 
-    // Build the full HTML email
-    String fullEmailHtml = String.format(
+  // Extracted reusable method for building the promotion email HTML
+  private String buildPromotionEmailHtml(String subject, String tenantId, String promoCode, String bodyHtml,
+      String unsubscribeLink, S3Service s3Service) {
+    String headerImagePath = "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/"
+        + tenantId + "/promotions/promocode/" + promoCode + "/email-templates/email_header_image.jpeg";
+    String tenantIdPath = tenantId != null ? tenantId : "tenant_demo_001";
+    String footerHtmlS3Url = String.format(
+        "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/email-templates/email_footer.html",
+        tenantIdPath);
+    String logoS3Url = String.format(
+        "https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/%s/email-templates/email_footer_logo.png",
+        tenantIdPath);
+    String footerHtml = "";
+    try {
+      footerHtml = s3Service.downloadHtmlFromUrl(footerHtmlS3Url);
+      footerHtml = footerHtml.replace("{{LOGO_URL}}", logoS3Url);
+    } catch (Exception e) {
+      footerHtml = "";
+    }
+    String unsubscribeHtml = String.format(
+        "<div style='margin:24px 0 0 0; text-align:center; color:#888; font-size:13px;'>If you no longer wish to receive these emails, <a href='%s' style='color:#6b207c;'>click here to unsubscribe</a>.</div>",
+        unsubscribeLink);
+    return String.format(
         """
             <!DOCTYPE html>
             <html>
@@ -388,6 +435,7 @@ public class QRCodeResource {
                 <img src=\"%s\" alt=\"Event Header\" style=\"width: 100%%; display: block; border-bottom: 1px solid #eee;\">
                 <div style=\"padding: 32px;\">
                   %s
+                  %s
                 </div>
                 %s
               </div>
@@ -397,98 +445,7 @@ public class QRCodeResource {
         subject,
         headerImagePath,
         bodyHtml,
+        unsubscribeHtml,
         footerHtml);
-
-      /*String fullEmailHtml = String.format(
-          """
-              <!DOCTYPE html>
-              <html>
-              <head>
-                <meta charset=\"UTF-8\">
-                <title>%s</title>
-              </head>
-              <body style=\"font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px;\">
-                <div style=\"max-width: 650px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px #eee; overflow: hidden;\">
-                  <img src=\"%s\" alt=\"Event Header\" style=\"width: 100%%; display: block; border-bottom: 1px solid #eee;\">
-                  <div style=\"padding: 32px;\">
-                  </div>
-                  %s
-                </div>
-              </body>
-              </html>
-              """,
-          subject,
-          headerImagePath,
-
-          footerHtml);*/
-
-      /*fullEmailHtml = ""
-          + "<div style=\"max-width: 650px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 12px #eee; overflow: hidden;\">"
-          + "  <img src=\"https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/tenant_demo_001/promotions/promotion_code_001/email-templates/email_header_image.jpeg\" alt=\"Event Header\" style=\"width: 100%; display: block; border-bottom: 1px solid #eee;\">"
-          + "  <div style=\"padding: 32px;\">"
-          + "    <div style=\"font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; background: #f9f9f9; border-radius: 8px; padding: 24px; text-align: center;\">"
-          + "      <h2 style=\"color: #1a237e; margin-bottom: 12px;\">Special Offer Just for You!</h2>"
-          + "      <p style=\"font-size: 18px; color: #333; margin-bottom: 8px;\">Use the code below to get an exclusive discount:</p>"
-          + "      <div style=\"font-size: 24px; font-weight: bold; color: #1565c0; background: #e3f2fd; border-radius: 6px; display: inline-block; padding: 12px 32px; margin-bottom: 12px;\">SAVE20</div>"
-          + "      <p style=\"font-size: 16px; color: #444;\">Enter this code at checkout to enjoy your savings!</p>"
-          + "    </div>"
-          + "  </div>"
-          + "  <footer style=\"background:#1a202c; color:#fff; padding:32px 16px; margin-top:32px;\">"
-          + "    <div style=\"max-width:900px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:32px;\">"
-          + "      <div style=\"flex:1; min-width:200px; text-align:center;\">"
-          + "        <a href=\"https://www.adwiise.com/\">"
-          + "          <img src=\"https://eventapp-media-bucket.s3.us-east-2.amazonaws.com/events/tenantId/tenant_demo_001/email-templates/email_footer_logo.png\" alt=\"Malayalees US Logo\" style=\"width:128px; margin-bottom:16px;\" />"
-          + "        </a>"
-          + "        <div style=\"font-weight:600; font-size:1.125rem;\">Follow us</div>"
-          + "      </div>"
-          + "      <div style=\"flex:1; min-width:200px; text-align:center;\">"
-          + "        <div style=\"font-weight:600; font-size:1.125rem; margin-bottom:8px;\">Main menu</div>"
-          + "        <ul style=\"list-style:none; padding:0; margin:0;\">"
-          + "          <li><a href=\"#\" style=\"color:#fff; text-decoration:none;\">Home</a></li>"
-          + "          <li><a href=\"#\" style=\"color:#fff; text-decoration:none;\">About</a></li>"
-          + "          <li><a href=\"#\" style=\"color:#fff; text-decoration:none;\">Events</a></li>"
-          + "          <li><a href=\"#\" style=\"color:#fff; text-decoration:none;\">Team</a></li>"
-          + "          <li><a href=\"#\" style=\"color:#fff; text-decoration:none;\">Contact</a></li>"
-          + "        </ul>"
-          + "      </div>"
-          + "      <div style=\"flex:1; min-width:200px; text-align:center;\">"
-          + "        <div style=\"font-weight:600; font-size:1.125rem; margin-bottom:8px;\">Contacts</div>"
-          + "        <div>Unite India</div>"
-          + "        <div>New Jersey, USA</div>"
-          + "        <a href=\"tel:+16317088442\" style=\"color:#63b3ed; text-decoration:none;\">+1 (631) 708-8442</a>"
-          + "      </div>"
-          + "    </div>"
-          + "    <div style=\"text-align:center; color:#a0aec0; margin-top:32px;\">"
-          + "      © 2025 United Team India. All rights reserved."
-          + "    </div>"
-          + "  </footer>"
-          + "</div>";*/
-
-      List<String> emails = List.of(
-//          "gain@hotmail.com",
-//          "giventa.develop@gmail.com",
-          "giventauser@gmail.com",
-          "giventauser@gmail.com",
-          "giventauser@gmail.com"
-          // add more emails here
-      );
-
-      for (String email : emails) {
-          // Replace this with your actual email sending logic
-          System.out.println("Sending email to: " + email);
-
-          // Pause for 2 seconds (2000 milliseconds)
-          try {
-              Thread.sleep(2000);
-              recipient =email;
-              emailSenderService.sendEmail(recipient, subject, fullEmailHtml, true);
-          } catch (InterruptedException e) {
-              // Handle interruption
-              Thread.currentThread().interrupt();
-              System.out.println("Thread was interrupted, stopping email sending.");
-              break;
-          }
-      }
-
   }
 }

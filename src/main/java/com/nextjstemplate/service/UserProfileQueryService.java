@@ -145,6 +145,19 @@ public class UserProfileQueryService extends QueryService<UserProfile> {
             if (criteria.getProfileImageUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getProfileImageUrl(), UserProfile_.profileImageUrl));
             }
+            if (criteria.getIsEmailSubscribed() != null) {
+                specification = specification.and(buildSpecification(criteria.getIsEmailSubscribed(), UserProfile_.isEmailSubscribed));
+            }
+            if (criteria.getEmailSubscriptionToken() != null) {
+                specification =
+                    specification.and(buildStringSpecification(criteria.getEmailSubscriptionToken(), UserProfile_.emailSubscriptionToken));
+            }
+            if (criteria.getIsEmailSubscriptionTokenUsed() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(criteria.getIsEmailSubscriptionTokenUsed(), UserProfile_.isEmailSubscriptionTokenUsed)
+                    );
+            }
             if (criteria.getUserStatus() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getUserStatus(), UserProfile_.userStatus));
             }

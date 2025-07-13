@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.nextjstemplate.domain.UserProfile}.
+ * Service Implementation for managing
+ * {@link com.nextjstemplate.domain.UserProfile}.
  */
 @Service
 @Transactional
@@ -66,14 +67,14 @@ public class UserProfileServiceImpl implements UserProfileService {
         log.debug("Request to partially update UserProfile : {}", userProfileDTO);
 
         return userProfileRepository
-            .findById(userProfileDTO.getId())
-            .map(existingUserProfile -> {
-                userProfileMapper.partialUpdate(existingUserProfile, userProfileDTO);
+                .findById(userProfileDTO.getId())
+                .map(existingUserProfile -> {
+                    userProfileMapper.partialUpdate(existingUserProfile, userProfileDTO);
 
-                return existingUserProfile;
-            })
-            .map(userProfileRepository::save)
-            .map(userProfileMapper::toDto);
+                    return existingUserProfile;
+                })
+                .map(userProfileRepository::save)
+                .map(userProfileMapper::toDto);
     }
 
     @Override
@@ -84,17 +85,18 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     /**
-     *  Get all the userProfiles where UserSubscription is {@code null}.
-     *  @return the list of entities.
+     * Get all the userProfiles where UserSubscription is {@code null}.
+     *
+     * @return the list of entities.
      */
     @Transactional(readOnly = true)
     public List<UserProfileDTO> findAllWhereUserSubscriptionIsNull() {
         log.debug("Request to get all userProfiles where UserSubscription is null");
         return StreamSupport
-            .stream(userProfileRepository.findAll().spliterator(), false)
-            .filter(userProfile -> userProfile.getUserSubscription() == null)
-            .map(userProfileMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+                .stream(userProfileRepository.findAll().spliterator(), false)
+                .filter(userProfile -> userProfile.getUserSubscription() == null)
+                .map(userProfileMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
@@ -118,18 +120,48 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Optional<UserProfileDTO> findByEmail(String email) {
+        log.debug("Request to get UserProfile by email : {}", email);
+        return userProfileRepository.findByEmail(email).map(userProfileMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<UserProfileDTO> findByEmailAndTenantId(String email, String tenantId) {
+        log.debug("Request to get UserProfile by email {} and tenantId {}", email, tenantId);
+        return userProfileRepository.findByEmailAndTenantId(email, tenantId).map(userProfileMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public String getUnsubscribeTokenByEmailAndTenantId(String email, String tenantId) {
+        log.debug("Request to get unsubscribe token by email {} and tenantId {}", email, tenantId);
+        return userProfileRepository.findByEmailAndTenantId(email, tenantId)
+                .map(UserProfile::getEmailSubscriptionToken)
+                .orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> findSubscribedEmailsByTenantId(String tenantId) {
+        log.debug("Request to get all subscribed emails for tenantId {}", tenantId);
+        return userProfileRepository.findSubscribedEmailsByTenantId(tenantId);
+    }
+
+    @Override
     public List<UserProfileDTO> saveAll(List<UserProfileDTO> userProfileDTOs) {
         // Map each DTO to a domain/entity object
         List<UserProfile> domainList = userProfileDTOs.stream()
-            .map(userProfileMapper::toEntity)
-            .collect(Collectors.toList());
+                .map(userProfileMapper::toEntity)
+                .collect(Collectors.toList());
 
         // Save all domain objects in the repository
         List<UserProfile> saved = userProfileRepository.saveAll(domainList);
 
         // Map saved entities back to DTOs
         return saved.stream()
-            .map(userProfileMapper::toDto)
-            .collect(Collectors.toList());
+                .map(userProfileMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

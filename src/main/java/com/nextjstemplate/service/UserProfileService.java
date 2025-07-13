@@ -72,5 +72,16 @@ public interface UserProfileService {
      */
     Optional<UserProfileDTO> findByUserId(String userId);
 
+    Optional<UserProfileDTO> findByEmail(String email);
+
     List<UserProfileDTO> saveAll(List<UserProfileDTO> users);
+
+    // New: Find by email and tenantId
+    Optional<UserProfileDTO> findByEmailAndTenantId(String email, String tenantId);
+
+    // New: Get unsubscribe token by email and tenantId (returns null if not found)
+    String getUnsubscribeTokenByEmailAndTenantId(String email, String tenantId);
+
+    // New: Find all subscribed emails for a tenant
+    List<String> findSubscribedEmailsByTenantId(String tenantId);
 }

@@ -99,6 +99,15 @@ public class UserProfile implements Serializable {
     @Column(name = "profile_image_url", length = 255)
     private String profileImageUrl;
 
+    @Column(name = "is_email_subscribed")
+    private Boolean isEmailSubscribed;
+    @Size(max = 255)
+    @Column(name = "email_subscription_token", length = 255)
+    private String emailSubscriptionToken;
+
+    @Column(name = "is_email_subscription_token_used")
+    private Boolean isEmailSubscriptionTokenUsed;
+
     @Size(max = 50)
     @Column(name = "user_status", length = 50)
     private String userStatus;
@@ -402,6 +411,43 @@ public class UserProfile implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public Boolean getIsEmailSubscribed() {
+        return this.isEmailSubscribed;
+    }
+
+    public UserProfile isEmailSubscribed(Boolean isEmailSubscribed) {
+        this.setIsEmailSubscribed(isEmailSubscribed);
+        return this;
+    }
+
+    public void setIsEmailSubscribed(Boolean isEmailSubscribed) {
+        this.isEmailSubscribed = isEmailSubscribed;
+    }
+    public String getEmailSubscriptionToken() {
+        return this.emailSubscriptionToken;
+    }
+
+    public UserProfile emailSubscriptionToken(String emailSubscriptionToken) {
+        this.setEmailSubscriptionToken(emailSubscriptionToken);
+        return this;
+    }
+
+    public void setEmailSubscriptionToken(String emailSubscriptionToken) {
+        this.emailSubscriptionToken = emailSubscriptionToken;
+    }
+
+    public Boolean getIsEmailSubscriptionTokenUsed() {
+        return this.isEmailSubscriptionTokenUsed;
+    }
+
+    public UserProfile isEmailSubscriptionTokenUsed(Boolean isEmailSubscriptionTokenUsed) {
+        this.setIsEmailSubscriptionTokenUsed(isEmailSubscriptionTokenUsed);
+        return this;
+    }
+
+    public void setIsEmailSubscriptionTokenUsed(Boolean isEmailSubscriptionTokenUsed) {
+        this.isEmailSubscriptionTokenUsed = isEmailSubscriptionTokenUsed;
+    }
     public String getUserStatus() {
         return this.userStatus;
     }
@@ -645,6 +691,9 @@ public class UserProfile implements Serializable {
             ", district='" + getDistrict() + "'" +
             ", educationalInstitution='" + getEducationalInstitution() + "'" +
             ", profileImageUrl='" + getProfileImageUrl() + "'" +
+            ", isEmailSubscribed='" + getIsEmailSubscribed() + "'" +
+            ", emailSubscriptionToken='" + getEmailSubscriptionToken() + "'" +
+            ", isEmailSubscriptionTokenUsed='" + getIsEmailSubscriptionTokenUsed() + "'" +
             ", userStatus='" + getUserStatus() + "'" +
             ", userRole='" + getUserRole() + "'" +
             ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +

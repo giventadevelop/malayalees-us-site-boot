@@ -69,6 +69,11 @@ public class UserProfileDTO implements Serializable {
     @Size(max = 255)
     private String profileImageUrl;
 
+    private Boolean isEmailSubscribed;
+    @Size(max = 255)
+    private String emailSubscriptionToken;
+
+    private Boolean isEmailSubscriptionTokenUsed;
     @Size(max = 50)
     private String userStatus;
 
@@ -257,6 +262,29 @@ public class UserProfileDTO implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
+    public Boolean getIsEmailSubscribed() {
+        return isEmailSubscribed;
+    }
+
+    public void setIsEmailSubscribed(Boolean isEmailSubscribed) {
+        this.isEmailSubscribed = isEmailSubscribed;
+    }
+    public String getEmailSubscriptionToken() {
+        return emailSubscriptionToken;
+    }
+
+    public void setEmailSubscriptionToken(String emailSubscriptionToken) {
+        this.emailSubscriptionToken = emailSubscriptionToken;
+    }
+
+    public Boolean getIsEmailSubscriptionTokenUsed() {
+        return isEmailSubscriptionTokenUsed;
+    }
+
+    public void setIsEmailSubscriptionTokenUsed(Boolean isEmailSubscriptionTokenUsed) {
+        this.isEmailSubscriptionTokenUsed = isEmailSubscriptionTokenUsed;
+    }
+
     public String getUserStatus() {
         return userStatus;
     }
@@ -413,6 +441,9 @@ public class UserProfileDTO implements Serializable {
             ", district='" + getDistrict() + "'" +
             ", educationalInstitution='" + getEducationalInstitution() + "'" +
             ", profileImageUrl='" + getProfileImageUrl() + "'" +
+            ", isEmailSubscribed='" + getIsEmailSubscribed() + "'" +
+            ", emailSubscriptionToken='" + getEmailSubscriptionToken() + "'" +
+            ", isEmailSubscriptionTokenUsed='" + getIsEmailSubscriptionTokenUsed() + "'" +
             ", userStatus='" + getUserStatus() + "'" +
             ", userRole='" + getUserRole() + "'" +
             ", reviewedByAdminAt='" + getReviewedByAdminAt() + "'" +

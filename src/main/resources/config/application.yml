@@ -237,3 +237,7 @@ twilio:
 qrcode:
   scan-host:
     url-prefix: ${QRCODE_SCAN_HOST_PREFIX}
+
+email:
+  host:
+    url-prefix: ${EMAIL_HOST_URL_PREFIX}

@@ -12,6 +12,7 @@ public class PromotionEmailRequestDTO {
     @Email
     private String to;
 
+    private boolean isTestEmail;
 
     private String subject;
 
@@ -49,4 +50,12 @@ public class PromotionEmailRequestDTO {
 
     public String getFooterPath() { return footerPath; }
     public void setFooterPath(String footerPath) { this.footerPath = footerPath; }
+
+    public boolean isTestEmail() {
+        return isTestEmail;
+    }
+
+    public void setTestEmail(boolean testEmail) {
+        isTestEmail = testEmail;
+    }
 }
