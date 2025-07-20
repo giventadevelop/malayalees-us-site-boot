@@ -34,8 +34,8 @@ public class EventMedia implements Serializable {
     @Column(name = "title", length = 255, nullable = false)
     private String title;
 
-    @Lob
-    @Column(name = "description")
+    @Size(max = 2048)
+    @Column(name = "description", length = 2048)
     private String description;
 
     @NotNull
@@ -51,13 +51,6 @@ public class EventMedia implements Serializable {
     @Size(max = 2048)
     @Column(name = "file_url", length = 2048)
     private String fileUrl;
-
-    @Lob
-    @Column(name = "file_data")
-    private byte[] fileData;
-
-    @Column(name = "file_data_content_type")
-    private String fileDataContentType;
 
     @Size(max = 255)
     @Column(name = "content_type", length = 255)
@@ -122,13 +115,19 @@ public class EventMedia implements Serializable {
     @Column(name = "uploaded_by_id")
     private Long uploadedById;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" }, allowSetters = true)
-    private EventDetails event;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" }, allowSetters = true)
-    private UserProfile uploadedBy;*/
+    /*
+     * @ManyToOne(fetch = FetchType.LAZY)
+     *
+     * @JsonIgnoreProperties(value = { "createdBy", "eventType", "discountCodes" },
+     * allowSetters = true)
+     * private EventDetails event;
+     *
+     * @ManyToOne(fetch = FetchType.LAZY)
+     *
+     * @JsonIgnoreProperties(value = { "reviewedByAdmin", "userSubscription" },
+     * allowSetters = true)
+     * private UserProfile uploadedBy;
+     */
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -221,32 +220,6 @@ public class EventMedia implements Serializable {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    public byte[] getFileData() {
-        return this.fileData;
-    }
-
-    public EventMedia fileData(byte[] fileData) {
-        this.setFileData(fileData);
-        return this;
-    }
-
-    public void setFileData(byte[] fileData) {
-        this.fileData = fileData;
-    }
-
-    public String getFileDataContentType() {
-        return this.fileDataContentType;
-    }
-
-    public EventMedia fileDataContentType(String fileDataContentType) {
-        this.fileDataContentType = fileDataContentType;
-        return this;
-    }
-
-    public void setFileDataContentType(String fileDataContentType) {
-        this.fileDataContentType = fileDataContentType;
     }
 
     public String getContentType() {
@@ -496,33 +469,36 @@ public class EventMedia implements Serializable {
         this.uploadedById = uploadedById;
     }
 
-   /* public EventDetails getEvent() {
-        return this.event;
-    }
+    /*
+     * public EventDetails getEvent() {
+     * return this.event;
+     * }
+     *
+     * public void setEvent(EventDetails eventDetails) {
+     * this.event = eventDetails;
+     * }
+     *
+     * public EventMedia event(EventDetails eventDetails) {
+     * this.setEvent(eventDetails);
+     * return this;
+     * }
+     *
+     * public UserProfile getUploadedBy() {
+     * return this.uploadedBy;
+     * }
+     *
+     * public void setUploadedBy(UserProfile userProfile) {
+     * this.uploadedBy = userProfile;
+     * }
+     *
+     * public EventMedia uploadedBy(UserProfile userProfile) {
+     * this.setUploadedBy(userProfile);
+     * return this;
+     * }
+     */
 
-    public void setEvent(EventDetails eventDetails) {
-        this.event = eventDetails;
-    }
-
-    public EventMedia event(EventDetails eventDetails) {
-        this.setEvent(eventDetails);
-        return this;
-    }
-
-    public UserProfile getUploadedBy() {
-        return this.uploadedBy;
-    }
-
-    public void setUploadedBy(UserProfile userProfile) {
-        this.uploadedBy = userProfile;
-    }
-
-    public EventMedia uploadedBy(UserProfile userProfile) {
-        this.setUploadedBy(userProfile);
-        return this;
-    }*/
-
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and
+    // setters here
 
     @Override
     public boolean equals(Object o) {
@@ -537,7 +513,8 @@ public class EventMedia implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        // see
+        // https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -552,8 +529,6 @@ public class EventMedia implements Serializable {
             ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
-            ", fileData='" + getFileData() + "'" +
-            ", fileDataContentType='" + getFileDataContentType() + "'" +
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +

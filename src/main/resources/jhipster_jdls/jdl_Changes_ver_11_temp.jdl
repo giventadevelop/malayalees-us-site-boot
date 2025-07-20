@@ -608,7 +608,7 @@ relationship ManyToOne {
 
     // Event Attendee relationships
     EventAttendee{event required} to EventDetails,
-//    EventAttendee{userId} to UserProfile,
+    EventAttendee{userId} to UserProfile,
 
     // QR Code Usage relationships
     QrCodeUsage{attendee} to EventAttendee,

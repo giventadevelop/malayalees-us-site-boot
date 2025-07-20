@@ -41,8 +41,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * REST controller for managing {@link com.nextjstemplate.domain.EventMedia}.
@@ -75,19 +74,17 @@ public class EventMediaResource {
         this.eventMediaMapper = eventMediaMapper;
     }
 
-
     @PostMapping("test")
     public ResponseEntity<AidaDTO> test(@Valid @RequestBody AidaDTO eventMediaDTO)
-        throws URISyntaxException {
+            throws URISyntaxException {
         log.debug("REST request to save EventMedia : {}", eventMediaDTO);
         if (eventMediaDTO.getId() != null) {
             throw new BadRequestAlertException("A new eventMedia cannot already have an ID", ENTITY_NAME, "idexists");
         }
         return ResponseEntity
-            .ok()
-            .body(eventMediaDTO);
+                .ok()
+                .body(eventMediaDTO);
     }
-
 
     /**
      * {@code POST  /event-medias} : Create a new eventMedia.
@@ -112,8 +109,6 @@ public class EventMediaResource {
                         result.getId().toString()))
                 .body(result);
     }
-
-
 
     /**
      * {@code PUT  /event-medias/:id} : Updates an existing eventMedia.
@@ -170,9 +165,9 @@ public class EventMediaResource {
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<EventMediaDTO> partialUpdateEventMedia(
-        @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody EventMediaDTO eventMediaDTO,
-        HttpServletRequest request) throws URISyntaxException {
+            @PathVariable(value = "id", required = false) final Long id,
+            @Valid @RequestBody EventMediaDTO eventMediaDTO,
+            HttpServletRequest request) throws URISyntaxException {
 
         log.debug("REST request to partial update EventMedia partially : {}, {}", id, eventMediaDTO);
         log.debug("Request content type: {}", request.getContentType());
@@ -192,29 +187,80 @@ public class EventMediaResource {
         Optional<EventMediaDTO> result = eventMediaService.partialUpdate(eventMediaDTO);
 
         return ResponseUtil.wrapOrNotFound(
-            result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
-                eventMediaDTO.getId().toString()));
+                result,
+                HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME,
+                        eventMediaDTO.getId().toString()));
     }
 
     /**
      * {@code GET  /event-medias} : get all the eventMedias.
      *
-     * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
      *         of eventMedias in body.
      */
     @GetMapping("")
+    @Transactional(readOnly = true)
     public ResponseEntity<List<EventMediaDTO>> getAllEventMedias(
             EventMediaCriteria criteria,
             @org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get EventMedias by criteria: {}", criteria);
 
-        Page<EventMediaDTO> page = eventMediaQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        try {
+            // Use the safe version that avoids LOB fields to prevent stream access errors
+//            Page<EventMediaDTO> page = eventMediaQueryService.findByCriteriaSafe(criteria, pageable);
+            Page<EventMediaDTO> page = eventMediaQueryService.findByCriteria(criteria, pageable);
+            HttpHeaders headers = PaginationUtil
+                    .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+            return ResponseEntity.ok().headers(headers).body(page.getContent());
+        } catch (Exception e) {
+            log.error("Error fetching EventMedia with criteria, falling back to safe method", e);
+            // Fallback to safe method without LOB fields
+            List<EventMediaDTO> safeResults = eventMediaService.findAllWithoutLobFields();
+            return ResponseEntity.ok().body(safeResults);
+        }
+    }
+
+    /**
+     * {@code GET  /event-medias/safe} : Get all eventMedias without LOB fields.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
+     *         of eventMedias in body.
+     */
+    @GetMapping("/safe")
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<EventMediaDTO>> getAllEventMediasSafe() {
+        log.debug("REST request to get EventMedias safely without LOB fields");
+        List<EventMediaDTO> results = eventMediaService.findAllWithoutLobFields();
+        return ResponseEntity.ok().body(results);
+    }
+
+    /**
+     * {@code POST  /event-medias/cleanup-lob} : Clean up orphaned LOB references.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and cleanup
+     *         result.
+     */
+    @PostMapping("/cleanup-lob")
+    @Transactional
+    public ResponseEntity<Map<String, Object>> cleanupOrphanedLobReferences() {
+        log.debug("REST request to cleanup orphaned LOB references");
+
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // Update records with null LOB fields to prevent stream access errors
+           /* int updatedCount = eventMediaRepository.updateNullLobFields();
+            result.put("success", true);
+            result.put("updatedRecords", updatedCount);
+            result.put("message", "Successfully cleaned up " + updatedCount + " records with orphaned LOB references");*/
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("Error during LOB cleanup", e);
+            result.put("success", false);
+            result.put("error", e.getMessage());
+            return ResponseEntity.status(500).body(result);
+        }
     }
 
     /**
@@ -286,7 +332,8 @@ public class EventMediaResource {
         Long userProfileId = getCurrentUserProfileId(authentication);
         boolean isPublicValue = isPublic != null ? isPublic : false;
         EventMediaDTO result = eventMediaService.uploadFile(file, eventId, userProfileId, title, description,
-            tenantId, isPublicValue, eventFlyer, isFeaturedImage, isEventManagementOfficialDocument, isHeroImage, isActiveHeroImage);
+                tenantId, isPublicValue, eventFlyer, isFeaturedImage, isEventManagementOfficialDocument, isHeroImage,
+                isActiveHeroImage);
         return ResponseEntity
                 .created(new URI("/api/event-medias/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME,
@@ -320,15 +367,16 @@ public class EventMediaResource {
         if (hasEmptyFile) {
             throw new BadRequestAlertException("One or more files are empty", ENTITY_NAME, "fileempty");
         }
-        Long userProfileId =null;
-        if(upLoadedById==null) {
-           userProfileId = getCurrentUserProfileId(authentication);
-        }else{
-            userProfileId=upLoadedById;
+        Long userProfileId = null;
+        if (upLoadedById == null) {
+            userProfileId = getCurrentUserProfileId(authentication);
+        } else {
+            userProfileId = upLoadedById;
         }
         boolean isPublicValue = isPublic != null ? isPublic : false;
         List<EventMediaDTO> results = eventMediaService.uploadMultipleFiles(files, eventId, userProfileId, titles,
-                descriptions, tenantId, isPublicValue, eventFlyer,isFeaturedImage, isEventManagementOfficialDocument,isHeroImage,isActiveHeroImage);
+                descriptions, tenantId, isPublicValue, eventFlyer, isFeaturedImage, isEventManagementOfficialDocument,
+                isHeroImage, isActiveHeroImage);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createAlert(applicationName, "eventMedia.uploaded", String.valueOf(results.size())))
                 .body(results);

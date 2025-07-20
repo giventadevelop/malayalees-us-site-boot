@@ -21,7 +21,7 @@ public class EventMediaDTO implements Serializable {
     @Size(max = 255)
     private String title;
 
-    @Lob
+    @Size(max = 2048)
     private String description;
 
     @NotNull
@@ -34,11 +34,6 @@ public class EventMediaDTO implements Serializable {
 
     @Size(max = 2048)
     private String fileUrl;
-
-    @Lob
-    private byte[] fileData;
-
-    private String fileDataContentType;
 
     @Size(max = 255)
     private String contentType;
@@ -144,22 +139,6 @@ public class EventMediaDTO implements Serializable {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
-    }
-
-    public byte[] getFileData() {
-        return fileData;
-    }
-
-    public void setFileData(byte[] fileData) {
-        this.fileData = fileData;
-    }
-
-    public String getFileDataContentType() {
-        return fileDataContentType;
-    }
-
-    public void setFileDataContentType(String fileDataContentType) {
-        this.fileDataContentType = fileDataContentType;
     }
 
     public String getContentType() {
@@ -364,7 +343,6 @@ public class EventMediaDTO implements Serializable {
             ", eventMediaType='" + getEventMediaType() + "'" +
             ", storageType='" + getStorageType() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
-            ", fileData='" + getFileData() + "'" +
             ", contentType='" + getContentType() + "'" +
             ", fileSize=" + getFileSize() +
             ", isPublic='" + getIsPublic() + "'" +

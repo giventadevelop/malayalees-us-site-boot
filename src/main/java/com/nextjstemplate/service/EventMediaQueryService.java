@@ -16,12 +16,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.service.QueryService;
+import java.util.stream.Collectors;
 
 /**
- * Service for executing complex queries for {@link EventMedia} entities in the database.
- * The main input is a {@link EventMediaCriteria} which gets converted to {@link Specification},
+ * Service for executing complex queries for {@link EventMedia} entities in the
+ * database.
+ * The main input is a {@link EventMediaCriteria} which gets converted to
+ * {@link Specification},
  * in a way that all the filters must apply.
- * It returns a {@link List} of {@link EventMediaDTO} or a {@link Page} of {@link EventMediaDTO} which fulfills the criteria.
+ * It returns a {@link List} of {@link EventMediaDTO} or a {@link Page} of
+ * {@link EventMediaDTO} which fulfills the criteria.
  */
 @Service
 @Transactional(readOnly = true)
@@ -33,14 +37,21 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
 
     private final EventMediaMapper eventMediaMapper;
 
-    public EventMediaQueryService(EventMediaRepository eventMediaRepository, EventMediaMapper eventMediaMapper) {
+    private final EventMediaService eventMediaService;
+
+    public EventMediaQueryService(EventMediaRepository eventMediaRepository, EventMediaMapper eventMediaMapper,
+            EventMediaService eventMediaService) {
         this.eventMediaRepository = eventMediaRepository;
         this.eventMediaMapper = eventMediaMapper;
+        this.eventMediaService = eventMediaService;
     }
 
     /**
-     * Return a {@link List} of {@link EventMediaDTO} which matches the criteria from the database.
-     * @param criteria The object which holds all the filters, which the entities should match.
+     * Return a {@link List} of {@link EventMediaDTO} which matches the criteria
+     * from the database.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
@@ -51,21 +62,69 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
     }
 
     /**
-     * Return a {@link Page} of {@link EventMediaDTO} which matches the criteria from the database.
-     * @param criteria The object which holds all the filters, which the entities should match.
-     * @param page The page, which should be returned.
+     * Return a {@link Page} of {@link EventMediaDTO} which matches the criteria
+     * from the database.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
+     * @param page     The page, which should be returned.
      * @return the matching entities.
      */
     @Transactional(readOnly = true)
     public Page<EventMediaDTO> findByCriteria(EventMediaCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
         final Specification<EventMedia> specification = createSpecification(criteria);
-        return eventMediaRepository.findAll(specification, page).map(eventMediaMapper::toDto);
+
+        Page<EventMedia> eventMediaPage = eventMediaRepository.findAll(specification, page);
+
+        if (eventMediaPage.hasContent()) {
+            return eventMediaPage.map(eventMediaMapper::toDto);
+        } else {
+            return Page.empty(page);
+        }
+    }
+
+    /**
+     * Return a {@link Page} of {@link EventMediaDTO} which matches the criteria
+     * from the database.
+     * Safe version that avoids LOB fields to prevent stream access errors.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
+     * @param page     The page, which should be returned.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public Page<EventMediaDTO> findByCriteriaSafe(EventMediaCriteria criteria, Pageable page) {
+        log.debug("find by criteria safely (without LOB fields) : {}, page: {}", criteria, page);
+        // Use the service method that handles raw Object[] results
+        List<EventMediaDTO> dtos = eventMediaService.findAllWithoutLobFields();
+
+        // Create a simple page implementation
+        return new org.springframework.data.domain.PageImpl<>(dtos, page, dtos.size());
+    }
+
+    /**
+     * Return a {@link List} of {@link EventMediaDTO} which matches the criteria
+     * from the database.
+     * Safe version that avoids LOB fields to prevent stream access errors.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
+     * @return the matching entities.
+     */
+    @Transactional(readOnly = true)
+    public List<EventMediaDTO> findByCriteriaSafe(EventMediaCriteria criteria) {
+        log.debug("find by criteria safely (without LOB fields) : {}", criteria);
+        // Use the service method that handles raw Object[] results
+        return eventMediaService.findAllWithoutLobFields();
     }
 
     /**
      * Return the number of matching entities in the database.
-     * @param criteria The object which holds all the filters, which the entities should match.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
      * @return the number of matching entities.
      */
     @Transactional(readOnly = true)
@@ -77,7 +136,9 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
 
     /**
      * Function to convert {@link EventMediaCriteria} to a {@link Specification}
-     * @param criteria The object which holds all the filters, which the entities should match.
+     *
+     * @param criteria The object which holds all the filters, which the entities
+     *                 should match.
      * @return the matching {@link Specification} of the entity.
      */
     protected Specification<EventMedia> createSpecification(EventMediaCriteria criteria) {
@@ -91,25 +152,30 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), EventMedia_.id));
             }
             if (criteria.getTenantId() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTenantId(), EventMedia_.tenantId));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getTenantId(), EventMedia_.tenantId));
             }
             if (criteria.getTitle() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getTitle(), EventMedia_.title));
             }
             if (criteria.getEventMediaType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getEventMediaType(), EventMedia_.eventMediaType));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getEventMediaType(), EventMedia_.eventMediaType));
             }
             if (criteria.getStorageType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getStorageType(), EventMedia_.storageType));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getStorageType(), EventMedia_.storageType));
             }
             if (criteria.getFileUrl() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getFileUrl(), EventMedia_.fileUrl));
             }
             if (criteria.getContentType() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getContentType(), EventMedia_.contentType));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getContentType(), EventMedia_.contentType));
             }
             if (criteria.getFileSize() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getFileSize(), EventMedia_.fileSize));
+                specification = specification
+                        .and(buildRangeSpecification(criteria.getFileSize(), EventMedia_.fileSize));
             }
             if (criteria.getIsPublic() != null) {
                 specification = specification.and(buildSpecification(criteria.getIsPublic(), EventMedia_.isPublic));
@@ -118,54 +184,64 @@ public class EventMediaQueryService extends QueryService<EventMedia> {
                 specification = specification.and(buildSpecification(criteria.getEventFlyer(), EventMedia_.eventFlyer));
             }
             if (criteria.getIsEventManagementOfficialDocument() != null) {
-                specification =
-                    specification.and(
-                        buildSpecification(criteria.getIsEventManagementOfficialDocument(), EventMedia_.isEventManagementOfficialDocument)
-                    );
+                specification = specification.and(
+                        buildSpecification(criteria.getIsEventManagementOfficialDocument(),
+                                EventMedia_.isEventManagementOfficialDocument));
             }
             if (criteria.getPreSignedUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getPreSignedUrl(), EventMedia_.preSignedUrl));
             }
             if (criteria.getPreSignedUrlExpiresAt() != null) {
-                specification =
-                    specification.and(buildRangeSpecification(criteria.getPreSignedUrlExpiresAt(), EventMedia_.preSignedUrlExpiresAt));
+                specification = specification.and(buildRangeSpecification(criteria.getPreSignedUrlExpiresAt(),
+                        EventMedia_.preSignedUrlExpiresAt));
             }
             if (criteria.getAltText() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAltText(), EventMedia_.altText));
             }
             if (criteria.getDisplayOrder() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getDisplayOrder(), EventMedia_.displayOrder));
+                specification = specification
+                        .and(buildRangeSpecification(criteria.getDisplayOrder(), EventMedia_.displayOrder));
             }
             if (criteria.getDownloadCount() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getDownloadCount(), EventMedia_.downloadCount));
+                specification = specification
+                        .and(buildRangeSpecification(criteria.getDownloadCount(), EventMedia_.downloadCount));
             }
             if (criteria.getIsFeaturedVideo() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsFeaturedVideo(), EventMedia_.isFeaturedVideo));
+                specification = specification
+                        .and(buildSpecification(criteria.getIsFeaturedVideo(), EventMedia_.isFeaturedVideo));
             }
             if (criteria.getFeaturedVideoUrl() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getFeaturedVideoUrl(), EventMedia_.featuredVideoUrl));
+                specification = specification
+                        .and(buildStringSpecification(criteria.getFeaturedVideoUrl(), EventMedia_.featuredVideoUrl));
             }
             if (criteria.getIsFeaturedImage() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsFeaturedImage(), EventMedia_.isFeaturedImage));
+                specification = specification
+                        .and(buildSpecification(criteria.getIsFeaturedImage(), EventMedia_.isFeaturedImage));
             }
             if (criteria.getIsHeroImage() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsHeroImage(), EventMedia_.isHeroImage));
+                specification = specification
+                        .and(buildSpecification(criteria.getIsHeroImage(), EventMedia_.isHeroImage));
             }
             if (criteria.getIsActiveHeroImage() != null) {
-                specification = specification.and(buildSpecification(criteria.getIsActiveHeroImage(), EventMedia_.isActiveHeroImage));
+                specification = specification
+                        .and(buildSpecification(criteria.getIsActiveHeroImage(), EventMedia_.isActiveHeroImage));
             }
             if (criteria.getCreatedAt() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), EventMedia_.createdAt));
+                specification = specification
+                        .and(buildRangeSpecification(criteria.getCreatedAt(), EventMedia_.createdAt));
             }
             if (criteria.getUpdatedAt() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), EventMedia_.updatedAt));
+                specification = specification
+                        .and(buildRangeSpecification(criteria.getUpdatedAt(), EventMedia_.updatedAt));
             }
 
             if (criteria.getEventId() != null) {
                 specification = specification.and(buildSpecification(criteria.getEventId(), EventMedia_.eventId));
             }
             if (criteria.getUploadedById() != null) {
-                specification = specification.and(buildSpecification(criteria.getUploadedById(), EventMedia_.uploadedById));
+                specification = specification
+                        .and(buildSpecification(criteria.getUploadedById(), EventMedia_.uploadedById));
             }
         }
         return specification;
