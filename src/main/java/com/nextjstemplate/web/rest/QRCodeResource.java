@@ -45,10 +45,14 @@ public class QRCodeResource {
   private final UserProfileService userProfileService;
   private final JwtEncoder jwtEncoder;
 
-  @Value("${email.host.url-prefix}")
-  private String emailHostUrlPrefix;
+  /*@Value("${email.host.url-prefix}")
+  private String emailHostUrlPrefix;*/
 
-  @Autowired
+    @Autowired
+    private EmailHostUrlPrefixDecoder decoder;
+
+
+    @Autowired
   public QRCodeResource(
       EventTicketTransactionRepository transactionRepository,
       S3Service s3Service,
@@ -110,16 +114,19 @@ public class QRCodeResource {
     return ResponseEntity.ok(result);
   }
 
-  @GetMapping("/events/{eventId}/transactions/{transactionId}/qrcode")
+  @GetMapping("/events/{eventId}/transactions/{transactionId}/emailHostUrlPrefix/{emailHostUrlPrefix}/qrcode")
   public ResponseEntity<?> getQRCodeImage(
       @PathVariable Long eventId,
-      @PathVariable Long transactionId) {
+      @PathVariable Long transactionId,
+      @PathVariable String  emailHostUrlPrefix) {
     QrCodeUsageDTO dto = buildQrCodeUsageDTO(eventId, transactionId);
     if (dto == null) {
       return ResponseEntity.notFound().build();
     }
+      String decodedEmailHostUrlPrefix = decoder.decodeEmailHostUrlPrefix(emailHostUrlPrefix);
+
     // You can now extract details from dto as needed
-    sendTicketEmail(eventId, transactionId, dto.getTransaction().getEmail());
+    sendTicketEmail(eventId, transactionId, dto.getTransaction().getEmail(),decodedEmailHostUrlPrefix);
     String qrCodeImageUrl = dto.getTransaction().getQrCodeImageUrl();
     return ResponseEntity.ok()
         .contentType(MediaType.parseMediaType("image/png"))
@@ -127,12 +134,13 @@ public class QRCodeResource {
         .body(qrCodeImageUrl);
   }
 
-  @PostMapping("/events/{eventId}/transactions/{transactionId}/send-ticket-email")
+  @PostMapping("/events/{eventId}/transactions/{transactionId}/emailHostUrlPrefix/{emailHostUrlPrefix}/send-ticket-email")
   @Async
   public void sendTicketEmail(
       @PathVariable Long eventId,
       @PathVariable Long transactionId,
-      @RequestParam(value = "to", required = false) String to) {
+      @RequestParam(value = "to", required = false) String to,
+      @PathVariable String  emailHostUrlPrefix) {
     QrCodeUsageDTO dto = buildQrCodeUsageDTO(eventId, transactionId);
     if (dto == null) {
       return;
@@ -355,8 +363,9 @@ public class QRCodeResource {
     String bodyHtml = requestDTO.getBodyHtml();
     String headerImagePath = requestDTO.getHeaderImagePath();
     String footerPath = requestDTO.getFooterPath();
-
-    sendPromoEmails(tenantId, promoCode, footerPath, bodyHtml, recipient, subject, requestDTO.isTestEmail());
+    boolean isTestEmail  = requestDTO.isTestEmail();
+    String emailHostUrlPrefix = requestDTO.getEmailHostUrlPrefix();
+    sendPromoEmails(tenantId, promoCode, footerPath, bodyHtml, recipient, subject, isTestEmail, emailHostUrlPrefix);
 
     Map<String, Object> response = new HashMap<>();
     response.put("success", true);
@@ -365,7 +374,7 @@ public class QRCodeResource {
 
   @Async
   protected void sendPromoEmails(String tenantId, String promoCode, String footerPath, String bodyHtml,
-      String recipient, String subject, boolean isTestEmail) {
+                                 String recipient, String subject, boolean isTestEmail, String emailHostUrlPrefix) {
     List<String> emails;
     if (isTestEmail) {
       emails = List.of(recipient);

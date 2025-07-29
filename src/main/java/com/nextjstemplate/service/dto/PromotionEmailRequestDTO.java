@@ -18,6 +18,8 @@ public class PromotionEmailRequestDTO {
 
     private String promoCode;
 
+    private String emailHostUrlPrefix;
+
     @NotBlank
     private String bodyHtml; // HTML content
 
@@ -57,5 +59,13 @@ public class PromotionEmailRequestDTO {
 
     public void setTestEmail(boolean testEmail) {
         isTestEmail = testEmail;
+    }
+
+    public String getEmailHostUrlPrefix() {
+        return emailHostUrlPrefix;
+    }
+
+    public void setEmailHostUrlPrefix(String emailHostUrlPrefix) {
+        this.emailHostUrlPrefix = emailHostUrlPrefix;
     }
 }

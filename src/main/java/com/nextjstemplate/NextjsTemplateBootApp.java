@@ -65,6 +65,10 @@ public class NextjsTemplateBootApp {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
+        // Set JAXB system properties for Java 17+ compatibility
+        System.setProperty("javax.xml.bind.JAXBContextFactory", "org.glassfish.jaxb.runtime.v2.JAXBContextFactory");
+        System.setProperty("javax.xml.bind.context.factory", "org.glassfish.jaxb.runtime.v2.JAXBContextFactory");
+
         SpringApplication app = new SpringApplication(NextjsTemplateBootApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();

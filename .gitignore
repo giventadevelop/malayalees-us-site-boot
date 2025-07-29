@@ -31,6 +31,16 @@ local.properties
 .loadpath
 .factorypath
 
+######################
+# Environment variables
+######################
+.env
+.env.local
+.env.development
+.env.production
+.env.production.*
+.env.local*
+
 # External tool builders
 .externalToolBuilders/**
 
