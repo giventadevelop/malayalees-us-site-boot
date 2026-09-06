@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260905120000-1" author="cursor">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="event_competition_result"/>
+            <not>
+                <columnExists tableName="event_competition_result" columnName="work_photo_url"/>
+            </not>
+        </preConditions>
+        <comment>Winning-work image URL next to winner portrait on event_competition_result</comment>
+        <addColumn tableName="event_competition_result">
+            <column name="work_photo_url" type="varchar(1024)"/>
+        </addColumn>
+        <rollback>
+            <dropColumn tableName="event_competition_result" columnName="work_photo_url"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20260905120000-2" author="cursor">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="event_competition_result"/>
+            <tableExists tableName="event_media"/>
+            <not>
+                <columnExists tableName="event_competition_result" columnName="work_media_id"/>
+            </not>
+        </preConditions>
+        <comment>Optional FK to event_media for the winning-work image</comment>
+        <addColumn tableName="event_competition_result">
+            <column name="work_media_id" type="bigint"/>
+        </addColumn>
+        <addForeignKeyConstraint
+            baseTableName="event_competition_result"
+            baseColumnNames="work_media_id"
+            constraintName="fk_event_comp_result__work_media"
+            referencedTableName="event_media"
+            referencedColumnNames="id"
+            onDelete="SET NULL"/>
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="event_competition_result" constraintName="fk_event_comp_result__work_media"/>
+            <dropColumn tableName="event_competition_result" columnName="work_media_id"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

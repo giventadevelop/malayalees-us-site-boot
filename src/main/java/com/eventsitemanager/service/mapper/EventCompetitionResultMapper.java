@@ -24,6 +24,7 @@ public interface EventCompetitionResultMapper extends EntityMapper<EventCompetit
     @Mapping(target = "participantProfile", source = "participantProfile", qualifiedByName = "eventCompetitionParticipantId")
     @Mapping(target = "registration", source = "registration", qualifiedByName = "eventCompetitionRegistrationId")
     @Mapping(target = "winnerMedia", source = "winnerMedia", qualifiedByName = "eventMediaId")
+    @Mapping(target = "workMedia", source = "workMedia", qualifiedByName = "eventMediaId")
     EventCompetitionResultDTO toDto(EventCompetitionResult s);
 
     @Named("eventDetailsId")
@@ -34,6 +35,7 @@ public interface EventCompetitionResultMapper extends EntityMapper<EventCompetit
     @Named("eventCompetitionId")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
     EventCompetitionDTO toDtoEventCompetitionId(com.eventsitemanager.domain.EventCompetition entity);
 
     @Named("eventCompetitionParticipantId")

@@ -42,6 +42,9 @@ public class EventCompetitionResultDTO implements Serializable {
     @Size(max = 1024)
     private String winnerPhotoUrl;
 
+    @Size(max = 1024)
+    private String workPhotoUrl;
+
     private String notes;
 
     @NotNull
@@ -64,6 +67,8 @@ public class EventCompetitionResultDTO implements Serializable {
     private EventCompetitionRegistrationDTO registration;
 
     private EventMediaDTO winnerMedia;
+
+    private EventMediaDTO workMedia;
 
     public Long getId() {
         return id;
@@ -135,6 +140,14 @@ public class EventCompetitionResultDTO implements Serializable {
 
     public void setWinnerPhotoUrl(String winnerPhotoUrl) {
         this.winnerPhotoUrl = winnerPhotoUrl;
+    }
+
+    public String getWorkPhotoUrl() {
+        return workPhotoUrl;
+    }
+
+    public void setWorkPhotoUrl(String workPhotoUrl) {
+        this.workPhotoUrl = workPhotoUrl;
     }
 
     public String getNotes() {
@@ -215,6 +228,14 @@ public class EventCompetitionResultDTO implements Serializable {
 
     public void setWinnerMedia(EventMediaDTO winnerMedia) {
         this.winnerMedia = winnerMedia;
+    }
+
+    public EventMediaDTO getWorkMedia() {
+        return workMedia;
+    }
+
+    public void setWorkMedia(EventMediaDTO workMedia) {
+        this.workMedia = workMedia;
     }
 
     @Override

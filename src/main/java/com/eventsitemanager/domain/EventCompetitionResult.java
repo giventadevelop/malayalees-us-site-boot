@@ -62,6 +62,10 @@ public class EventCompetitionResult implements Serializable {
     @Column(name = "winner_photo_url")
     private String winnerPhotoUrl;
 
+    @Size(max = 1024)
+    @Column(name = "work_photo_url")
+    private String workPhotoUrl;
+
     @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
@@ -102,6 +106,10 @@ public class EventCompetitionResult implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "event" }, allowSetters = true)
     private EventMedia winnerMedia;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "event" }, allowSetters = true)
+    private EventMedia workMedia;
 
     public String getTenantId() {
         return this.tenantId;
@@ -205,6 +213,19 @@ public class EventCompetitionResult implements Serializable {
 
     public void setWinnerPhotoUrl(String winnerPhotoUrl) {
         this.winnerPhotoUrl = winnerPhotoUrl;
+    }
+
+    public String getWorkPhotoUrl() {
+        return this.workPhotoUrl;
+    }
+
+    public EventCompetitionResult workPhotoUrl(String workPhotoUrl) {
+        this.setWorkPhotoUrl(workPhotoUrl);
+        return this;
+    }
+
+    public void setWorkPhotoUrl(String workPhotoUrl) {
+        this.workPhotoUrl = workPhotoUrl;
     }
 
     public String getNotes() {
@@ -334,6 +355,19 @@ public class EventCompetitionResult implements Serializable {
 
     public EventCompetitionResult winnerMedia(EventMedia winnerMedia) {
         this.setWinnerMedia(winnerMedia);
+        return this;
+    }
+
+    public EventMedia getWorkMedia() {
+        return this.workMedia;
+    }
+
+    public void setWorkMedia(EventMedia workMedia) {
+        this.workMedia = workMedia;
+    }
+
+    public EventCompetitionResult workMedia(EventMedia workMedia) {
+        this.setWorkMedia(workMedia);
         return this;
     }
 
